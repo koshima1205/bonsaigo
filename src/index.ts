@@ -461,7 +461,8 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
 // 動画だけここを通し、必要な範囲を切り出して 206 で返す（長さが分かるときは流しながら切るので全体を読み込まない）
 async function film(req: Request, env: Env): Promise<Response> {
   const res = await env.ASSETS.fetch(new Request(req.url, { method: "GET" }));
-  if (!res.ok || !res.body) return res;
+  // 無い動画はトップの HTML が返ってくるので、動画として渡さず 404 にする
+  if (!res.ok || !res.body || !res.headers.get("content-type")?.startsWith("video/")) { res.body?.cancel(); return new Response("not found", { status: 404 }); }
   // 手元の wrangler dev は長さを付けずに返すので、そのときだけ全体を読んで長さを知る
   const known = Number(res.headers.get("content-length"));
   const buf = known ? null : new Uint8Array(await res.arrayBuffer());

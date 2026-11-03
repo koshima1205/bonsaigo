@@ -356,3 +356,8 @@ html:lang(zh) .mag :is(.quote,.vq,.hook,.mq p,.kb-text blockquote,.mcover .side 
 .page-big.has-wc{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
 .gat .wc{width:min(180px,70%);margin:6px 0 -8px auto}
 .ask-row button{white-space:nowrap;flex:none}
+
+/* 記事の見出しごとの水彩画：本文の右の余白に置く */
+.kb-text h2{clear:both}
+.kb-text>.sec-wc{float:right;width:min(280px,30%);max-width:none;margin:-4px 0 16px 32px;mix-blend-mode:multiply;-webkit-mask-image:radial-gradient(closest-side,#000 64%,transparent 100%);mask-image:radial-gradient(closest-side,#000 64%,transparent 100%)}
+@media (max-width:900px){.kb-text>.sec-wc{float:none;display:block;width:min(260px,72%);margin:0 auto 10px}}

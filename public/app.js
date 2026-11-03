@@ -329,7 +329,12 @@ async function learnArticle(slug) {
   const prev = kb[i - 1], next = kb[i + 1];
   const heads = [...L.html.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1]);
   let hn = 0;
-  const body = L.html.replace(/<h2>/g, () => `<h2 id="s${++hn}">`);
+  // 見出しごとの水彩画。絵は日本語の見出しの順で描いてあるので、見出しの数が違う言語は割合で合わせる
+  const nJa = (a.langs?.ja?.html.match(/<h2>/g) ?? []).length || heads.length;
+  const body = L.html.replace(/<h2>(.*?)<\/h2>/g, (_, h) => {
+    const k = Math.min(nJa - 1, Math.round(hn * nJa / heads.length));
+    return `<h2 id="s${++hn}">${h}</h2><img class="sec-wc" src="/img/sec/${esc(a.slug)}-${k}.jpg" alt="" loading="lazy" onerror="this.remove()">`;
+  });
   $(".main").innerHTML = `
   <article class="kb">
     <header class="row kb-h">

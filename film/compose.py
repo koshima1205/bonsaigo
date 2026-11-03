@@ -30,12 +30,16 @@ def segment(frames, card, dur, out, start=0.0, tall=False, dark=False, big=False
     cin = ["-loop", "1", "-framerate", str(FPS), "-t", f"{dur}", "-i", card]
     t_in = 0.25 if big else 0.6
     cap = f"[1]format=rgba,fade=t=in:st={t_in}:d=0.7:alpha=1,fade=t=out:st={dur - 0.9:.2f}:d=0.5:alpha=1[c]"
+    scrim = []
     if tall:
         base = f"[0]scale=720:405,pad=720:1280:0:420:color=0x{fade}[v]"
     else:
-        base = "[0]null[v]"
+        # 字幕の下に、紙色（暗い場面は墨色）の淡いぼかしを敷いて、木に重なっても読めるようにする
+        scrim = ["-loop", "1", "-framerate", str(FPS), "-t", f"{dur}", "-i", os.path.join(OUT, f"scrim-{fade}.png")]
+        base = (f"[2]format=rgba,"
+                f"fade=t=in:st={t_in}:d=0.7:alpha=1,fade=t=out:st={dur - 0.9:.2f}:d=0.5:alpha=1[s];[0][s]overlay=format=auto[v]")
     fx = f"{cap};{base};[v][c]overlay=format=auto,fade=t=in:st=0:d=0.35:color=0x{fade},fade=t=out:st={dur - 0.35:.2f}:d=0.35:color=0x{fade},format=yuv420p"
-    sh(*vin, *cin, "-filter_complex", fx, "-t", f"{dur}", "-r", str(FPS), "-c:v", "libx264", "-crf", "14", "-preset", "veryfast", out)
+    sh(*vin, *cin, *scrim, "-filter_complex", fx, "-t", f"{dur}", "-r", str(FPS), "-c:v", "libx264", "-crf", "14", "-preset", "veryfast", out)
 
 
 def finish(segs, name, dur, tall=False):

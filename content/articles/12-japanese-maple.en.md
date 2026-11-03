@@ -14,29 +14,29 @@ sources:
     url: https://www.maff.go.jp/j/pr/aff/1702/spe2_01.html
 voice_hook: Besides placement, what do you do to prevent summer leaf scorch?
 ---
-The Japanese maple (*momiji*, *Acer palmatum*) is the best-known of the *zōki* — the broadleaf, deciduous bonsai that are not pines or junipers, including trees grown for leaves, flowers or fruit. A maple changes all year: fresh spring leaves, green summer, autumn color, and the delicate winter silhouette.
+The Japanese maple (*momiji*, *Acer palmatum*) stands for the *zōki*, the bonsai group that covers everything besides pines and junipers: trees valued for fruit, foliage or blossom, which let you follow the seasons. A maple looks different in every part of the year, from new spring leaves through green summer and autumn color to the thin bare twigs of winter.
 
-## Summer: watch for scorch
-Maples like sunny, airy places, but once temperatures pass roughly 30 °C (85 °F) they need softer light. Leaf scorch — browned leaf edges — is worsened by heat, wind and drying roots. Giving partial shade during the hottest hours of the day helps. A botanical garden profile also notes that new foliage may scorch in hot summers, especially if the soil is not kept consistently moist.
+## Summer: guard against scorch
+A maple wants sun and moving air, but once the temperature climbs past about 30 °C (85 °F), direct light needs softening. Scorch, the browning at leaf tips, gets worse with heat, wind and roots that dry out. Shade during the hottest midday hours, or a half-shaded position, is a real help. A botanical garden profile also says leaves burn easily in hot regions, most of all when the soil runs dry.
 
-In the growing season, water daily as a rule, and on hot days several times if drainage is good. Go by the soil's condition rather than a fixed schedule, and never let it dry out completely. Neutral to slightly acidic water suits maples better than very hard, calcareous water.
+During the growing season, watering once a day is the baseline. On hot days several rounds may be needed, but base it on how the soil feels rather than a count, and never let it dry out entirely. Water that is neutral to mildly acidic suits maples better than strongly calcareous water.
 
-## Defoliation: only for strong trees
-*Hagari* (defoliation) means removing leaves in the growing season so the tree grows a second, finer set. It makes leaves smaller and branching finer, but it is hard on the tree, so it should not be done every year and only on strong, healthy trees.
+## Defoliation is for strong trees only
+*Hagari*, or defoliation, strips the leaves during the growing season so that a second, finer crop grows in. Leaves come back smaller and twigs finer, but the tree pays a heavy price. For that reason it is skipped some years and limited to vigorous, healthy trees.
 
-A gentler option is partial defoliation: remove only the largest leaves, crowded leaves or those in the strongest areas. This can be done yearly.
+A milder alternative is partial defoliation, taking only large leaves, crowded ones and those on the strongest parts. It is said to be fine to do every year.
 
-## Pinching and cutting
-Cut new shoots back to one or two leaf pairs. Pinching the soft tip after the first pair of leaves opens keeps twigs thin, but overdoing it weakens the tree. For thicker branches, one source suggests summer or autumn, when wounds callus quickly and bleeding is reduced; another recommends late winter to early spring before buds open. Sources disagree, so adjust to your climate and tree, and ask an experienced grower if unsure.
+## Pinching and branch cuts
+Cut a fresh shoot back so that just one or two leaf pairs stay. Pinching the soft tip once the first pair has opened keeps twigs slender, but doing it too often weakens the tree. For thick branches, one explanation favors summer or autumn, since wounds close fast and sap runs less; another view prefers late winter to early spring before buds open. Sources split on this, so fit the choice to your region and tree, and ask someone experienced when unsure.
 
 ## Repotting and winter
-Maple roots are vigorous and fill a pot quickly, so repot about every two years and prune the roots, using a well-drained soil. In winter the tree drops its leaves and rests. It is frost hardy, but protect it when temperatures fall below about -10 °C (15 °F).
+Roots are strong and fill the pot fast, so plan to repot about every two years and tidy the roots, in a free-draining soil. In winter the leaves drop and the tree rests. It tolerates cold, but give frost protection once temperatures go below about -10 °C (15 °F).
 
 ## Autumn color and light
-Fall color ranges from yellow and orange to red, depending on the cultivar. Too little light weakens the color, so keep the tree in good light. Some cultivars also have red or orange spring leaves.
+Fall color spans yellow, orange and red depending on the cultivar. Weak light fades the color, so make sure the tree gets enough. A few cultivars open their spring leaves red or orange.
 
-## Knowing the tree
-The Missouri Botanical Garden describes palmate leaves with five or seven, occasionally nine, lobes. Small reddish-purple flowers open in April (in St. Louis), followed by paired winged seeds that ripen in September-October. It recommends fertilizing in spring before the leaves emerge, and warns against strong wind and hot, dry sites.
+## Getting to know the tree
+The garden profile describes hand-shaped leaves cut deeply into five or seven lobes, now and then nine. Little reddish-purple flowers appear in April (in St. Louis) and give way to paired winged seeds that ripen in September-October. Fertilizing in spring, ahead of leaf emergence, is advised. Strong wind and hot, dry locations do not suit it.
 
 ## Summary
 - Above about 30 °C, give partial shade; scorch grows worse with heat, wind and dry roots

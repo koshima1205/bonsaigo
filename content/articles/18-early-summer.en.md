@@ -16,29 +16,29 @@ sources:
     url: https://www.bonsai.co.jp/recipe/recipe_category/jun/
 voice_hook: Besides candle length, what do you check on the day you decide to cut?
 ---
-Early summer is the most important working season for pine bonsai. All months here are a guide for the Kanto plain in Japan (*Kanto heiya*); climate will shift them elsewhere.
+For pine bonsai, early summer is the busiest and most important stretch of the year. Every month named here is a rough guide for the Kanto plain in Japan (*Kanto heiya*); other climates shift the dates.
 
-## Candle cutting (*mekiri*) — cutting this year's candles in early summer
-Black and red pine grow once in spring. If you cut the new shoots (candles) in summer, a second flush forms, so these are called "two-flush" pines. One Japanese source says black pine cutting starts around June 20 and usually ends in early July. Old trees can start a little earlier, red pine about a week before black pine, and regions with short summers cut sooner.
+## Candle cutting (*mekiri*) — removing this year's candles in early summer
+Black and red pines extend once in spring. Cut those new shoots (candles) in summer and a second flush follows, which is why they are called "two-flush" pines. A Japanese source puts the start of black pine cutting near June 20, normally wrapping up in early July. Older trees may go a bit sooner, red pine around a week ahead of black pine, and places with short summers cut earlier still.
 
-An English guide advises cutting healthy trees in early to mid summer back to a stub of about 6 mm with a few pairs of needles. In other words, you do not cut flush to the base. Match how much you leave to the strength of the tree.
+An English-language guide recommends that vigorous trees be cut in early to mid summer, leaving a short stub of about 6 mm that carries several pairs of needles. So the cut is made near the base, leaving a short stub, not flush with it. Scale what you leave to the tree's strength.
 
-## When candles are uneven
-One tree has strong and weak candles. Cut the strong ones first and the weak ones fall behind, so a Japanese guide cuts weak candles first and the strong ones 7 to 10 days later. For a tree with very short needles, waiting until early or mid July is suggested.
+## Candles of unequal size
+A single tree carries both strong and weak candles. If the strong ones go first, the weak ones are left behind, so one Japanese guide has you cut weak candles first and the strong ones 7 to 10 days afterward. A tree with notably short needles can be held back until early to mid July.
 
-## Feeding: heavily before, a pause after
-For black pine, a guide starts solid organic fertilizer in March and gives it at least three times, about four weeks apart, before cutting. After cutting, pause until the second flush hardens, then resume in autumn.
+## Feeding: build up beforehand, rest afterward
+For black pine, one guide begins solid organic feed in March and applies it at least three times, roughly four weeks apart, before the cut. After cutting, pause until the second flush has firmed, then resume in autumn.
 
-## One-flush pines: never cut every candle
-Pines such as five-needle pine are grown "one-flush," and removing all their candles can be fatal. Shorten overlong candles evenly from late spring into early summer. Where more than two sit at one spot, keep two.
+## One-flush pines: leave some candles
+Pines like the five-needle type grow "one-flush," and taking all their candles may kill them. Shorten overlong candles to an even length between late spring and early summer. If more than two crowd one spot, keep two.
 
-## After flowering, and broadleaf leaves
-Satsuki azalea: remove spent flowers as soon as the show ends, feed lightly and rest the tree about ten days. Finish pruning by around June 20 as a guide. Flower buds form in summer, so late pruning means fewer flowers next year (see "Flowering Year").
+## After flowers, and leaves on broadleaf trees
+Satsuki azalea: once blooming ends, take off the spent flowers right away, feed lightly and let the tree rest around ten days. Aim to complete pruning by about June 20. Flower buds are laid down in summer, so pruning late cuts next year's bloom (see "Flowering Year").
 
-Broadleaves are sometimes defoliated or repotted in June once the leaves have hardened. Roots are cut by no more than about 40 percent, and the tree is kept out of direct sun and wind for a few weeks. Conifers are not repotted in June, since they are in active growth.
+Broadleaf trees may be defoliated or repotted in June when their leaves have toughened. Take no more than roughly 40 percent of the roots, and keep the tree out of direct sun and wind for several weeks afterward. Conifers are not repotted in June because they are growing hard.
 
-## Rainy season watering and wire
-Water even on rainy days, because the soil surface can be wet while the inside is dry. Remove or reduce top-dressed fertilizer during the rains. Growth is fast, so check daily that wire is not biting into branches. Wire can also be applied right after candle cutting.
+## Watering and wire in the rains
+Water on wet days too: the surface may be damp while the pot's interior is dry. Take away or reduce fertilizer sitting on the soil during the rainy season. With growth quick, look every day to see that no wire is cutting into a branch. Wire may also go on just after the candles are cut.
 
 ## Summary (3 lines)
 - For black pine, late June to early July is the Kanto guide; cut weak candles first.

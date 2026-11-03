@@ -14,25 +14,25 @@ sources:
     url: https://www.missouribotanicalgarden.org/PlantFinder/PlantFinderDetails.aspx?taxonid=249854&isprofile=0&gen=Juniperus
 voice_hook: When you create shari or jin, how do you decide how much to keep and where to carve?
 ---
-*Shimpaku* is described by Japan's agriculture ministry as *miyama-byakushin*, an evergreen of the cypress family that grows on alpine and coastal cliffs. Together with pines it is counted among the *shohaku* (conifers), a core group of bonsai species. Because it lives on harsh rock faces, a twisted trunk with some dead-looking wood is not a flaw — it is the charm.
+Japan's agriculture ministry explains *shimpaku* as *miyama-byakushin*, an evergreen in the cypress family found on high mountain and seaside cliffs. Counted with the pines as *shohaku* (conifers), it is one of the central bonsai species. Since it grows on punishing rock, a twisting trunk with patches that look dead is exactly what people love about it.
 
-## Shari and jin: deadwood as part of the scene
-A part of the trunk that has died and shows pale bare wood is called *shari*; the same thing on a branch is called *jin*. Junipers take well to deadwood features. Living veins can remain beneath broken or dying branches, and the exposed wood weathers over the years into a durable silvery-white finish. Deadwood is brittle, though, so take care when wiring near it.
+## Shari and jin: deadwood in the scenery
+Where part of a trunk has died and bare pale wood is showing, the feature is called *shari*; the equivalent on a branch is *jin*. Junipers work well with such deadwood. A living channel often stays under a broken or dead branch, and over the years the exposed wood weathers into a long-lasting silvery white. Dead wood snaps easily, though, so handle it gently when applying wire.
 
-## Bare wood does not bud
-The key trait to remember: a juniper cannot grow new buds from a branch that has no foliage. You may feel like cutting hard, but a branch with no green left will not grow again beyond that point. So on every branch you want to keep alive, leave some green foliage.
+## No foliage, no new buds
+Remember this above all: a juniper branch with no green on it will not produce buds. Cutting hard can be tempting, but a branch stripped of every bit of green never grows again past that point. For this reason, every branch you mean to keep should retain a little green.
 
-## Not a hedge trim
-Shimpaku is not sheared like a hedge. Instead, pinch or cut shoots that stick out of the silhouette at their base. Removing every growing tip weakens the tree and browns the foliage. Thin dense foliage pads at the base so light and air reach the inside.
+## Shoot by shoot, not by the hedge
+Shimpaku is not cut over the whole surface the way a hedge is. Pinch or cut protruding tips off at their base, one at a time. Taking too many growing tips weakens the tree and turns the foliage brown. Where foliage pads crowd together, thin them at the base so light and air reach the interior.
 
 ## Sun, water and repotting
-Keep it outdoors all year in a bright spot; it cannot live indoors. The roots dislike wet soil, so let the soil dry slightly before watering. Repot roughly every two years in early spring and avoid cutting roots too hard. A botanical garden profile likewise stresses full sun and well-drained soil, and says the plant does not tolerate wet soil. In regions with hard frosts, think about winter protection.
+Grow it in a bright spot outside throughout the year; it will not survive indoors. Roots resent soggy soil, so water after the soil has dried a little. Repotting about every second year in early spring is the rule of thumb, and the roots should not be cut back hard. The garden profile makes the same points about sun, drainage and dislike of wet ground. Where winters bring serious cold, think about protection.
 
-## A note on the name
-In the bonsai world, "shimpaku" refers to trees like *miyama-byakushin*. It is also sold as a cultivar name ('Shimpaku') of Chinese juniper, so when buying, check the botanical name and origin if you can.
+## Be careful with the name
+In bonsai, "shimpaku" is applied to trees of the *miyama-byakushin* type. The word also appears as a cultivar name ('Shimpaku') on nursery stock, so confirm the botanical name and origin when purchasing if you can.
 
 ## The 'Shimpaku' cultivar
-The Missouri Botanical Garden describes 'Shimpaku' as a dwarf, irregular vase-shaped form of Chinese juniper (*Juniperus chinensis*). It grows slowly, reaching about 3 feet (roughly 90 cm) tall and 5 feet (150 cm) wide over ten years, with soft, scale-like gray-green to dark green foliage that looks good all year. It also tolerates dry soil, shallow rocky soil and city conditions, which fits its rock-dweller character.
+The Missouri Botanical Garden presents 'Shimpaku' as a small, irregular, vase-shaped cultivar of Chinese juniper (*Juniperus chinensis*). Growth is slow: about 3 feet (roughly 90 cm) in height and 5 feet (150 cm) across after ten years. The scale-like foliage is gray-green to deep green, soft to the touch and attractive year-round. It copes with dry ground, thin rocky soil and urban settings, which reflects its life on rock.
 
 ## Summary
 - Shimpaku is a rock-cliff tree; twisted trunks, shari and jin are its highlights

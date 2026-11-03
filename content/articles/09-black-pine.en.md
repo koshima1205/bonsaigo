@@ -14,32 +14,32 @@ sources:
     url: https://www.maff.go.jp/j/pr/aff/1702/spe2_01.html
 voice_hook: When you decide the day for mekiri, what do you look at on the tree to know that this year it can be cut?
 ---
-Japanese black pine (*kuromatsu*, *Pinus thunbergii*) is one of the *shohaku* — the evergreen conifers, such as pines and junipers, that form the backbone of bonsai. Japan's agriculture ministry describes it as tough and easy to grow, and a botanical garden profile notes it is native to the coasts of Japan and Korea and is also grown as bonsai. Here are the four things that matter most.
+Japanese black pine (*kuromatsu*, *Pinus thunbergii*) belongs to the *shohaku*, the evergreen conifers such as pines and junipers that anchor the world of bonsai. Japan's agriculture ministry calls it hardy and forgiving. A botanical garden profile adds that it is native to the shores of Japan and Korea and suits bonsai well. Four points carry most of the weight in its care.
 
-## Sun comes first
-Keep it outdoors all year in full sun. With too little light, the needles stretch long and the tree looks loose. Bonsai aims for short, even needles, so a bright, airy spot is the foundation of everything else.
+## Light is the first nutrient
+Raise it outside through every season and give it plenty of direct sun. In dim spots the needles run long and the tree takes on a slack, untidy look. Because bonsai favors short, even foliage, a bright place with moving air is where everything starts.
 
-## Candle cutting and the second flush
-The most distinctive job on a black pine is *mekiri* — cutting this year's candles (the upright, candle-like new shoots) in early to mid summer. The tree reacts as if it had been damaged and pushes a second, shorter and finer flush. The result is shorter needles, more compact shoots and more branching.
+## Mekiri and the second flush
+The job most tied to black pine is *mekiri*. In early to midsummer you cut off this year's candles — the new upright shoots that resemble candles — near the base, leaving a short stub. The tree reads this as an injury and sends out a second round of shoots, smaller and finer than the first. In the end you get shorter needles, tighter growth and more twigs.
 
-Two cautions. Only do it on a healthy tree; a weak one can't afford the stress. And the second flush needs enough growing season to harden before autumn, so in cooler regions or late in the year, think twice. In the Kanto plain of Japan this means early summer, but overseas it shifts with climate — go by your local weather and the vigor of the tree.
+Two conditions apply. Work only on a tree in good health, because a weakened one cannot bear the shock. The second flush also has to harden before autumn, so a cool region or a late start calls for caution. The timing given here suits the Kanto plain; elsewhere it moves with the weather, so judge by local temperatures and how vigorous the tree is.
 
-Before cutting, growers commonly feed several times to build strength. Feeding then pauses until the second flush hardens and resumes in autumn.
+The usual approach is to feed in several portions ahead of cutting so the tree stores strength. Feeding stops after the cut until the new shoots have firmed up, then picks up again in autumn.
 
-## Water, but don't overdo it
-Use a free-draining soil and water by how dry the soil is. Pines generally prefer to be kept on the drier side. While the second flush is extending, too much rain or water can lengthen the needles, so sheltering from heavy rain helps if you can.
+## Water lightly
+Pick a soil that drains fast and let its dryness decide when to water. Pines tend to do better a little dry than constantly damp. While the second flush is lengthening, excess rain or watering makes the needles longer, so keep the tree out of downpours where possible.
 
-## Repot in spring, as buds begin to move
-Repotting is best in spring, just after the buds start to swell. Wiring (shaping with wire) is usually done from early autumn to early spring, or just after candle cutting.
+## Repotting and wiring
+Repot in spring, right when the buds begin to swell. Shaping with wire normally happens between the start of autumn and early spring; it can also be done straight after the candles are cut.
 
 ## Pests and disease
-Pines can suffer from several diseases and insects. If you see something unusual, don't rush into strong treatments — ask a local specialist.
+A number of diseases and insects are known to attack pines. If something looks wrong, skip the heavy-handed fixes and talk to a nearby specialist.
 
-## Knowing the tree
-The Missouri Botanical Garden notes the whitish terminal buds that contrast with dark green foliage. Needles come in bundles of two, up to about 4.5 inches (roughly 11 cm), and the young candles stand upright. The species name honors Carl Peter Thunberg, a Swedish physician of the 18th-19th centuries. In bonsai, managing needle length and shoot vigor is where skill shows.
+## Getting to know the tree
+The botanical garden's description mentions pale, whitish terminal buds that stand out against deep green needles. Needles pair up in bundles, reaching roughly 4.5 inches (about 11 cm) at most, and the spring shoots point straight up. The species name recalls Carl Peter Thunberg, a Swedish physician who lived across the 18th and 19th centuries. Managing needle length and shoot strength is where a bonsai grower shows real skill.
 
 ## Summary
-- Black pine is tough; keep it in full sun outdoors all year
+- Black pine is hardy; keep it outdoors in full sun all year
 - Mekiri brings a second flush with shorter needles and finer branching - healthy trees only
 - Keep water on the dry side; repot in spring as buds begin to move
 

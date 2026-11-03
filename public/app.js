@@ -247,7 +247,7 @@ async function home() {
     <div class="col c8">
       <span class="k cap">Voices · ${t("nav_voices")}</span>
       ${lead ? `<p class="quote" lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(lead.text)}</p>${["ja", "easy"].includes(lang()) ? "" : `<p class="quote-ja" lang="ja">${esc(lead.ja)}</p>`}<div class="by"><span>匠</span>${esc(lead.by)}</div>` : ""}
-      <p class="dek">${t("voices_sub")}</p>
+      
       <div class="vgrid">${voices.slice(0, 3).map(voiceCard).join("")}</div>
     </div>
     <div class="col c4 qa">
@@ -271,7 +271,7 @@ async function home() {
     <div class="col c12 gloss">
       <span class="k cap">Glossary · ${t("nav_glossary")}</span>
       <h2>${t("sec_gloss")}</h2>
-      <p class="dek">${t("sec_gloss_sub")}</p>
+      
       <div class="terms">${pickTerms.map(termCard).join("")}</div>
       <a class="more cap" href="#/glossary">${t("nav_glossary")} →</a>
     </div>
@@ -281,9 +281,9 @@ async function home() {
     ${[1, 2, 3].map((i) => `<div class="col c4 how-c"><i class="n">${i}</i><h3>${t(`how${i}t`)}</h3><p>${t(`how${i}`)}</p></div>`).join("")}
   </section>
   <section class="row">
-    <a class="col c4 gat" href="#/board"><span class="k cap">01</span><h3>${t("nav_board")}</h3><p>${t("board_desc")}</p></a>
-    <a class="col c4 gat" href="#/help"><span class="k cap">02</span><h3>${t("nav_help")}</h3><p>${t("help_desc")}</p></a>
-    <a class="col c4 gat" href="#/wish"><span class="k cap">03</span><h3>${t("nav_wish")}</h3><p>${t("wish_desc")}</p></a>
+    <a class="col c4 gat" href="#/board"><span class="k cap">01</span><h3>${t("nav_board")}</h3>${wc("board")}</a>
+    <a class="col c4 gat" href="#/help"><span class="k cap">02</span><h3>${t("nav_help")}</h3>${wc("help")}</a>
+    <a class="col c4 gat" href="#/wish"><span class="k cap">03</span><h3>${t("nav_wish")}</h3>${wc("wish")}</a>
   </section>`;
   turntable($("#ctree"), sp, { hero: true });
   $$(".sp-pick button").forEach((b) => b.addEventListener("click", () => {
@@ -300,14 +300,14 @@ async function home() {
 }
 
 async function learnList() {
-  chrome(`<section class="page-big"><div class="big-w">Knowledge<em>.</em></div><p>${t("learn_sub")}</p></section><div class="kb-groups"><div class="loading">${t("loading")}</div></div>`, { here: "#/learn" });
+  chrome(`<section class="page-big has-wc"><div class="big-w">Knowledge<em>.</em></div>${wc("learn")}</section><div class="kb-groups"><div class="loading">${t("loading")}</div></div>`, { here: "#/learn" });
   const kb = await kbList();
   $(".kb-groups").innerHTML = GROUPS.map(([g, k]) => `
     <section class="row kb-g">
       <div class="col c3"><span class="k cap">${no2(GROUPS.findIndex((x) => x[0] === g) + 1)}</span><h2>${t(k)}</h2></div>
       <div class="col c9 kb-items">${kb.filter((a) => a.group === g).map((a) => `<a class="kb-item" href="#/learn/${esc(a.slug)}">
         <i>${no2(a.no)}</i>
-        <div><b>${esc(kbT(a).title)}</b><p>${esc(kbT(a).lead)}</p></div>
+        <div><b>${esc(kbT(a).title)}</b></div>
         ${SPECIES[a.tree] ? `<img src="${frame(a.tree, 3)}" alt="" loading="lazy">` : `<span class="noimg"></span>`}
       </a>`).join("")}</div>
     </section>`).join("");
@@ -409,7 +409,7 @@ async function thumbs(shorts, arts) {
 
 // ---------------- メディア：記事の一覧・記事 ----------------
 async function readList() {
-  chrome(`<section class="page-h"><span class="num">${KANJI[0]}</span><h1>${t("sec_latest")}</h1><p>${t("sec_latest_sub")}</p></section><div class="sec"><div class="loading">${t("loading")}</div></div>`, { here: "#/read" });
+  chrome(`<section class="page-h"><span class="num">${KANJI[0]}</span><h1>${t("sec_latest")}</h1>${wc("voices")}</section><div class="sec"><div class="loading">${t("loading")}</div></div>`, { here: "#/read" });
   const arts = await call("/api/articles");
   $(".sec").innerHTML = `<div class="cards">${arts.map(articleCard).join("")}</div>`;
 }
@@ -472,6 +472,8 @@ const SHORT_FILMS = [
   { id: "s3-eight", t: { ja: "盆栽の、8つの木。", easy: "ぼんさいの 8つの 木", en: "Eight trees of bonsai", es: "Ocho árboles del bonsái", zh: "盆栽的八种树" } },
 ];
 const filmFor = (slug) => FILMS.find((f) => f.slugs.includes(slug) || f.at?.[slug] != null);
+// 各ページの扉の水彩画（説明の文の代わり）
+const wc = (k) => `<img class="wc" src="/img/wc/${k}.jpg" alt="" loading="lazy">`;
 const filmCard = (f, big = false) => `<button class="film-c ${big ? "big" : ""}" data-film="${f.id}" data-at="0"><span class="film-img"><img src="/films/${f.id}.jpg" alt="" loading="lazy"><i class="film-play">▶</i></span><span class="film-t"><b>${esc(ml(f.t))}</b><small class="cap">${f.dur}</small></span></button>`;
 const shortCard = (s) => `<button class="sfilm" data-film="${s.id}" data-tall="1"><video src="/films/${s.id}.mp4" poster="/films/${s.id}.jpg" muted loop playsinline preload="none"></video><i class="film-play">▶</i><b>${esc(ml(s.t))}</b></button>`;
 function playFilm(id, at = 0, tall = false) {
@@ -502,7 +504,7 @@ async function shortsList() {
   chrome(`<section class="page-big has-loop"><div class="big-w">Films<em>.</em></div><video class="hero-loop" src="/films/s3-eight.mp4" poster="/films/s3-eight.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video></section>
     <section class="row"><div class="col c12"><span class="k cap">${t("films_title")}</span><div class="film-grid">${FILMS.map((f) => filmCard(f)).join("")}</div></div></section>
     <section class="row"><div class="col c12"><span class="k cap">${t("shorts_blender")}</span><div class="sfilm-row">${SHORT_FILMS.map(shortCard).join("")}</div></div></section>
-    <section class="row"><div class="col c12"><span class="k cap">${t("shorts_ai")}</span><p class="dek">${t("sec_shorts_sub")}</p><div class="reel mag-reel"></div></div></section>`, { here: "#/shorts" });
+    <section class="row"><div class="col c12"><span class="k cap">${t("shorts_ai")}</span><div class="reel mag-reel"></div></div></section>`, { here: "#/shorts" });
   wireFilms();
   const [shorts, arts] = await Promise.all([call("/api/shorts"), call("/api/articles")]);
   $(".mag-reel").innerHTML = shorts.map((s) => `<a class="reel-i" href="#/short/${esc(s.id)}"><canvas data-short="${esc(s.id)}"></canvas><span class="play">▶</span><b>${esc(lang() === "ja" || lang() === "easy" ? s.hook_ja : s.hook_en)}</b>${sampleTag(s)}</a>`).join("");
@@ -568,7 +570,7 @@ async function shortView(id, master = false) {
 
 // ---------------- メディア：用語集 ----------------
 async function glossaryPage() {
-  chrome(`<section class="page-h"><span class="num">辞</span><h1>${t("gloss_title")}</h1><p>${t("gloss_lead")}</p></section>
+  chrome(`<section class="page-h"><span class="num">辞</span><h1>${t("gloss_title")}</h1>${wc("glossary")}</section>
     <section class="sec"><div class="g-tools"><input id="gq" class="field dark" placeholder="${t("gloss_search")}"><div class="chips"><button class="chip on" data-f="all">${t("gloss_all")}</button><button class="chip" data-f="dialect">${t("gloss_dialect")}</button></div></div><div class="terms" id="gl"></div></section>`, { here: "#/glossary" });
   const gloss = await call("/api/glossary");
   let f = "all";
@@ -584,7 +586,7 @@ async function glossaryPage() {
 
 // ---------------- メディア：掲示板 ----------------
 async function board() {
-  chrome(`<section class="page-h"><span class="num">掲</span><h1>${t("board_title")}</h1><p>${t("board_desc")}</p></section><section class="sec narrow"><div class="loading">${t("loading")}</div></section>`, { here: "#/board" });
+  chrome(`<section class="page-h"><span class="num">掲</span><h1>${t("board_title")}</h1>${wc("board")}</section><section class="sec narrow"><div class="loading">${t("loading")}</div></section>`, { here: "#/board" });
   const list = await call("/api/board");
   $(".sec").innerHTML = `
     <details class="newpost"><summary class="btn gold">${t("board_new")}</summary>
@@ -630,7 +632,7 @@ async function thread(id) {
 // ---------------- メディア：AI 窓口 ----------------
 const helpLog = [];
 function helpPage() {
-  chrome(`<section class="page-h"><span class="num">問</span><h1>${t("help_title")}</h1><p>${t("help_lead")}</p></section>
+  chrome(`<section class="page-h"><span class="num">問</span><h1>${t("help_title")}</h1>${wc("help")}</section>
     <section class="sec narrow"><div class="chat" id="chat"></div>
       <form class="ask-row" id="hf"><input id="hq" class="field dark" placeholder="${t("help_ph")}" autocomplete="off"><button class="btn gold">${t("help_send")}</button></form></section>`, { here: "#/help" });
   const paint = () => {
@@ -657,7 +659,7 @@ function helpPage() {
 
 // ---------------- メディア：欲しい木 ----------------
 async function wishPage() {
-  chrome(`<section class="page-h"><span class="num">望</span><h1>${t("wish_title")}</h1><p>${t("wish_lead")}</p></section><section class="sec narrow"><div class="loading">${t("loading")}</div></section>`, { here: "#/wish" });
+  chrome(`<section class="page-h"><span class="num">望</span><h1>${t("wish_title")}</h1>${wc("wish")}</section><section class="sec narrow"><div class="loading">${t("loading")}</div></section>`, { here: "#/wish" });
   const list = await call("/api/wishes");
   $(".sec").innerHTML = `
     <div class="form wishform"><textarea id="wt" class="field dark" placeholder="${t("wish_ph")}"></textarea><input id="wc" class="field dark" placeholder="${t("wish_country")}"><div id="werr" class="alert hidden"></div><button class="btn gold" id="wsend">${t("wish_send")}</button><p class="dim">${t("wish_note")}</p></div>

@@ -347,3 +347,11 @@ html:lang(zh) .mag :is(.quote,.vq,.hook,.mq p,.kb-text blockquote,.mcover .side 
 .hero-loop{width:clamp(150px,16vw,230px);aspect-ratio:9/16;object-fit:cover;border:2px solid var(--ink);flex:none;background:var(--paper)}
 @media (max-width:700px){.hero-loop{display:none}}
 .film-note{display:block;color:var(--paper);opacity:.8;margin-top:10px}
+
+/* 扉の水彩画：説明の文の代わりに置く */
+.mag .page-h{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.mag .page-h h1{margin:0}
+.wc{display:block;mix-blend-mode:multiply;pointer-events:none;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%)}
+.page-h .wc,.page-big .wc{width:clamp(120px,18vw,220px);height:auto;flex:none;margin:-10px 0 -14px}
+.page-big.has-wc{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.gat .wc{width:min(180px,70%);margin:6px 0 -8px auto}

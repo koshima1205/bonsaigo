@@ -1,5 +1,5 @@
 // Engawa — 盆栽のメディアと、職人に聞ける縁側。ハッシュで画面を切り替える。
-import { bonsai, enso, imgSrc, isIllust } from "./art.js";
+import { imgSrc, isIllust } from "./art.js";
 import { bgm } from "./bgm.js";
 import { makePlayer } from "./short.js";
 import { LETTER_LANGS, UI_LANGS, VOICE, lang, ml, setLang, t, tl } from "./i18n.js";
@@ -90,47 +90,82 @@ document.addEventListener("click", (e) => {
 // 一度でも触れたら、音を出してよい人には流す（ブラウザは触れる前に音を出させない）
 document.addEventListener("pointerdown", () => { if (store.get("engawa-sound") !== "off" && store.sget("engawa-entered") && !bgm.on) bgm.start(); }, { once: true });
 
-// ---------------- 枠（メディア側） ----------------
-const NAV = [["#/read", "nav_read"], ["#/shorts", "nav_shorts"], ["#/ask", "nav_ask"], ["#/glossary", "nav_glossary"], ["#/board", "nav_board"], ["#/help", "nav_help"], ["#/wish", "nav_wish"]];
-function chrome(inner, { here = "", paper = false } = {}) {
-  document.body.className = `media ${paper ? "on-paper" : ""} ${config.demo ? "is-demo" : ""}`;
+// ---------------- 枠（メディア側・特集号） ----------------
+const NAV_L = [["#/learn", "nav_learn"], ["#/shorts", "nav_films"], ["#/read", "nav_voices"], ["#/board", "nav_board"]];
+const NAV_R = [["#/glossary", "nav_glossary"], ["#/help", "nav_help"], ["#/wish", "nav_wish"]];
+function chrome(inner, { here = "" } = {}) {
+  document.body.className = `media mag ${config.demo ? "is-demo" : ""}`;
+  const link = ([h, k]) => `<a href="${h}" class="${here === h ? "here" : ""}">${t(k)}</a>`;
   app.innerHTML = `
-  <header class="top">
-    <a class="brand" href="#/"><span class="seal">縁</span><span class="wm">ENGAWA<small>縁側</small></span></a>
-    <nav class="nav">${NAV.map(([h, k]) => `<a href="${h}" class="${here === h ? "here" : ""}">${t(k)}</a>`).join("")}</nav>
-    <div class="tools">
+  <header class="mast">
+    <nav class="mast-l">${NAV_L.map(link).join("")}</nav>
+    <a class="logo" href="#/">Engawa<em>.</em></a>
+    <div class="mast-r">
+      <nav>${NAV_R.map(link).join("")}</nav>
       <label class="langsel"><span class="sr">Language</span><select id="uilang">${Object.entries(UI_LANGS).map(([k, v]) => `<option value="${k}" ${k === lang() ? "selected" : ""}>${v}</option>`).join("")}</select></label>
       <button class="snd ${bgm.on ? "on" : ""}" aria-pressed="${bgm.on}" title="${t("sound")}">${BARS}<span class="snd-l">${t("sound")}</span></button>
     </div>
   </header>
+  <div class="issue cap"><span>${t("issue")}</span><nav class="issue-nav">${[...NAV_L, ...NAV_R].map(link).join("")}</nav><a class="ask-l" href="#/ask">${t("nav_ask")} →</a></div>
   <main class="main">${inner}</main>
-  <footer class="foot">
-    <div class="foot-in">
-      <a class="brand" href="#/"><span class="seal">縁</span><span class="wm">ENGAWA<small>縁側</small></span></a>
+  <footer class="mfoot">
+    <div class="mfoot-big">Engawa<em>.</em></div>
+    <div class="mfoot-in">
       <p>${t("footer_rule")}</p>
       <p class="dim">${t("footer_seed")}</p>
       <a class="to-master" href="#/master">${t("nav_master")} →</a>
     </div>
   </footer>`;
   $("#uilang").addEventListener("change", (e) => { setLang(e.target.value); store.set("engawa-lang", e.target.value); route(); });
-  const top = $(".top");
-  const onScroll = () => top.classList.toggle("solid", paper || scrollY > 40);
-  onScroll();
-  addEventListener("scroll", onScroll, { passive: true });
 }
-const secHead = (n, title, sub = "") => `<header class="sec-h"><span class="num">${KANJI[n]}</span><div><h2>${title}</h2>${sub ? `<p>${sub}</p>` : ""}</div></header>`;
+
+// ---------------- 3Dの木（Blender で描いた24コマを回す） ----------------
+const SPECIES = {
+  pine: { word: "Pine", slug: "black-pine", ja: "黒松" },
+  "white-pine": { word: "Goyo", slug: "white-pine", ja: "五葉松" },
+  juniper: { word: "Shimpaku", slug: "shimpaku", ja: "真柏" },
+  maple: { word: "Maple", slug: "japanese-maple", ja: "もみじ" },
+  azalea: { word: "Satsuki", slug: "satsuki", ja: "サツキ" },
+  ume: { word: "Ume", slug: "ume", ja: "梅" },
+  zelkova: { word: "Keyaki", slug: "zelkova", ja: "欅" },
+  "needle-juniper": { word: "Nezu", slug: "needle-juniper", ja: "杜松" },
+};
+const treeKey = (ja = "") => (/五葉/.test(ja) ? "white-pine" : /杜松|ネズ/.test(ja) ? "needle-juniper" : /松/.test(ja) ? "pine" : /真柏|ジュニパー/.test(ja) ? "juniper" : /もみじ|紅葉|楓/.test(ja) ? "maple" : /サツキ|皐月|ツツジ/.test(ja) ? "azalea" : /梅/.test(ja) ? "ume" : /欅|ケヤキ/.test(ja) ? "zelkova" : "");
+const frame = (sp, i) => `/trees/${sp}/t${String(i).padStart(2, "0")}.webp`;
+function turntable(el, sp, { auto = true, hero = false } = {}) {
+  const N = 24;
+  el.classList.add("tt");
+  el.innerHTML = `<img src="${hero ? `/trees/${sp}/hero.webp` : frame(sp, 0)}" alt="${esc(SPECIES[sp]?.ja ?? "")} — ${esc(t("tree3d"))}" draggable="false">`;
+  const img = el.querySelector("img");
+  for (let i = 0; i < N; i++) new Image().src = frame(sp, i);
+  let f = 0, shown = -1, drag = null, last = performance.now(), idle = performance.now() + (hero ? 1800 : 0);
+  const show = (k) => { f = ((k % N) + N) % N; const n = Math.round(f) % N; if (n !== shown) { shown = n; img.src = frame(sp, n); } };
+  el.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, f }; el.setPointerCapture(e.pointerId); el.classList.add("grab"); });
+  el.addEventListener("pointermove", (e) => { if (drag) show(drag.f - (e.clientX - drag.x) / 16); });
+  const up = () => { drag = null; idle = performance.now() + 2500; el.classList.remove("grab"); };
+  el.addEventListener("pointerup", up);
+  el.addEventListener("pointercancel", up);
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const tick = (now) => {
+    if (!el.isConnected) return;
+    if (auto && !still && !drag && now > idle) show(f + ((now - last) / 1000) * 1.4);
+    last = now;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
 
 // ---------------- 入口の幕 ----------------
 function splash() {
   if (store.sget("engawa-entered")) return;
   const d = document.createElement("div");
-  d.className = "splash";
+  d.className = "splash mag-splash";
   d.innerHTML = `
     <div class="splash-in">
-      ${enso("draw")}
-      <div class="splash-tree">${bonsai("illust:pine:11", "ink")}</div>
-      <h1><span class="v">縁側</span><span class="en">ENGAWA</span></h1>
-      <p>${esc(t("hero_sub").split("。")[0])}${lang() === "ja" || lang() === "easy" ? "。" : ""}</p>
+      <span class="cap">${t("issue")}</span>
+      <img class="splash-img" src="/trees/pine/hero.webp" alt="">
+      <h1>Engawa<em>.</em></h1>
+      <p>${esc(t("cover_sub"))}</p>
       <button class="enter">${t("enter")}<small>♪ ${t("sound")}</small></button>
       <button class="quiet">${t("enter_quiet")}</button>
       <div class="langs">${Object.entries(UI_LANGS).map(([k, v]) => `<button data-l="${k}" class="${k === lang() ? "on" : ""}">${v}</button>`).join("")}</div>
@@ -141,69 +176,199 @@ function splash() {
     store.set("engawa-sound", sound ? "on" : "off");
     if (sound) bgm.start();
     d.classList.add("out");
-    setTimeout(() => d.remove(), 1200);
+    setTimeout(() => d.remove(), 900);
   };
   d.querySelector(".enter").addEventListener("click", () => close(true));
   d.querySelector(".quiet").addEventListener("click", () => close(false));
   d.querySelectorAll(".langs button").forEach((b) => b.addEventListener("click", () => { setLang(b.dataset.l); store.set("engawa-lang", b.dataset.l); d.remove(); splash(); route(); }));
 }
 
+// ---------------- 知識の記事（content/articles → /kb） ----------------
+let kbIndex = null;
+const kbList = async () => (kbIndex ??= await fetch("/kb/index.json").then((r) => r.json()));
+const kbT = (a) => a.t[lang()] ?? a.t.en ?? a.t.ja;
+const GROUPS = [["basics", "g_basics"], ["species", "g_species"], ["seasons", "g_seasons"]];
+const no2 = (n) => String(n).padStart(2, "0");
+const kbRow = (a) => `<a href="#/learn/${esc(a.slug)}"><i>${no2(a.no)}</i><b>${esc(kbT(a).title)}</b><small>${t("g_" + a.group)}</small></a>`;
+
+// 相談から生まれた記事＝職人の声。木の種類で記事にひもづける
+const voicesOf = (arts) => arts.filter((a) => a.source || a.from_consult || a.sections?.some((s) => s.quote_ja));
+const withBody = (list) => Promise.all(list.map((v) => (v.sections ? v : call(`/api/articles/${encodeURIComponent(v.slug)}`).catch(() => v))));
+const quoteOf = (a) => {
+  const s = a.sections?.find((x) => x.quote_ja);
+  return s ? { text: ["ja", "easy"].includes(lang()) ? s.quote_ja : ml(s.body), ja: s.quote_ja, by: nm(s.master) } : null;
+};
+const voiceCard = (a) => {
+  const q = quoteOf(a);
+  return `<a class="vcard" href="#/read/${esc(a.slug)}"><span class="cap k">${esc(ml(a.tree))}</span>${q ? `<p class="vq">${esc(q.text)}</p>` : ""}<b>${esc(ml(a.title))}</b><small>${q ? esc(q.by) : ""}${sampleTag(a)}</small></a>`;
+};
+
 // ---------------- メディア：表紙 ----------------
 async function home() {
-  chrome(`<section class="hero"><div class="loading">${t("loading")}</div></section>`, { here: "#/" });
-  const [arts, shorts, gloss] = await Promise.all([call("/api/articles"), call("/api/shorts"), call("/api/glossary")]).catch(() => [[], [], []]);
+  chrome(`<section class="mcover"><div class="loading">${t("loading")}</div></section>`, { here: "#/" });
+  const [arts, shorts, gloss, threads, kb] = await Promise.all([call("/api/articles"), call("/api/shorts"), call("/api/glossary"), call("/api/board").catch(() => []), kbList()]).catch(() => [[], [], [], [], []]);
   const pickTerms = ["なおす", "芽切り", "忌み枝", "えらい"].map((j) => gloss.find((g) => g.ja === j)).filter(Boolean);
-  const main = $(".main");
-  main.innerHTML = `
-  <section class="hero">
-    <div class="mist m1"></div><div class="mist m2"></div><div class="dust"></div>
-    <div class="moon"></div>
-    <div class="hero-tree">${bonsai("illust:pine:11", "ink")}</div>
-    <div class="hero-v" lang="ja"><span>盆栽の知恵は、</span><span>海を渡れる。</span></div>
-    <div class="hero-copy">
-      <p class="kicker">BONSAI MASTERS · ACROSS THE SEA</p>
-      <h1>Engawa<span>縁側</span></h1>
-      <p class="sub">${t("hero_sub")}</p>
-      <div class="cta"><a class="btn gold" href="#/ask">${t("hero_ask")}</a><a class="btn ghost" href="#/read">${t("hero_read")}</a></div>
+  const voices = await withBody(voicesOf(arts).slice(0, 3));
+  const lead = voices.map(quoteOf).find(Boolean);
+  const sp = store.sget("engawa-cover") || "pine";
+  $(".main").innerHTML = `
+  <section class="mcover">
+    <div class="big" id="bigw">${SPECIES[sp].word}<em>.</em></div>
+    <div class="cover-tree" id="ctree"></div>
+    <div class="side">
+      <span class="tag cap">${t("cover_tag")}</span>
+      <h1 lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(t("cover_h1"))}</h1>
+      <p>${esc(t("cover_sub"))}</p>
+      <div class="cta"><a class="bt dark" href="#/learn">${t("nav_learn")} →</a><a class="bt line" href="#/ask">${t("nav_ask")}</a></div>
     </div>
-    <button class="scroll-cue" id="cue" aria-label="scroll"><span></span></button>
-  </section>
-
-  <section class="sec" id="latest">
-    ${secHead(0, t("sec_latest"), t("sec_latest_sub"))}
-    <div class="cards">${arts.slice(0, 6).map(articleCard).join("")}</div>
-  </section>
-
-  <section class="sec dark2">
-    ${secHead(1, t("sec_shorts"), t("sec_shorts_sub"))}
-    <div class="reel">${shorts.map((s) => `<a class="reel-i" href="#/short/${esc(s.id)}"><canvas data-short="${esc(s.id)}"></canvas><span class="play">▶</span><b>${esc(lang() === "ja" || lang() === "easy" ? s.hook_ja : s.hook_en)}</b>${sampleTag(s)}</a>`).join("")}</div>
-  </section>
-
-  <section class="sec">
-    ${secHead(2, t("sec_how"))}
-    <ol class="how">
-      ${[1, 2, 3].map((i) => `<li><span class="how-n">${NUM[i - 1]}</span><h3>${t(`how${i}t`)}</h3><p>${t(`how${i}`)}</p></li>`).join("")}
-    </ol>
-    <a class="btn ghost center" href="#/c/sample">${t("sample_consult")} →</a>
-  </section>
-
-  <section class="sec paperband">
-    ${secHead(3, t("sec_gloss"), t("sec_gloss_sub"))}
-    <div class="terms">${pickTerms.map(termCard).join("")}</div>
-    <a class="btn ink center" href="#/glossary">${t("nav_glossary")} →</a>
-  </section>
-
-  <section class="sec">
-    ${secHead(4, t("sec_gather"))}
-    <div class="gather">
-      <a href="#/board"><span class="g-k">掲</span><h3>${t("nav_board")}</h3><p>${t("board_desc")}</p></a>
-      <a href="#/help"><span class="g-k">問</span><h3>${t("nav_help")}</h3><p>${t("help_desc")}</p></a>
-      <a href="#/wish"><span class="g-k">望</span><h3>${t("nav_wish")}</h3><p>${t("wish_desc")}</p></a>
+    <div class="spin">
+      <b>${t("turn")}</b><span class="cap">${t("tree3d")}</span>
+      <div class="sp-pick">${Object.entries(SPECIES).map(([k, v]) => `<button data-sp="${k}" class="${k === sp ? "on" : ""}">${v.word}</button>`).join("")}</div>
     </div>
+  </section>
+
+  <div class="row">
+    <div class="col c5">
+      <span class="k cap">Knowledge · ${t("nav_learn")}</span>
+      <h2>${t("learn_sub")}</h2>
+      <div class="list">${kb.slice(0, 8).map(kbRow).join("")}</div>
+      <a class="more cap" href="#/learn">${t("all24")} →</a>
+    </div>
+    <div class="col c7">
+      <span class="k cap">Films · ${t("nav_films")}</span>
+      <h2>${t("sec_shorts")}</h2>
+      <p class="dek">${t("sec_shorts_sub")}</p>
+      <div class="reel mag-reel">${shorts.slice(0, 3).map((s) => `<a class="reel-i" href="#/short/${esc(s.id)}"><canvas data-short="${esc(s.id)}"></canvas><span class="play">▶</span><b>${esc(lang() === "ja" || lang() === "easy" ? s.hook_ja : s.hook_en)}</b>${sampleTag(s)}</a>`).join("")}</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col c8">
+      <span class="k cap">Voices · ${t("nav_voices")}</span>
+      ${lead ? `<p class="quote" lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(lead.text)}</p>${["ja", "easy"].includes(lang()) ? "" : `<p class="quote-ja" lang="ja">${esc(lead.ja)}</p>`}<div class="by"><span>匠</span>${esc(lead.by)}</div>` : ""}
+      <p class="dek">${t("voices_sub")}</p>
+      <div class="vgrid">${voices.slice(0, 3).map(voiceCard).join("")}</div>
+    </div>
+    <div class="col c4 qa">
+      <span class="k cap">Q&amp;A · ${t("nav_board")}</span>
+      <h2>${t("qa_latest")}</h2>
+      ${threads.slice(0, 4).map((th) => `<a href="#/board/${esc(th.id)}"><b class="cap">${esc(th.posts?.[0]?.lang ?? "")} · ${th.count ?? ""}</b>${esc(th.title)}</a>`).join("")}
+      <a class="more cap" href="#/board">${t("nav_board")} →</a>
+      <a class="more cap" href="#/help">${t("nav_help")} →</a>
+    </div>
+  </div>
+
+  <section class="row trees">
+    <div class="col c12">
+      <span class="k cap">${t("the_trees")}</span>
+      <h2>${t("the_trees_sub")}</h2>
+      <div class="tgrid">${Object.entries(SPECIES).map(([k, v]) => `<a href="#/learn/${v.slug}"><img src="${frame(k, 3)}" alt="${esc(v.ja)}" loading="lazy"><i>${v.word}.</i><small>${esc(kbT(kb.find((x) => x.slug === v.slug) ?? { t: { ja: { title: v.ja } } }).title.split(/[―—–-]/)[0].trim())}</small></a>`).join("")}</div>
+    </div>
+  </section>
+
+  <section class="row">
+    <div class="col c12 gloss">
+      <span class="k cap">Glossary · ${t("nav_glossary")}</span>
+      <h2>${t("sec_gloss")}</h2>
+      <p class="dek">${t("sec_gloss_sub")}</p>
+      <div class="terms">${pickTerms.map(termCard).join("")}</div>
+      <a class="more cap" href="#/glossary">${t("nav_glossary")} →</a>
+    </div>
+  </section>
+
+  <section class="row">
+    ${[1, 2, 3].map((i) => `<div class="col c4 how-c"><i class="n">${i}</i><h3>${t(`how${i}t`)}</h3><p>${t(`how${i}`)}</p></div>`).join("")}
+  </section>
+  <section class="row">
+    <a class="col c4 gat" href="#/board"><span class="k cap">01</span><h3>${t("nav_board")}</h3><p>${t("board_desc")}</p></a>
+    <a class="col c4 gat" href="#/help"><span class="k cap">02</span><h3>${t("nav_help")}</h3><p>${t("help_desc")}</p></a>
+    <a class="col c4 gat" href="#/wish"><span class="k cap">03</span><h3>${t("nav_wish")}</h3><p>${t("wish_desc")}</p></a>
   </section>`;
-  $("#cue").addEventListener("click", () => $("#latest").scrollIntoView({ behavior: "smooth" }));
-  thumbs(shorts, arts);
+  turntable($("#ctree"), sp, { hero: true });
+  $$(".sp-pick button").forEach((b) => b.addEventListener("click", () => {
+    const k = b.dataset.sp;
+    store.sset("engawa-cover", k);
+    $$(".sp-pick button").forEach((x) => x.classList.toggle("on", x === b));
+    $("#bigw").innerHTML = `${SPECIES[k].word}<em>.</em>`;
+    $("#bigw").style.setProperty("--len", SPECIES[k].word.length);
+    turntable($("#ctree"), k, { hero: true });
+  }));
+  $("#bigw").style.setProperty("--len", SPECIES[sp].word.length);
+  thumbs(shorts.slice(0, 3), arts);
   splash();
+}
+
+async function learnList() {
+  chrome(`<section class="page-big"><div class="big-w">Knowledge<em>.</em></div><p>${t("learn_sub")}</p></section><div class="kb-groups"><div class="loading">${t("loading")}</div></div>`, { here: "#/learn" });
+  const kb = await kbList();
+  $(".kb-groups").innerHTML = GROUPS.map(([g, k]) => `
+    <section class="row kb-g">
+      <div class="col c3"><span class="k cap">${no2(GROUPS.findIndex((x) => x[0] === g) + 1)}</span><h2>${t(k)}</h2></div>
+      <div class="col c9 kb-items">${kb.filter((a) => a.group === g).map((a) => `<a class="kb-item" href="#/learn/${esc(a.slug)}">
+        <i>${no2(a.no)}</i>
+        <div><b>${esc(kbT(a).title)}</b><p>${esc(kbT(a).lead)}</p></div>
+        ${SPECIES[a.tree] ? `<img src="${frame(a.tree, 3)}" alt="" loading="lazy">` : `<span class="noimg"></span>`}
+      </a>`).join("")}</div>
+    </section>`).join("");
+}
+
+async function learnArticle(slug) {
+  chrome(`<div class="loading pad">${t("loading")}</div>`, { here: "#/learn" });
+  let a, kb, arts, threads;
+  try { [a, kb, arts, threads] = await Promise.all([fetch(`/kb/${encodeURIComponent(slug)}.json`).then((r) => { if (!r.ok) throw 0; return r.json(); }), kbList(), call("/api/articles").catch(() => []), call("/api/board").catch(() => [])]); }
+  catch { $(".main").innerHTML = `<div class="pad"><h1>Not found</h1><a href="#/learn">${t("back")}</a></div>`; return; }
+  const L = a.langs[lang()] ?? a.langs.en ?? a.langs.ja;
+  const fell = !a.langs[lang()];
+  const jaLike = ["ja", "easy", "zh"].includes(lang()) && !fell;
+  const mins = Math.max(2, Math.round(L.len / (jaLike ? 500 : 1100)));
+  const voices = voicesOf(arts);
+  const mine = await withBody(SPECIES[a.tree] ? voices.filter((v) => treeKey(v.tree?.ja) === a.tree) : []);
+  const others = await withBody(voices.filter((v) => !mine.some((m) => m.slug === v.slug)).slice(0, mine.length ? 2 : 3));
+  const i = kb.findIndex((x) => x.slug === slug);
+  const prev = kb[i - 1], next = kb[i + 1];
+  const heads = [...L.html.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => m[1]);
+  let hn = 0;
+  const body = L.html.replace(/<h2>/g, () => `<h2 id="s${++hn}">`);
+  $(".main").innerHTML = `
+  <article class="kb">
+    <header class="row kb-h">
+      <div class="col c7">
+        <span class="k cap">${t("g_" + a.group)} · No. ${no2(a.no)}</span>
+        <h1>${esc(L.title)}</h1>
+        <p class="lead">${esc(L.lead)}</p>
+        <div class="kb-meta cap"><span>${mins} ${t("min_read")}</span><span>${t("sources")} ${a.sources.length}</span><span>${mine.length} ${t("nav_voices")}</span></div>
+        ${fell ? `<p class="fell">${t("fallback_lang")}</p>` : ""}
+      </div>
+      <div class="col c5 kb-tree">${SPECIES[a.tree] ? `<div id="ktree"></div><p class="cap">${t("turn")} · ${t("tree3d")}</p>` : `<div class="kb-no">${no2(a.no)}</div>`}</div>
+    </header>
+    <div class="row kb-main">
+      <aside class="col c3 kb-toc">${heads.length ? `<span class="k cap">Contents</span><ol>${heads.map((h, j) => `<li><a href="#s${j + 1}" data-to="s${j + 1}">${h}</a></li>`).join("")}</ol>` : ""}</aside>
+      <div class="col c9 kb-text" ${fell ? 'lang="en"' : ""}>${body}</div>
+    </div>
+    <section class="row kb-voice">
+      <div class="col c5">
+        <span class="k cap">${t("hook_label")}</span>
+        <p class="hook">${esc(L.voice_hook ?? "")}</p>
+        <a class="bt hot" href="#/ask" data-prefill="${esc(L.voice_hook ?? "")}">${t("ask_this")} →</a>
+      </div>
+      <div class="col c7">
+        <span class="k cap">${t("voices_here")}</span>
+        ${mine.length ? `<div class="vgrid">${mine.map(voiceCard).join("")}</div>` : `<p class="dek">${t("voices_none")}</p>`}
+        ${others.length ? `<span class="k cap sub">${t("voices_other")}</span><div class="vgrid">${others.map(voiceCard).join("")}</div>` : ""}
+      </div>
+    </section>
+    <section class="row kb-src">
+      <div class="col c3"><span class="k cap">${t("sources")}</span></div>
+      <ol class="col c9">${a.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a></li>`).join("")}</ol>
+    </section>
+    <nav class="row kb-pn">
+      ${prev ? `<a class="col c6" href="#/learn/${esc(prev.slug)}"><span class="cap">← ${t("prev")}</span><b>${esc(kbT(prev).title)}</b></a>` : `<span class="col c6"></span>`}
+      ${next ? `<a class="col c6 r" href="#/learn/${esc(next.slug)}"><span class="cap">${t("next")} →</span><b>${esc(kbT(next).title)}</b></a>` : `<span class="col c6"></span>`}
+    </nav>
+  </article>`;
+  if (SPECIES[a.tree]) turntable($("#ktree"), a.tree);
+  $$(".kb-toc a").forEach((x) => x.addEventListener("click", (e) => { e.preventDefault(); document.getElementById(x.dataset.to)?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
+  $("[data-prefill]")?.addEventListener("click", (e) => store.sset("engawa-prefill", e.currentTarget.dataset.prefill));
 }
 
 function articleCard(a) {
@@ -231,7 +396,7 @@ async function thumbs(shorts, arts) {
     const cv = $(`canvas[data-short="${CSS.escape(s.id)}"]`);
     if (!cv) continue;
     const a = arts.find((x) => x.slug === s.slug);
-    const p = await makePlayer(cv, s, { cover: a?.cover, at: 2.2 });
+    const p = await makePlayer(cv, s, { cover: a?.cover, treeJa: a?.tree?.ja, at: 2.2 });
     const card = cv.closest(".reel-i");
     card.addEventListener("mouseenter", () => p.play());
     card.addEventListener("mouseleave", () => p.pause());
@@ -285,7 +450,7 @@ async function article(slug) {
     <aside class="askbox"><p>${t("ask_box")}</p><a class="btn gold" href="#/ask">${t("hero_ask")}</a><a class="btn ghost" href="#/help">${t("nav_help")}</a></aside>
   </article>`;
   if (sh.length) {
-    const p = await makePlayer($("#artShort"), sh[0], { cover: a.cover, link: `${location.host}`, at: 2.2 });
+    const p = await makePlayer($("#artShort"), sh[0], { cover: a.cover, treeJa: a.tree?.ja, link: `${location.host}`, at: 2.2 });
     players.push(p);
     $("#artPlay").addEventListener("click", () => { p.playing ? p.pause() : p.restart(); });
   }
@@ -335,7 +500,7 @@ async function shortView(id, master = false) {
     $$(".copy").forEach((b) => b.addEventListener("click", async () => { try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "コピーしました ✓"; } catch { b.textContent = "コピーできませんでした"; } }));
     $("#approve")?.addEventListener("click", async (e) => { e.target.disabled = true; await call(`/api/shorts/${encodeURIComponent(id)}/approve`, {}, true); shortView(id, true); });
   }
-  const p = await makePlayer($("#sv"), s, { cover: a?.cover, link: `${location.host}  ·  link in bio` });
+  const p = await makePlayer($("#sv"), s, { cover: a?.cover, treeJa: a?.tree?.ja, link: `${location.host}  ·  link in bio` });
   players.push(p);
   const pp = $("#pp");
   const sync = () => (pp.textContent = p.playing ? `❚❚ ${t("pause")}` : `▶ ${t("play")}`);
@@ -930,6 +1095,8 @@ function route() {
   const [, a, b, c] = h.split("/");
   document.documentElement.lang = a === "master" || a === "studio" ? "ja" : lang() === "easy" ? "ja" : lang();
   scrollTo(0, 0);
+  if (a === "learn" && b) return learnArticle(b);
+  if (a === "learn") return learnList();
   if (a === "read" && b) return article(b);
   if (a === "read") return readList();
   if (a === "shorts") return shortsList();

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Engawa — 案A 余白の展示室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--wall:#F5F4F0;--ink:#1C1C1A;--moss:#5B6B4F;--line:#D9D6CC;--shu:#B83A26;--mute:#7b786f;--pad:clamp(16px,4vw,56px)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--wall);color:var(--ink);font:400 15px/1.9 "Zen Kaku Gothic New",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.lat{font-family:"Cormorant Garamond",serif}
+.num{font-family:Jost,sans-serif;letter-spacing:.12em;font-size:11px;font-weight:400}
+header{display:flex;align-items:center;justify-content:space-between;padding:22px var(--pad);border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(245,244,240,.92);backdrop-filter:blur(8px);z-index:5}
+.logo{font:500 22px/1 "Cormorant Garamond",serif;letter-spacing:.32em}
+nav{display:flex;gap:28px}
+nav a{font:400 12px Jost,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+nav a:hover,nav a.on{color:var(--ink)}
+.lang{font:400 11px Jost;letter-spacing:.14em;color:var(--mute)}
+.lang b{color:var(--ink);font-weight:500}
+.hero{display:grid;grid-template-columns:1fr minmax(320px,44%) 1fr;align-items:end;min-height:calc(100svh - 67px);padding:0 var(--pad)}
+.hero .l{align-self:center;padding-right:24px}
+.hero h1{font:400 clamp(44px,6vw,86px)/.98 "Cormorant Garamond",serif;letter-spacing:-.01em}
+.hero h1 i{color:var(--moss)}
+.hero .l p{margin-top:28px;max-width:30ch;color:#3a3935}
+.hero .tree{position:relative;align-self:stretch;display:flex;align-items:flex-end;justify-content:center}
+.hero .tree img{position:relative;width:112%;max-width:none;max-height:78svh;object-fit:contain;object-position:50% 100%;margin-bottom:9svh}
+.hero .tree::after{content:"";position:absolute;left:22%;right:22%;bottom:calc(9svh - 14px);height:30px;background:radial-gradient(closest-side,rgba(28,28,26,.28),transparent)}
+.hero .r{align-self:end;padding:0 0 64px 32px}
+.cap{border-top:1px solid var(--ink);padding-top:14px;max-width:260px}
+.cap .num{display:block;margin-bottom:8px}
+.cap h2{font:500 18px/1.4 "Zen Kaku Gothic New";letter-spacing:.06em}
+.cap h2 small{display:block;font:italic 400 16px "Cormorant Garamond";color:var(--mute);letter-spacing:0}
+.cap dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin-top:14px;font-size:12px;color:#4a4842}
+.cap dt{font:400 10px Jost;letter-spacing:.14em;color:var(--mute);padding-top:3px}
+.rot{display:inline-flex;align-items:center;gap:10px;margin-top:22px;font:400 11px Jost;letter-spacing:.16em;border:1px solid var(--ink);padding:10px 16px}
+.rot::before{content:"";width:14px;height:14px;border:1px solid var(--ink);border-radius:50%;border-right-color:transparent}
+section{padding:120px var(--pad);border-top:1px solid var(--line)}
+.sh{display:grid;grid-template-columns:180px 1fr;gap:32px;margin-bottom:56px}
+.sh .num{padding-top:14px}
+.sh h3{font:400 clamp(30px,3.4vw,48px)/1.1 "Cormorant Garamond",serif}
+.sh h3 span{display:block;font:500 13px "Zen Kaku Gothic New";letter-spacing:.2em;color:var(--mute);margin-top:12px}
+.index{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
+.index a{padding:22px 24px 26px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:44px 1fr;gap:6px 14px}
+.index a:hover h4{color:var(--moss)}
+.index .num{grid-row:span 2;padding-top:4px}
+.index h4{font:500 16px/1.6 "Zen Kaku Gothic New";transition:color .2s}
+.index p{font-size:12px;color:var(--mute);line-height:1.7}
+.film{display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:center}
+.screen{position:relative;aspect-ratio:16/9;background:#e9e7e0;overflow:hidden}
+.screen img{width:100%;height:100%;object-fit:cover;object-position:50% 62%;mix-blend-mode:multiply}
+.screen .play{position:absolute;left:24px;bottom:24px;display:flex;align-items:center;gap:14px;font:400 11px Jost;letter-spacing:.16em}
+.screen .play i{width:52px;height:52px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-style:normal}
+.screen .t{position:absolute;right:24px;bottom:24px;font:400 11px Jost;letter-spacing:.14em}
+.film ol{list-style:none;border-top:1px solid var(--ink)}
+.film li{display:grid;grid-template-columns:64px 1fr;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.voice{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.vq{display:flex;gap:40px;align-items:flex-start}
+.vq blockquote{writing-mode:vertical-rl;font:500 clamp(22px,2.2vw,30px)/1.9 "Zen Kaku Gothic New";letter-spacing:.14em;height:min(460px,62svh)}
+.seal{width:28px;height:28px;background:var(--shu);color:#f5f4f0;display:grid;place-items:center;font:700 14px "Zen Kaku Gothic New";margin-top:8px}
+.vt h4{font:italic 400 28px/1.3 "Cormorant Garamond"}
+.vt p{margin-top:18px;color:#3a3935}
+.vt .who{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}
+.tie{margin-top:28px;font-size:12px;color:var(--mute)}
+.tie a{border-bottom:1px solid var(--line)}
+.qa{display:grid;grid-template-columns:repeat(2,1fr);gap:0 56px;border-top:1px solid var(--ink)}
+.qa div{padding:22px 0;border-bottom:1px solid var(--line)}
+.qa b{font:400 11px Jost;letter-spacing:.14em;color:var(--mute);display:block;margin-bottom:6px}
+footer{padding:48px var(--pad);border-top:1px solid var(--line);display:flex;justify-content:space-between;font:400 11px Jost;letter-spacing:.14em;color:var(--mute)}
+@media (max-width:900px){
+  nav{display:none}
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:40px}
+  .hero .r{padding:0 0 48px}
+  .sh{grid-template-columns:1fr;gap:8px}
+  .index{grid-template-columns:1fr}
+  .film,.voice,.qa{grid-template-columns:1fr;gap:40px}
+  .vq blockquote{height:340px}
+  section{padding:80px var(--pad)}
+}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#">ENGAWA</a>
+  <nav><a class="on" href="#">Collection</a><a href="#">Knowledge</a><a href="#">Films</a><a href="#">Masters</a><a href="#">Q&amp;A</a></nav>
+  <span class="lang"><b>JA</b> · EN · ES · 中 · やさしい</span>
+</header>
+
+<div class="hero">
+  <div class="l">
+    <h1>Every tree<br>carries a<br><i>master’s</i> hand.</h1>
+    <p>樹種、手入れ、四季、歴史。盆栽の知識をひとつの場所に。そして、その奥に職人の声が残っていく。</p>
+  </div>
+  <div class="tree"><img src="img/cutout.png" alt="黒松の模様木（Blender で制作した3Dモデル）"></div>
+  <div class="r">
+    <div class="cap">
+      <span class="num">No. 001 — COLLECTION</span>
+      <h2>黒松<small>Pinus thunbergii</small></h2>
+      <dl><dt>STYLE</dt><dd>模様木</dd><dt>HEIGHT</dt><dd>48 cm（見本）</dd><dt>SEASON</dt><dd>冬越しの準備</dd><dt>VOICES</dt><dd>職人の声 2件</dd></dl>
+      <a class="rot" href="#">ROTATE IN 3D</a>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="sh"><span class="num">01 / KNOWLEDGE</span><h3>Knowledge<span>知る ― 24の基本</span></h3></div>
+  <div class="index">
+    <a href="#"><span class="num">01</span><h4>盆栽とは何か</h4><p>鉢の中に自然の景色を写す。七百年の歴史。</p></a>
+    <a href="#"><span class="num">02</span><h4>五つの基本の樹形</h4><p>直幹・模様木・斜幹・懸崖・文人木</p></a>
+    <a href="#"><span class="num">03</span><h4>正面の決め方</h4><p>根張り、幹の流れ、一の枝。</p></a>
+    <a href="#"><span class="num">09</span><h4>黒松</h4><p>芽切りと冬の寒さ。松柏の王。</p></a>
+    <a href="#"><span class="num">10</span><h4>もみじ</h4><p>葉刈りで小さな葉と紅葉を。</p></a>
+    <a href="#"><span class="num">11</span><h4>真柏</h4><p>舎利と神。厳しい自然の記憶。</p></a>
+    <a href="#"><span class="num">17</span><h4>水やりの基本</h4><p>乾いたら、底から出るまで。</p></a>
+    <a href="#"><span class="num">18</span><h4>冬越し</h4><p>寒さに当てて、凍らせない。</p></a>
+    <a href="#"><span class="num">19</span><h4>植え替え</h4><p>芽が動く前の、春のひと月。</p></a>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">02 / FILMS</span><h3>Films<span>見る ― 3分の解説</span></h3></div>
+  <div class="film">
+    <div class="screen"><img src="img/cutout.png" alt="" style="object-fit:contain;object-position:50% 100%;padding-top:16px"><span class="play"><i>▶</i>WATCH</span><span class="t">03:00</span></div>
+    <ol>
+      <li><span class="num">00:00</span>黒松の一年を、一本の木で見る</li>
+      <li><span class="num">00:40</span>春 ― 芽が動く前に植え替える</li>
+      <li><span class="num">01:20</span>夏 ― 芽切りで二番芽を出す</li>
+      <li><span class="num">02:00</span>秋 ― 古葉取りで光を入れる</li>
+      <li><span class="num">02:40</span>冬 ― 外の寒さに当てて休ませる</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">03 / MASTERS</span><h3>Voices<span>職人の声 ― ここにしかない知識</span></h3></div>
+  <div class="voice">
+    <div class="vq"><span class="seal">縁</span><blockquote>冬も外の寒さに当ててください。</blockquote></div>
+    <div class="vt">
+      <h4>“Let it feel the winter cold.”</h4>
+      <p>海外の持ち主から「黒松の葉先が茶色い」と相談が届きました。二人の職人が、それぞれの言葉で答えています。言葉はそのまま残し、訳は用語集を通して意味で届けます。</p>
+      <div class="who"><span>職人A（見本）· 埼玉</span><span>2026.11</span></div>
+      <p class="tie">この声がつながっている記事 → <a href="#">09 黒松</a>・<a href="#">18 冬越し</a></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">04 / Q&amp;A</span><h3>Questions<span>みんなの問いと答え</span></h3></div>
+  <div class="qa">
+    <div><b>Q · MILAN</b>ベランダの真柏、初めての冬。風が強いです。</div>
+    <div><b>A · 職人A（見本）</b>寒さには強い木です。風で乾きやすいので、水を切らさないで。</div>
+    <div><b>Q · VALENCIA</b>「根張り」はただの根のことですか。</div>
+    <div><b>A · 用語集</b>土の上に見える、四方に広がった根。大地をつかむ安定感のこと。</div>
+  </div>
+</section>
+
+<footer><span>ENGAWA — BONSAI KNOWLEDGE &amp; MASTERS’ VOICES</span><span>案A 余白の展示室</span></footer>
+</body>
+</html>

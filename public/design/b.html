@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Engawa — 案B 特集号</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#EFE9DD;--ink:#111;--green:#1F3A2E;--hot:#E4572E;--mute:#6d675c;--pad:clamp(16px,3.4vw,48px)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:400 15px/1.75 Inter,"Noto Sans JP",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.cap{font:600 11px Inter;letter-spacing:.14em;text-transform:uppercase}
+.mast{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px var(--pad);border-bottom:2px solid var(--ink)}
+.mast nav{display:flex;gap:22px}
+.mast nav:last-child{justify-content:flex-end}
+.mast .logo{font:800 30px/1 Fraunces,serif;letter-spacing:-.02em}
+.issue{display:flex;justify-content:space-between;padding:10px var(--pad);border-bottom:1px solid var(--ink)}
+.cover{position:relative;height:calc(100svh - 104px);min-height:620px;overflow:hidden;border-bottom:2px solid var(--ink)}
+.cover .big{position:absolute;left:calc(var(--pad) - .06em);bottom:-.16em;font:900 clamp(160px,27vw,440px)/.8 Fraunces,serif;letter-spacing:-.05em;color:var(--green);white-space:nowrap}
+.cover .big em{font-style:italic;font-weight:300;color:var(--hot)}
+.cover img{position:absolute;right:4vw;bottom:0;height:96%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.18))}
+.cover .side{position:absolute;left:var(--pad);top:32px;max-width:380px}
+.cover .side h1{font:400 clamp(30px,3vw,44px)/1.25 "Zen Antique",serif}
+.cover .side p{margin-top:16px;font-size:14px;color:#2b2925}
+.cover .tag{display:inline-block;background:var(--ink);color:var(--paper);padding:4px 10px;margin-bottom:18px}
+.cover .spin{position:absolute;right:var(--pad);top:32px;text-align:right}
+.cover .spin b{display:block;font:italic 400 22px Fraunces}
+.row{display:grid;grid-template-columns:repeat(12,1fr);gap:0;border-bottom:2px solid var(--ink)}
+.col{padding:28px var(--pad) 36px;border-right:1px solid var(--ink)}
+.col:last-child{border-right:0}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c7{grid-column:span 7}.c8{grid-column:span 8}.c3{grid-column:span 3}
+.k{font:600 11px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--hot);margin-bottom:12px;display:block}
+h2{font:700 clamp(28px,3vw,42px)/1.05 Fraunces,serif;letter-spacing:-.02em}
+h3{font:700 22px/1.3 "Noto Sans JP";margin:6px 0 8px}
+.list a{display:grid;grid-template-columns:40px 1fr auto;gap:12px;padding:12px 0;border-top:1px solid var(--ink);align-items:baseline}
+.list a:hover b{color:var(--hot)}
+.list i{font:italic 500 18px Fraunces;color:var(--mute)}
+.list b{font:500 16px "Noto Sans JP";transition:color .2s}
+.list small{font:500 11px Inter;letter-spacing:.1em;color:var(--mute)}
+.film{position:relative;background:var(--green);color:var(--paper);aspect-ratio:16/10;overflow:hidden;margin-top:14px}
+.film img{position:absolute;left:50%;bottom:-6%;height:110%;transform:translateX(-50%);opacity:.95}
+.film .t{position:absolute;left:20px;top:18px;font:italic 400 30px/1.1 Fraunces;max-width:12ch}
+.film .p{position:absolute;right:20px;bottom:18px;display:flex;gap:10px;align-items:center}
+.film .p i{width:56px;height:56px;border-radius:50%;background:var(--hot);color:#fff;display:grid;place-items:center;font-style:normal;font-size:18px}
+.quote{font:400 clamp(30px,3.4vw,52px)/1.35 "Zen Antique",serif;margin:8px 0 18px}
+.quote::before{content:"“";font:900 1.6em/0 Fraunces;color:var(--hot);vertical-align:-.45em;margin-right:4px}
+.by{display:flex;gap:14px;align-items:center;font-size:13px;color:var(--mute)}
+.by span{width:42px;height:42px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:700 14px "Noto Sans JP"}
+.qa div{padding:12px 0;border-top:1px solid var(--ink);font-size:14px}
+.qa b{font:600 11px Inter;letter-spacing:.12em;display:block;color:var(--mute)}
+footer{display:flex;justify-content:space-between;padding:22px var(--pad)}
+@media (max-width:900px){
+  .mast{grid-template-columns:1fr auto}.mast nav{display:none}
+  .cover{height:auto;min-height:760px}
+  .cover img{height:62%;right:-8vw}
+  .cover .spin{display:none}
+  .row{grid-template-columns:1fr}.col{grid-column:auto!important;border-right:0;border-bottom:1px solid var(--ink)}
+}
+</style>
+</head>
+<body>
+<div class="mast">
+  <nav class="cap"><a href="#">Knowledge</a><a href="#">Films</a><a href="#">Masters</a></nav>
+  <a class="logo" href="#">Engawa.</a>
+  <nav class="cap"><a href="#">Q&amp;A</a><a href="#">JA / EN / ES / 中</a></nav>
+</div>
+<div class="issue cap"><span>Issue 01 — The Black Pine</span><span>November 2026</span><span>Bonsai, from the masters</span></div>
+
+<div class="cover">
+  <div class="big">Pine<em>.</em></div>
+  <img src="img/cutout.png" alt="黒松の模様木（Blender で制作した3Dモデル）">
+  <div class="side">
+    <span class="tag cap">Cover story</span>
+    <h1>冬も、外の寒さに<br>当ててください。</h1>
+    <p>黒松の葉先が茶色くなった。リヨンからの相談に、二人の職人が答えた。七百年の知恵と、いまの手の言葉。</p>
+  </div>
+  <div class="spin cap"><b>Turn the tree</b>Drag to rotate · 3D</div>
+</div>
+
+<div class="row">
+  <div class="col c5">
+    <span class="k">Knowledge · 24 guides</span>
+    <h2>Read before you cut.</h2>
+    <div class="list" style="margin-top:18px">
+      <a href="#"><i>01</i><b>盆栽とは何か</b><small>BASICS</small></a>
+      <a href="#"><i>02</i><b>五つの基本の樹形</b><small>BASICS</small></a>
+      <a href="#"><i>09</i><b>黒松 ― 芽切りと冬</b><small>SPECIES</small></a>
+      <a href="#"><i>10</i><b>もみじ ― 葉刈り</b><small>SPECIES</small></a>
+      <a href="#"><i>18</i><b>冬越し</b><small>SEASONS</small></a>
+    </div>
+  </div>
+  <div class="col c7">
+    <span class="k">Film · 3 min</span>
+    <h2>A year of one pine.</h2>
+    <div class="film"><img src="img/cutout.png" alt=""><span class="t">Spring, summer, autumn, winter.</span><span class="p cap"><i>▶</i>03:00</span></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col c8">
+    <span class="k">Masters’ voices</span>
+    <p class="quote">鉢が凍る夜だけは、軒下になおしてください。</p>
+    <div class="by"><span>職</span>職人A（見本）· 埼玉 — 「なおす」は “repair” ではなく “move”。用語集が意味で届けます。</div>
+  </div>
+  <div class="col c4 qa">
+    <span class="k">Q&amp;A</span>
+    <div><b>Q · Milan</b>ベランダの真柏、初めての冬。風が強いです。</div>
+    <div><b>A · 職人A（見本）</b>寒さには強い木です。風で乾きやすいので、水を切らさないで。</div>
+    <div><b>Q · Valencia</b>「根張り」はただの根のことですか。</div>
+  </div>
+</div>
+<footer class="cap"><span>Engawa — Bonsai, from the masters</span><span>案B 特集号</span></footer>
+</body>
+</html>

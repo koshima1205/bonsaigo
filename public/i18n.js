@@ -4,6 +4,14 @@ export const LETTER_LANGS = { en: "English", es: "Español", zh: "中文", fr: "
 export const VOICE = { en: "en-US", es: "es-ES", zh: "zh-CN", fr: "fr-FR", de: "de-DE", it: "it-IT", easy: "ja-JP", ja: "ja-JP" };
 
 const S = {
+  films_title: ["Blender で作った解説動画", "Blender で つくった どうが", "Explainer films, built in Blender", "Películas explicativas hechas en Blender", "用 Blender 制作的讲解影片"],
+  films_sub: ["記事の中身を、3Dの木と字幕で約3分に。音は縁側の BGM です。", "きじの なかみを 3Dの 木と じまくで 3ぷんに。", "Each article distilled into about three minutes of 3D trees and captions, scored with Engawa's music.", "Cada artículo, en unos tres minutos de árboles 3D y subtítulos, con la música de Engawa.", "把文章内容浓缩成约3分钟的3D树与字幕影片，配以缘侧的音乐。"],
+  shorts_blender: ["ショート（縦の動画）", "みじかい どうが", "Shorts", "Cortos", "短视频"],
+  shorts_ai: ["相談から生まれたショート（職人の OK 済み）", "そうだんから できた どうが", "Shorts born from consultations (approved by masters)", "Cortos nacidos de consultas (aprobados por maestros)", "源自咨询的短视频（经匠人认可）"],
+  watch: ["再生", "みる", "Play", "Ver", "播放"],
+  close: ["閉じる", "とじる", "Close", "Cerrar", "关闭"],
+  film_here: ["この記事の動画", "この きじの どうが", "Film for this article", "Película de este artículo", "本文配套影片"],
+  captions_note: ["字幕は日本語と英語", "じまくは 日本語と えいご", "Captions in Japanese and English", "Subtítulos en japonés e inglés", "字幕为日语与英语"],
   nav_learn: ["知る", "しる", "Knowledge", "Saber", "知识"],
   nav_voices: ["職人の声", "しょくにんの こえ", "Voices", "Voces", "匠人之声"],
   nav_films: ["動画", "どうが", "Films", "Vídeos", "视频"],
@@ -162,7 +170,8 @@ const S = {
   axis_prune: ["剪定・芽", "えだ・め", "Pruning", "Poda", "修剪"],
   axis_other: ["そのほか", "そのほか", "Other", "Otros", "其他"],
   sample_consult: ["職人ふたりが答えた相談（見本）を見る", "みほんの そうだんを 見る", "See a consultation two masters answered (sample)", "Ver una consulta respondida por dos maestros (ejemplo)", "查看两位匠人回答的咨询（示例）"],
-  demo_banner: ["見本の応答で動いています（API キー未設定）", "みほんで うごいて います", "Running on sample replies (no API key set)", "Funcionando con respuestas de ejemplo (sin clave de API)", "正在使用示例回复（未设置 API 密钥）"],
+  demo_banner: ["デモ版です。返事の文は見本です", "おためし版です。へんじは みほんです", "Demo version: replies are samples", "Versión de demostración: las respuestas son de ejemplo", "演示版：回复为示例"],
+  from_consult: ["相談から", "そうだんから", "From a question", "De una consulta", "来自咨询"],
 };
 
 const ORDER = ["ja", "easy", "en", "es", "zh"];

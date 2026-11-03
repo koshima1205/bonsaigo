@@ -22,7 +22,7 @@ En China se disfrutaba desde hacía tiempo de crear pequeñas montañas y árbol
 ## La llegada a Japón
 Los paisajes en bandeja llegaron a Japón desde China hace al menos 1200 años, al parecer como recuerdos religiosos. Las fuentes japonesas rastrean el origen del bonsái hasta el *bonsan* y las plantas en maceta traídas en el período Heian.
 
-Durante el período Kamakura y los siguientes, la influencia cultural china ayudó a que arraigara la costumbre de cultivar árboles en recipientes. A finales del siglo XIV, según se cuenta, una historia sobre árboles en maceta se adaptó a una obra de teatro noh.
+Durante el período Kamakura y los siguientes, la influencia cultural china ayudó a que arraigara la costumbre de cultivar árboles en recipientes. En el período Muromachi (hacia el siglo XV), según se cuenta, una historia sobre árboles en maceta se adaptó a una obra de teatro noh.
 
 ## La jardinería del período Edo
 En el período Edo, los daimyō construyeron jardines y la jardinería se hizo popular también entre la gente corriente de las ciudades. A finales del siglo XVIII ya había comenzado en Kioto una exposición anual de pinos pequeños. Hacia 1800, unos eruditos cercanos a Osaka rebautizaron estos árboles como *bonsai*, para distinguirlos de los árboles en maceta comunes (*hachi-no-ki*).

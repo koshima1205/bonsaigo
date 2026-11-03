@@ -26,7 +26,7 @@ body.mag ::selection{background:var(--green);color:var(--paper)}
 .mag .snd{border:1px solid var(--ink);border-radius:0;color:var(--ink);font:600 11px Inter,"Noto Sans JP";letter-spacing:.1em;padding:5px 10px}
 .mag .snd.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .issue{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:9px var(--mpad);border-bottom:1px solid var(--ink)}
-.issue-nav{display:none;gap:16px;overflow-x:auto;scrollbar-width:none;-webkit-mask:linear-gradient(90deg,#000 85%,transparent);mask:linear-gradient(90deg,#000 85%,transparent);padding-right:24px}
+.issue-nav{display:none;gap:16px;overflow-x:auto;scrollbar-width:none;-webkit-mask:linear-gradient(90deg,#000 94%,transparent);mask:linear-gradient(90deg,#000 94%,transparent);padding-right:24px}
 .issue-nav::-webkit-scrollbar{display:none}
 .ask-l{color:var(--hot);white-space:nowrap}
 .mfoot{border-top:2px solid var(--ink);padding:28px var(--mpad) 48px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;background:var(--paper)}
@@ -293,3 +293,41 @@ body.mag ::selection{background:var(--green);color:var(--paper)}
 .mag .reel-i b{position:static;background:none;color:var(--ink);padding:10px 0 0;font:600 13px/1.5 "Noto Sans JP",sans-serif;text-shadow:none}
 .mag .reel-i .play{top:40%}
 @media (max-width:1100px){.mast .mast-l,.mast .mast-r nav{display:none}}
+
+/* 解説動画 */
+.film-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.film-c{display:flex;flex-direction:column;gap:10px;background:none;border:0;padding:0;text-align:left;color:var(--ink);cursor:pointer}
+.film-img{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--ink);background:#E7E0D1}
+.film-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.film-c:hover .film-img img{transform:scale(1.04)}
+.film-play{position:absolute;right:14px;bottom:14px;width:52px;height:52px;border-radius:50%;background:var(--hot);color:#fff;display:grid;place-items:center;font-style:normal;font-size:16px;transition:transform .25s}
+.film-c:hover .film-play,.sfilm:hover .film-play{transform:scale(1.1)}
+.film-t b{display:block;font:700 16px/1.45 "Noto Sans JP",sans-serif}
+.film-t small{color:var(--mute)}
+.film-c.big .film-play{width:68px;height:68px;font-size:20px;right:20px;bottom:20px}
+.film-c.big .film-t b{font-size:19px}
+.film-mini{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.film-mini .film-play{width:40px;height:40px;font-size:13px;right:10px;bottom:10px}
+.film-mini .film-t b{font-size:14px}
+.sfilm-row{display:grid;grid-template-columns:repeat(3,minmax(0,220px));gap:20px}
+.sfilm{position:relative;display:flex;flex-direction:column;gap:10px;background:none;border:0;padding:0;text-align:left;color:var(--ink);cursor:pointer}
+.sfilm video{width:100%;aspect-ratio:9/16;object-fit:cover;border:1px solid var(--ink);background:#E7E0D1}
+.sfilm .film-play{top:auto;bottom:56px;right:12px;width:44px;height:44px}
+.sfilm b{font:600 14px/1.5 "Noto Sans JP",sans-serif}
+.kb-film .film-c{max-width:760px}
+.film-modal{position:fixed;inset:0;z-index:60;background:rgba(17,17,17,.88);display:grid;place-items:center;padding:24px;animation:fadeUp .3s both}
+.film-box{position:relative;width:min(1200px,100%)}
+.film-box video{width:100%;max-height:82svh;background:#000;display:block}
+.film-modal.tall .film-box{width:min(420px,100%)}
+.film-x{position:absolute;right:0;top:-38px;background:none;border:1px solid var(--paper);color:var(--paper);padding:6px 12px}
+@media (max-width:900px){
+  .film-grid{grid-template-columns:1fr}
+  .sfilm-row{grid-template-columns:repeat(3,62vw);overflow-x:auto}
+}
+
+/* 中文：簡体字の字形で出す（日本語フォントの代替グリフを避ける） */
+html:lang(zh) .mag,html:lang(zh) .mag .cap{font-family:Inter,"Noto Sans SC","Noto Sans JP",sans-serif}
+html:lang(zh) .mag h1,html:lang(zh) .mag h2,html:lang(zh) .mag h3,html:lang(zh) .mag .quote{font-family:"Noto Serif SC",serif}
+.mag [lang=zh]{font-family:"Noto Sans SC",sans-serif}.mag h3[lang=zh]{font-family:"Noto Serif SC",serif}
+html:lang(zh){--serif:"Noto Serif SC",serif;--latin:"Fraunces","Noto Serif SC",serif}
+html:lang(zh) .mag :is(.quote,.vq,.hook,.mq p,.kb-text blockquote,.mcover .side h1,.kb-h p){font-family:"Noto Serif SC",serif}

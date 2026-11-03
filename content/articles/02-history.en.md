@@ -22,7 +22,7 @@ In China, people had long enjoyed making small mountains and trees on trays and 
 ## Arriving in Japan
 Tray landscapes reached Japan from China at least 1,200 years ago, reportedly as religious souvenirs. Japanese sources trace bonsai back to *bonsan* and potted plants brought over in the Heian period.
 
-Through the Kamakura period and after, Chinese cultural influence helped the habit of growing trees in containers take hold. Late in the 14th century, a story about potted trees was reportedly adapted into a Noh play.
+Through the Kamakura period and after, Chinese cultural influence helped the habit of growing trees in containers take hold. In the Muromachi period (around the 15th century), a story about potted trees was reportedly adapted into a Noh play.
 
 ## Edo-period gardening
 In the Edo period, daimyo built gardens and gardening became popular among ordinary townspeople too. By the late 18th century, an annual show of small pines had begun in Kyoto. Around 1800, scholars near Osaka renamed these trees *bonsai*, to set them apart from ordinary potted trees (*hachi-no-ki*).

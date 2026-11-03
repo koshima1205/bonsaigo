@@ -13,7 +13,7 @@ def area(name, loc, rot, power, size, color=(1, 1, 1)):
 P = {
     "white": dict(bg=(0.93, 0.925, 0.905), floor=(0.93, 0.925, 0.905), key=900, rim=400, fill=220, bgs=0.7, kc=(1, 0.97, 0.92)),
     "paper": dict(bg=(0.86, 0.82, 0.74), floor=(0.86, 0.82, 0.74), key=1100, rim=300, fill=120, bgs=0.5, kc=(1, 0.93, 0.82)),
-    "forest": dict(bg=(0.012, 0.022, 0.016), floor=(0.02, 0.03, 0.022), key=1300, rim=900, fill=25, bgs=0.15, kc=(1, 0.88, 0.66)),
+    "forest": dict(bg=(0.012, 0.022, 0.016), floor=(0.012, 0.02, 0.015), key=1300, rim=900, fill=25, bgs=0.15, kc=(1, 0.88, 0.66)),
 }[STYLE]
 area("key", (-3.5, -3.5, 5), (math.radians(50), 0, math.radians(-45)), P["key"], 3, P["kc"])
 area("rim", (3, 3, 3.5), (math.radians(-60), 0, math.radians(135)), P["rim"], 2, (0.85, 0.92, 1))

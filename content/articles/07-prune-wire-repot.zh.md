@@ -2,7 +2,7 @@
 no: 7
 slug: prune-wire-repot
 group: basics
-title: 修剪・上铁丝・换盆 ― 养护的基本功
+title: 修剪、上铁丝、换盆 ― 养护的基本功
 lead: 为初学者只整理摘芽、修剪、上铁丝、换盆的基本思路。
 tree: pine
 sources:

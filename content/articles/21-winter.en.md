@@ -25,7 +25,7 @@ Bonsai Empire's calendar lists dormancy as the time for structural, replacement 
 On pines, remove last year's needles before pruning or wiring, so light reaches the inner canopy. An English guide leaves two terminal buds at each branch end. On broadleaves, clear fallen leaves to avoid trapped moisture.
 
 ## Wiring
-Winter is a good time for wire, but species differ. A Japanese guide says black pine can be wired in winter and then kept under eaves to avoid freezing. Five-needle pine can be wired anytime in dormancy, though careful growers wait until March. Red pine splits easily, so wait until it is active. The guide also names one Japanese juniper that is better left unwired; if unsure about your tree, ask a craftsperson.
+Winter is a good time for wire, but species differ. A Japanese guide says black pine can be wired in winter and then kept under eaves to avoid freezing. Five-needle pine can be wired anytime in dormancy, though careful growers wait until March. Red pine splits easily, so wait until it is active. Some trees are better left unwired in winter; if unsure about your tree, ask a craftsperson.
 
 ## Overwintering — cold, but never frozen
 Pines are hardy, but container trees need winter protection. A guide says pines need several weeks of dormancy at about 0 to 7 °C (32 to 45 °F). Keep trees outdoors and avoid heated rooms, since warmth can wake buds too early.

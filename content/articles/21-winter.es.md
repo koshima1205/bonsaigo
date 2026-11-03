@@ -25,7 +25,7 @@ El calendario de Bonsai Empire señala el reposo como el momento de la poda estr
 En los pinos, retire las agujas del año anterior antes de podar o alambrar, para que la luz llegue a la copa interior. Una guía en inglés deja dos yemas terminales en el extremo de cada rama. En los árboles de hoja ancha, retire las hojas caídas para evitar que quede atrapada la humedad.
 
 ## Alambrado
-El invierno es buena época para el alambre, pero las especies difieren. Una guía japonesa dice que el pino negro puede alambrarse en invierno y mantenerse luego bajo un alero para evitar que se congele. El pino blanco puede alambrarse en cualquier momento del reposo, aunque los cultivadores cuidadosos esperan a marzo. El pino rojo se rompe con facilidad, así que hay que esperar a que esté activo. La guía cita también un junípero japonés que es mejor no alambrar; si tiene dudas sobre su árbol, pregunte a un artesano.
+El invierno es buena época para el alambre, pero las especies difieren. Una guía japonesa dice que el pino negro puede alambrarse en invierno y mantenerse luego bajo un alero para evitar que se congele. El pino blanco puede alambrarse en cualquier momento del reposo, aunque los cultivadores cuidadosos esperan a marzo. El pino rojo se rompe con facilidad, así que hay que esperar a que esté activo. Algunos árboles es mejor no alambrarlos en invierno; si tiene dudas sobre su árbol, pregunte a un artesano.
 
 ## Invernada — frío, pero nunca congelado
 Los pinos son resistentes, pero los árboles en maceta necesitan protección invernal. Una guía dice que los pinos necesitan varias semanas de reposo a unos 0 a 7 °C (32 a 45 °F). Mantenga los árboles al aire libre y evite las habitaciones calefactadas, porque el calor puede despertar las yemas demasiado pronto.

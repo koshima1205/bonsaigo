@@ -3,7 +3,7 @@ no: 23
 slug: pests
 group: seasons
 title: 虫与病 ― 发现的方法与思路
-lead: 说明蚜虫・红蜘蛛・介壳虫的分辨方法与首先该试的做法，以及松树的病不要自行判断、交给专业人士这条界线。
+lead: 说明蚜虫、红蜘蛛、介壳虫的分辨方法与首先该试的做法，以及松树的病不要自行判断、交给专业人士这条界线。
 tree: none
 sources:
   - title: Bonsai Empire - Identifying bonsai pests and diseases

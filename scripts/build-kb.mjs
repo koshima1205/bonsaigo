@@ -67,7 +67,7 @@ for (const f of files) {
   body = body.replace(/\n#{2,3}\s*[^\n]*(職人に聞|しょくにんに|question for|pregunta para|请教匠人|想问匠人|想请教|问问匠人)[^\n]*\n[\s\S]*$/i, "\n")
     .replace(/^(#{2,3}\s*[^\n]*?)\s*[（(]\s*(3行|3 lines|3 líneas|3行|三行|3ぎょう)\s*[)）]/gim, "$1");
   const words = body.replace(/\s/g, "").length;
-  a.langs[lg] = { title: fm.title, lead: fm.lead, voice_hook: fm.voice_hook, html: md(body), len: words };
+  a.langs[lg] = { title: fm.title, lead: fm.lead, voice_hook: fm.voice_hook, html: md(body), len: words, src: Object.fromEntries(fm.sources.filter((s) => s.url).map((s) => [s.url, s.title])) };
   bySlug.set(slug, a);
 }
 const all = [...bySlug.values()].sort((a, b) => a.no - b.no);

@@ -236,9 +236,10 @@ async function home() {
     </div>
     <div class="col c7">
       <span class="k cap">Films · ${t("nav_films")}</span>
-      <h2>${t("sec_shorts")}</h2>
-      <p class="dek">${t("sec_shorts_sub")}</p>
-      <div class="reel mag-reel">${shorts.slice(0, 3).map((s) => `<a class="reel-i" href="#/short/${esc(s.id)}"><canvas data-short="${esc(s.id)}"></canvas><span class="play">▶</span><b>${esc(lang() === "ja" || lang() === "easy" ? s.hook_ja : s.hook_en)}</b>${sampleTag(s)}</a>`).join("")}</div>
+      <h2>${t("films_title")}</h2>
+      ${filmCard(FILMS[0], true)}
+      <div class="film-mini">${FILMS.slice(1).map((f) => filmCard(f)).join("")}</div>
+      <a class="more cap" href="#/shorts">${t("nav_films")} →</a>
     </div>
   </div>
 
@@ -294,7 +295,7 @@ async function home() {
     turntable($("#ctree"), k, { hero: true });
   }));
   $("#bigw").style.setProperty("--len", SPECIES[sp].word.length);
-  thumbs(shorts.slice(0, 3), arts);
+  wireFilms();
   splash();
 }
 
@@ -345,6 +346,7 @@ async function learnArticle(slug) {
       <aside class="col c3 kb-toc">${heads.length ? `<span class="k cap">Contents</span><ol>${heads.map((h, j) => `<li><a href="#s${j + 1}" data-to="s${j + 1}">${h}</a></li>`).join("")}</ol>` : ""}</aside>
       <div class="col c9 kb-text" ${fell ? 'lang="en"' : ""}>${body}</div>
     </div>
+    ${filmFor(slug) ? `<section class="row kb-film"><div class="col c3"><span class="k cap">${t("film_here")}</span></div><div class="col c9">${(() => { const f = filmFor(slug); return filmCard(f, true).replace('data-at="0"', `data-at="${f.at?.[slug] ?? 0}"`); })()}</div></section>` : ""}
     <section class="row kb-voice">
       <div class="col c5">
         <span class="k cap">${t("hook_label")}</span>
@@ -359,7 +361,7 @@ async function learnArticle(slug) {
     </section>
     <section class="row kb-src">
       <div class="col c3"><span class="k cap">${t("sources")}</span></div>
-      <ol class="col c9">${a.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a></li>`).join("")}</ol>
+      <ol class="col c9">${a.sources.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(L.src?.[s.url] ?? s.title)}</a></li>`).join("")}</ol>
     </section>
     <nav class="row kb-pn">
       ${prev ? `<a class="col c6" href="#/learn/${esc(prev.slug)}"><span class="cap">← ${t("prev")}</span><b>${esc(kbT(prev).title)}</b></a>` : `<span class="col c6"></span>`}
@@ -367,6 +369,7 @@ async function learnArticle(slug) {
     </nav>
   </article>`;
   if (SPECIES[a.tree]) turntable($("#ktree"), a.tree);
+  wireFilms();
   $$(".kb-toc a").forEach((x) => x.addEventListener("click", (e) => { e.preventDefault(); document.getElementById(x.dataset.to)?.scrollIntoView({ behavior: "smooth", block: "start" }); }));
   $("[data-prefill]")?.addEventListener("click", (e) => store.sset("engawa-prefill", e.currentTarget.dataset.prefill));
 }
@@ -375,7 +378,7 @@ function articleCard(a) {
   return `<a class="card-a" href="#/read/${esc(a.slug)}">
     <div class="cover">${pic(a.cover, ml(a.title))}</div>
     <div class="card-b">
-      <div class="meta"><span>${esc(ml(a.tree))}</span>${a.source || a.from_consult ? `<span class="from">相談から</span>` : ""}${sampleTag(a)}</div>
+      <div class="meta"><span>${esc(ml(a.tree))}</span>${a.source || a.from_consult ? `<span class="from">${t("from_consult")}</span>` : ""}${sampleTag(a)}</div>
       <h3>${esc(ml(a.title))}</h3>
       <p>${esc(ml(a.lead))}</p>
       <div class="foot-m"><span>${when(a.created)}</span>${a.views != null ? `<span>${Number(a.views).toLocaleString()} ${t("views")}</span>` : ""}</div>
@@ -457,10 +460,49 @@ async function article(slug) {
 }
 
 // ---------------- メディア：ショート ----------------
+// ---------------- 解説動画（Blender で描いた映像・約3分）とショート ----------------
+const FILMS = [
+  { id: "a-pine", dur: "3:08", word: "Pine", t: { ja: "黒松：芽切りで、枝はふえる", easy: "くろまつ：めきりで えだが ふえる", en: "Black pine: how one cut makes more branches", es: "Pino negro: cómo un corte da más ramas", zh: "黑松：一次修剪，枝条更多" }, slugs: ["black-pine", "early-summer", "prune-wire-repot"] },
+  { id: "b-maple", dur: "3:06", word: "Maple", t: { ja: "もみじ：一本の木の四季", easy: "もみじ：1本の 木の きせつ", en: "Japanese maple: one tree, four seasons", es: "Arce japonés: un árbol, cuatro estaciones", zh: "枫：一棵树的四季" }, slugs: ["japanese-maple", "spring", "midsummer", "autumn", "winter", "calendar"] },
+  { id: "c-eight", dur: "2:56", word: "Eight", t: { ja: "盆栽の8つの木", easy: "ぼんさいの 8つの 木", en: "Eight trees of bonsai", es: "Ocho árboles del bonsái", zh: "盆栽的八种树" }, slugs: ["what-is-bonsai", "how-to-look", "white-pine", "shimpaku", "satsuki", "ume", "zelkova", "needle-juniper"], at: { "black-pine": 12, "white-pine": 31, shimpaku: 50, "japanese-maple": 69, satsuki: 88, ume: 107, zelkova: 126, "needle-juniper": 145 } },
+];
+const SHORT_FILMS = [
+  { id: "s1-mekiri", t: { ja: "黒松の「芽切り」って、なに？", easy: "めきりって なに？", en: "What is mekiri?", es: "¿Qué es el mekiri?", zh: "什么是“芽切”？" } },
+  { id: "s2-maple", t: { ja: "もみじの一年を、30秒で。", easy: "もみじの 1年を 30びょうで", en: "A maple's year in 30 seconds", es: "El año de un arce en 30 segundos", zh: "30秒看枫树的一年" } },
+  { id: "s3-eight", t: { ja: "盆栽の、8つの木。", easy: "ぼんさいの 8つの 木", en: "Eight trees of bonsai", es: "Ocho árboles del bonsái", zh: "盆栽的八种树" } },
+];
+const filmFor = (slug) => FILMS.find((f) => f.slugs.includes(slug) || f.at?.[slug] != null);
+const filmCard = (f, big = false) => `<button class="film-c ${big ? "big" : ""}" data-film="${f.id}" data-at="0"><span class="film-img"><img src="/films/${f.id}.jpg" alt="" loading="lazy"><i class="film-play">▶</i></span><span class="film-t"><b>${esc(ml(f.t))}</b><small class="cap">${f.dur} · ${t("captions_note")}</small></span></button>`;
+const shortCard = (s) => `<button class="sfilm" data-film="${s.id}" data-tall="1"><video src="/films/${s.id}.mp4" poster="/films/${s.id}.jpg" muted loop playsinline preload="none"></video><i class="film-play">▶</i><b>${esc(ml(s.t))}</b></button>`;
+function playFilm(id, at = 0, tall = false) {
+  const was = bgm.on;
+  if (was) bgm.stop();
+  const d = document.createElement("div");
+  d.className = `film-modal ${tall ? "tall" : ""}`;
+  d.innerHTML = `<div class="film-box"><video src="/films/${id}.mp4#t=${at}" controls autoplay playsinline></video><button class="film-x cap">${t("close")} ✕</button></div>`;
+  document.body.append(d);
+  const close = () => { d.remove(); if (was) bgm.start(); removeEventListener("keydown", esc_); };
+  const esc_ = (e) => { if (e.key === "Escape") close(); };
+  addEventListener("keydown", esc_);
+  d.addEventListener("click", (e) => { if (e.target === d || e.target.closest(".film-x")) close(); });
+}
+function wireFilms(root = app) {
+  $$("[data-film]", root).forEach((b) => b.addEventListener("click", () => playFilm(b.dataset.film, Number(b.dataset.at || 0), !!b.dataset.tall)));
+  $$(".sfilm", root).forEach((b) => {
+    const v = b.querySelector("video");
+    b.addEventListener("mouseenter", () => v.play().catch(() => {}));
+    b.addEventListener("mouseleave", () => v.pause());
+  });
+}
+
 async function shortsList() {
-  chrome(`<section class="page-h"><span class="num">${KANJI[1]}</span><h1>${t("sec_shorts")}</h1><p>${t("sec_shorts_sub")}</p></section><section class="sec"><div class="reel wrap"></div></section>`, { here: "#/shorts" });
+  chrome(`<section class="page-big"><div class="big-w">Films<em>.</em></div><p>${t("films_sub")}</p></section>
+    <section class="row"><div class="col c12"><span class="k cap">${t("films_title")}</span><div class="film-grid">${FILMS.map((f) => filmCard(f)).join("")}</div></div></section>
+    <section class="row"><div class="col c12"><span class="k cap">${t("shorts_blender")}</span><div class="sfilm-row">${SHORT_FILMS.map(shortCard).join("")}</div></div></section>
+    <section class="row"><div class="col c12"><span class="k cap">${t("shorts_ai")}</span><p class="dek">${t("sec_shorts_sub")}</p><div class="reel mag-reel"></div></div></section>`, { here: "#/shorts" });
+  wireFilms();
   const [shorts, arts] = await Promise.all([call("/api/shorts"), call("/api/articles")]);
-  $(".reel").innerHTML = shorts.map((s) => `<a class="reel-i" href="#/short/${esc(s.id)}"><canvas data-short="${esc(s.id)}"></canvas><span class="play">▶</span><b>${esc(lang() === "ja" || lang() === "easy" ? s.hook_ja : s.hook_en)}</b>${sampleTag(s)}</a>`).join("");
+  $(".mag-reel").innerHTML = shorts.map((s) => `<a class="reel-i" href="#/short/${esc(s.id)}"><canvas data-short="${esc(s.id)}"></canvas><span class="play">▶</span><b>${esc(lang() === "ja" || lang() === "easy" ? s.hook_ja : s.hook_en)}</b>${sampleTag(s)}</a>`).join("");
   thumbs(shorts, arts);
 }
 
@@ -545,7 +587,7 @@ async function board() {
     <details class="newpost"><summary class="btn gold">${t("board_new")}</summary>
       <div class="form"><input id="bt" class="field dark" placeholder="${t("board_tfield")}"><textarea id="bb" class="field dark" placeholder="${t("board_body")}"></textarea><input id="bn" class="field dark" placeholder="${t("board_name")}"><div id="berr" class="alert hidden"></div><button class="btn gold" id="bpost">${t("board_post")}</button></div>
     </details>
-    <div class="threads">${list.map((th) => `<a class="thread" href="#/board/${esc(th.id)}"><span class="lang-b">${esc(th.posts[0]?.lang ?? "")}</span><div><h3>${esc(th.title)}</h3><p>${esc(th.posts[0]?.tr?.[lang() === "easy" ? "ja" : lang()] ?? th.posts[0]?.body ?? "").slice(0, 120)}</p><small>${esc(th.posts[0]?.name)} · ${when(th.created)} · ${th.count} ${t("board_count")}</small></div>${sampleTag(th)}</a>`).join("")}</div>`;
+    <div class="threads">${list.map((th) => `<a class="thread" href="#/board/${esc(th.id)}"><span class="lang-b">${esc(th.posts[0]?.lang ?? "")}</span><div><h3 lang="${esc(th.posts[0]?.lang ?? "")}">${esc(th.title)}</h3><p>${esc(th.posts[0]?.tr?.[lang() === "easy" ? "ja" : lang()] ?? th.posts[0]?.body ?? "").slice(0, 120)}</p><small>${esc(th.posts[0]?.name)} · ${when(th.created)} · ${th.count} ${t("board_count")}</small></div>${sampleTag(th)}</a>`).join("")}</div>`;
   $("#bpost").addEventListener("click", async () => {
     try {
       const th = await call("/api/board", { title: $("#bt").value, body: $("#bb").value, name: $("#bn").value, lang: lang() === "easy" ? "ja" : lang() });

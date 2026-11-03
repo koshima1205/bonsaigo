@@ -75,6 +75,8 @@ S = {
              branches=[(0.3, 1, 0.85, 0.3), (0.42, -1, 0.85, -0.2), (0.54, 1, 0.75, 0.9), (0.66, -1, 0.65, 0.5), (0.78, 1, 0.5, -0.6), (0.88, -1, 0.42, 0.2)], pad=0.5, padz=0.6, top=0.38,
              tuft="needle", col=((0.05, 0.11, 0.04), (0.14, 0.24, 0.08)), dens=640, sc=(1.0, 1.7), pot="rect", potcol=(0.16, 0.1, 0.07)),
 }[SPECIES]
+if globals().get("COL"):
+    S["col"] = COL  # 季節の色（動画用）
 
 bark = noise_mat("bark", *S["bark"], 0.95, scale=18, bump=1.0)
 core = noise_mat("core", tuple(c * 0.35 for c in S["col"][0]), tuple(c * 0.5 for c in S["col"][1]), 0.8, scale=22, bump=0.6)
@@ -130,7 +132,7 @@ for k, (t, side, length, ang) in enumerate(S["branches"]):
     p2 = base + d * length * 0.75 + Vector((0, 0, -0.08 + lift))
     p3 = base + d * length + Vector((0, 0, -0.02 + lift * 1.3))
     curve([base, p1, p2, p3], 0.085 if not S.get("bare") else 0.07, 0.02, f"br{k}", bark)
-    for j in range(5 if S.get("bare") else 3):
+    for j in range(5 if S.get("bare") else 9 if globals().get("LEAFLESS") else 3):
         a0 = p2.lerp(p3, j / 4)
         q = a0 + Vector((random.uniform(-0.25, 0.25), random.uniform(-0.25, 0.25), random.uniform(0.05, 0.35 if S.get("bare") else 0.08)))
         curve([a0, q], 0.025, 0.008, f"tw{k}{j}", bark, 6)
@@ -268,7 +270,7 @@ L(join.outputs[0], go.inputs[0])
 for o in pad_objs:
     gm = o.modifiers.new("scatter", "NODES")
     gm.node_group = ng
-    o.hide_render = False
+    o.hide_render = bool(globals().get("LEAFLESS"))  # 冬の雑木：葉を落とした姿
 
 # ---------- 鉢・土・苔 ----------
 if S["pot"] == "rect":

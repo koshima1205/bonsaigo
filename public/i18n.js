@@ -4,7 +4,7 @@ export const LETTER_LANGS = { en: "English", es: "Español", zh: "中文", fr: "
 export const VOICE = { en: "en-US", es: "es-ES", zh: "zh-CN", fr: "fr-FR", de: "de-DE", it: "it-IT", easy: "ja-JP", ja: "ja-JP" };
 
 const S = {
-  films_title: ["Blender で作った解説動画", "Blender で つくった どうが", "Explainer films, built in Blender", "Películas explicativas hechas en Blender", "用 Blender 制作的讲解影片"],
+  films_title: ["解説動画", "せつめいの どうが", "Films", "Películas", "讲解影片"],
   films_sub: ["記事の中身を、3Dの木と字幕で約3分に。音は縁側の BGM です。", "きじの なかみを 3Dの 木と じまくで 3ぷんに。", "Each article distilled into about three minutes of 3D trees and captions, scored with Engawa's music.", "Cada artículo, en unos tres minutos de árboles 3D y subtítulos, con la música de Engawa.", "把文章内容浓缩成约3分钟的3D树与字幕影片，配以缘侧的音乐。"],
   shorts_blender: ["ショート（縦の動画）", "みじかい どうが", "Shorts", "Cortos", "短视频"],
   shorts_ai: ["相談から生まれたショート（職人の OK 済み）", "そうだんから できた どうが", "Shorts born from consultations (approved by masters)", "Cortos nacidos de consultas (aprobados por maestros)", "源自咨询的短视频（经匠人认可）"],
@@ -20,7 +20,7 @@ const S = {
   cover_h1: ["冬も、外の寒さに当ててください。", "ふゆも、そとの さむさに あてて ください。", "Leave it out in the winter cold.", "Déjalo fuera, también en el frío del invierno.", "冬天，也请让它待在室外的寒气里。"],
   cover_sub: ["盆栽の基本を24本の記事に。その上に、日本の職人の生の声が積み上がっていくメディアです。", "ぼんさいの きほんを 24の きじに しました。その上に、日本の しょくにんの こえが ふえて いきます。", "Bonsai fundamentals in 24 clear articles — and on top of them, the living words of Japan's masters, growing with every question.", "Lo esencial del bonsái en 24 artículos claros y, encima, las palabras vivas de los maestros de Japón, que crecen con cada pregunta.", "用24篇文章讲清盆栽基础；在此之上，日本匠人的真实话语随着每一次提问不断积累。"],
   turn: ["ドラッグで回せます", "ゆびで まわせます", "Drag to turn", "Arrastra para girar", "拖动即可旋转"],
-  tree3d: ["Blender で作った3Dの木", "Blender で つくった 3Dの 木", "A 3D tree built in Blender", "Árbol 3D creado en Blender", "用 Blender 制作的3D树"],
+  tree3d: ["3Dの木", "3Dの 木", "3D tree", "Árbol 3D", "3D树"],
   learn_sub: ["基本・樹種・季節と手入れ。出典つきで、分かりやすく。", "きほん・木の しゅるい・きせつと ていれ。", "Basics, species, seasons and care — clearly explained, with sources.", "Fundamentos, especies, estaciones y cuidados: claro y con fuentes.", "基础、树种、四季与养护——讲得清楚，附出处。"],
   g_basics: ["基本", "きほん", "Basics", "Fundamentos", "基础"],
   g_species: ["樹種", "木の しゅるい", "Species", "Especies", "树种"],
@@ -37,7 +37,7 @@ const S = {
   next: ["次の記事", "つぎの きじ", "Next", "Siguiente", "下一篇"],
   fallback_lang: ["この記事はまだこの言葉に訳されていません。英語で表示しています。", "まだ やくして いません。", "This article is not yet translated; showing English.", "Este artículo aún no está traducido; se muestra en inglés.", "本文尚未翻译，暂以英文显示。"],
   the_trees: ["8つの木", "8つの 木", "Eight trees", "Ocho árboles", "八种树"],
-  the_trees_sub: ["どれも Blender で一から作った3Dの木。記事の中で回して見られます。", "Blender で つくった 木です。きじの 中で まわせます。", "Each one built from scratch in Blender — turn it inside its article.", "Cada uno creado desde cero en Blender; gíralo dentro de su artículo.", "每一棵都是用 Blender 从零做出的，可以在文章里旋转查看。"],
+  the_trees_sub: ["回して見る、8つの木。", "まわして みる 8つの 木", "Turn them, one by one.", "Gíralos, uno a uno.", "转动着看，八种树。"],
   qa_latest: ["掲示板の新しい問い", "けいじばんの あたらしい しつもん", "Latest on the board", "Lo último del foro", "交流板最新"],
   min_read: ["分で読めます", "ぷんで よめます", "min read", "min de lectura", "分钟读完"],
   nav_read: ["読む", "よむ", "Read", "Leer", "阅读"],

@@ -222,7 +222,7 @@ async function home() {
       <div class="cta"><a class="bt dark" href="#/learn">${t("nav_learn")} →</a><a class="bt line" href="#/ask">${t("nav_ask")}</a></div>
     </div>
     <div class="spin">
-      <b>${t("turn")}</b><span class="cap">${t("tree3d")}</span>
+      <b>${t("turn")}</b>
       <div class="sp-pick">${Object.entries(SPECIES).map(([k, v]) => `<button data-sp="${k}" class="${k === sp ? "on" : ""}">${v.word}</button>`).join("")}</div>
     </div>
   </section>
@@ -340,7 +340,7 @@ async function learnArticle(slug) {
         <div class="kb-meta cap"><span>${mins} ${t("min_read")}</span><span>${t("sources")} ${a.sources.length}</span><span>${mine.length} ${t("nav_voices")}</span></div>
         ${fell ? `<p class="fell">${t("fallback_lang")}</p>` : ""}
       </div>
-      <div class="col c5 kb-tree">${SPECIES[a.tree] ? `<div id="ktree"></div><p class="cap">${t("turn")} · ${t("tree3d")}</p>` : `<div class="kb-no">${no2(a.no)}</div>`}</div>
+      <div class="col c5 kb-tree">${SPECIES[a.tree] ? `<div id="ktree"></div><p class="cap">${t("turn")}</p>` : `<div class="kb-no">${no2(a.no)}</div>`}</div>
     </header>
     <div class="row kb-main">
       <aside class="col c3 kb-toc">${heads.length ? `<span class="k cap">Contents</span><ol>${heads.map((h, j) => `<li><a href="#s${j + 1}" data-to="s${j + 1}">${h}</a></li>`).join("")}</ol>` : ""}</aside>

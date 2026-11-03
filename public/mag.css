@@ -355,3 +355,4 @@ html:lang(zh) .mag :is(.quote,.vq,.hook,.mq p,.kb-text blockquote,.mcover .side 
 .page-h .wc,.page-big .wc{width:clamp(120px,18vw,220px);height:auto;flex:none;margin:-10px 0 -14px}
 .page-big.has-wc{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
 .gat .wc{width:min(180px,70%);margin:6px 0 -8px auto}
+.ask-row button{white-space:nowrap;flex:none}

@@ -464,7 +464,7 @@ async function article(slug) {
 const FILMS = [
   { id: "a-pine", dur: "3:02", word: "Pine", t: { ja: "黒松：芽切りで、枝はふえる", easy: "くろまつ：めきりで えだが ふえる", en: "Black pine: how one cut makes more branches", es: "Pino negro: cómo un corte da más ramas", zh: "黑松：一次修剪，枝条更多" }, slugs: ["black-pine", "early-summer", "prune-wire-repot"] },
   { id: "b-maple", dur: "3:06", word: "Maple", t: { ja: "もみじ：一本の木の四季", easy: "もみじ：1本の 木の きせつ", en: "Japanese maple: one tree, four seasons", es: "Arce japonés: un árbol, cuatro estaciones", zh: "枫：一棵树的四季" }, slugs: ["japanese-maple", "spring", "midsummer", "autumn", "winter", "calendar"] },
-  { id: "c-eight", dur: "2:56", word: "Eight", t: { ja: "盆栽の8つの木", easy: "ぼんさいの 8つの 木", en: "Eight trees of bonsai", es: "Ocho árboles del bonsái", zh: "盆栽的八种树" }, slugs: ["what-is-bonsai", "how-to-look", "white-pine", "shimpaku", "satsuki", "ume", "zelkova", "needle-juniper"], at: { "black-pine": 12, "white-pine": 31, shimpaku: 50, "japanese-maple": 69, satsuki: 88, ume: 107, zelkova: 126, "needle-juniper": 145 } },
+  { id: "c-eight", dur: "2:56", word: "Eight", t: { ja: "盆栽の8つの木", easy: "ぼんさいの 8つの 木", en: "Eight trees of bonsai", es: "Ocho árboles del bonsái", zh: "盆栽的八种树" }, slugs: ["what-is-bonsai", "how-to-look", "white-pine", "shimpaku", "satsuki", "ume", "zelkova", "needle-juniper"], at: { "white-pine": 31, shimpaku: 50, satsuki: 88, ume: 107, zelkova: 126, "needle-juniper": 145 } },
 ];
 const SHORT_FILMS = [
   { id: "s1-mekiri", t: { ja: "黒松の「芽切り」って、なに？", easy: "めきりって なに？", en: "What is mekiri?", es: "¿Qué es el mekiri?", zh: "什么是“芽切”？" } },
@@ -479,7 +479,7 @@ function playFilm(id, at = 0, tall = false) {
   if (was) bgm.stop();
   const d = document.createElement("div");
   d.className = `film-modal ${tall ? "tall" : ""}`;
-  d.innerHTML = `<div class="film-box"><video src="/films/${id}.mp4#t=${at}" controls autoplay playsinline></video><button class="film-x cap">${t("close")} ✕</button></div>`;
+  d.innerHTML = `<div class="film-box"><video src="/films/${id}.mp4#t=${at}" controls autoplay playsinline></video><button class="film-x cap">${t("close")} ✕</button><small class="film-note cap">${t("captions_note")}</small></div>`;
   document.body.append(d);
   // #t= だけでは頭から始まるブラウザがあるので、読み込みが済んだら指定の秒へ送る
   const v = d.querySelector("video");
@@ -499,7 +499,7 @@ function wireFilms(root = app) {
 }
 
 async function shortsList() {
-  chrome(`<section class="page-big"><div class="big-w">Films<em>.</em></div><p>${t("films_sub")}</p></section>
+  chrome(`<section class="page-big has-loop"><div><div class="big-w">Films<em>.</em></div><p>${t("films_sub")}</p></div><video class="hero-loop" src="/films/s3-eight.mp4" poster="/films/s3-eight.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video></section>
     <section class="row"><div class="col c12"><span class="k cap">${t("films_title")}</span><div class="film-grid">${FILMS.map((f) => filmCard(f)).join("")}</div></div></section>
     <section class="row"><div class="col c12"><span class="k cap">${t("shorts_blender")}</span><div class="sfilm-row">${SHORT_FILMS.map(shortCard).join("")}</div></div></section>
     <section class="row"><div class="col c12"><span class="k cap">${t("shorts_ai")}</span><p class="dek">${t("sec_shorts_sub")}</p><div class="reel mag-reel"></div></div></section>`, { here: "#/shorts" });

@@ -97,6 +97,20 @@ const CITY_T: Record<string, (city: string) => string> = {
   easy: (c) => `${c || "外国"}からの そうだん`,
 };
 
+// 樹種名（見本の応答用）。ない樹種は日本語のまま出す
+const TREES: Record<string, Omit<ML, "ja">> = {
+  黒松: { easy: "くろまつ", en: "Japanese black pine", es: "Pino negro japonés", zh: "黑松" },
+  五葉松: { easy: "ごようまつ", en: "Japanese white pine", es: "Pino blanco japonés", zh: "五针松" },
+  松: { easy: "まつ", en: "Pine", es: "Pino", zh: "松" },
+  真柏: { easy: "しんぱく", en: "Shimpaku juniper", es: "Junípero shimpaku", zh: "真柏" },
+  もみじ: { easy: "もみじ", en: "Japanese maple", es: "Arce japonés", zh: "枫" },
+  サツキ: { easy: "さつき", en: "Satsuki azalea", es: "Azalea satsuki", zh: "皋月杜鹃" },
+};
+function treeNames(ja: string): ML {
+  const hit = TREES[ja] ?? Object.entries(TREES).find(([k]) => ja.includes(k))?.[1];
+  return hit ? { ja, ...hit } : { ja, easy: ja, en: ja, es: ja, zh: ja };
+}
+
 function mlFromJa(ja: string): ML {
   const parts = sentences(ja);
   const pick = (lang: string) => parts.map((p) => tr(p, lang) ?? `${p}。`).join(" ");
@@ -126,7 +140,7 @@ export const demo = {
     const q: ML = { ja: `「${c.question}」`, easy: `「${c.question}」`, en: `“${c.question}”`, es: `«${c.question}»`, zh: `“${c.question}”` };
     return {
       slug: `consult-${Date.now().toString(36)}`,
-      tree: { ja: c.tree_ja, easy: c.tree_ja, en: "Bonsai", es: "Bonsái", zh: "盆栽" },
+      tree: treeNames(c.tree_ja),
       title: { ja: `${c.city || "海外"}からの相談 ― 職人${c.replies.length}人の答え`, easy: `${CITY_T.easy(c.city)}`, en: CITY_T.en(c.city), es: CITY_T.es(c.city), zh: CITY_T.zh(c.city) },
       lead: { ja: `海外の持ち主から届いた相談に、${c.replies.length}人の職人が答えました。言葉をそのまま並べます。`, easy: `${c.replies.length}人の しょくにんが こたえました。`, en: `Masters in Japan answered an owner abroad. Their words, exactly as spoken.`, es: `Maestros de Japón respondieron a una persona del extranjero. Sus palabras, tal como las dijeron.`, zh: `日本的匠人回答了海外主人的提问。原样呈现他们的话。` },
       sections: [
@@ -143,7 +157,7 @@ export const demo = {
   },
   short(a: Article): Pick<Short, "hook_ja" | "hook_en" | "scenes" | "captions"> {
     const quotes = a.sections.filter((s) => s.quote_ja).slice(0, 2);
-    const first = (s: string) => s.split(/(?<=[.!?。])\s/)[0].slice(0, 90);
+    const first = (s: string) => { const x = s.split(/(?<=[.!?。])\s/)[0]; return x.length <= 90 ? x : `${x.slice(0, 88).replace(/\s+\S*$/, "")}…`; };
     return {
       hook_ja: a.title.ja.split("―")[0].trim(),
       hook_en: a.title.en.split("—")[0].trim(),

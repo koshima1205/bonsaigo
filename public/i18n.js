@@ -115,7 +115,7 @@ const S = {
   sent_title: ["日本へ送りました", "日本へ おくりました", "Sent to Japan", "Enviado a Japón", "已发送至日本"],
   sent_wait: ["職人が読んで、自分の言葉で答えます。このページを残しておいてください。ここに手紙が届きます。何人かの職人が答えることもあります。", "しょくにんが こたえます。この ページを のこして ください。", "Masters will read your question and answer in their own words. Keep this page — the letters will appear here. More than one master may answer.", "Los maestros leerán tu pregunta y responderán con sus palabras. Guarda esta página: aquí llegarán las cartas. Puede responder más de un maestro.", "匠人会阅读你的问题，用自己的话回答。请保留此页面，回信会出现在这里，可能有多位匠人回答。"],
   your_q: ["あなたの相談", "あなたの そうだん", "Your question", "Tu pregunta", "你的问题"],
-  letter_title: ["手入れの手紙", "ておれの てがみ", "Care letter", "Carta de cuidados", "养护信"],
+  letter_title: ["手入れの手紙", "ていれの てがみ", "Care letter", "Carta de cuidados", "养护信"],
   letter_by: ["日本の職人より・言葉はそのまま引用", "日本の しょくにんより", "From a bonsai master in Japan · words quoted as spoken", "De un maestro de bonsái en Japón · palabras citadas tal cual", "来自日本盆栽匠人 · 原话引用"],
   listen: ["読み上げる", "よみあげる", "Listen", "Escuchar", "朗读"],
   record: ["この木の記録", "この 木の きろく", "This tree's record", "Registro de este árbol", "这棵树的记录"],

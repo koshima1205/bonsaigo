@@ -61,7 +61,8 @@ async function shrink(file) {
   return cv.toDataURL("image/jpeg", 0.82);
 }
 
-const safe = (s) => (typeof s === "string" && (s.startsWith("data:image/") || isIllust(s)) ? s : "illust:pine:1");
+const IMG = /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/]+=*$/;
+const safe = (s) => (typeof s === "string" && (IMG.test(s) || /^illust:[a-z]+:\d+$/.test(s)) ? s : "illust:pine:1");
 const artCache = new Map();
 const pic = (src, alt = "", cls = "") => {
   src = safe(src);
@@ -209,7 +210,7 @@ function articleCard(a) {
   return `<a class="card-a" href="#/read/${esc(a.slug)}">
     <div class="cover">${pic(a.cover, ml(a.title))}</div>
     <div class="card-b">
-      <div class="meta"><span>${esc(ml(a.tree))}</span>${a.source ? `<span class="from">相談から</span>` : ""}${sampleTag(a)}</div>
+      <div class="meta"><span>${esc(ml(a.tree))}</span>${a.source || a.from_consult ? `<span class="from">相談から</span>` : ""}${sampleTag(a)}</div>
       <h3>${esc(ml(a.title))}</h3>
       <p>${esc(ml(a.lead))}</p>
       <div class="foot-m"><span>${when(a.created)}</span>${a.views != null ? `<span>${Number(a.views).toLocaleString()} ${t("views")}</span>` : ""}</div>
@@ -221,7 +222,7 @@ function termCard(g) {
     <div class="term-h"><b lang="ja">${esc(g.ja)}</b><small>${esc(g.yomi)}</small>${g.dialect ? `<span class="tag">${t("gloss_dialect")}</span>` : ""}${g.edited_by ? `<span class="tag ok">${t("gloss_edited")}</span>` : ""}</div>
     <div class="lit"><span>${t("literal")}</span><s>${esc(g.literal)}</s></div>
     <div class="mean"><span>${t("meaning")}</span>${esc(tm(g))}</div>
-    <div class="why"><span>${t("why")}</span>${esc(g.why_ja)}</div>
+    <div class="why"><span>${t("why")}</span>${esc(["ja", "easy"].includes(lang()) ? g.why_ja : g.why_en || g.why_ja)}</div>
   </div>`;
 }
 
@@ -277,7 +278,7 @@ async function article(slug) {
           <h2><span>${NUM[i] ?? i + 1}</span>${esc(ml(s.heading))}</h2>
           ${s.quote_ja ? `<blockquote class="mq"><p ${jaSide ? "" : 'lang="ja"'}>${jaSide ? esc(ml(s.body)) : `「${markTerms(s.quote_ja, gloss)}」`}</p>
             ${jaSide ? `<div class="orig"><em>${t("masters_words")}</em><span lang="ja">${markTerms(s.quote_ja, gloss)}</span></div>` : ""}
-            <cite>${esc(s.master ?? "")}</cite></blockquote>` : `<p>${esc(ml(s.body))}</p>`}
+            <cite>${esc(nm(s.master))}</cite></blockquote>` : `<p>${esc(ml(s.body))}</p>`}
         </section>`).join("")}
     </div>
     ${sh.length ? `<aside class="art-short"><h3>${t("article_short")}</h3><div class="mini"><canvas id="artShort"></canvas><button class="play-btn" id="artPlay">▶ ${t("play")}</button></div></aside>` : ""}
@@ -399,7 +400,7 @@ async function thread(id) {
     <h1 class="th-title">${esc(th.title)} ${sampleTag(th)}</h1>
     <div class="posts">${th.posts.map((p, i) => `
       <div class="post ${p.master ? "is-master" : ""}">
-        <div class="who">${p.master ? `<span class="seal sm">職</span>` : ""}<b>${esc(p.name)}</b>${p.master ? `<span class="tag">${t("board_master")}</span>` : ""}<small>${when(p.created)} · ${esc(p.lang)}</small></div>
+        <div class="who">${p.master ? `<span class="seal sm">職</span>` : ""}<b>${esc(nm(p.name))}</b>${p.master ? `<span class="tag">${t("board_master")}</span>` : ""}<small>${when(p.created)} · ${esc(p.lang)}</small></div>
         ${p.lang !== want && p.tr?.[want] ? `<p class="tr">${esc(p.tr[want])}</p><details><summary>${t("board_orig")}</summary><p lang="${esc(p.lang)}">${esc(p.body)}</p></details>` : `<p lang="${esc(p.lang)}">${esc(p.body)}</p>${p.lang !== want ? `<button class="trbtn" data-i="${i}">${t("board_tr")}</button><p class="tr hidden" id="tr${i}"></p>` : ""}`}
       </div>`).join("")}</div>
     ${th.seed ? "" : `<div class="form reply"><textarea id="rb" class="field dark" placeholder="${t("board_body")}"></textarea><input id="rn" class="field dark" placeholder="${t("board_name")}" value="${esc(asMaster ? masterName() : "")}"><div id="rerr" class="alert hidden"></div><button class="btn gold" id="rpost">${t("board_reply")}</button></div>`}`;
@@ -465,6 +466,9 @@ async function wishPage() {
 function paperShell(inner) {
   chrome(`<section class="letter-wrap"><div class="letter">${inner}</div></section>`, { here: "#/ask" });
 }
+// 見本の職人名を、読む人の言語で出す
+const MASTER_WORD = { en: "Master", es: "Maestro", zh: "匠人" };
+const nm = (s) => (MASTER_WORD[lang()] ? String(s ?? "").replace(/職人([A-Z])（見本）/, (_, x) => `${MASTER_WORD[lang()]} ${x} (${t("sample")})`) : String(s ?? ""));
 const demoBar = () => (config.demo ? `<div class="demo-flag">${t("demo_banner")}</div>` : "");
 
 function ask() {
@@ -561,7 +565,7 @@ async function ownerView(id) {
   const terms = [...new Map(c.replies.flatMap((r) => r.letter.terms ?? []).map((x) => [x.ja, x])).values()];
   const k = c.knowledge;
   const masters = new Set(c.replies.map((r) => r.master)).size;
-  paperShell(`${c.seed ? `<div class="demo-flag">${t("sample")} · ${t("footer_seed")}</div>` : ""}
+  paperShell(`${c.seed ? `<div class="demo-flag">${t("sample")} · ${t("footer_seed")}</div>` : c.demo ? demoBar() : ""}
     <div class="ans-h"><span class="big-n">${masters}</span><span>${t("masters_n")}</span></div>
     ${photos}
     <div class="q-quote"><label>${t("your_q")}</label>${esc(c.question)}</div>
@@ -569,13 +573,13 @@ async function ownerView(id) {
     <div class="card">
       <div class="stamp">${esc([...r.master][0] ?? "職")}<br>印</div>
       <h2>${t("letter_title")}</h2>
-      <div class="by">${esc(r.master)} · ${t("letter_by")}</div>
+      <div class="by">${esc(nm(r.master))} · ${t("letter_by")}</div>
       <p class="greet">${esc(r.letter.greeting)}</p>
       ${r.letter.lines.map((l) => `<div class="tip"><b>${esc(l.text)}</b><div class="quote"><em>${t("masters_words")}</em>${esc(l.quote_ja)}</div></div>`).join("")}
       ${r.drawing ? `<img class="drawn" src="${safe(r.drawing)}" alt="">` : ""}
     </div>`).join("")}
     ${terms.length ? `<div class="explain"><h3>${t("terms_title")}</h3>${terms.map((x) => `<div class="ex"><b lang="ja">${esc(x.ja)}</b>${x.dialect ? `<span class="tag">${t("gloss_dialect")}</span>` : ""}<div class="lit"><span>${t("literal")}</span><s>${esc(x.literal)}</s></div><div class="mean"><span>${t("meaning")}</span>${esc(x.rendered)}</div></div>`).join("")}</div>` : ""}
-    ${k && masters > 1 ? `<div class="wisdom"><h3>${t("wisdom")}</h3>${AXES.filter((a) => k.axes.some((x) => x.key === a)).map((a) => `<div class="axis"><div class="ax-l">${t("axis_" + a)}</div>${k.axes.find((x) => x.key === a).items.map((i, n, arr) => `<div class="ax-i">${n && arr[n - 1].master === i.master ? "" : `<span class="who">${esc(i.master)}</span>`}${esc(i.text)}</div>`).join("")}</div>`).join("")}</div>` : ""}
+    ${k && masters > 1 ? `<div class="wisdom"><h3>${t("wisdom")}</h3>${AXES.filter((a) => k.axes.some((x) => x.key === a)).map((a) => `<div class="axis"><div class="ax-l">${t("axis_" + a)}</div>${k.axes.find((x) => x.key === a).items.map((i, n, arr) => `<div class="ax-i">${n && arr[n - 1].master === i.master ? "" : `<span class="who">${esc(nm(i.master))}</span>`}${esc(i.text)}</div>`).join("")}</div>`).join("")}</div>` : ""}
     <button class="listen" id="listen"><span class="pl">▶</span>${t("listen")}</button>
     <div><label>${t("record")}</label>
       <div class="log">

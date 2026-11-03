@@ -73,7 +73,7 @@ async function pushList(env: Env, key: string, id: string, max = 100) {
 }
 
 function isMaster(req: Request, env: Env) {
-  return !env.MASTER_CODE || req.headers.get("x-master-code") === env.MASTER_CODE;
+  return !!env.MASTER_CODE && req.headers.get("x-master-code") === env.MASTER_CODE;
 }
 
 // 公開しても API 料金が膨らまないよう、1日あたりの上限をかける
@@ -162,9 +162,13 @@ const PLATFORMS = ["ig", "yt", "tt"] as const;
 async function counter(env: Env, key: string) {
   return Number((await env.CONSULTS.get(key)) ?? 0);
 }
+// 数え損ねても記事やページの表示は止めない
 async function bump(env: Env, key: string) {
-  await env.CONSULTS.put(key, String((await counter(env, key)) + 1));
+  try { await env.CONSULTS.put(key, String((await counter(env, key)) + 1)); } catch {}
 }
+// 公開の場には元の相談の ID を出さない（見本の相談だけはつなぐ）
+const pub = (a: Article) => ({ ...a, source: a.source === "sample" ? a.source : undefined, from_consult: !!a.source });
+const IMG = /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/]+=*$/;
 
 // ---------- 掲示板・欲しい木 ----------
 async function threads(env: Env): Promise<Thread[]> {
@@ -219,7 +223,7 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
     if (!(await underLimit(req, env, "ai"))) return json({ error: "limit" }, 429);
     const b = await body<Partial<Consult>>();
     const lang = b.lang && LANGS[b.lang] ? b.lang : "en";
-    const photos = (b.photos ?? []).filter((p) => typeof p === "string" && p.startsWith("data:image/") && p.length > 200 && p.length < 1_500_000).slice(0, 3);
+    const photos = (b.photos ?? []).filter((p) => typeof p === "string" && IMG.test(p) && p.length > 200 && p.length < 1_500_000).slice(0, 3);
     const question = str(b.question, 1200);
     const city = str(b.city, 80);
     if (!photos.length || !question) return json({ error: "photo_and_question" }, 400);
@@ -239,6 +243,7 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
     if (c.seed && M === "POST") return json({ error: "sample" }, 409);
 
     if (act === "answers" && M === "POST" && c.status === "intake") {
+      if (!(await underLimit(req, env, "ai"))) return json({ error: "limit" }, 429);
       const { answers } = await body<{ answers: Record<string, string> }>();
       c.answers = Object.fromEntries(Object.entries(answers ?? {}).slice(0, 5).map(([k, v]) => [str(k, 30), str(v, 200)]));
       c.brief = client ? await runBrief(client, c) : demo.brief();
@@ -314,14 +319,14 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
     if (!id && M === "GET") {
       const [arts, sh] = await Promise.all([articles(env, all), shorts(env, all)]);
       const views = await Promise.all(arts.map((a) => counter(env, `v:${a.slug}`)));
-      return json(arts.map((a, i) => ({ ...a, sections: undefined, views: views[i] + (SEED_VIEWS[a.slug] ?? 0), shorts: sh.filter((s) => s.slug === a.slug).length })).sort((x, y) => y.created - x.created));
+      return json(arts.map((a, i) => ({ ...(master ? a : pub(a)), sections: undefined, views: views[i] + (SEED_VIEWS[a.slug] ?? 0), shorts: sh.filter((s) => s.slug === a.slug).length })).sort((x, y) => y.created - x.created));
     }
     const a = id ? await getArticle(env, id) : null;
     if (!a) return json({ error: "not_found" }, 404);
     if (!act && M === "GET") {
       if (a.status !== "published" && !master) return json({ error: "not_found" }, 404);
       if (a.status === "published" && !new URL(req.url).searchParams.has("noview")) await bump(env, `v:${a.slug}`);
-      return json(a);
+      return json(master ? a : pub(a));
     }
     if (!master) return deny();
     if (act === "publish" && M === "POST") {
@@ -351,6 +356,7 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
       if (!master) return deny();
       const s = await getJson<Short>(env, `s:${id}`);
       if (!s) return json({ error: "not_found" }, 404);
+      if ((await getArticle(env, s.slug))?.status !== "published") return json({ error: "article_not_published" }, 409);
       s.status = "approved";
       await putJson(env, `s:${id}`, s, false);
       return json(s);
@@ -362,6 +368,7 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
     const { src } = await body<{ src: string }>();
     const m = /^(s-[a-z0-9]{2,12})-(ig|yt|tt)$/.exec(String(src ?? ""));
     if (!m) return json({ error: "bad" }, 400);
+    if (!SEED_SHORTS.some((s) => s.id === m[1]) && !(await env.CONSULTS.get(`s:${m[1]}`))) return json({ error: "not_found" }, 404);
     await bump(env, `h:${m[0]}`);
     return json({ ok: true });
   }
@@ -422,6 +429,7 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
     if (!id && M === "GET") return json(await wishes(env));
     if (!id && M === "POST") {
       if (!(await underLimit(req, env, "post"))) return json({ error: "limit" }, 429);
+      if (client && !(await underLimit(req, env, "ai"))) return json({ error: "limit" }, 429);
       const b = await body<{ text: string; country: string }>();
       const text = str(b.text, 600);
       const country = str(b.country, 60);

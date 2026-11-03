@@ -10,6 +10,8 @@ const timers = new Set();
 const later = (fn, ms) => { const t = setTimeout(() => { timers.delete(t); fn(); }, ms); timers.add(t); };
 const pick = (a) => a[Math.floor(Math.random() * a.length)];
 const cache = new Map();
+// 聞き比べ用の版（?bgm=shizuka：琴を減らし間を長く／?bgm=shakuhachi：尺八が中心）
+const MODE = { shizuka: { notes: [2, 3, 4], gap: [7000, 7000], flute: [26000, 20000] }, shakuhachi: { notes: [2, 3], gap: [9000, 8000], flute: [9000, 7000] } }[new URLSearchParams(location.search).get("bgm")] ?? { notes: [3, 4, 5, 6], gap: [3800, 5200], flute: [19000, 17000] };
 
 function init() {
   if (ctx) return;
@@ -217,7 +219,7 @@ function phrase() {
   if (!running) return;
   let i = pick([7, 8, 9, 10, 11]);
   let t = ctx.currentTime + 0.1;
-  const n = 3 + Math.floor(Math.random() * 4);
+  const n = pick(MODE.notes);
   for (let k = 0; k < n; k++) {
     const last = k === n - 1;
     if (last) i = pick([5, 8, 10]);
@@ -229,13 +231,13 @@ function phrase() {
     i += pick([-1, -1, -1, -2, 1, 1, 2]);
     i = Math.max(3, Math.min(13, i));
   }
-  later(phrase, (t - ctx.currentTime) * 1000 + 3800 + Math.random() * 5200);
+  later(phrase, (t - ctx.currentTime) * 1000 + MODE.gap[0] + Math.random() * MODE.gap[1]);
 }
 
 function flute() {
   if (!running) return;
   shakuhachi(deg(pick([8, 10, 10, 11, 13])) , ctx.currentTime + 0.2, 3.5 + Math.random() * 2.5);
-  later(flute, 19000 + Math.random() * 17000);
+  later(flute, MODE.flute[0] + Math.random() * MODE.flute[1]);
 }
 
 function water() {

@@ -16,7 +16,7 @@ const S = {
   nav_voices: ["職人の声", "しょくにんの こえ", "Voices", "Voces", "匠人之声"],
   nav_films: ["動画", "どうが", "Films", "Vídeos", "视频"],
   issue: ["第1号 · 2026年 冬", "だい1ごう · 2026年 ふゆ", "Issue 01 · Winter 2026", "Número 01 · Invierno 2026", "第01期 · 2026年冬"],
-  cover_tag: ["今号の職人のことば", "こんかいの しょくにんの ことば", "This issue's master's words", "Las palabras del maestro", "本期匠人之言"],
+  cover_tag: ["今号の職人のことば", "こんかいの しょくにんの ことば", "A master's word, this issue", "La palabra de un maestro, este número", "本期匠人之言"],
   cover_h1: ["冬も、外の寒さに当ててください。", "ふゆも、そとの さむさに あてて ください。", "Leave it out in the winter cold.", "Déjalo fuera, también en el frío del invierno.", "冬天，也请让它待在室外的寒气里。"],
   cover_sub: ["盆栽の基本を24本の記事に。その上に、日本の職人の生の声が積み上がっていくメディアです。", "ぼんさいの きほんを 24の きじに しました。その上に、日本の しょくにんの こえが ふえて いきます。", "Bonsai fundamentals in 24 clear articles — and on top of them, the living words of Japan's masters, growing with every question.", "Lo esencial del bonsái en 24 artículos claros y, encima, las palabras vivas de los maestros de Japón, que crecen con cada pregunta.", "用24篇文章讲清盆栽基础；在此之上，日本匠人的真实话语随着每一次提问不断积累。"],
   turn: ["ドラッグで回せます", "ゆびで まわせます", "Drag to turn", "Arrastra para girar", "拖动即可旋转"],

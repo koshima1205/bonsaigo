@@ -236,9 +236,9 @@ body.mag ::selection{background:var(--green);color:var(--paper)}
 .mag-splash .cap{font:600 11px Inter;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .splash-img{width:min(54vw,340px);aspect-ratio:1;object-fit:contain;animation:fadeUp 1s .1s both}
 .mag-splash h1{font:900 clamp(64px,12vw,140px)/.9 Fraunces,serif;letter-spacing:-.05em;color:var(--green);margin:0}
-.mag-splash p{max-width:38ch;font:400 14px/1.8 Inter,"Noto Sans JP";color:#2b2925;margin:6px 0 10px}
+.mag-splash p{max-width:38ch;font:400 14px/1.8 Inter,"Noto Sans JP";color:#2b2925;margin:22px 0 10px}
 .mag-splash .enter{background:var(--ink);color:var(--paper);border:0;border-radius:0;padding:14px 28px;font:600 13px Inter,"Noto Sans JP";letter-spacing:.12em;text-transform:uppercase}
-.mag-splash .enter small{display:block;opacity:.7;font-size:10px;margin-top:4px}
+.mag-splash .enter small{display:block;color:var(--paper);opacity:.85;font-size:10px;margin-top:4px;letter-spacing:.2em}
 .mag-splash .enter:hover{background:var(--green)}
 .mag-splash .quiet{background:none;border:0;color:var(--mute);text-decoration:underline;font:13px Inter,"Noto Sans JP"}
 .mag-splash .langs button{border-radius:0;border-color:var(--ink);color:var(--ink)}
@@ -331,3 +331,13 @@ html:lang(zh) .mag h1,html:lang(zh) .mag h2,html:lang(zh) .mag h3,html:lang(zh) 
 .mag [lang=zh]{font-family:"Noto Sans SC",sans-serif}.mag h3[lang=zh]{font-family:"Noto Serif SC",serif}
 html:lang(zh){--serif:"Noto Serif SC",serif;--latin:"Fraunces","Noto Serif SC",serif}
 html:lang(zh) .mag :is(.quote,.vq,.hook,.mq p,.kb-text blockquote,.mcover .side h1,.kb-h p){font-family:"Noto Serif SC",serif}
+
+/* 音のボタン：消音のときは ♪ だけ、鳴っているときは ♪ と動く棒 */
+.mag .snd{display:inline-flex;align-items:center;gap:6px}
+.mag .snd .note{font-size:13px;line-height:1}
+.mag .snd:not(.on) .bars{display:none}
+@media (max-width:700px){
+  .mag .snd,.mag .langsel select{min-height:40px;min-width:40px;justify-content:center}
+  .issue-nav{display:flex;flex-wrap:wrap;overflow:visible;-webkit-mask:none;mask:none;row-gap:4px;padding-right:0}
+  .issue-nav a{padding:10px 0}
+}

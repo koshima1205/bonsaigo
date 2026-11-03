@@ -103,7 +103,7 @@ function chrome(inner, { here = "" } = {}) {
     <div class="mast-r">
       <nav>${NAV_R.map(link).join("")}</nav>
       <label class="langsel"><span class="sr">Language</span><select id="uilang">${Object.entries(UI_LANGS).map(([k, v]) => `<option value="${k}" ${k === lang() ? "selected" : ""}>${v}</option>`).join("")}</select></label>
-      <button class="snd ${bgm.on ? "on" : ""}" aria-pressed="${bgm.on}" title="${t("sound")}">${BARS}<span class="snd-l">${t("sound")}</span></button>
+      <button class="snd ${bgm.on ? "on" : ""}" aria-pressed="${bgm.on}" title="${t("sound")}" aria-label="${t("sound")}"><span class="note" aria-hidden="true">♪</span>${BARS}<span class="snd-l">${t("sound")}</span></button>
     </div>
   </header>
   <div class="issue cap"><span>${t("issue")}</span><nav class="issue-nav">${[...NAV_L, ...NAV_R].map(link).join("")}</nav><a class="ask-l" href="#/ask">${t("nav_ask")} →</a></div>
@@ -321,7 +321,7 @@ async function learnArticle(slug) {
   const L = a.langs[lang()] ?? a.langs.en ?? a.langs.ja;
   const fell = !a.langs[lang()];
   const jaLike = ["ja", "easy", "zh"].includes(lang()) && !fell;
-  const mins = Math.max(2, Math.round(L.len / (jaLike ? 500 : 1100)));
+  const mins = Math.max(2, Math.round(L.len / (jaLike ? 500 : 900)));
   const voices = voicesOf(arts);
   const mine = await withBody(SPECIES[a.tree] ? voices.filter((v) => treeKey(v.tree?.ja) === a.tree) : []);
   const others = await withBody(voices.filter((v) => !mine.some((m) => m.slug === v.slug)).slice(0, mine.length ? 2 : 3));
@@ -587,7 +587,7 @@ async function board() {
     <details class="newpost"><summary class="btn gold">${t("board_new")}</summary>
       <div class="form"><input id="bt" class="field dark" placeholder="${t("board_tfield")}"><textarea id="bb" class="field dark" placeholder="${t("board_body")}"></textarea><input id="bn" class="field dark" placeholder="${t("board_name")}"><div id="berr" class="alert hidden"></div><button class="btn gold" id="bpost">${t("board_post")}</button></div>
     </details>
-    <div class="threads">${list.map((th) => `<a class="thread" href="#/board/${esc(th.id)}"><span class="lang-b">${esc(th.posts[0]?.lang ?? "")}</span><div><h3 lang="${esc(th.posts[0]?.lang ?? "")}">${esc(th.title)}</h3><p>${esc(th.posts[0]?.tr?.[lang() === "easy" ? "ja" : lang()] ?? th.posts[0]?.body ?? "").slice(0, 120)}</p><small>${esc(th.posts[0]?.name)} · ${when(th.created)} · ${th.count} ${t("board_count")}</small></div>${sampleTag(th)}</a>`).join("")}</div>`;
+    <div class="threads">${list.map((th) => `<a class="thread" href="#/board/${esc(th.id)}"><span class="lang-b">${esc(th.posts[0]?.lang ?? "")}</span><div><h3 lang="${esc(th.posts[0]?.lang ?? "")}">${esc(th.title)}</h3><p>${esc(th.posts[0]?.tr?.[lang() === "easy" ? "ja" : lang()] ?? th.posts[0]?.body ?? "").slice(0, 120)}</p><small>${esc(th.posts[0]?.name)} · ${when(th.created)} · ${th.count} ${th.count === 1 ? ({ en: "post", es: "mensaje" })[lang()] ?? t("board_count") : t("board_count")}</small></div>${sampleTag(th)}</a>`).join("")}</div>`;
   $("#bpost").addEventListener("click", async () => {
     try {
       const th = await call("/api/board", { title: $("#bt").value, body: $("#bb").value, name: $("#bn").value, lang: lang() === "easy" ? "ja" : lang() });

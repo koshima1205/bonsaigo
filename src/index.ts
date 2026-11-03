@@ -457,9 +457,63 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
   return json({ error: "not_found" }, 404);
 }
 
+// 静的アセットは Range に 200（全体）で返すため、iPhone の Safari で再生・途中から再生ができない。
+// 動画だけここを通し、必要な範囲を切り出して 206 で返す（長さが分かるときは流しながら切るので全体を読み込まない）
+async function film(req: Request, env: Env): Promise<Response> {
+  const res = await env.ASSETS.fetch(new Request(req.url, { method: "GET" }));
+  if (!res.ok || !res.body) return res;
+  // 手元の wrangler dev は長さを付けずに返すので、そのときだけ全体を読んで長さを知る
+  const known = Number(res.headers.get("content-length"));
+  const buf = known ? null : new Uint8Array(await res.arrayBuffer());
+  const size = known || buf!.byteLength;
+  const done = () => { if (!buf) res.body!.cancel(); };
+  const headers = new Headers({
+    "content-type": "video/mp4",
+    "accept-ranges": "bytes",
+    "cache-control": "public, max-age=86400",
+    "x-robots-tag": "noindex",
+  });
+  const m = /^bytes=(\d*)-(\d*)$/.exec(req.headers.get("range") ?? "");
+  if (!m || (!m[1] && !m[2])) {
+    headers.set("content-length", String(size));
+    if (req.method === "HEAD") done();
+    return new Response(req.method === "HEAD" ? null : buf ?? res.body, { status: 200, headers });
+  }
+  const start = m[1] ? Number(m[1]) : Math.max(0, size - Number(m[2]));
+  const end = m[1] && m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+  if (start >= size || start > end) {
+    done();
+    headers.set("content-range", `bytes */${size}`);
+    return new Response(null, { status: 416, headers });
+  }
+  headers.set("content-range", `bytes ${start}-${end}/${size}`);
+  headers.set("content-length", String(end - start + 1));
+  if (req.method === "HEAD") { done(); return new Response(null, { status: 206, headers }); }
+  if (buf) return new Response(buf.slice(start, end + 1), { status: 206, headers });
+  const reader = res.body.getReader();
+  let pos = 0;
+  const body = new ReadableStream<Uint8Array>({
+    async pull(ctl) {
+      while (true) {
+        const { done: last, value } = await reader.read();
+        if (last) { ctl.close(); return; }
+        const from = pos;
+        pos += value.byteLength;
+        if (pos <= start) continue;
+        ctl.enqueue(value.subarray(Math.max(start - from, 0), Math.min(end + 1 - from, value.byteLength)));
+        if (pos > end) { ctl.close(); reader.cancel(); }
+        return;
+      }
+    },
+    cancel() { reader.cancel(); },
+  });
+  return new Response(body, { status: 206, headers });
+}
+
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
+    if (url.pathname.startsWith("/films/") && url.pathname.endsWith(".mp4")) return film(req, env);
     if (!url.pathname.startsWith("/api/")) return env.ASSETS.fetch(req);
     try {
       return await api(req, env, url.pathname.split("/"));

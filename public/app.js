@@ -462,7 +462,7 @@ async function article(slug) {
 // ---------------- メディア：ショート ----------------
 // ---------------- 解説動画（Blender で描いた映像・約3分）とショート ----------------
 const FILMS = [
-  { id: "a-pine", dur: "3:08", word: "Pine", t: { ja: "黒松：芽切りで、枝はふえる", easy: "くろまつ：めきりで えだが ふえる", en: "Black pine: how one cut makes more branches", es: "Pino negro: cómo un corte da más ramas", zh: "黑松：一次修剪，枝条更多" }, slugs: ["black-pine", "early-summer", "prune-wire-repot"] },
+  { id: "a-pine", dur: "3:02", word: "Pine", t: { ja: "黒松：芽切りで、枝はふえる", easy: "くろまつ：めきりで えだが ふえる", en: "Black pine: how one cut makes more branches", es: "Pino negro: cómo un corte da más ramas", zh: "黑松：一次修剪，枝条更多" }, slugs: ["black-pine", "early-summer", "prune-wire-repot"] },
   { id: "b-maple", dur: "3:06", word: "Maple", t: { ja: "もみじ：一本の木の四季", easy: "もみじ：1本の 木の きせつ", en: "Japanese maple: one tree, four seasons", es: "Arce japonés: un árbol, cuatro estaciones", zh: "枫：一棵树的四季" }, slugs: ["japanese-maple", "spring", "midsummer", "autumn", "winter", "calendar"] },
   { id: "c-eight", dur: "2:56", word: "Eight", t: { ja: "盆栽の8つの木", easy: "ぼんさいの 8つの 木", en: "Eight trees of bonsai", es: "Ocho árboles del bonsái", zh: "盆栽的八种树" }, slugs: ["what-is-bonsai", "how-to-look", "white-pine", "shimpaku", "satsuki", "ume", "zelkova", "needle-juniper"], at: { "black-pine": 12, "white-pine": 31, shimpaku: 50, "japanese-maple": 69, satsuki: 88, ume: 107, zelkova: 126, "needle-juniper": 145 } },
 ];
@@ -481,6 +481,9 @@ function playFilm(id, at = 0, tall = false) {
   d.className = `film-modal ${tall ? "tall" : ""}`;
   d.innerHTML = `<div class="film-box"><video src="/films/${id}.mp4#t=${at}" controls autoplay playsinline></video><button class="film-x cap">${t("close")} ✕</button></div>`;
   document.body.append(d);
+  // #t= だけでは頭から始まるブラウザがあるので、読み込みが済んだら指定の秒へ送る
+  const v = d.querySelector("video");
+  if (at) v.addEventListener("loadedmetadata", () => { if (v.currentTime < at - 1) v.currentTime = at; }, { once: true });
   const close = () => { d.remove(); if (was) bgm.start(); removeEventListener("keydown", esc_); };
   const esc_ = (e) => { if (e.key === "Escape") close(); };
   addEventListener("keydown", esc_);

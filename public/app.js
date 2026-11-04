@@ -31,6 +31,8 @@ const stopPlayers = () => { players.forEach((p) => p.pause()); players = []; };
 // ---------------- 通信 ----------------
 const code = () => store.get("engawa-code");
 const masterName = () => store.get("engawa-master");
+const role = () => (store.get("engawa-role") === "oyakata" ? "oyakata" : "deshi");
+const ROLE_JA = { deshi: "弟子", oyakata: "親方" };
 async function call(path, body, master = false) {
   const headers = { "content-type": "application/json" };
   if (master) headers["x-master-code"] = code();
@@ -91,8 +93,9 @@ document.addEventListener("click", (e) => {
 document.addEventListener("pointerdown", () => { if (store.get("engawa-sound") !== "off" && store.sget("engawa-entered") && !bgm.on) bgm.start(); }, { once: true });
 
 // ---------------- 枠（メディア側・特集号） ----------------
-const NAV_L = [["#/learn", "nav_learn"], ["#/shorts", "nav_films"], ["#/read", "nav_voices"], ["#/board", "nav_board"]];
-const NAV_R = [["#/glossary", "nav_glossary"], ["#/help", "nav_help"], ["#/wish", "nav_wish"]];
+// 掲示板・欲しい木は画面から外した（2026-11-04 しぼる）。#/board・#/wish の画面とAPIは残してある
+const NAV_L = [["#/garden", "nav_garden"], ["#/tree", "nav_tree"], ["#/learn", "nav_learn"], ["#/shorts", "nav_films"]];
+const NAV_R = [["#/read", "nav_voices"], ["#/glossary", "nav_glossary"], ["#/help", "nav_help"]];
 function chrome(inner, { here = "" } = {}) {
   document.body.className = `media mag ${config.demo ? "is-demo" : ""}`;
   const link = ([h, k]) => `<a href="${h}" class="${here === h ? "here" : ""}">${t(k)}</a>`;
@@ -206,7 +209,7 @@ const voiceCard = (a) => {
 // ---------------- メディア：表紙 ----------------
 async function home() {
   chrome(`<section class="mcover"><div class="loading">${t("loading")}</div></section>`, { here: "#/" });
-  const [arts, shorts, gloss, threads, kb] = await Promise.all([call("/api/articles"), call("/api/shorts"), call("/api/glossary"), call("/api/board").catch(() => []), kbList()]).catch(() => [[], [], [], [], []]);
+  const [arts, gloss, kb] = await Promise.all([call("/api/articles"), call("/api/glossary"), kbList()]).catch(() => [[], [], []]);
   const pickTerms = ["なおす", "芽切り", "忌み枝", "えらい"].map((j) => gloss.find((g) => g.ja === j)).filter(Boolean);
   const voices = await withBody(voicesOf(arts).slice(0, 3));
   const lead = voices.map(quoteOf).find(Boolean);
@@ -218,8 +221,8 @@ async function home() {
     <div class="side">
       <span class="tag cap">${t("cover_tag")}</span>
       <h1 lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(t("cover_h1"))}</h1>
-      <p>${esc(t("cover_sub"))}</p>
-      <div class="cta"><a class="bt dark" href="#/learn">${t("nav_learn")} →</a><a class="bt line" href="#/ask">${t("nav_ask")}</a></div>
+      <p class="promise cover-promise">${esc(t("cover_sub"))}</p>
+      <div class="cta"><a class="bt dark" href="#/garden">${t("nav_garden")} →</a><a class="bt line" href="#/tree">${t("nav_tree")}</a></div>
     </div>
     <div class="spin">
       <b>${t("turn")}</b>
@@ -250,13 +253,12 @@ async function home() {
       
       <div class="vgrid">${voices.slice(0, 3).map(voiceCard).join("")}</div>
     </div>
-    <div class="col c4 qa">
-      <span class="k cap">Q&amp;A · ${t("nav_board")}</span>
-      <h2>${t("qa_latest")}</h2>
-      ${threads.slice(0, 4).map((th) => `<a href="#/board/${esc(th.id)}"><b class="cap">${esc(th.posts?.[0]?.lang ?? "")} · ${th.count ?? ""}</b>${esc(th.title)}</a>`).join("")}
-      <a class="more cap" href="#/board">${t("nav_board")} →</a>
-      <a class="more cap" href="#/help">${t("nav_help")} →</a>
-    </div>
+    <a class="col c4 promise-c" href="#/garden">
+      <span class="k cap">${t("g_kicker")} · ${t("g_name")}</span>
+      <p class="promise">${esc(t("promise"))}</p>
+      <p class="proof"><b>8<i>${t("tr_h")}</i></b><span>${t("reached_in").replace("{h}", 8)} <span class="tag-sample">${t("sample")}</span></span></p>
+      <span class="more cap">${t("nav_garden")} →</span>
+    </a>
   </div>
 
   <section class="row trees">
@@ -281,9 +283,9 @@ async function home() {
     ${[1, 2, 3].map((i) => `<div class="col c4 how-c"><i class="n">${i}</i><h3>${t(`how${i}t`)}</h3><p>${t(`how${i}`)}</p></div>`).join("")}
   </section>
   <section class="row">
-    <a class="col c4 gat" href="#/board"><span class="k cap">01</span><h3>${t("nav_board")}</h3>${wc("board")}</a>
-    <a class="col c4 gat" href="#/help"><span class="k cap">02</span><h3>${t("nav_help")}</h3>${wc("help")}</a>
-    <a class="col c4 gat" href="#/wish"><span class="k cap">03</span><h3>${t("nav_wish")}</h3>${wc("wish")}</a>
+    <a class="col c4 gat" href="#/garden"><span class="k cap">01</span><h3>${t("nav_garden")}</h3>${wc("voices")}</a>
+    <a class="col c4 gat" href="#/tree"><span class="k cap">02</span><h3>${t("nav_tree")}</h3>${wc("learn")}</a>
+    <a class="col c4 gat" href="#/help"><span class="k cap">03</span><h3>${t("nav_help")}</h3>${wc("help")}</a>
   </section>`;
   turntable($("#ctree"), sp, { hero: true });
   $$(".sp-pick button").forEach((b) => b.addEventListener("click", () => {
@@ -679,13 +681,97 @@ async function wishPage() {
   });
 }
 
+// ---------------- 一軒の園の看板（見本・お支払いはしない） ----------------
+function garden() {
+  chrome(`
+  <section class="page-big has-wc"><div class="big-w">Shofu-en<em>.</em></div>${wc("voices")}</section>
+  <section class="row g-top">
+    <div class="col c7">
+      <span class="k cap">${t("g_kicker")} · ${t("g_name")}</span>
+      <p class="promise big-p">${esc(t("promise"))}</p>
+      <p class="g-note">${t("g_note")}</p>
+      <div class="cta"><a class="bt hot" href="#/ask">${t("g_cta")} →</a><a class="bt line" href="#/tree">${t("g_see_tree")}</a></div>
+    </div>
+    <div class="col c5 g-plan">
+      <span class="k cap">${t("g_plan")}</span>
+      <div class="price">${t("g_price")}</div>
+      <small class="g-note">${t("g_price_note")}</small>
+      <ul>${["g_p1", "g_p2", "g_p3"].map((k) => `<li>${t(k)}</li>`).join("")}</ul>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col c12"><span class="k cap">${t("g_people")}</span></div>
+    <div class="col c6 person"><span class="seal">親</span><div><h3>${t("g_oyakata")} <span class="tag-sample">${t("sample")}</span></h3><p>${t("g_oyakata_d")}</p></div></div>
+    <div class="col c6 person"><span class="seal light">弟</span><div><h3>${t("g_deshi")} <span class="tag-sample">${t("sample")}</span></h3><p>${t("g_deshi_d")}</p></div></div>
+  </section>
+  <section class="row">
+    <div class="col c12"><span class="k cap">${t("g_flow")}</span></div>
+    ${["g_f1", "g_f2", "g_f3"].map((k, i) => `<div class="col c4 how-c"><i class="n">${i + 1}</i><p>${t(k)}</p></div>`).join("")}
+  </section>
+  <section class="row">
+    <div class="col c12 g-why"><span class="k cap">${t("g_why")}</span><p>${t("g_why_d")}</p><a class="more cap" href="#/glossary">${t("nav_glossary")} →</a></div>
+  </section>`, { here: "#/garden" });
+}
+
+// ---------------- 一本ごとの木の記録（見本の黒松＋この端末で送った相談） ----------------
+const FIX = `<svg class="fix-svg" viewBox="0 0 960 960" aria-hidden="true">
+  <g stroke="#e0321c" stroke-width="7" stroke-linecap="round" fill="none">
+    <path d="M395 196l22 34M462 190l22 34M530 196l22 34"/>
+    <path d="M200 470c40 30 90 44 140 40" stroke-dasharray="2 16"/><path d="M330 500l14 12-18 6"/>
+    <circle cx="438" cy="392" r="34"/>
+  </g>
+  <g fill="#e0321c" font-size="34" font-weight="700"><text x="560" y="170">①</text><text x="150" y="560">②</text><text x="470" y="380">③</text></g>
+</svg>`;
+async function myTree() {
+  chrome(`<section class="page-big has-wc"><div class="big-w">My tree<em>.</em></div>${wc("learn")}</section><div class="tree-rec"><div class="loading">${t("loading")}</div></div>`, { here: "#/tree" });
+  const [c, own] = await Promise.all([call("/api/consults/sample"), Promise.all(mine().map((id) => call(`/api/consults/${encodeURIComponent(id)}`).catch(() => null)))]);
+  const r = c.replies[0];
+  const hours = Math.round(((r.seal?.at ?? r.at) - c.created) / 3600_000);
+  const quote = (ja) => `<div class="quote"><em>${t("masters_words")}</em>${esc(ja)}</div>`;
+  const deshiLine = r.letter.lines.find((l) => /軒下/.test(l.quote_ja));
+  const noteLine = r.seal?.note?.lines.find((l) => /植え替え/.test(l.quote_ja));
+  const ev = (when, title, body, cls = "") => `<li class="ev ${cls}"><span class="d">${when}</span><div><b>${title}</b>${body}</div></li>`;
+  $(".tree-rec").innerHTML = `
+  <section class="row tr-head">
+    <div class="col c5"><img class="tr-pic" src="${frame("pine", 0)}" alt="${esc(t("tr_title"))}"></div>
+    <div class="col c7">
+      <span class="k cap">${t("g_name")} · ${t("sample")}</span>
+      <h1 class="tr-h">${t("tr_title")}</h1><p class="g-note">${t("tr_sub")}</p>
+      <div class="kpis-m"><div><b>1</b><small>${t("tr_asks")}</small></div><div><b>${hours}<i>${t("tr_h")}</i></b><small>${t("tr_hours")}</small></div><div><b>${monthName(12)}</b><small>${t("tr_next")}</small></div></div>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col c7">
+      <ol class="timeline">
+        ${ev(`${monthName(11)} 2026`, t("tr_asked"), `<p>${esc(c.question)}</p><div class="seal-h"><span class="seal">印</span>${esc(nm(r.seal.by))} · ${t("sealed_by")}</div>${quote(r.seal.note_ja)}<a class="more cap" href="#/c/sample">${t("tr_read")} →</a>`, "past")}
+        ${ev(`${monthName(12)}–${monthName(2)}`, t("tr_winter"), `<small>${t("tr_from_deshi")}</small>${deshiLine ? quote(deshiLine.quote_ja) : ""}`)}
+        ${ev(`${monthName(3)} 2027`, t("tr_repot"), `<small>${t("tr_from_oya")}</small>${noteLine ? quote(noteLine.quote_ja) : ""}`)}
+        ${ev(`${monthName(6)} 2027`, t("tr_mekiri"), `<small>${t("tr_fix_note")}</small>`)}
+      </ol>
+    </div>
+    <div class="col c5">
+      <span class="k cap">${t("tr_fix")}</span>
+      <div class="fix"><img src="${frame("pine", 0)}" alt="">${FIX}</div>
+      <ul class="fix-l">${["tr_fix1", "tr_fix2", "tr_fix3"].map((k) => `<li>${t(k)}</li>`).join("")}</ul>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col c12"><span class="k cap">${t("tr_mine")}</span>
+      ${own.filter(Boolean).length ? `<div class="m-own">${own.filter(Boolean).map((o) => `<a href="#/c/${esc(o.id)}">${pic(o.photos[0])}<div><b>${esc(o.question.slice(0, 80))}</b><small>${when(o.created)} · ${o.status === "answered" ? t("tr_done") : t("tr_wait")}</small></div></a>`).join("")}</div>` : `<p class="g-note">${t("tr_mine_none")}</p>`}
+      <a class="bt hot" href="#/ask">${t("g_cta")} →</a>
+    </div>
+  </section>`;
+}
+
 // ---------------- 持ち主：相談を書く ----------------
 function paperShell(inner) {
   chrome(`<section class="letter-wrap"><div class="letter">${inner}</div></section>`, { here: "#/ask" });
 }
 // 見本の職人名を、読む人の言語で出す
-const MASTER_WORD = { en: "Master", es: "Maestro", zh: "匠人" };
-const nm = (s) => (MASTER_WORD[lang()] ? String(s ?? "").replace(/職人([A-Z])（見本）/, (_, x) => `${MASTER_WORD[lang()]} ${x} (${t("sample")})`) : String(s ?? ""));
+const MASTER_WORD = { en: { 職人: "Master", 弟子: "Apprentice", 親方: "Oyakata" }, es: { 職人: "Maestro", 弟子: "Aprendiz", 親方: "Oyakata" }, zh: { 職人: "匠人", 弟子: "徒弟", 親方: "师傅" } };
+const nm = (s) => (MASTER_WORD[lang()] ? String(s ?? "").replace(/(職人|弟子|親方)([A-Z]?)（見本）/, (_, w, x) => `${MASTER_WORD[lang()][w]}${x ? " " + x : ""} (${t("sample")})`) : String(s ?? ""));
+// この端末で送った相談（木の記録に出す）
+const mine = () => store.get("engawa-mine").split(",").filter(Boolean);
 const demoBar = () => (config.demo ? `<div class="demo-flag">${t("demo_banner")}</div>` : "");
 
 function ask() {
@@ -722,6 +808,7 @@ function ask() {
     $("#busy").classList.remove("hidden");
     try {
       const c = await call("/api/consults", { photos, question, city: $("#city").value.trim(), lang: $("#ll").value, month: new Date().getMonth() + 1 });
+      store.set("engawa-mine", [c.id, ...mine().filter((x) => x !== c.id)].slice(0, 20).join(","));
       location.hash = `#/c/${c.id}`;
     } catch (e) {
       err.textContent = e.status === 429 ? t("limit") : t("error");
@@ -779,21 +866,25 @@ async function ownerView(id) {
   }
 
   const L = c.letter_lang ?? c.lang;
-  const terms = [...new Map(c.replies.flatMap((r) => r.letter.terms ?? []).map((x) => [x.ja, x])).values()];
+  const terms = [...new Map(c.replies.flatMap((r) => [...(r.letter.terms ?? []), ...(r.seal?.note?.terms ?? [])]).map((x) => [x.ja, x])).values()];
   const k = c.knowledge;
   const masters = new Set(c.replies.map((r) => r.master)).size;
+  const sealedAt = Math.max(...c.replies.map((r) => r.seal?.at ?? r.at));
+  const hours = Math.max(1, Math.round((sealedAt - c.created) / 3600_000));
   paperShell(`${c.seed ? `<div class="demo-flag">${t("sample")} · ${t("footer_seed")}</div>` : c.demo ? demoBar() : ""}
-    <div class="ans-h"><span class="big-n">${masters}</span><span>${t("masters_n")}</span></div>
+    <div class="ans-h reached"><span class="seal sm">印</span><span>${t("reached_in").replace("{h}", hours)}</span></div>
     ${photos}
     <div class="q-quote"><label>${t("your_q")}</label>${esc(c.question)}</div>
     ${c.replies.map((r) => `
     <div class="card">
-      <div class="stamp">${esc([...r.master][0] ?? "職")}<br>印</div>
+      <div class="stamp">${esc([...(r.seal?.by ?? r.master)][0] ?? "職")}<br>印</div>
       <h2>${t("letter_title")}</h2>
       <div class="by">${esc(nm(r.master))} · ${t("letter_by")}</div>
       <p class="greet">${esc(r.letter.greeting)}</p>
       ${r.letter.lines.map((l) => `<div class="tip"><b>${esc(l.text)}</b><div class="quote"><em>${t("masters_words")}</em>${esc(l.quote_ja)}</div></div>`).join("")}
       ${r.drawing ? `<img class="drawn" src="${safe(r.drawing)}" alt="">` : ""}
+      ${r.seal ? `<div class="seal-box"><div class="seal-h"><span class="seal">印</span><b>${esc(nm(r.seal.by))}</b> · ${t("sealed_by")}</div>
+        ${r.seal.note ? `<h3>${t("seal_note")}</h3>${r.seal.note.lines.map((l) => `<div class="tip"><b>${esc(l.text)}</b><div class="quote"><em>${t("masters_words")}</em>${esc(l.quote_ja)}</div></div>`).join("")}` : ""}</div>` : ""}
     </div>`).join("")}
     ${terms.length ? `<div class="explain"><h3>${t("terms_title")}</h3>${terms.map((x) => `<div class="ex"><b lang="ja">${esc(x.ja)}</b>${x.dialect ? `<span class="tag">${t("gloss_dialect")}</span>` : ""}<div class="lit"><span>${t("literal")}</span><s>${esc(x.literal)}</s></div><div class="mean"><span>${t("meaning")}</span>${esc(x.rendered)}</div></div>`).join("")}</div>` : ""}
     ${k && masters > 1 ? `<div class="wisdom"><h3>${t("wisdom")}</h3>${AXES.filter((a) => k.axes.some((x) => x.key === a)).map((a) => `<div class="axis"><div class="ax-l">${t("axis_" + a)}</div>${k.axes.find((x) => x.key === a).items.map((i, n, arr) => `<div class="ax-i">${n && arr[n - 1].master === i.master ? "" : `<span class="who">${esc(nm(i.master))}</span>`}${esc(i.text)}</div>`).join("")}</div>`).join("")}</div>` : ""}
@@ -804,12 +895,13 @@ async function ownerView(id) {
         ${c.replies.flatMap((r) => r.letter.reminders).map((r) => `<div class="row"><span class="d next">${monthName(r.month)}</span><span>${esc(r.text)}</span></div>`).join("")}
       </div>
     </div>
+    <a class="sub-link" href="#/tree">${t("nav_tree")} →</a>
     ${c.article ? `<a class="became" href="#/read/${esc(c.article)}"><span class="seal sm">縁</span>${t("became_article")} →</a>` : ""}
     ${c.seed ? "" : `<button id="thanks" class="btn-l ${c.thanked ? "ghost" : ""}" ${c.thanked ? "disabled" : ""}>${c.thanked ? t("thanks_sent") : t("thanks")}</button>`}`);
   $("#listen").addEventListener("click", () => {
     if (!("speechSynthesis" in window)) return;
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(c.replies.flatMap((r) => [r.letter.greeting, ...r.letter.lines.map((l) => l.text)]).join(" "));
+    const u = new SpeechSynthesisUtterance(c.replies.flatMap((r) => [r.letter.greeting, ...r.letter.lines.map((l) => l.text), ...(r.seal?.note?.lines ?? []).map((l) => l.text)]).join(" "));
     u.lang = VOICE[L] || "en-US";
     bgm.duck(true);
     u.onend = () => bgm.duck(false);
@@ -839,8 +931,12 @@ function codeGate(next) {
   $("#ok").addEventListener("click", () => { store.set("engawa-code", $("#code").value.trim()); next(); });
 }
 function nameGate(next) {
-  mShell(`<div class="m-card"><h2>お名前（園の名前）を教えてください</h2><p class="m-lead">持ち主への手紙と記事に、この名前で載ります。</p><input id="nm" class="m-input" placeholder="例：松風園 山田"><button class="big main" id="ok">はじめる</button></div>`, { back: "#/" });
-  $("#ok").addEventListener("click", () => { const v = $("#nm").value.trim(); if (!v) return; store.set("engawa-master", v); next(); });
+  mShell(`<div class="m-card"><h2>お名前を教えてください</h2><p class="m-lead">持ち主への手紙と記事に、この名前で載ります。</p><input id="nm" class="m-input" placeholder="例：松風園 山田">
+    <h2>この園での立場</h2><div class="role-pick"><button class="big sub on" data-r="deshi">弟子<small>写真を見て、下書きを書く</small></button><button class="big sub" data-r="oyakata">親方<small>下書きに一言と印</small></button></div>
+    <button class="big main" id="ok">はじめる</button></div>`, { back: "#/" });
+  let r = "deshi";
+  $$(".role-pick button").forEach((b) => b.addEventListener("click", () => { r = b.dataset.r; $$(".role-pick button").forEach((x) => x.classList.toggle("on", x === b)); }));
+  $("#ok").addEventListener("click", () => { const v = $("#nm").value.trim(); if (!v) return; store.set("engawa-master", v); store.set("engawa-role", r); next(); });
 }
 
 async function masterGuard(next) {
@@ -851,33 +947,93 @@ async function masterGuard(next) {
 }
 
 async function masterHome() {
-  const [list, arts, shorts, wishes] = await Promise.all([call("/api/inbox", null, true), call("/api/articles?all=1", null, true), call("/api/shorts?all=1", null, true), call("/api/wishes")]);
+  const [list, arts, shorts] = await Promise.all([call("/api/inbox", null, true), call("/api/articles?all=1", null, true), call("/api/shorts?all=1", null, true)]);
   const me = masterName();
-  const todo = list.filter((c) => !c.seed && !c.replies.some((r) => r.master === me && r.status === "sent")).length;
+  const todo = list.filter((c) => !c.seed && c.status !== "answered" && !c.replies.some((r) => r.status === "review" || (r.master === me && r.status !== "draft"))).length;
+  const review = list.filter((c) => c.replies.some((r) => r.status === "review")).length;
   const oks = arts.filter((a) => a.status === "draft").length + shorts.filter((s) => s.status === "draft").length;
-  const wishN = wishes.filter((w) => !w.raised.includes(me)).length;
+  const oya = role() === "oyakata";
+  const sealTile = `<a class="tile ${oya ? "main" : ""}" href="#/master/review"><span class="t-k">印</span><b>弟子の下書きに印を押す</b><small>${review ? `${review}件 印を待っています` : "待っているものはありません"}</small></a>`;
+  const answerTile = `<a class="tile ${oya ? "" : "main"}" href="#/master/inbox"><span class="t-k">答</span><b>${oya ? "自分で答える" : "相談の下書きを書く"}</b><small>${todo ? `${todo}件 届いています` : "いまは届いていません"}</small></a>`;
   mShell(`
-    <div class="m-hello">${esc(me)} さん、ようこそ。<button class="m-link" id="rename">名前を変える</button></div>
+    <div class="m-hello">${esc(me)} さん（${ROLE_JA[role()]}）、ようこそ。<button class="m-link" id="rename">名前・立場を変える</button></div>
     <div class="tiles">
-      <a class="tile main" href="#/master/inbox"><span class="t-k">答</span><b>相談に答える</b><small>${todo ? `${todo}件 届いています` : "いまは届いていません"}</small></a>
-      <a class="tile" href="#/master/ok"><span class="t-k">可</span><b>記事と動画を見て OK する</b><small>${oks ? `${oks}件 OK を待っています` : "待っているものはありません"}</small></a>
-      <a class="tile" href="#/master/wish"><span class="t-k">望</span><b>欲しい木</b><small>${wishN}件 の「欲しい」が届いています</small></a>
+      ${oya ? sealTile + answerTile : answerTile + sealTile}
       <a class="tile" href="#/master/glossary"><span class="t-k">辞</span><b>用語集を育てる</b><small>訳がおかしい言葉を直す・足す</small></a>
+      <a class="tile" href="#/master/ok"><span class="t-k">可</span><b>記事と動画を見て OK する</b><small>${oks ? `${oks}件 OK を待っています` : "待っているものはありません"}</small></a>
       <a class="tile" href="#/studio"><span class="t-k">数</span><b>数字を見る</b><small>どの動画から何人来たか</small></a>
-      <a class="tile" href="#/"><span class="t-k">縁</span><b>メディアを見る</b><small>持ち主が見ている画面</small></a>
+      <a class="tile" href="#/garden"><span class="t-k">縁</span><b>園の看板を見る</b><small>持ち主が見ている画面</small></a>
     </div>`, { back: "#/" });
   $("#rename").addEventListener("click", () => { store.set("engawa-master", ""); nameGate(masterHome); });
+}
+
+// 親方：印を待っている下書きの一覧
+async function masterReview() {
+  const list = (await call("/api/inbox", null, true)).filter((c) => c.replies.some((r) => r.status === "review"));
+  mShell(`<p class="m-lead">弟子が書いた下書きです。目を通して、よければ印を。言い足したいことがあれば、一言だけ足してください。</p>
+    <div class="m-list">${list.map((c) => `<a class="item new" href="#/master/seal/${esc(c.id)}">${pic(c.photos[0])}<div><div class="t">${esc(c.brief?.asked_ja)}</div>
+      <div class="s">${esc(c.city)} ・ ${c.replies.filter((r) => r.status === "review").map((r) => `<span class="badge">${esc(r.master)} の下書き</span>`).join(" ")}</div></div></a>`).join("") || `<div class="mode">いま印を待っている下書きはありません</div>`}</div>`, { title: "印を待っている下書き" });
+}
+
+const OYA_PHRASES = ["弟子の見立てで合っています。", "春になったら、また写真を送ってください。", "よう育ててはりますね。"];
+async function masterSeal(id) {
+  let c;
+  try { c = await call(`/api/consults/${encodeURIComponent(id)}`, null, true); } catch { location.hash = "#/master/review"; return; }
+  const r = c.replies.find((x) => x.status === "review");
+  if (!r) return masterDone(c);
+  const me = masterName();
+  const lines = (L) => `<ol>${L.lines.map((l) => `<li>${esc(l.back_ja)}<br>${l.verbatim ? `<span class="ok">✓ 言葉をそのまま引用</span>` : `<span class="warn">⚠ 言い回しが変わっています。確かめてください</span>`}</li>`).join("")}</ol>${L.unclear_ja?.length ? `<div class="alert">確かめてほしい所：${L.unclear_ja.map(esc).join("／")}</div>` : ""}`;
+  mShell(`
+    <div class="m-ask"><div class="m-q">${esc(c.brief?.asked_ja)}</div><div class="m-from">${esc(c.city)} から</div></div>
+    <div class="pic view">${pic(c.photos[0])}</div>
+    <div class="points"><h3>${esc(r.master)} の下書き（話した言葉）</h3><p class="said-ro">${esc([r.spoken_ja, ...r.phrases].filter(Boolean).join("\n"))}</p></div>
+    ${r.drawing ? `<img class="drawn" src="${safe(r.drawing)}" alt="">` : ""}
+    <div class="back"><h3>相手にはこう届きます（日本語に戻したもの）</h3>${lines(r.letter)}</div>
+    <button class="big sub" id="addBtn">💬 一言足す</button>
+    <div id="add" class="hidden">
+      <textarea class="said" id="note" maxlength="600" placeholder="例：弟子の見立てで合っています。">${esc(r.seal?.note_ja ?? "")}</textarea>
+      <div>${OYA_PHRASES.map((p) => `<button class="phrase">${esc(p)}</button>`).join("")}</div>
+      <button class="big sub" id="preview">一言が相手にどう届くか見る</button>
+      <div id="noteBack"></div>
+    </div>
+    <div id="err" class="alert hidden"></div>
+    <div id="busy" class="loading hidden">AI が一言を訳しています（言葉はそのまま引用します）…</div>
+    <button class="big main stick" id="ok">よし。印を押して送る</button>`, { back: "#/master/review", title: "印を押す" });
+  const showNote = (seal) => { $("#noteBack").innerHTML = seal?.note ? `<div class="back"><h3>一言は、こう届きます</h3>${lines(seal.note)}</div>` : ""; };
+  showNote(r.seal);
+  if (r.seal?.note_ja) $("#add").classList.remove("hidden");
+  $("#addBtn").addEventListener("click", () => { $("#add").classList.toggle("hidden"); $("#note").focus(); });
+  $$(".phrase").forEach((p) => p.addEventListener("click", () => { const v = $("#note").value.trim(); $("#note").value = v ? `${v}\n${p.textContent}` : p.textContent; }));
+  const go = async (preview) => {
+    const note_ja = $("#note").value.trim().slice(0, 600);
+    $("#err").classList.add("hidden");
+    $$("button.big").forEach((b) => (b.disabled = true));
+    if (note_ja) $("#busy").classList.remove("hidden");
+    try {
+      const out = await call(`/api/consults/${encodeURIComponent(id)}/seal`, { master: me, deshi: r.master, note_ja, preview }, true);
+      if (preview) { r.seal = out.seal; showNote(out.seal); }
+      else masterDone(await call(`/api/consults/${encodeURIComponent(id)}`, null, true));
+    } catch (e) { $("#err").textContent = e.status === 401 ? "合言葉がちがいます。" : "うまくいきませんでした。もう一度押してください。"; $("#err").classList.remove("hidden"); }
+    finally { $$("button.big").forEach((b) => (b.disabled = false)); $("#busy")?.classList.add("hidden"); }
+  };
+  $("#preview").addEventListener("click", () => go(true));
+  $("#ok").addEventListener("click", () => {
+    const note_ja = $("#note").value.trim().slice(0, 600);
+    // 一言を足したのに、届き方をまだ見ていないときは、先に見せる
+    if (note_ja && r.seal?.note_ja !== note_ja) { $("#add").classList.remove("hidden"); return go(true).then(() => { $("#err").textContent = "一言の届き方を上に出しました。よければ、もう一度「よし。印を押して送る」を押してください。"; $("#err").classList.remove("hidden"); }); }
+    go(false);
+  });
 }
 
 async function masterInbox() {
   const list = await call("/api/inbox", null, true);
   const me = masterName();
   const paint = (l) => l.map((c) => {
-    const mine = c.replies.some((r) => r.master === me && r.status === "sent");
+    const mine = c.replies.some((r) => r.master === me && r.status !== "draft");
     const n = new Set(c.replies.filter((r) => r.status === "sent").map((r) => r.master)).size;
     return `<a class="item ${mine ? "" : "new"}" href="#/master/c/${esc(c.id)}">${pic(c.photos[0])}
       <div><div class="t">${esc(c.brief?.asked_ja)}</div>
-      <div class="s">${esc(c.city)} ・ <span class="badge ${mine ? "done" : ""}">${mine ? "答えた" : "まだ"}</span>${n ? ` ・ ${n}人が答えた` : ""}${c.seed ? ` ・ <span class="badge">見本</span>` : ""}</div></div></a>`;
+      <div class="s">${esc(c.city)} ・ <span class="badge ${mine ? "done" : ""}">${c.status === "answered" ? "届けた" : c.replies.some((r) => r.status === "review") ? "印を待っている" : mine ? "答えた" : "まだ"}</span>${n ? ` ・ ${n}人が答えた` : ""}${c.seed ? ` ・ <span class="badge">見本</span>` : ""}</div></div></a>`;
   }).join("");
   mShell(`<div class="m-list">${paint(list)}</div>`, { title: "届いた相談" });
   stopTimer();
@@ -898,7 +1054,7 @@ async function masterAnswer(id) {
   let c;
   try { c = await call(`/api/consults/${encodeURIComponent(id)}`, null, true); } catch { location.hash = "#/master/inbox"; return; }
   const me = masterName();
-  if (c.seed || c.replies.some((r) => r.master === me && r.status === "sent")) return masterDone(c);
+  if (c.seed || c.replies.some((r) => r.master === me && r.status !== "draft")) return masterDone(c);
   const b = c.brief;
   const mine = c.replies.find((r) => r.master === me && r.status === "draft");
   const others = c.replies.filter((r) => r.status === "sent");
@@ -989,7 +1145,7 @@ async function masterAnswer(id) {
     err.classList.add("hidden");
     $("#check").disabled = true;
     $("#busy").classList.remove("hidden");
-    try { const d = await call(`/api/consults/${encodeURIComponent(id)}/draft`, { master: me, spoken_ja, phrases: [...chosen], drawing: drawingData() }, true); showDraft(d.reply); }
+    try { const d = await call(`/api/consults/${encodeURIComponent(id)}/draft`, { master: me, role: role(), spoken_ja, phrases: [...chosen], drawing: drawingData() }, true); showDraft(d.reply); }
     catch (e) { err.textContent = e.status === 401 ? "合言葉がちがいます。" : "うまく訳せませんでした。もう一度押してください。"; err.classList.remove("hidden"); }
     finally { $("#check").disabled = false; $("#busy").classList.add("hidden"); }
   });
@@ -1004,7 +1160,7 @@ async function masterAnswer(id) {
       </div>
       ${L.unclear_ja.length ? `<div class="alert">確かめてほしい所：${L.unclear_ja.map(esc).join("／")}</div>` : ""}
       ${r.drawing ? `<img class="drawn" src="${safe(r.drawing)}" alt="">` : ""}
-      <button class="big main" id="send">この内容で送る</button>
+      <button class="big main" id="send">${role() === "oyakata" ? "この内容で、印を押して送る" : "親方に回す（印をもらう）"}</button>
       <div class="mode">直したいときは、上の文を直してもう一度「相手に届く文を見る」</div>`;
     $("#draft").scrollIntoView({ behavior: "smooth" });
     $("#send").addEventListener("click", async () => {
@@ -1017,10 +1173,20 @@ async function masterAnswer(id) {
 
 function masterDone(c) {
   const sent = c.replies.filter((r) => r.status === "sent");
+  const waiting = c.replies.filter((r) => r.status === "review");
   const k = c.knowledge;
+  const waitBox = waiting.length ? `<div class="m-ok">✓ ${waiting.map((r) => esc(r.master)).join("・")} の下書きを親方に回しました。印が押されると、持ち主に届きます</div>
+      ${waiting.map((r) => `<div class="points"><h3>${esc(r.master)} の下書き</h3><ul>${r.letter.lines.map((l) => `<li>${esc(l.quote_ja)}</li>`).join("")}</ul></div>`).join("")}` : "";
+  if (!sent.length && waiting.length) {
+    mShell(`<div class="m-ok">✓ 親方に回しました。印が押されると、持ち主に届きます</div>
+      ${waiting.map((r) => `<div class="points"><h3>${esc(r.master)} の下書き</h3><ul>${r.letter.lines.map((l) => `<li>${esc(l.quote_ja)}</li>`).join("")}</ul></div>`).join("")}
+      <a class="big sub" href="#/master/inbox">一覧にもどる</a>`, { back: "#/master/inbox" });
+    return;
+  }
   mShell(`
-    <div class="m-ok">✓ ${c.seed ? "見本の相談です（職人ふたりが答えたもの）" : "送りました。持ち主に届いています"}</div>
-    ${sent.map((r) => `<div class="points"><h3>${esc(r.master)} の言葉</h3><ul>${r.letter.lines.map((l) => `<li>${esc(l.quote_ja)}</li>`).join("")}</ul></div>`).join("")}
+    ${waitBox}
+    <div class="m-ok">✓ ${c.seed ? "見本の相談です（弟子の下書きに、親方が印を押したもの）" : `${sent.map((r) => esc(r.master)).join("・")} の答えは、持ち主に届いています`}</div>
+    ${sent.map((r) => `<div class="points"><h3>${esc(r.master)} の言葉</h3><ul>${r.letter.lines.map((l) => `<li>${esc(l.quote_ja)}</li>`).join("")}</ul>${r.seal ? `<p class="memo"><span class="seal sm">印</span> ${esc(r.seal.by)}${r.seal.note_ja ? `：「${esc(r.seal.note_ja)}」` : ""}</p>` : ""}</div>`).join("")}
     ${k && sent.length > 1 ? `<div class="points"><h3>AI が軸ごとに並べました</h3>${AXES.filter((a) => k.axes.some((x) => x.key === a)).map((a) => `<div class="m-axis"><b>${tl("axis_" + a, "ja")}</b>${k.axes.find((x) => x.key === a).items.map((i) => `<div>${esc(i.master)}：${esc(i.quote_ja)}</div>`).join("")}</div>`).join("")}${k.agree_ja ? `<p class="memo">${esc(k.agree_ja)}</p>` : ""}${k.differ_ja ? `<p class="memo">${esc(k.differ_ja)}</p>` : ""}</div>` : ""}
     ${c.thanked ? `<div class="memo">🙏 持ち主からお礼が届いています</div>` : ""}
     ${c.article ? `<a class="big main" href="#/master/article/${esc(c.article)}">この相談の記事を見る</a>` : `<button class="big main" id="toArticle">この相談を記事にする</button><div class="mode">記事は、職人の言葉をそのまま引用して 5 つの言葉で作ります。OK するまで公開されません。</div>`}
@@ -1154,6 +1320,8 @@ function route() {
   if (a === "shorts") return shortsList();
   if (a === "short" && b) return shortView(b);
   if (a === "glossary") return glossaryPage();
+  if (a === "garden") return garden();
+  if (a === "tree") return myTree();
   if (a === "board" && b) return thread(b);
   if (a === "board") return board();
   if (a === "help") return helpPage();
@@ -1168,6 +1336,8 @@ function route() {
     if (b === "article" && c) return masterGuard(() => masterArticle(c));
     if (b === "short" && c) return masterGuard(() => shortView(c, true));
     if (b === "wish") return masterGuard(masterWish);
+    if (b === "review") return masterGuard(masterReview);
+    if (b === "seal" && c) return masterGuard(() => masterSeal(c));
     if (b === "glossary") return masterGuard(masterGlossary);
     if (b && /^[0-9a-f]{16}$/.test(b)) return masterGuard(() => masterAnswer(b));
     return masterGuard(masterHome);

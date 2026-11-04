@@ -19,9 +19,13 @@ type Status = "intake" | "waiting" | "answered";
 interface UsedTerm { ja: string; yomi: string; literal: string; rendered: string; why_ja: string; dialect?: boolean }
 type CheckedLetter = Letter & { lines: (Letter["lines"][number] & { verbatim: boolean })[]; terms: UsedTerm[] };
 
+// 園の中の流れ：弟子が下書き →（review）→ 親方が印と一言 → 持ち主へ
+interface Seal { by: string; at: number; note_ja?: string; note?: CheckedLetter }
 interface Reply {
   master: string;
-  status: "draft" | "sent";
+  role?: "deshi" | "oyakata";
+  status: "draft" | "review" | "sent";
+  seal?: Seal;
   at: number;
   spoken_ja: string;
   phrases: string[];
@@ -107,12 +111,15 @@ function check(letter: Letter, words: string, terms: UsedTerm[]): CheckedLetter 
 // ---------- 見本の相談（職人ふたりが答えたもの） ----------
 function sampleConsult(): Consult {
   const A = "葉先が茶色いのは、室内に入れっぱなしで弱ってきてるんだと思います。松は寒さに当てて休ませる木なので、冬も外に出してください。ただ、鉢が凍るくらいの夜だけは、軒下になおしてください。";
-  const B = "水やりは、土の表面が乾いてから、鉢の底から出るまでたっぷりと。肥料は今は止めてください。植え替えは春、芽が動き出す前にしてください。";
-  const reply = (master: string, words: string, h: number): Reply => ({
-    master, status: "sent", at: Date.UTC(2026, 10, 2, h), spoken_ja: words, phrases: [],
-    letter: check(demo.letter(words, "en"), words, usedTerms(words, SEED, "en")),
-  });
-  const replies = [reply("職人A（見本）", A, 1), reply("職人B（見本）", B, 4)];
+  const NOTE = "弟子の見立てで合っています。植え替えは春、芽が動き出す前にしてください。";
+  const letterOf = (words: string) => check(demo.letter(words, "en"), words, usedTerms(words, SEED, "en"));
+  const note = letterOf(NOTE);
+  const deshi = letterOf(A);
+  const replies: Reply[] = [{
+    master: "弟子A（見本）", role: "deshi", status: "sent", at: Date.UTC(2026, 10, 1, 23), spoken_ja: A, phrases: [],
+    letter: { ...deshi, reminders: [...deshi.reminders, ...note.reminders] },
+    seal: { by: "親方（見本）", at: Date.UTC(2026, 10, 2, 4), note_ja: NOTE, note },
+  }];
   return {
     id: "sample", created: Date.UTC(2026, 10, 1, 20), status: "answered", lang: "en", city: "Lyon, France", month: 11,
     question: "The needles are turning brown at the tips. Is it sick? Where should I keep it this winter?",
@@ -140,7 +147,10 @@ const light = (c: Consult) => ({ ...c, photos: c.photos.slice(0, 1), replies: c.
 const forOwner = (c: Consult) => ({ ...c, replies: c.replies.filter((r) => r.status === "sent") });
 
 async function buildKnowledge(client: Anthropic | null, c: Consult): Promise<Knowledge> {
-  const lines = c.replies.filter((r) => r.status === "sent").flatMap((r) => r.letter.lines.map((l) => ({ master: r.master, quote_ja: l.quote_ja, text: l.text })));
+  const lines = c.replies.filter((r) => r.status === "sent").flatMap((r) => [
+    ...r.letter.lines.map((l) => ({ master: r.master, quote_ja: l.quote_ja, text: l.text })),
+    ...(r.seal?.note?.lines ?? []).map((l) => ({ master: r.seal!.by, quote_ja: l.quote_ja, text: l.text })),
+  ]);
   if (client && new Set(lines.map((l) => l.master)).size > 1) return runKnowledge(client, { lang: c.lang, question: c.question, lines });
   return knowledgeByRules(lines);
 }
@@ -188,6 +198,14 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
   const master = isMaster(req, env);
   const body = async <T>() => ((await req.json().catch(() => ({}))) ?? {}) as T;
   const deny = () => json({ error: "code" }, 401);
+  const sealAndSend = async (c: Consult, r: Reply, seal: Seal) => {
+    Object.assign(r, { status: "sent", seal });
+    if (seal.note) r.letter = { ...r.letter, reminders: [...r.letter.reminders, ...seal.note.reminders] };
+    c.status = "answered";
+    c.knowledge = await buildKnowledge(client, c);
+    await saveConsult(env, c);
+    return c;
+  };
 
   if (area === "config" && M === "GET") return json({ demo: !client, langs: Object.keys(LANGS), media: MEDIA });
 
@@ -256,8 +274,9 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
     if (act === "draft" && M === "POST") {
       if (!master) return deny();
       if (c.status === "intake") return json({ error: "state" }, 409);
-      const b = await body<{ master: string; spoken_ja: string; phrases: string[]; drawing?: string }>();
+      const b = await body<{ master: string; role?: string; spoken_ja: string; phrases: string[]; drawing?: string }>();
       const name = str(b.master, 40) || "職人";
+      const role = b.role === "oyakata" ? "oyakata" : "deshi";
       const spoken_ja = str(b.spoken_ja, 3000);
       const phrases = (b.phrases ?? []).map((p) => str(p, 200)).slice(0, 10);
       if (!spoken_ja && !phrases.length) return json({ error: "empty" }, 400);
@@ -268,23 +287,53 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
       const letter = client
         ? await runLetter(client, { question: c.question, lang: c.lang, city: c.city, spoken_ja, phrases, drew: !!drawing, terms: gl })
         : demo.letter(words, c.lang);
-      const r: Reply = { master: name, status: "draft", at: Date.now(), spoken_ja, phrases, drawing, letter: check(letter, words, terms) };
+      const r: Reply = { master: name, role, status: "draft", at: Date.now(), spoken_ja, phrases, drawing, letter: check(letter, words, terms) };
       c.replies = [...c.replies.filter((x) => !(x.master === name && x.status === "draft")), r];
       await saveConsult(env, c);
       return json({ consult: c, reply: r });
     }
 
+    // 弟子は親方に回す（review）。親方が自分で答えたときは、そのまま印を押して送る
     if (act === "send" && M === "POST") {
       if (!master) return deny();
       const { master: name } = await body<{ master: string }>();
       const r = c.replies.find((x) => x.master === (str(name, 40) || "職人") && x.status === "draft");
       if (!r) return json({ error: "state" }, 409);
-      r.status = "sent";
       r.at = Date.now();
-      c.status = "answered";
-      c.knowledge = await buildKnowledge(client, c);
+      if (r.role === "oyakata") return json(light(await sealAndSend(c, r, { by: r.master, at: r.at })));
+      r.status = "review";
       await saveConsult(env, c);
       return json(light(c));
+    }
+
+    // 親方：弟子の下書きに印を押す。一言を足すときは、その一言も同じ仕組み（用語集・引用の照合）で訳す
+    if (act === "seal" && M === "POST") {
+      if (!master) return deny();
+      const b = await body<{ master: string; deshi: string; note_ja?: string; preview?: boolean }>();
+      const r = c.replies.find((x) => x.master === str(b.deshi, 40) && x.status === "review");
+      if (!r) return json({ error: "state" }, 409);
+      const by = str(b.master, 40) || "親方";
+      const note_ja = str(b.note_ja, 600);
+      const seal: Seal = { by, at: Date.now() };
+      if (note_ja) {
+        // 送る前に「相手にはこう届く」を見せる。見たものと同じ一言なら、訳し直さずにそのまま送る
+        if (r.seal?.note && r.seal.note_ja === note_ja) Object.assign(seal, { note_ja, note: r.seal.note });
+        else {
+          if (!(await underLimit(req, env, "ai"))) return json({ error: "limit" }, 429);
+          const terms = usedTerms(note_ja, await glossary(env), c.lang);
+          const gl = (await glossary(env)).filter((t) => terms.some((u) => u.ja === t.ja));
+          const note = client
+            ? await runLetter(client, { question: c.question, lang: c.lang, city: c.city, spoken_ja: note_ja, phrases: [], drew: false, terms: gl })
+            : demo.letter(note_ja, c.lang);
+          Object.assign(seal, { note_ja, note: check(note, note_ja, terms) });
+        }
+      }
+      if (b.preview) {
+        r.seal = seal;
+        await saveConsult(env, c);
+        return json({ seal });
+      }
+      return json(light(await sealAndSend(c, r, seal)));
     }
 
     if (act === "thanks" && M === "POST" && c.status === "answered") {
@@ -298,7 +347,8 @@ async function api(req: Request, env: Env, path: string[]): Promise<Response> {
       if (!master) return deny();
       const sent = c.replies.filter((r) => r.status === "sent");
       if (!sent.length) return json({ error: "state" }, 409);
-      const replies = sent.map((r) => ({ master: r.master, quote: [r.spoken_ja, ...r.phrases].filter(Boolean).join("") }));
+      // 親方の一言も、親方の名前で記事に入れる
+      const replies = sent.flatMap((r) => [{ master: r.master, quote: [r.spoken_ja, ...r.phrases].filter(Boolean).join("") }, ...(r.seal?.note_ja ? [{ master: r.seal.by, quote: r.seal.note_ja }] : [])]);
       const terms = (await glossary(env)).filter((t) => replies.some((r) => r.quote.includes(t.ja)));
       const out = client
         ? await runArticle(client, { question: c.question, city: c.city, brief: c.brief, replies, terms })

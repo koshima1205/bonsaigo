@@ -539,3 +539,16 @@ body.engawa-mode.size-xl{font-size:23px}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
   .enso path{stroke-dashoffset:0}
 }
+
+/* ---- 2026-11-04 親方の印 ---- */
+.seal-box{margin-top:18px;padding-top:14px;border-top:1px dashed rgba(0,0,0,.25)}
+.ans-h.reached{display:flex;align-items:center;gap:10px;font-weight:600}
+.role-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.role-pick button small{display:block;font-size:.6em;font-weight:400;margin-top:4px}
+.role-pick button.on{outline:4px solid var(--shu);outline-offset:-4px}
+.said-ro{white-space:pre-wrap;font-size:1.05em;line-height:1.8;margin:0}
+
+/* 職人の画面：写真で下書き・戻した文・送るボタンが隠れないように */
+.pic.view img{max-height:32vh;object-fit:contain;margin:0 auto;display:block}
+.m-main .stick{position:sticky;bottom:12px;z-index:5;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.m-main:has(.stick){padding-bottom:110px}

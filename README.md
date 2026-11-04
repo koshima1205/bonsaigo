@@ -1,47 +1,75 @@
-# Engawa — the bonsai veranda
+# Engawa（縁側）— 盆栽の職人の言葉を、こわさずに海の向こうへ
 
-A bonsai media site where owners abroad ask masters in Japan, and the masters' words cross the sea without breaking. The owner writes in their own language; the master answers in Japanese by voice, by drawing on the photo, or by tapping stock phrases. Claude carries the words across. It never answers in the master's place.
+海外で盆栽を育てる人が、日本の職人に相談できる盆栽のメディアです。
+- 持ち主は、自分の言葉で書きます
+- 職人は、日本語で答えます（話す・写真に描きこむ・よく使う言葉を選ぶ）
+- Claude が言葉を運びます。職人の代わりに答えることはしません
 
-Built for **Built with Claude: Japan 2026** (2026-11-02 – 11-08). Everything in this repository was written during the hackathon.
+**Built with Claude: Japan 2026**（2026-11-02〜11-08）のために作りました。このリポジトリの中身は、すべて期間中に書いたものです。
 
-## Two things to see first
-1. **Words that cross the sea unbroken.** Bonsai words and dialect break when translated literally. 「軒下になおしてください」 becomes "repair it under the eaves", and 「木がえらそう」 becomes "the tree looks great". Engawa translates through a glossary that the masters themselves correct, so these come out as *move it under the eaves* and *the tree looks weak*. Before sending, the master reads a back-translation of every line, next to their own words quoted verbatim.
-2. **One consultation becomes media.** Consultation → answers from several masters → an article in five languages → a vertical short video → captions for Instagram, YouTube and TikTok. The master presses OK at each step. Nothing is ever posted automatically.
+本番（見るだけで触れます）:
 
-## Everything inside
-| # | Feature | Where |
+https://engawa.igdeploy.workers.dev
+
+提出物の下書きは [docs/提出物_仮.md](docs/提出物_仮.md) にあります。
+
+## まず見てほしい2つ
+1. **言葉が、こわれずに届く**
+   - 盆栽の言葉や方言は、直訳するとこわれます
+     - 「軒下になおしてください」→ "repair it under the eaves"
+     - 「木がえらそう」→ "the tree looks great"
+   - Engawa は、職人が自分で直していく用語集を通して訳します。上の2つは *move it under the eaves*・*the tree looks weak* になります
+   - 送る前に、職人は1行ずつ「日本語に戻した文」と「自分の言葉そのままの引用」を見比べられます
+2. **1つの相談が、メディアになる**
+   - 相談 → 職人たちの答え → 5つの言葉の記事 → 縦のショート動画 → Instagram・YouTube・TikTok ごとの文
+   - どの段も職人が OK を押します。自動で投稿されることはありません
+
+## 中にあるもの
+| # | 機能 | 場所 |
 |---|---|---|
-| 1 | Ask a master (photos + question, AI asks only what a master needs) | `/#/ask` |
-| 2 | Glossary with literal vs. meaning, dialect included; grows every time a master corrects it | `/#/glossary`, master: `/#/master/glossary` |
-| 3 | Several masters answer; AI lines up their answers by axis (diagnosis, placement, water…) | `/#/c/:id` |
-| 4 | Articles in Japanese, easy Japanese, English, Spanish and Chinese | `/#/read` |
-| 5 | Short-video drafts (canvas, exportable as .webm) and per-platform captions; the master approves; no auto-posting | `/#/shorts`, master: `/#/master/short/:id` |
-| 6 | Visits measured per short and per platform through tracking links (`?src=s-xxx-ig`) | master: `/#/studio` |
-| 7 | Board for owners and masters, with translation | `/#/board` |
-| 8 | AI help desk before the masters (glossary + articles), handing off to a master when it is about your own tree | `/#/help` |
-| 9 | Wish list: owners describe a tree, masters raise a hand (matching only, no payment or shipping) | `/#/wish` |
-| 10 | UI per person: large text for masters, the owner's own language for owners | `/#/master` |
+| 1 | 職人に相談する（写真＋質問。AI は職人が要ることだけを聞き返す） | `/#/ask` |
+| 2 | 用語集（直訳と意味。方言もふくむ）。職人が直すたびに育つ | `/#/glossary`、職人：`/#/master/glossary` |
+| 3 | 何人もの職人が答える。AI が答えを軸（見立て・置き場所・水…）ごとに並べる | `/#/c/:id` |
+| 4 | 記事（日本語・やさしい日本語・英語・スペイン語・中国語） | `/#/read` |
+| 5 | ショート動画の下書き（canvas・.webm に書き出せる）と SNS ごとの文。職人が OK する。自動投稿なし | `/#/shorts`、職人：`/#/master/short/:id` |
+| 6 | ショートごと・SNS ごとに、何人来たかを計測つきリンク（`?src=s-xxx-ig`）で数える | 職人：`/#/studio` |
+| 7 | 持ち主と職人の掲示板（投稿を1件ずつ、読む人の言葉に訳す） | `/#/board` |
+| 8 | 職人の手前の AI 窓口（用語集と記事から答え、自分の木の話は職人へつなぐ） | `/#/help` |
+| 9 | 欲しい木：持ち主が書き、持っている職人が手を挙げる（つなぐだけ。売買・発送・支払いはしない） | `/#/wish` |
+| 10 | 人に合わせた画面：職人は大きな文字、持ち主は自分の言葉 | `/#/master` |
+| 11 | 知る：盆栽の知識の記事24本×5言語（出典つき）。立体で回して見られる木8種 | `/#/learn` |
+| 12 | 解説動画3本（黒松・もみじ・8つの木）と縦のショート3本 | `/#/shorts` |
 
-The background music is generated in the browser with the Web Audio API (koto, shakuhachi, wind, shishi-odoshi). No recorded or copyrighted audio is used.
+BGM は、ブラウザの中で Web Audio API で鳴らしています（琴・尺八・風・ししおどし）。録音した音や、権利のある音は使っていません。
 
-## How Claude is used
-- **Intake**: reads the photos and question, asks only what a master would need, and turns the owner's climate into a Japanese equivalent.
-- **Brief**: writes a three-line summary in plain Japanese for the master.
-- **Letter**: turns the master's words into a care letter in the owner's language, with glossary meanings, never literal ones. Every line quotes the master's original; the server checks that each quote really appears in what the master said.
-- **Knowledge**: lines up several masters' answers by axis and notes where they agree or differ.
-- **Article / Short / Help / Wish / Translate**: each is a structured output.
+## Claude の使い方
+- **聞き返し**：写真と質問を読み、職人が要ることだけを聞き返す。持ち主の土地の気候を、日本の気候に置きかえる
+- **職人向けの要約**：職人のために、やさしい日本語で3行にまとめる
+- **手紙**：職人の言葉を、持ち主の言葉の手紙にする
+  - 訳は用語集の「意味」でつくり、直訳はしない
+  - どの行にも職人の原文を引用する
+  - 引用が本当に職人の話した言葉にあるかを、サーバーで照合する
+- **知恵の整理**：何人もの職人の答えを軸ごとに並べ、同じ所と違う所を書く
+- **記事・ショート・AI 窓口・欲しい木・翻訳**：どれも構造化出力
+- Claude が自分から手入れの助言をすることはありません
+- モデル：`claude-opus-5-5`（構造化出力・サーバー側のフォールバックつき）
 
-Claude never gives care advice of its own. Model: `claude-opus-5-5` with structured outputs and server-side fallback.
+作る側では、Claude Code ですべてを作りました。設計、実装、Blender の木と動画、記事の下調べ、検品のサブエージェントまで含みます。
 
-## Run locally
+## 手元で動かす
 ```bash
 npm install
-cp .dev.vars.example .dev.vars   # ANTHROPIC_API_KEY and MASTER_CODE
+cp .dev.vars.example .dev.vars   # ANTHROPIC_API_KEY と MASTER_CODE（どちらも空のままでよい）
 npm run dev
 ```
-Without an API key, every screen runs on sample replies (marked as samples), so you can click through everything. Seeded data (sample masters "A" and "B", sample numbers) is fictional and labelled as a sample.
+- API キーが無いときは、どの画面も見本の応答で動きます（見本と表示されます）。全部の画面を押して試せます
+- 最初から入っている職人「A」「B」と数字は架空の見本で、見本と表示されます
+- `MASTER_CODE` は職人の画面と API を守る合言葉です。設定していないと、職人の画面は開けません
 
-`MASTER_CODE` protects the masters' screens and APIs. If it is not set, they stay locked.
-
-## Stack
-Cloudflare Workers + static assets, Workers KV, Anthropic TypeScript SDK, browser speech recognition, canvas + MediaRecorder for shorts, Web Audio for music.
+## 使っているもの
+- Cloudflare Workers ＋ 静的ファイル、Workers KV
+- Anthropic TypeScript SDK
+- ブラウザの音声認識
+- ショート：canvas ＋ MediaRecorder
+- 音：Web Audio
+- 3D の木と動画：Blender（`blender/`）と ffmpeg（`film/`）

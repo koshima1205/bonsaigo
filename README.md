@@ -11,7 +11,8 @@
 
 https://engawa.igdeploy.workers.dev
 
-提出物の下書きは [docs/提出物_仮.md](docs/提出物_仮.md) にあります。
+- 提出物の下書き：[docs/提出物_仮.md](docs/提出物_仮.md)
+- Claude の使い方（アプリの中と、作る側）：[docs/Claudeの使い方.md](docs/Claudeの使い方.md)
 
 ## まず見てほしい2つ
 1. **言葉が、こわれずに届く**

@@ -222,7 +222,7 @@ async function home() {
       <span class="tag cap">${t("cover_tag")}</span>
       <h1 lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(t("cover_h1"))}</h1>
       <p class="promise cover-promise" lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(t("cover_sub"))}</p>
-      <div class="cta"><a class="bt dark" href="#/garden">${t("nav_garden")} →</a><a class="bt line" href="#/tree">${t("nav_tree")}</a></div>
+      <div class="cta"><a class="bt dark" href="#/garden">${t("nav_garden")} →</a><a class="bt line" href="#/tree">${t("nav_tree")}</a><a class="bt line" href="/niwa/">${t("nav_niwa")}</a></div>
     </div>
     <div class="spin">
       <b>${t("turn")}</b>

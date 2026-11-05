@@ -175,6 +175,7 @@ const S = {
   // 2026-11-04 しぼった形：一軒の園・弟子の下書きに親方の印・一本ごとの木の記録
   nav_garden: ["園の看板", "えんの かんばん", "The nursery", "El vivero", "园圃"],
   nav_tree: ["わたしの木", "わたしの 木", "My tree", "Mi árbol", "我的树"],
+  nav_niwa: ["庭を歩く", "にわを あるく", "Walk the garden", "Pasea por el jardín", "漫步庭园"],
   promise: ["訳を待たずに、親方の一言と印が、その日のうちに届きます。方言まで誤解なく。", "ほんやくを またずに、おやかたの ひとことと はんこが その日の うちに とどきます。", "Bonsai guidance without waiting on a translator: the oyakata's word and seal reach you the same day — dialect and all.", "Consejos de bonsái sin esperar a un traductor: las palabras y el sello del oyakata te llegan el mismo día, con su dialecto.", "不必等翻译：师傅的一句话和印章，当天送到，连方言也不会误解。"],
   g_kicker: ["見本の園", "みほんの えん", "Sample nursery", "Vivero de ejemplo", "示例园圃"],
   g_name: ["松風園", "しょうふうえん", "Shofu-en", "Shofu-en", "松风园"],

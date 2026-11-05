@@ -60,8 +60,9 @@ export function makeSheet({ app, onThreads, onWishes, onOpen, onClose, onSeeTag 
     onWishes?.(wishes); return wishes;
   }
   const sampleTag = (x) => (x.seed ? `<span class="tag">${L('見本', 'Sample')}</span>` : '');
-  const offline = () => (live ? '' : `<p class="note">${L('この試しのページでは見本だけ見られます。書きこみは本番の Engawa でどうぞ。', 'This preview shows samples only. Post on the live Engawa.')}
-    <a href="${esc(app)}#/${view === 'market' ? 'wish' : 'board'}" target="_blank" rel="noopener">${L('本番で開く', 'Open the live site')} →</a></p>`);
+  // 本番の庭で同じ画面を開く（歩ける庭は本番の /niwa/ にある）
+  const offline = () => (live ? '' : `<p class="note">${L('この試しのページでは見本だけ見られます。書きこみは本番の庭でどうぞ。', 'This preview shows samples only. Post in the live garden.')}
+    <a href="${esc(app)}/niwa/?sheet=${view === 'market' ? 'market' : 'board'}" target="_blank" rel="noopener">${L('本番の庭で開く', 'Open the live garden')} →</a></p>`);
   const failed = () => `<li class="note">${L('いまは読みこめなかったので、見本を出しています。', 'Could not load the latest posts, so samples are shown for now.')}
     <button type="button" class="link retry">${L('もう一度読みこむ', 'Try again')}</button></li>`;
   const pick = (p) => (p.lang !== LANG && p.tr?.[LANG] ? p.tr[LANG] : p.body);

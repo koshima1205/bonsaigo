@@ -168,7 +168,7 @@ function splash() {
       <span class="cap">${t("issue")}</span>
       <img class="splash-img" src="/trees/pine/hero.webp" alt="">
       <h1>Engawa<em>.</em></h1>
-      <p>${esc(t("cover_sub"))}</p>
+      <p lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(t("cover_sub"))}</p>
       <button class="enter">${t("enter")}<small>♪ ${t("sound")}</small></button>
       <button class="quiet">${t("enter_quiet")}</button>
       <div class="langs">${Object.entries(UI_LANGS).map(([k, v]) => `<button data-l="${k}" class="${k === lang() ? "on" : ""}">${v}</button>`).join("")}</div>
@@ -221,7 +221,7 @@ async function home() {
     <div class="side">
       <span class="tag cap">${t("cover_tag")}</span>
       <h1 lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(t("cover_h1"))}</h1>
-      <p class="promise cover-promise">${esc(t("cover_sub"))}</p>
+      <p class="promise cover-promise" lang="${["ja", "easy"].includes(lang()) ? "ja" : lang()}">${esc(t("cover_sub"))}</p>
       <div class="cta"><a class="bt dark" href="#/garden">${t("nav_garden")} →</a><a class="bt line" href="#/tree">${t("nav_tree")}</a></div>
     </div>
     <div class="spin">

@@ -18,7 +18,7 @@ const S = {
   issue: ["第1号 · 2026年 冬", "だい1ごう · 2026年 ふゆ", "Issue 01 · Winter 2026", "Número 01 · Invierno 2026", "第01期 · 2026年冬"],
   cover_tag: ["今号の職人のことば", "こんかいの しょくにんの ことば", "A master's word, this issue", "La palabra de un maestro, este número", "本期匠人之言"],
   cover_h1: ["冬も、外の寒さに当ててください。", "ふゆも、そとの さむさに あてて ください。", "Leave it out in the winter cold.", "Déjalo fuera, también en el frío del invierno.", "冬天，也请让它待在室外的寒气里。"],
-  cover_sub: ["翻訳を何日も待つ添削を、親方の一言と印で、その日のうちに。方言まで誤解なく届けます。", "ほんやくを 何日も またずに、おやかたの ひとことと はんこが その日の うちに とどきます。", "Bonsai guidance without days of waiting for a translator: the oyakata's word and seal reach you the same day — dialect and all.", "Consejos de bonsái sin esperar días a un traductor: las palabras y el sello del oyakata te llegan el mismo día, con su dialecto.", "不必等翻译好几天：师傅的一句话和印章，当天送到，连方言也不会误解。"],
+  cover_sub: ["訳を待つ添削を、親方の一言と印で、その日のうちに。方言まで誤解なく届けます。", "ほんやくを またずに、おやかたの ひとことと はんこが その日の うちに とどきます。", "Bonsai guidance without waiting on a translator: the oyakata's word and seal reach you the same day — dialect and all.", "Consejos de bonsái sin esperar a un traductor: las palabras y el sello del oyakata te llegan el mismo día, con su dialecto.", "不必等翻译：师傅的一句话和印章，当天送到，连方言也不会误解。"],
   turn: ["ドラッグで回せます", "ゆびで まわせます", "Drag to turn", "Arrastra para girar", "拖动即可旋转"],
   tree3d: ["3Dの木", "3Dの 木", "3D tree", "Árbol 3D", "3D树"],
   learn_sub: ["基本・樹種・季節と手入れ。出典つきで、分かりやすく。", "きほん・木の しゅるい・きせつと ていれ。", "Basics, species, seasons and care — clearly explained, with sources.", "Fundamentos, especies, estaciones y cuidados: claro y con fuentes.", "基础、树种、四季与养护——讲得清楚，附出处。"],
@@ -175,7 +175,7 @@ const S = {
   // 2026-11-04 しぼった形：一軒の園・弟子の下書きに親方の印・一本ごとの木の記録
   nav_garden: ["園の看板", "えんの かんばん", "The nursery", "El vivero", "园圃"],
   nav_tree: ["わたしの木", "わたしの 木", "My tree", "Mi árbol", "我的树"],
-  promise: ["翻訳を何日も待つ添削を、親方の一言と印で、その日のうちに。方言まで誤解なく届けます。", "ほんやくを 何日も またずに、おやかたの ひとことと はんこが その日の うちに とどきます。", "Bonsai guidance without days of waiting for a translator: the oyakata's word and seal reach you the same day — dialect and all.", "Consejos de bonsái sin esperar días a un traductor: las palabras y el sello del oyakata te llegan el mismo día, con su dialecto.", "不必等翻译好几天：师傅的一句话和印章，当天送到，连方言也不会误解。"],
+  promise: ["訳を待つ添削を、親方の一言と印で、その日のうちに。方言まで誤解なく届けます。", "ほんやくを またずに、おやかたの ひとことと はんこが その日の うちに とどきます。", "Bonsai guidance without waiting on a translator: the oyakata's word and seal reach you the same day — dialect and all.", "Consejos de bonsái sin esperar a un traductor: las palabras y el sello del oyakata te llegan el mismo día, con su dialecto.", "不必等翻译：师傅的一句话和印章，当天送到，连方言也不会误解。"],
   g_kicker: ["見本の園", "みほんの えん", "Sample nursery", "Vivero de ejemplo", "示例园圃"],
   g_name: ["松風園", "しょうふうえん", "Shofu-en", "Shofu-en", "松风园"],
   g_note: ["架空の園です。名前・人・値段は見本で、お支払いはできません。", "つくった 見本の えんです。お金は はらえません。", "A fictional nursery. Names, people and price are samples; no payment is taken.", "Vivero ficticio. Nombres, personas y precio son de ejemplo; no se cobra nada.", "虚构的园圃。名字、人物和价格均为示例，无法付款。"],

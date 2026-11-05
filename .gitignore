@@ -4,3 +4,10 @@ node_modules/
 .secrets/
 public/_dev/
 film/out/
+
+# Character work on Windows: source images (incl. official CryptoNinja art), previews and in-progress models stay local
+chara/ref/
+chara/preview/
+chara/raw/
+chara/out/
+.claude/

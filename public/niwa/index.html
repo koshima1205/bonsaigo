@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#151511">
+<title>Engawa の庭</title>
+<meta name="description" content="歩いて回る3Dの日本庭園。縁側で職人に相談し、東屋で盆栽を学び、夜はライトアップした盆栽を眺める。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23151511'/%3E%3Ctext x='16' y='24' font-size='22' text-anchor='middle' fill='%23c4a46a' font-family='serif'%3E庭%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<style>
+:root{
+  --sumi:#151511; --paper:#f4eee1; --ink:#23211c; --ink2:#5b564b; --gold:#c4a46a; --shu:#b5432f; --moss:#3a5129;
+  --serif:"Shippori Mincho","Yu Mincho",serif; --sans:"Noto Sans JP",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:var(--sumi);color:var(--paper);font-family:var(--sans);overflow:hidden;-webkit-tap-highlight-color:transparent}
+#stage,#stage canvas{position:fixed;inset:0;display:block;touch-action:none}
+button{font:inherit;color:inherit;cursor:pointer}
+small{display:block;font-size:.72em;opacity:.72;letter-spacing:.04em}
+#loading{position:fixed;inset:0;display:grid;place-items:center;background:var(--sumi);font-family:var(--serif);letter-spacing:.3em;z-index:30}
+
+/* はじめの画面 */
+#start{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px 16px;
+  background:linear-gradient(180deg,rgba(14,14,12,.15),rgba(14,14,12,.78) 62%,rgba(14,14,12,.92))}
+.panel{width:min(560px,100%);text-align:center}
+.panel h1{font-family:var(--serif);font-weight:700;font-size:clamp(34px,8vw,56px);letter-spacing:.18em;margin:0 0 6px}
+.panel .sub{font-family:var(--serif);color:#e6dcc4;margin:0 0 4px;letter-spacing:.08em}
+.panel .en{color:#bfb59f;font-size:13px;margin:0 0 22px;letter-spacing:.06em}
+#pick{display:flex;gap:12px;justify-content:center;margin:0 0 18px}
+#pick button{flex:1 1 0;max-width:150px;background:rgba(244,238,225,.06);border:1px solid rgba(196,164,106,.35);border-radius:14px;padding:10px 8px 10px;transition:transform .15s,border-color .15s,background .15s}
+#pick button img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:10px;background:#e9e3d6;display:block;margin-bottom:8px}
+#pick button b{font-family:var(--serif);font-size:18px;letter-spacing:.1em}
+#pick button[aria-pressed=true]{border-color:var(--gold);background:rgba(196,164,106,.18);transform:translateY(-3px)}
+#enter{background:var(--gold);color:#1b1913;border:0;border-radius:999px;padding:14px 38px;font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:.2em}
+#enter:disabled{opacity:.6}
+#bar{height:3px;background:rgba(255,255,255,.15);border-radius:3px;margin:16px auto 0;width:200px;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
+#err{color:#f0a38f;font-size:13px;min-height:1em;margin:10px 0 0}
+.how{color:#bfb59f;font-size:12.5px;margin:16px 0 0;line-height:1.8}
+.credit{color:#958c78;font-size:11.5px;margin:14px 0 0;line-height:1.7}
+
+/* 庭の中の画面 */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:10}
+#hud>*{pointer-events:auto}
+.top{position:absolute;top:max(12px,env(safe-area-inset-top));left:16px;right:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px;pointer-events:none}
+.top>*{pointer-events:auto}
+.brand{font-family:var(--serif);font-weight:700;letter-spacing:.16em;font-size:18px;text-shadow:0 1px 8px rgba(0,0,0,.55);text-decoration:none;color:inherit}
+.brand small{font-family:var(--sans);font-weight:400;letter-spacing:.06em;font-size:11px}
+.tools{display:flex;gap:8px}
+.pill{background:rgba(21,21,17,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(196,164,106,.4);border-radius:999px;padding:9px 16px;font-size:14px;min-height:40px}
+.pill[aria-pressed=true]{background:rgba(196,164,106,.85);color:#1b1913}
+#labels{position:fixed;inset:0;pointer-events:none;z-index:9}
+.label{position:absolute;left:0;top:0;background:rgba(244,238,225,.92);color:var(--ink);border:0;border-radius:10px;padding:6px 12px 5px;font-family:var(--serif);font-size:15px;letter-spacing:.08em;white-space:nowrap;box-shadow:0 4px 18px rgba(0,0,0,.25);transition:opacity .2s}
+.label::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:rgba(244,238,225,.92)}
+.label small{font-family:var(--sans);font-size:10px;color:var(--ink2);opacity:1}
+#card{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(440px,calc(100% - 32px));z-index:12;
+  background:rgba(244,238,225,.96);color:var(--ink);border-radius:18px;padding:18px 18px 16px;box-shadow:0 18px 50px rgba(0,0,0,.35);animation:rise .28s ease-out}
+@keyframes rise{from{opacity:0;transform:translate(-50%,14px)}}
+#card .kicker{margin:0;color:var(--shu);font-family:var(--serif);font-weight:700;letter-spacing:.12em;font-size:13px}
+#card .kicker span{color:var(--ink2);font-family:var(--sans);font-weight:400;margin-left:8px;font-size:11px}
+#card h2{font-family:var(--serif);margin:4px 0 8px;font-size:22px;letter-spacing:.06em}
+#card h2 small{font-family:var(--sans);font-size:12px;color:var(--ink2);opacity:1;margin-top:2px}
+#card p{margin:0 0 6px;font-size:14px;line-height:1.75}
+#card p.en{color:var(--ink2);font-size:12.5px;line-height:1.6}
+#card .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+#card .go{flex:1 1 140px;text-align:center;text-decoration:none;background:var(--moss);color:#f4eee1;border:0;border-radius:12px;padding:11px 12px 9px;font-size:15px;font-weight:700}
+#card .go+.go{background:transparent;color:var(--moss);box-shadow:inset 0 0 0 1.5px var(--moss)}
+#card .x{position:absolute;top:8px;right:10px;width:36px;height:36px;border:0;background:none;font-size:22px;color:var(--ink2)}
+#stick{position:fixed;left:max(22px,env(safe-area-inset-left));bottom:max(26px,env(safe-area-inset-bottom));width:116px;height:116px;border-radius:50%;
+  background:rgba(21,21,17,.38);border:1px solid rgba(244,238,225,.35);z-index:11;touch-action:none;display:grid;place-items:center}
+#stick i{width:50px;height:50px;border-radius:50%;background:rgba(244,238,225,.75);box-shadow:0 2px 10px rgba(0,0,0,.3);transition:transform .05s}
+#card:not([hidden])~#stick{opacity:.35}
+.hint{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);font-size:12px;color:#e9e1cf;text-shadow:0 1px 6px rgba(0,0,0,.6);pointer-events:none;white-space:nowrap}
+.fan{position:absolute;right:16px;bottom:max(14px,env(safe-area-inset-bottom));font-size:10.5px;color:#d9cfb8;text-shadow:0 1px 6px rgba(0,0,0,.7);pointer-events:none;text-align:right}
+body.noui #hud,body.noui #labels,body.noui #card,body.noui #stick{display:none!important}
+
+/* 掲示板と市（下から出る画面） */
+body.sheet-open #stick,body.sheet-open #labels,body.sheet-open .hint{visibility:hidden}
+#sheet{position:fixed;inset:0;z-index:25;display:flex;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,rgba(14,14,12,0) 25%,rgba(14,14,12,.5))}
+.sh-panel{position:relative;width:min(560px,100%);max-height:84vh;max-height:84dvh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  background:var(--paper);color:var(--ink);color-scheme:light;border-radius:20px 20px 0 0;box-shadow:0 -12px 40px rgba(0,0,0,.35);animation:sheetup .28s ease-out;
+  padding:0 max(18px,env(safe-area-inset-right)) calc(22px + env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left))}
+@keyframes sheetup{from{transform:translateY(40px);opacity:0}}
+.sh-panel:focus{outline:none}
+.sh-top{position:sticky;top:0;z-index:1;display:flex;justify-content:flex-end;align-items:center;height:48px;margin:0 -10px;background:var(--paper)}
+.sh-top::before{content:"";position:absolute;left:50%;top:8px;width:40px;height:4px;margin-left:-20px;border-radius:2px;background:#d6ccb6}
+.sh-x{width:44px;height:44px;border:0;background:none;border-radius:50%;font-size:24px;color:var(--ink2)}
+.sh-body{padding-top:0}
+.sh-body .kicker{margin:0;color:var(--shu);font-family:var(--serif);font-weight:700;letter-spacing:.12em;font-size:13px}
+.sh-body .kicker span{color:var(--ink2);font-family:var(--sans);font-weight:400;margin-left:8px;font-size:11px;letter-spacing:.04em}
+.sh-body h2{font-family:var(--serif);margin:4px 0 8px;font-size:22px;letter-spacing:.05em;line-height:1.45;text-wrap:balance}
+.sh-body .lead{margin:0 0 14px;font-size:14px;line-height:1.8;color:var(--ink2)}
+.sh-body .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;border-radius:12px;border:0;box-shadow:inset 0 0 0 1.5px var(--moss);background:transparent;color:var(--moss);font-weight:700;font-size:15px;cursor:pointer;list-style:none}
+.sh-body .btn::-webkit-details-marker{display:none}
+.sh-body .btn.solid{background:var(--moss);color:#f4eee1;box-shadow:none;width:100%}
+.sh-body .btn:disabled{opacity:.6}
+.sh-body details.new{margin:0 0 14px}
+.sh-body details.new[open] summary{background:var(--moss);color:#f4eee1}
+.sh-body .form{display:grid;gap:12px;margin:12px 0 4px;padding:14px;background:#ebe3d0;border-radius:14px}
+.sh-body label{display:grid;gap:5px;font-size:13px;font-weight:500;color:var(--ink2)}
+.sh-body input,.sh-body textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:#fffaf0;border:1px solid #c9bda2;border-radius:10px;padding:10px 12px;resize:vertical}
+.sh-body input:focus,.sh-body textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+.sh-body .err{margin:0;min-height:0;color:var(--shu);font-size:13px}
+.sh-body .err:empty{display:none}
+.sh-body .ok{margin:0 0 12px;padding:10px 12px;border-radius:10px;background:#dfe8d2;color:#2c4220;font-size:14px;line-height:1.7}
+.sh-body .ok .link{display:block;padding-top:6px;color:#2c4220}
+.sh-body .sum{margin:-4px 0 10px;font-size:13px;color:var(--ink2);line-height:1.6}
+.sh-body .note{margin:0 0 14px;padding:10px 12px;border-radius:10px;background:#ebe3d0;font-size:13px;line-height:1.7;color:var(--ink2)}
+.sh-body .note a{color:var(--moss);font-weight:700;white-space:nowrap}
+.sh-body .fine{margin:0;font-size:12px;color:var(--ink2);line-height:1.6}
+.sh-body .fine.list-note{margin:18px 0 0}
+.sh-body .dim{color:var(--ink2);font-size:13px;padding:12px 0}
+.sh-body .list,.sh-body .wishes{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.sh-body .row{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;background:#fbf7ee;border:1px solid #e0d6c0;border-radius:14px;padding:12px;color:var(--ink)}
+.sh-body .row:active{background:#f1ead9}
+.sh-body .lang{flex:0 0 auto;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#2b3a5e;color:#f4efe2;border-radius:6px;padding:2px 6px;margin-top:2px}
+.sh-body .txt{flex:1 1 auto;min-width:0;display:grid;gap:3px}
+.sh-body .txt b{font-family:var(--serif);font-size:16px;line-height:1.45;overflow-wrap:anywhere}
+.sh-body .snip{font-size:13px;color:var(--ink2);line-height:1.6;overflow-wrap:anywhere}
+.sh-body .txt small,.sh-body .who small,.sh-body .wh small{opacity:1;color:#857c6a;font-size:11.5px}
+.sh-body .tag{flex:0 0 auto;font-size:11px;color:#857c6a;border:1px solid #cdbf9f;border-radius:6px;padding:1px 6px;font-family:var(--sans);font-weight:400;vertical-align:middle;letter-spacing:.04em}
+.sh-body .back{border:0;background:none;color:var(--moss);font-weight:700;font-size:14px;padding:10px 0;min-height:44px}
+.sh-body .posts{display:grid;gap:10px;margin:6px 0 16px}
+.sh-body .post{background:#fbf7ee;border:1px solid #e0d6c0;border-radius:14px;padding:12px 14px}
+.sh-body .post.master{background:#f6eedb;border-color:#d9c393}
+.sh-body .post p{margin:6px 0 0;font-size:14.5px;line-height:1.8;overflow-wrap:anywhere}
+.sh-body .post details{margin-top:6px;font-size:13px;color:var(--ink2)}
+.sh-body .post summary{cursor:pointer;color:var(--moss);font-weight:500}
+.sh-body .who{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.sh-body .who b{font-size:14px}
+.sh-body .seal{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:5px;background:var(--shu);color:#fff;font-family:var(--serif);font-size:13px;font-weight:700;transform:rotate(-4deg)}
+.sh-body .link{border:0;background:none;color:var(--moss);font-weight:700;font-size:13px;padding:8px 0 0;min-height:36px}
+.sh-body .trout{background:#ebe3d0;border-radius:8px;padding:8px 10px}
+.sh-body .wishes{margin-top:16px}
+.sh-body .wish{background:#fbf7ee;border:1px solid #e0d6c0;border-radius:14px;padding:12px 14px}
+.sh-body .wh{display:flex;gap:8px;align-items:center}
+.sh-body .wh .tag{margin-left:auto}
+.sh-body .wt{margin:8px 0 10px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}
+.sh-body dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;margin:0}
+.sh-body dl div{min-width:0}
+.sh-body dt{font-size:11px;color:#857c6a;letter-spacing:.06em}
+.sh-body dd{margin:0;font-family:var(--serif);font-weight:700;font-size:15px;overflow-wrap:anywhere}
+.sh-body .raised{margin:10px 0 0;font-size:12.5px;color:var(--ink2)}
+.sh-body .raised.yes{color:var(--shu);font-weight:700}
+@media (max-width:600px){ .hint{display:none} .fan{bottom:auto;top:calc(max(12px,env(safe-area-inset-top)) + 46px)} }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="loading">庭をひらいています…</div>
+
+<div id="start">
+  <div class="panel">
+    <h1>縁側の庭</h1>
+    <p class="sub">歩いて、盆栽と職人に出会う</p>
+    <p class="en">Walk the garden. Meet the bonsai, and the masters.</p>
+    <div id="pick" role="group" aria-label="歩くキャラクター"></div>
+    <button id="enter" type="button">庭に入る</button>
+    <div id="bar" hidden><i></i></div>
+    <p id="err" role="alert"></p>
+    <p class="how">地面をタップするとそこへ歩きます。ドラッグで見まわし、2本指で寄ります。<br>パソコンは WASD・矢印キーでも歩けます。</p>
+    <p class="credit">キャラクター：CryptoNinja（クリプトニンジャ）のファンメイドです。公式ではありません。<br>Characters are fan-made CryptoNinja figures — not official.</p>
+  </div>
+</div>
+
+<div id="hud" hidden>
+  <div class="top">
+    <a class="brand" href="/">縁側の庭<small>Engawa garden</small></a>
+    <div class="tools">
+      <button id="who" class="pill" type="button">キャラ</button>
+      <button id="daynight" class="pill" type="button" aria-pressed="false">夜にする</button>
+    </div>
+  </div>
+  <p class="hint">地面をクリックで歩く・ドラッグで見まわす・光る輪が見どころ</p>
+  <p class="fan">キャラクターは CryptoNinja のファンメイド（非公式）</p>
+</div>
+<div id="labels" hidden></div>
+<div id="card" hidden></div>
+<div id="stick" hidden><i></i></div>
+<div id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheet-h">
+  <div class="sh-panel" tabindex="-1">
+    <div class="sh-top"><button class="sh-x" type="button" aria-label="閉じる">×</button></div>
+    <div class="sh-body"></div>
+  </div>
+</div>
+
+<script type="module" src="./niwa.js"></script>
+</body>
+</html>

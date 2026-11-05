@@ -121,7 +121,10 @@ fill = bpy.data.objects.new("fill", fill_d); sc.collection.objects.link(fill)
 fill.location = (-3, -7, 3); fill.rotation_euler = (math.radians(70), 0, math.radians(-25))
 w = sc.world; w.use_nodes = True
 nt = w.node_tree; bg = next(n for n in nt.nodes if n.type == "BACKGROUND")
-sky = nt.nodes.new("ShaderNodeTexSky"); sky.sky_type = "NISHITA"; sky.sun_elevation = math.radians(9); sky.sun_rotation = math.radians(208)
+sky = nt.nodes.new("ShaderNodeTexSky")
+_st = [i.identifier for i in sky.bl_rna.properties["sky_type"].enum_items]
+sky.sky_type = "NISHITA" if "NISHITA" in _st else ("MULTIPLE_SCATTERING" if "MULTIPLE_SCATTERING" in _st else _st[0])
+sky.sun_elevation = math.radians(9); sky.sun_rotation = math.radians(208)
 nt.links.new(sky.outputs["Color"], bg.inputs["Color"]); bg.inputs["Strength"].default_value = 0.08
 # 朝のもや：光の筋が見える程度の薄い霧
 vol = nt.nodes.new("ShaderNodeVolumePrincipled"); vol.inputs["Density"].default_value = 0.004
@@ -185,7 +188,14 @@ else:
         t = s / 6; f = 1 + (n - 1) * t
         a = keys[0][1] + (keys[1][1] - keys[0][1]) * t; d = keys[0][2] + (keys[1][2] - keys[0][2]) * t; h = keys[0][3] + (keys[1][3] - keys[0][3]) * t
         cam.location = campos(a, d, h); cam.keyframe_insert("location", frame=f)
-    for fc in cam.animation_data.action.fcurves:
+    act = cam.animation_data.action
+    fcs = list(getattr(act, "fcurves", []) or [])
+    if not fcs:  # Blender 5 の層つきアクション
+        for ly in act.layers:
+            for st in ly.strips:
+                for cb in st.channelbags:
+                    fcs += list(cb.fcurves)
+    for fc in fcs:
         for kp in fc.keyframe_points:
             kp.interpolation = "SINE"
     sc.render.filepath = os.path.join(OUT, "f")

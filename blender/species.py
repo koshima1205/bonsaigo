@@ -250,7 +250,8 @@ inst = N.new("GeometryNodeInstanceOnPoints")
 rr = N.new("FunctionNodeRandomValue"); rr.data_type = "FLOAT_VECTOR"
 rr.inputs["Min"].default_value = (-0.6, -0.6, 0); rr.inputs["Max"].default_value = (0.6, 0.6, 6.28)
 rs = N.new("FunctionNodeRandomValue"); rs.data_type = "FLOAT"
-rs.inputs[2].default_value = S["sc"][0]; rs.inputs[3].default_value = S["sc"][1]
+_fl = [i for i in rs.inputs if i.enabled and i.type == "VALUE"] or [i for i in rs.inputs if i.type == "VALUE"]
+_fl[0].default_value = S["sc"][0]; _fl[1].default_value = S["sc"][1]
 align = N.new("FunctionNodeAlignEulerToVector"); align.axis = "Z"
 rot_add = N.new("FunctionNodeRotateEuler")
 join = N.new("GeometryNodeJoinGeometry")
@@ -262,7 +263,7 @@ L(dist.outputs["Normal"], align.inputs["Vector"])
 L(align.outputs["Rotation"], rot_add.inputs[0])
 L(rr.outputs[0], rot_add.inputs[1])
 L(rot_add.outputs[0], inst.inputs["Rotation"])
-L(rs.outputs[1], inst.inputs["Scale"])
+L(rs.outputs[1] if len(rs.outputs) > 1 else rs.outputs[0], inst.inputs["Scale"])
 if not (S.get("broom") or S.get("bare")):
     L(gi.outputs[0], join.inputs[0])
 L(inst.outputs[0], join.inputs[0])

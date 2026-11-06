@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>17 撮るだけで発信（職人）｜盆栽マッチング 試作</title>
+<title>撮るだけで発信｜盆栽マッチング</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .h1 { font-size: 1.75rem; }
   .pick input { position: absolute; width: 1px; height: 1px; opacity: 0; }
@@ -57,15 +64,16 @@
         <span>動画を撮る</span>
       </label>
     </div>
-    <button type="button" class="sample-link" id="btn-sample">カメラがないときは、見本の写真で試す</button>
+    <button type="button" class="sample-link demo-only" id="btn-sample">カメラがないときは、見本の写真で試す</button>
 
+    <div id="tree-state"></div>
     <div class="thumbs" id="thumbs" hidden></div>
     <p class="wait" id="wait" role="status" hidden>投稿を書いています。少しお待ちください。</p>
     <div class="err" id="err" role="alert" hidden></div>
 
     <div id="result" hidden>
       <h2 class="h2" style="margin-top:var(--s5)">世界に向けた投稿ができました。</h2>
-      <p class="note" id="sample-note" hidden>この写真は試作の見本です。このあと届く海外の方の相談でも、同じ写真を使っています。</p>
+      <p class="note demo-only" id="sample-note" hidden>この写真は試作の見本です。このあと届く海外の方の相談でも、同じ写真を使っています。</p>
       <div class="ok-bar"><button type="button" class="big-btn big-btn--main" id="btn-ok">OK</button></div>
       <div class="check" id="problem" hidden><b>写真を確かめてください</b><p id="problem-text" style="margin:var(--s2) 0 0"></p></div>
       <div id="sns"></div>
@@ -88,7 +96,7 @@
         <p class="done__title">発信の準備ができました。</p>
         <p>投稿はまだしていません。下の押しボタンで開いて、最後に投稿を押してください。</p>
       </div>
-      <div class="big-actions" id="next" style="margin-top:var(--s4)" hidden><a class="big-btn big-btn--main" id="next-link" href="19_話して先生に登録_職人.html">次へ：先生に登録する</a></div>
+      <div class="big-actions" id="next" style="margin-top:var(--s4)" hidden><a class="big-btn big-btn--main demo-only" id="next-link" href="19_話して先生に登録_職人.html">次へ：先生に登録する</a><a class="big-btn" id="home-link" href="00_ホーム_職人と愛好家.html?role=shokunin">ホームに戻る</a></div>
       <ul class="out" id="out" hidden></ul>
     </div>
   </main>
@@ -112,7 +120,12 @@ document.addEventListener("DOMContentLoaded", function () {
   var images = [], kind = "photo", draft = null, busy = false;
   var params = new URLSearchParams(location.search), treeId = params.get("tree");
 
-  function showErr(msg) { $("err").textContent = msg; $("err").hidden = false; }
+  /* 失敗の文。サーバーの言葉のまま出さず、押した場所から見える位置まで動かす */
+  function showErr(msg) {
+    if (/サーバー/.test(msg || "")) msg = "つながりませんでした。少し待って、もう一度お試しください";
+    $("err").textContent = msg; $("err").hidden = false;
+    $("err").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 
   function make() {
     if (busy || !images.length) return;
@@ -120,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $("err").hidden = true; $("result").hidden = true; $("wait").hidden = false;
     $("wait").scrollIntoView({ behavior: "smooth", block: "center" });
     var body = { kind: kind, note: $("note").value, images: images.map(function (i) { return { media_type: i.media_type, data: i.data }; }) };
-    (API.online ? API.post("/api/posts/draft", body) : Promise.reject(new Error("サーバーなしで開いています。試作の使い方に沿って、サーバーを動かしてください")))
+    (API.online ? API.post("/api/posts/draft", body) : Promise.reject(new Error("いまはつながっていないため、投稿を作れません。つながってから、もう一度お試しください")))
       .then(render)
       .catch(function (e) { showErr(e.message); })
       .then(function () { busy = false; $("wait").hidden = true; });
@@ -165,13 +178,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   $("btn-sample").addEventListener("click", function () {
     $("sample-note").hidden = false;
-    API.samplePhoto().then(function (i) { take([i], "photo"); });
+    API.samplePhoto().then(function (i) { take([i], "photo"); }, function (er) { showErr("見本の写真を読み込めませんでした。もう一度お試しください"); });
   });
 
   /* 1鉢の記録から来たときは、その木の写真と言葉ですぐ作る */
-  if (treeId && API.online) API.get("/api/trees").then(function (r) {
+  function loadTree() {
+    UI.state($("tree-state"), "loading", "この木の記録を読み込んでいます");
+    API.get("/api/trees").then(function (r) {
+    UI.clear($("tree-state"));
     var t = r.trees.find(function (x) { return x.id === treeId; });
     if (!t) return;
+    $("next-link").classList.remove("demo-only");
     $("next-link").href = "21_話すか撮るだけ_1鉢の記録と出品_職人.html#tree-" + t.id;
     $("next-link").textContent = "この木の記録に戻る";
     if (!t.image) { showErr("この木の写真がありません。写真を撮ってください"); return; }
@@ -179,7 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
     $("thumbs").innerHTML = '<img alt="この木の写真" src="' + images[0].url + '">'; $("thumbs").hidden = false;
     $("note").value = params.get("idea") || t.voice_ja || "";
     make();
-  }, function (e) { showErr(e.message); });
+    }, function () { UI.state($("tree-state"), "error", "この木の記録を読み込めませんでした。もう一度試すか、新しく写真を撮ってください", { retry: loadTree }); });
+  }
+  if (treeId && API.online) loadTree();
 
   /* ひとこと足す：話せるブラウザなら話す。話せなくても書ける */
   var talking = false;

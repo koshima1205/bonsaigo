@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>02 1鉢のページ｜盆栽マッチング 試作</title>
+<title>一鉢のページ</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .angle-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s1); margin: var(--s4) 0 var(--s3); border-bottom: 1px solid var(--sen); }
   .angle-tabs button { min-height: 52px; padding: var(--s2) var(--s1); border: 0; border-bottom: 3px solid transparent; background: none; cursor: pointer; font-size: var(--fs-s); line-height: 1.35; color: var(--sumi-2); }
@@ -33,14 +40,14 @@
 <div class="app">
   <header id="appbar"></header>
   <main class="page">
-    <p class="eyebrow"><span class="t"><span data-l="ja">一鉢のページ ・ 展示番号 No.07（サンプル）</span><span data-l="en">One tree · Exhibit No. 07 (sample)</span><span data-l="es">Un árbol · Pieza n.º 07 (muestra)</span><span data-l="zh">一盆详情 · 展品07号（样例）</span></span></p>
+    <p class="eyebrow"><span class="t"><span data-l="ja">一鉢のページ</span><span data-l="en">One tree</span><span data-l="es">Un árbol</span><span data-l="zh">一盆详情</span></span></p>
     <h1 class="h1"><span class="t">
       <span data-l="ja">黒松の<b class="term" data-term="模様木">模様木</b>。腰で曲がり、上へ伸びる一鉢。</span>
       <span data-l="en">A black pine in the <b class="term" data-term="模様木">informal upright</b> style: it bends at the waist, then rises.</span>
       <span data-l="es">Un pino negro <b class="term" data-term="模様木">moyogi</b>: se curva en la cintura y asciende.</span>
       <span data-l="zh">黑松<b class="term" data-term="模様木">模样木</b>：在腰部弯曲，向上伸展。</span>
     </span></h1>
-    <p class="note"><span class="t"><span data-l="ja">この画面は説明だけです。売り買いはしません。</span><span data-l="en">This page only describes the tree. Nothing is for sale here.</span><span data-l="es">Esta página solo describe el árbol; no se vende nada.</span><span data-l="zh">本页仅作介绍，不进行买卖。</span></span></p>
+    <p class="note demo-only"><span class="t"><span data-l="ja">この画面は説明だけです。売り買いはしません。</span><span data-l="en">This page only describes the tree. Nothing is for sale here.</span><span data-l="es">Esta página solo describe el árbol; no se vende nada.</span><span data-l="zh">本页仅作介绍，不进行买卖。</span></span></p>
 
     <div class="angle-tabs" role="tablist" id="tabs">
       <button type="button" role="tab" data-tab="moyogi" data-zu="moyogi" aria-selected="true"><span class="t"><span data-l="ja">正面</span><span data-l="en">Front</span><span data-l="es">Frente</span><span data-l="zh">正面</span></span></button>
@@ -59,8 +66,8 @@
     <dl class="spec">
       <div><dt><span class="t"><span data-l="ja">樹種</span><span data-l="en">Species</span><span data-l="es">Especie</span><span data-l="zh">树种</span></span></dt><dd><span class="t"><span data-l="ja">黒松</span><span data-l="en">Japanese black pine (Kuromatsu)</span><span data-l="es">Pino negro japonés</span><span data-l="zh">黑松</span></span></dd></div>
       <div><dt><span class="t"><span data-l="ja">樹形</span><span data-l="en">Style</span><span data-l="es">Estilo</span><span data-l="zh">树形</span></span></dt><dd><b class="term" data-term="模様木"><span class="t"><span data-l="ja">模様木</span><span data-l="en">Moyogi (informal upright)</span><span data-l="es">Moyogi</span><span data-l="zh">模样木</span></span></b></dd></div>
-      <div><dt><span class="t"><span data-l="ja">樹齢</span><span data-l="en">Age</span><span data-l="es">Edad</span><span data-l="zh">树龄</span></span></dt><dd><span class="t"><span data-l="ja">推定およそ60年</span><span data-l="en">Estimated: about 60 years</span><span data-l="es">Estimada: unos 60 años</span><span data-l="zh">推定约60年</span></span> <span class="sample"><span class="t"><span data-l="ja">サンプル</span><span data-l="en">sample</span><span data-l="es">muestra</span><span data-l="zh">样例</span></span></span></dd></div>
-      <div><dt><span class="t"><span data-l="ja">大きさ</span><span data-l="en">Height</span><span data-l="es">Altura</span><span data-l="zh">高度</span></span></dt><dd><span class="t"><span data-l="ja">約55cm</span><span data-l="en">approx. 55 cm</span><span data-l="es">aprox. 55 cm</span><span data-l="zh">约55厘米</span></span> <span class="sample"><span class="t"><span data-l="ja">サンプル</span><span data-l="en">sample</span><span data-l="es">muestra</span><span data-l="zh">样例</span></span></span></dd></div>
+      <div><dt><span class="t"><span data-l="ja">樹齢</span><span data-l="en">Age</span><span data-l="es">Edad</span><span data-l="zh">树龄</span></span></dt><dd><span class="t"><span data-l="ja">推定およそ60年</span><span data-l="en">Estimated: about 60 years</span><span data-l="es">Estimada: unos 60 años</span><span data-l="zh">推定约60年</span></span> <span class="sample demo-only"><span class="t"><span data-l="ja">サンプル</span><span data-l="en">sample</span><span data-l="es">muestra</span><span data-l="zh">样例</span></span></span></dd></div>
+      <div><dt><span class="t"><span data-l="ja">大きさ</span><span data-l="en">Height</span><span data-l="es">Altura</span><span data-l="zh">高度</span></span></dt><dd><span class="t"><span data-l="ja">約55cm</span><span data-l="en">approx. 55 cm</span><span data-l="es">aprox. 55 cm</span><span data-l="zh">约55厘米</span></span> <span class="sample demo-only"><span class="t"><span data-l="ja">サンプル</span><span data-l="en">sample</span><span data-l="es">muestra</span><span data-l="zh">样例</span></span></span></dd></div>
       <div><dt><span class="t"><span data-l="ja">見る向き</span><span data-l="en">Viewing side</span><span data-l="es">Lado de vista</span><span data-l="zh">观赏面</span></span></dt><dd><b class="term" data-term="正面"><span class="t"><span data-l="ja">正面</span><span data-l="en">Shōmen (the front)</span><span data-l="es">Shōmen (frente)</span><span data-l="zh">正面</span></span></b></dd></div>
     </dl>
 
@@ -71,7 +78,7 @@
       <li><time>2026-10</time><span><b class="term" data-term="針金掛け"><span class="t"><span data-l="ja">針金掛け</span><span data-l="en">Wiring</span><span data-l="es">Alambrado</span><span data-l="zh">缠铁丝</span></span></b><br><span class="note"><span class="t"><span data-l="ja">枝の向きを直し、樹冠の形を整える</span><span data-l="en">Branches repositioned to refine the shape of the crown</span><span data-l="es">Ramas reorientadas</span><span data-l="zh">调整枝向</span></span></span></span></li>
       <li><time>2026-11</time><span><b class="term" data-term="剪定"><span class="t"><span data-l="ja">剪定</span><span data-l="en">Pruning</span><span data-l="es">Poda</span><span data-l="zh">修剪</span></span></b><br><span class="note"><span class="t"><span data-l="ja">込み合った枝を抜く</span><span data-l="en">Crowded branches thinned out</span><span data-l="es">Ramas aclaradas</span><span data-l="zh">疏枝</span></span></span></span></li>
     </ul>
-    <p class="note" style="margin-top:var(--s2)"><span class="t"><span data-l="ja">年月と作業はサンプルです。</span><span data-l="en">Dates and tasks are sample data.</span><span data-l="es">Datos de muestra.</span><span data-l="zh">日期与作业为样例。</span></span></p>
+    <p class="note demo-only" style="margin-top:var(--s2)"><span class="t"><span data-l="ja">年月と作業はサンプルです。</span><span data-l="en">Dates and tasks are sample data.</span><span data-l="es">Datos de muestra.</span><span data-l="zh">日期与作业为样例。</span></span></p>
 
     <h2 class="h2"><span class="t"><span data-l="ja">見どころ</span><span data-l="en">What to look for</span><span data-l="es">Qué mirar</span><span data-l="zh">看点</span></span></h2>
     <div class="look">

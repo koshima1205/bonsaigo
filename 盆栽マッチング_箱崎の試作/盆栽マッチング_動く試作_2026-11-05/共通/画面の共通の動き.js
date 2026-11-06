@@ -13,7 +13,7 @@
       t: { ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" },
       name: "ホーム（職人と海外の愛好家）", desc: "使う人を選ぶと、その人がいまやることと、全部の機能への入口が出る。どの画面からもここに戻れる" },
     { no: "01", file: "01_ホーム_博物館の入口.html", role: "aikouka", status: "決定",
-      t: { ja: "盆栽の間", en: "The Bonsai Hall", es: "Sala del Bonsái", zh: "盆栽之馆" },
+      t: { ja: "読みもの", en: "Reading Room", es: "Lecturas", zh: "阅读" },
       name: "ホーム（博物館の入口）", desc: "新着の相談・Q&A・職人の日記・記事を1か所に並べる入口。言語を切り替えられる" },
     { no: "02", file: "02_1鉢のページ.html", role: "aikouka", status: "決定",
       t: { ja: "一鉢のページ", en: "One Tree", es: "Un árbol", zh: "一盆详情" },
@@ -52,7 +52,7 @@
       t: { ja: "職人を探す", en: "Find a Craftsperson", es: "Buscar maestro", zh: "寻找匠人" },
       name: "職人を探す・連絡する", desc: "職人の紹介ページ（架空）から相談できる" },
     { no: "14", file: "14_欲しい盆栽を伝える_仮.html", role: "aikouka", status: "仮",
-      t: { ja: "欲しい盆栽を伝える", en: "Request a Tree", es: "Pedir un árbol", zh: "发布需求" },
+      t: { ja: "買いたい", en: "Buy a Tree", es: "Comprar un árbol", zh: "购买" },
       name: "欲しい盆栽を伝える（マーケットプレイスの入口）", desc: "買い手が欲しい盆栽の写真・条件を先に出し、合う職人とつなぐ" },
     { no: "15", file: "15_職人の手直しを図で_仮.html", role: "aikouka", status: "仮",
       t: { ja: "手直しを図で見る", en: "See the Correction", es: "Ver la corrección", zh: "查看修整示意" },
@@ -73,9 +73,12 @@
       t: { ja: "入るお金", en: "入るお金", es: "入るお金", zh: "入るお金" },
       name: "職人に入るお金", desc: "答えた相談から、職人にいくら入るかを見せる。料金はサンプル" },
     { no: "21", file: "21_話すか撮るだけ_1鉢の記録と出品_職人.html", role: "shokunin", status: "新規",
-      t: { ja: "話すか撮るだけ", en: "話すか撮るだけ", es: "話すか撮るだけ", zh: "話すか撮るだけ" },
+      t: { ja: "私の木", en: "私の木", es: "私の木", zh: "私の木" },
       name: "話すか撮るだけ・1鉢の記録と出品の下書き", desc: "話すか撮ると、AIが発信・出品・先生の登録を聞き分けて、木ごとの記録に残す。出品は下書きまで" }
   ];
+  SCREENS.push({ no: "22", file: "22_届いた相談の一覧_職人.html", role: "shokunin", status: "新規",
+    t: { ja: "相談", en: "相談", es: "相談", zh: "相談" },
+    name: "届いた相談の一覧（職人）", desc: "海外から届いた相談を、まだ答えていないもの・答えたものに分けて並べる。下のタブ「相談」から開く" });
   window.SCREENS = SCREENS;
 
   /* ---------- 言語 ---------- */
@@ -144,6 +147,7 @@
     var me = SCREENS.find(function (s) { return s.no === document.body.getAttribute("data-screen"); });
     var titleEl = document.querySelector(".appbar__title");
     if (me && titleEl) titleEl.textContent = T(me.t);
+    if (me) document.title = T(me.t) + (lang === "ja" ? "｜盆栽マッチング" : " · Bonsai Matching");
     document.dispatchEvent(new CustomEvent("langchange", { detail: { lang: lang } }));
   }
   function setLang(code) {
@@ -158,26 +162,29 @@
     learn: '<svg viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4z"/><path d="M20 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/></svg>',
     ask: '<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M9 10h6"/></svg>',
     qa: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7"/><path d="M12 17h.01"/></svg>',
-    board: '<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>'
+    board: '<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
+    buy: '<svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>',
+    tree: '<svg viewBox="0 0 24 24"><path d="M12 4c-4 0-6 2-6 4s2 3 4 3h4c2 0 4-1 4-3s-2-4-6-4z"/><path d="M12 11v4"/><path d="M6 15h12l-2 5H8z"/></svg>'
   };
-  /* 下のメニュー：海外の愛好家と職人で中身を分ける。どちらも先頭はホーム */
+  /* 下のメニュー：2026-11-06 の打ち合わせで決めた形。どちらも先頭はホーム
+     海外の愛好家：相談する／学ぶ／掲示板／買いたい　職人：相談／私の木（お金は右上のアカウントから） */
   var TABS = [
     { no: "00", icon: "home", t: { ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" } },
+    { no: "03", icon: "ask", t: { ja: "相談する", en: "Ask", es: "Consultar", zh: "咨询" } },
     { no: "10", icon: "learn", t: { ja: "学ぶ", en: "Learn", es: "Aprender", zh: "学习" } },
-    { no: "18", icon: "ask", t: { ja: "職人を探す", en: "Find", es: "Buscar", zh: "找匠人" } },
-    { no: "06", icon: "qa", t: { ja: "Q&A", en: "Q&A", es: "Preguntas", zh: "问答" } },
-    { no: "07", icon: "board", t: { ja: "掲示板", en: "Community", es: "Comunidad", zh: "交流" } }
+    { no: "07", icon: "board", t: { ja: "掲示板", en: "Community", es: "Comunidad", zh: "交流" } },
+    { no: "14", icon: "buy", t: { ja: "買いたい", en: "Buy", es: "Comprar", zh: "购买" } }
   ];
   var TABS_S = [
     { no: "00", icon: "home", t: { ja: "ホーム" } },
-    { no: "04", icon: "ask", t: { ja: "相談" } },
-    { no: "21", icon: "learn", t: { ja: "私の木" } },
-    { no: "20", icon: "board", t: { ja: "お金" } }
+    { no: "22", icon: "ask", t: { ja: "相談" } },
+    { no: "21", icon: "tree", t: { ja: "私の木" } }
   ];
-  /* 下のタブで、そのタブの仲間とみなす画面 */
-  var TAB_GROUP = { "00": "00", "01": "00", "02": "00", "09": "00", "14": "00", "10": "10", "11": "10",
-    "03": "18", "05": "18", "08": "18", "13": "18", "15": "18", "18": "18", "06": "06", "07": "07" };
-  var TAB_GROUP_S = { "00": "00", "04": "04", "12": "00", "17": "00", "19": "00", "20": "20", "21": "21" };
+  /* 下のタブで、そのタブの仲間とみなす画面（お金の20番はタブではなく右上） */
+  var TAB_GROUP = { "00": "00", "01": "00", "09": "00",
+    "03": "03", "05": "03", "08": "03", "13": "03", "15": "03", "18": "03",
+    "10": "10", "11": "10", "06": "10", "07": "07", "14": "14", "02": "14" };
+  var TAB_GROUP_S = { "00": "00", "12": "00", "17": "00", "19": "00", "04": "22", "22": "22", "21": "21" };
 
   function fileOf(no) { var s = SCREENS.find(function (x) { return x.no === no; }); return s ? s.file : "index.html"; }
   window.fileOf = fileOf;
@@ -193,8 +200,20 @@
   }
   window.tSpan = tSpan;
 
+  /* デモの印：?demo=1 で入ると、閉じるまで発表用の案内・「仮」の札・開発用の部品を出す。?demo=0 で消す */
+  function isDemo() {
+    try {
+      var d = new URLSearchParams(location.search).get("demo");
+      if (d === "1") sessionStorage.setItem("bonsai-demo", "1");
+      if (d === "0") sessionStorage.removeItem("bonsai-demo");
+      return sessionStorage.getItem("bonsai-demo") === "1";
+    } catch (e) { return false; }
+  }
+  window.isDemo = isDemo;
+
   function buildChrome() {
     var body = document.body;
+    body.classList.toggle("is-demo", isDemo());
     var no = body.getAttribute("data-screen");
     var me = SCREENS.find(function (s) { return s.no === no; });
     var shokunin = body.classList.contains("role-shokunin");
@@ -212,7 +231,10 @@
           }).join("") + "</div>";
       bar.innerHTML =
         '<a class="appbar__back" href="' + homeHref(shokunin) + '" title="ホームへ" aria-label="ホームへ">' + (shokunin ? "ホーム" : tSpan({ ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" })) + '</a>' +
-        '<div class="appbar__title">' + (me ? esc(T(me.t)) : "") + "</div>" + langHtml;
+        '<div class="appbar__title">' + (me ? esc(T(me.t)) : "") + "</div>" + langHtml +
+        /* 職人は右上のアカウントから、いつ・いくら入ったかを見る */
+        (shokunin ? '<a class="appbar__account" href="' + fileOf("20") + '"' + (no === "20" ? ' aria-current="page"' : "") + ' aria-label="アカウント（入ったお金）">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>お金</span></a>' : "");
       bar.querySelectorAll(".lang button").forEach(function (b) {
         b.addEventListener("click", function () { setLang(b.getAttribute("data-code")); });
       });
@@ -228,8 +250,16 @@
         tab.innerHTML = tabs.map(function (x) {
           var cur = group[no] === x.no ? ' aria-current="page"' : "";
           var href = x.no === "00" ? homeHref(shokunin) : fileOf(x.no);
-          return '<a href="' + href + '"' + cur + ">" + ICON[x.icon] + tSpan(x.t) + "</a>";
+          return '<a href="' + href + '"' + cur + ' data-tab="' + x.no + '">' + ICON[x.icon] + tSpan(x.t) + "</a>";
         }).join("");
+        /* 職人：答えていない相談の数を「相談」のタブに出す */
+        if (shokunin && window.API && window.API.online) {
+          window.API.get("/api/consultations").then(function (r) {
+            var n = (r.consultations || []).filter(function (c) { return !c.answer; }).length;
+            var a = tab.querySelector('[data-tab="22"]');
+            if (a && n) a.insertAdjacentHTML("beforeend", '<span class="tab-badge" aria-label="答えていない相談 ' + n + '件">' + (n > 99 ? "99+" : n) + "</span>");
+          }, function () {});
+        }
       }
     }
     /* 画面の下の注記 */
@@ -353,6 +383,32 @@
     setTimeout(function () { el.remove(); }, 2600);
   }
   window.toast = toast;
+
+  /* ---------- 待ち・0件・失敗の表示（全画面で同じ形） ----------
+     UI.state(入れる場所, "loading" | "empty" | "error", 言葉{ja,en,...}か文字, 任意: {retry: 押したときの関数, action: {href, t}})
+     UI.clear(入れる場所) で消す */
+  var STATE_DEFAULT = {
+    loading: { ja: "読み込んでいます", en: "Loading…", es: "Cargando…", zh: "加载中…" },
+    empty: { ja: "まだありません", en: "Nothing here yet.", es: "Todavía no hay nada.", zh: "暂无内容。" },
+    error: { ja: "つながりませんでした。少し待って、もう一度お試しください", en: "Couldn't connect. Please try again in a moment.", es: "No se pudo conectar. Inténtalo de nuevo.", zh: "无法连接，请稍后再试。" }
+  };
+  var RETRY = { ja: "もう一度", en: "Try again", es: "Reintentar", zh: "重试" };
+  function uiState(el, kind, msg, opt) {
+    if (!el) return;
+    opt = opt || {};
+    var m = msg == null ? STATE_DEFAULT[kind] : msg;
+    var text = typeof m === "string" ? esc(m) : tSpan(m);
+    var mark = kind === "loading" ? '<span class="state__spin" aria-hidden="true"></span>'
+      : kind === "error" ? '<svg class="state__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>'
+      : '<svg class="state__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4z"/><path d="M4 7l3-3h10l3 3"/></svg>';
+    el.innerHTML = '<div class="state state--' + kind + '" role="' + (kind === "error" ? "alert" : "status") + '">' + mark +
+      '<p class="state__text">' + text + "</p>" +
+      (opt.retry ? '<button type="button" class="btn state__btn">' + tSpan(RETRY) + "</button>" : "") +
+      (opt.action ? '<a class="btn btn--main state__btn" href="' + esc(opt.action.href) + '">' + tSpan(opt.action.t) + "</a>" : "") + "</div>";
+    if (opt.retry) el.querySelector(".state__btn").addEventListener("click", opt.retry);
+    if (window.BONSAI) window.BONSAI.applyLang();
+  }
+  window.UI = { state: uiState, clear: function (el) { if (el) el.innerHTML = ""; } };
 
   /* ---------- 写真の代わりの盆栽の図 ----------
      <figure class="zu" data-zu="moyogi"></figure>

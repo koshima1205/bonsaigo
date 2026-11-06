@@ -3,14 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>20 職人に入るお金｜盆栽マッチング 試作</title>
+<title>入るお金｜盆栽マッチング</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .h1 { font-size: 1.75rem; }
   .money { margin: var(--s5) 0; padding: var(--s5) var(--s4); background: var(--sumi); color: var(--kami); border-radius: var(--r); }
   .money small { display: block; font-size: 1rem; opacity: .8; }
   .money b { display: block; font-family: var(--mincho); font-size: 3.25rem; line-height: 1.2; margin-top: var(--s1); }
   .money span { display: block; font-size: 1rem; opacity: .8; margin-top: var(--s2); }
+  .money b .usd { display: inline; font-family: system-ui, sans-serif; font-size: 1.25rem; font-weight: 400; opacity: .8; margin: 0; }
   .facts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sen); font-size: 1.125rem; }
   .facts li { display: flex; justify-content: space-between; gap: var(--s3); align-items: baseline; padding: var(--s3) 0; border-bottom: 1px solid var(--sen); }
   .facts b { font-family: var(--mincho); font-size: 1.5rem; }
@@ -22,10 +30,11 @@
 <div class="app">
   <header id="appbar"></header>
   <main class="page">
-    <h1 class="h1">教えた分が、海外から入ります。</h1>
+    <h1 class="h1">答えた分が、海外から入る見込みです。</h1>
+    <div id="m-state"></div>
     <div class="money">
-      <small>あなたに入る額（サンプル）</small>
-      <b id="m-you">$0</b>
+      <small>あなたに入る額<span class="demo-only">（サンプル）</span></small>
+      <b id="m-you">0円</b>
       <span id="m-rule"></span>
     </div>
     <p id="m-month" style="font-size:1.125rem;line-height:1.7"></p>
@@ -34,14 +43,14 @@
       <li><span>答えた相談</span><b id="f-done">0</b></li>
       <li><span>返事を待っている相談</span><b id="f-wait">0</b></li>
     </ul>
-    <p class="note" style="margin-top:var(--s4);font-size:1rem">料金と取り分は、見せるためのサンプルです。まだ決まっていません。実際のお金は動きません。</p>
-    <p style="margin-top:var(--s6);font-family:var(--mincho);font-size:1.375rem;line-height:1.7">職人が海外から稼げる仕事になれば、継ぎたいと思う人も増えるはずです。撮る人が増えるほど、世界で盆栽を目にする人が増えます。</p>
-    <p class="note" style="font-size:1rem">目指すのは、外国の人が「日本の伝統文化といえば」と聞かれて、最初に「盆栽」と答える世界です。</p>
+    <p class="note" id="m-note" style="margin-top:var(--s4);font-size:1.0625rem">料金と取り分は、まだ決まっていません。金額は目安です。円は 1ドル=150円 で計算した仮の値です。<span class="demo-only">実際のお金は動きません。</span></p>
+    <p class="demo-only" style="margin-top:var(--s6);font-family:var(--mincho);font-size:1.375rem;line-height:1.7">職人が海外から稼げる仕事になれば、継ぎたいと思う人も増えるはずです。撮る人が増えるほど、世界で盆栽を目にする人が増えます。</p>
+    <p class="note demo-only" style="font-size:1rem">目指すのは、外国の人が「日本の伝統文化といえば」と聞かれて、最初に「盆栽」と答える世界です。</p>
     <div class="ask">
       <div class="big-actions">
         <a class="big-btn big-btn--main" id="go-answer" href="04_職人の画面_相談を受ける.html">相談に答える</a>
-        <a class="big-btn" href="21_話すか撮るだけ_1鉢の記録と出品_職人.html">話すか撮るだけの入口へ</a>
-        <a class="btn btn--quiet btn--wide" href="index.html" style="min-height:48px">流れの最初に戻る</a>
+        <a class="big-btn" href="21_話すか撮るだけ_1鉢の記録と出品_職人.html">木を撮る・話す</a>
+        <a class="btn btn--quiet btn--wide demo-only" href="index.html" style="min-height:48px">流れの最初に戻る</a>
       </div>
     </div>
   </main>
@@ -55,12 +64,35 @@
 document.addEventListener("DOMContentLoaded", function () {
   var $ = function (id) { return document.getElementById(id); };
   var d0 = { usd_craftsperson: 0, usd_total: 0, share: 0.8, answered: 0, waiting: 0, posts: 0 };
-  (API.online ? API.get("/api/earnings") : Promise.resolve(d0)).catch(function () { return d0; }).then(function (d) {
-    $("m-you").textContent = "$" + d.usd_craftsperson;
-    $("m-rule").textContent = "相談料 合計 $" + d.usd_total + " のうち " + Math.round(d.share * 100) + "%。$25 の相談1件で $" + Math.round(25 * d.share) + " です。";
-    $("m-month").textContent = "例：$25 の相談に月20件答えると、$" + Math.round(25 * 20 * d.share) + " が入る計算です（サンプルの計算）。";
+  /* 円に直す相場。仮の値（1ドル=150円）。ここ1か所だけ直せばよい。注記の「150円」も合わせて直す */
+  var YEN_PER_USD = 150;
+  function yen(usd) { return "約" + (Math.round(usd * YEN_PER_USD / 10) * 10).toLocaleString("ja-JP") + "円"; }
+  /* 例に使う1件の相談料。サーバーの料金（/api/status の offers）から取る。取れないときだけ 25 */
+  var UNIT = 25;
+  function loadUnit() {
+    return API.status().then(function (st) {
+      var o = (st.offers || []).filter(function (x) { return x.id === "one_question"; })[0] || (st.offers || [])[0];
+      if (o && o.usd) UNIT = o.usd;
+    }, function () {});
+  }
+  var BOXES = [document.querySelector(".money"), $("m-month"), document.querySelector(".facts")];
+  function showBoxes(on) { BOXES.forEach(function (el) { el.hidden = !on; }); }
+  function load() {
+    if (!API.online) { show(d0); return; }
+    showBoxes(false);
+    UI.state($("m-state"), "loading");
+    loadUnit().then(function () { return API.get("/api/earnings"); }).then(function (d) { UI.clear($("m-state")); show(d); },
+      function () { showBoxes(false); UI.state($("m-state"), "error", null, { retry: load }); });
+  }
+  function show(d) {
+    var one = Math.round(UNIT * d.share);
+    $("m-you").innerHTML = (d.usd_craftsperson ? yen(d.usd_craftsperson) : "0円") + ' <span class="usd">($' + d.usd_craftsperson + ")</span>";
+    $("m-rule").textContent = "相談料の合計は " + yen(d.usd_total) + "（$" + d.usd_total + "）。そのうち " + Math.round(d.share * 100) + "% があなたに入ります。$" + UNIT + "（" + yen(UNIT) + "）の相談1件なら、" + yen(one) + "（$" + one + "）です。";
+    $("m-month").innerHTML = "例：$" + UNIT + "（" + yen(UNIT) + "）の相談に月20件答えると、" + yen(UNIT * 20 * d.share) + "（$" + Math.round(UNIT * 20 * d.share) + "）が入る計算です。<span class=\"demo-only\">（サンプルの計算）</span>";
     $("f-done").textContent = d.answered; $("f-wait").textContent = d.waiting; $("f-post").textContent = d.posts;
-  });
+    showBoxes(true);
+  }
+  load();
 });
 </script>
 </body>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>届いた相談の一覧｜盆栽マッチング</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
+<style>
+  .seg { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--waku); border-radius: var(--r); overflow: hidden; margin: var(--s4) 0 var(--s5); }
+  .seg button { min-height: 52px; border: 0; background: var(--kami-3); font: inherit; font-size: 1.125rem; color: var(--sumi-2); cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--koke); color: var(--kin-moji); font-weight: 700; }
+  .inbox { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sen); }
+  .inbox a { display: grid; grid-template-columns: 72px 1fr auto; gap: var(--s3); align-items: center; padding: var(--s4) 0; border-bottom: 1px solid var(--sen); color: var(--sumi); text-decoration: none; min-height: 96px; }
+  .inbox img, .inbox .noimg { width: 72px; height: 72px; object-fit: cover; border-radius: var(--r); background: var(--kami-2); display: block; }
+  .inbox__title { font-weight: 700; font-size: 1.1875rem; line-height: 1.5; margin: 0 0 var(--s1); }
+  .inbox__meta { font-size: 1rem; color: var(--sumi-3); margin: 0; }
+  .inbox__chips { display: flex; flex-wrap: wrap; gap: var(--s1); margin-top: var(--s1); }
+  .chip { font-size: 1rem; line-height: 1.2; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--waku); color: var(--sumi-2); background: var(--kami-3); }
+  .chip--new { border-color: var(--shu); color: var(--shu); font-weight: 700; }
+  .chip--ai { border-color: var(--kin); color: var(--kin); }
+  .inbox .go { font-size: 1.25rem; color: var(--sumi-3); }
+</style>
+</head>
+<body data-screen="22" class="role-shokunin">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <h1 class="h1" id="head">届いた相談</h1>
+    <div class="seg" role="group" aria-label="相談の分け方">
+      <button type="button" id="tab-open" aria-pressed="true">まだ答えていない</button>
+      <button type="button" id="tab-done" aria-pressed="false">答えた</button>
+    </div>
+    <div id="list"></div>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var LANG = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" };
+  var all = [], showDone = false;
+
+  function when(iso) {
+    var d = new Date(iso), now = new Date();
+    var mins = Math.round((now - d) / 60000);
+    if (mins < 60) return Math.max(mins, 1) + "分前";
+    if (mins < 60 * 24) return Math.round(mins / 60) + "時間前";
+    return (d.getMonth() + 1) + "月" + d.getDate() + "日";
+  }
+  function row(c) {
+    var f = c.for_craftsperson || {};
+    var img = c.image ? API.photoHtml(c.image, "相談の写真") : '<span class="noimg" aria-hidden="true"></span>';
+    var chips = [];
+    if (!c.answer) chips.push('<span class="chip chip--new">新着</span>');
+    if (!c.answer && c.ai_draft) chips.push('<span class="chip chip--ai">AIの答えの案あり</span>');
+    if ((c.tree_history || []).length) chips.push('<span class="chip">前にも相談した木</span>');
+    if (c.answer) chips.push('<span class="chip">答えました</span>');
+    return '<li><a href="04_職人の画面_相談を受ける.html?id=' + encodeURIComponent(c.id) + '">' + img +
+      '<div><p class="inbox__title">' + esc(API.dropTermMarks(f.title_ja || "相談")) + "</p>" +
+      '<p class="inbox__meta">' + (LANG[c.lang] || "海外") + "で届いた ・ " + when(c.at) + "</p>" +
+      '<div class="inbox__chips">' + chips.join("") + "</div></div>" +
+      '<span class="go" aria-hidden="true">›</span></a></li>';
+  }
+  function render() {
+    $("tab-open").setAttribute("aria-pressed", String(!showDone));
+    $("tab-done").setAttribute("aria-pressed", String(showDone));
+    var open = all.filter(function (c) { return !c.answer; });
+    $("tab-open").textContent = "まだ答えていない" + (open.length ? "（" + open.length + "）" : "");
+    $("head").textContent = open.length ? "相談が" + open.length + "件、届いています" : "届いた相談";
+    var list = showDone ? all.filter(function (c) { return c.answer; }) : open;
+    if (!list.length) {
+      UI.state($("list"), "empty", showDone ? "まだ答えた相談はありません。" : "いま答えていない相談はありません。届いたら、ここと下の「相談」に数が出ます。",
+        showDone ? null : { action: { href: "17_撮るだけで発信_職人.html", t: { ja: "そのあいだに、木を撮って発信する" } } });
+      return;
+    }
+    $("list").innerHTML = '<ul class="inbox">' + list.map(row).join("") + "</ul>";
+  }
+  $("tab-open").addEventListener("click", function () { showDone = false; render(); });
+  $("tab-done").addEventListener("click", function () { showDone = true; render(); });
+
+  function load() {
+    if (!API.online) {
+      /* サーバーなしで開いたとき：見本の相談を1件だけ出す */
+      all = [{ id: "", lang: "en", at: new Date(Date.now() - 12 * 60000).toISOString(), for_craftsperson: { title_ja: "針金が食い込みそう、との相談です。" }, ai_draft: {}, answer: null }];
+      render();
+      $("list").querySelector("a").setAttribute("href", "04_職人の画面_相談を受ける.html");
+      return;
+    }
+    UI.state($("list"), "loading");
+    API.get("/api/consultations").then(function (r) { all = r.consultations || []; render(); },
+      function () { UI.state($("list"), "error", null, { retry: load }); });
+  }
+  load();
+});
+</script>
+</body>
+</html>

@@ -4,28 +4,28 @@
 window.SAMPLE = {
   /* 架空の職人 */
   shokunin: [
-    { id: "s1", name: "松風 清（サンプル）", en_title: "Pine specialist, 3rd generation",
-      en_area: "Omiya area, Saitama (fictional)", en_bio: "Has cared for black pines for over 40 years. Prefers to explain by drawing on your photo rather than with long sentences.",
-      en_name: "Kiyoshi Matsukaze (sample)", en_garden: "Shofu-en (sample)",
-      garden: "松風園（架空）", area: "埼玉・大宮のあたり（架空）", years: 42, specialty: ["黒松", "五葉松", "真柏"],
+    { id: "s1", name: "松風 清", en_title: "Pine specialist, 3rd generation",
+      en_area: "Omiya area, Saitama", en_bio: "Has cared for black pines for over 40 years. Prefers to explain by drawing on your photo rather than with long sentences.",
+      en_name: "Kiyoshi Matsukaze", en_garden: "Shofu-en",
+      garden: "松風園", area: "埼玉・大宮のあたり", years: 42, specialty: ["黒松", "五葉松", "真柏"],
       title: "松の職人・三代目", bio: "黒松を40年以上育ててきた。長い文章より、写真に線を引いて伝えるのが得意。", answers: 128 },
-    { id: "s2", name: "楓 ゆき（サンプル）", en_name: "Yuki Kaede (sample)", en_garden: "Kaede Bonsai (sample)",
-      en_title: "Maples and flowering trees", en_area: "Kawaguchi, Saitama (fictional)",
+    { id: "s2", name: "楓 ゆき", en_name: "Yuki Kaede", en_garden: "Kaede Bonsai",
+      en_title: "Maples and flowering trees", en_area: "Kawaguchi, Saitama",
       en_bio: "Specializes in seasonal trees — maples, quince, azalea. Known for clear advice on watering and placement.",
-      garden: "楓盆栽（架空）", area: "埼玉・川口（架空）", years: 18, specialty: ["もみじ", "ボケ", "皐月"],
+      garden: "楓盆栽", area: "埼玉・川口", years: 18, specialty: ["もみじ", "ボケ", "皐月"],
       title: "もみじと花ものの職人", bio: "もみじ・ボケ・皐月など季節の木が専門。水やりと置き場所の助言に定評がある。", answers: 86 },
-    { id: "s3", name: "岩井 正道（サンプル）", en_name: "Masamichi Iwai (sample)", en_garden: "Iwai Garden (sample)",
-      en_title: "Rock plantings and junipers", en_area: "Tachikawa, Tokyo (fictional)",
+    { id: "s3", name: "岩井 正道", en_name: "Masamichi Iwai", en_garden: "Iwai Garden",
+      en_title: "Rock plantings and junipers", en_area: "Tachikawa, Tokyo",
       en_bio: "Builds landscapes where the stone becomes a mountain cliff. Junipers and deadwood (jin and shari) are the specialty.",
-      garden: "岩井園（架空）", area: "東京・立川のあたり（架空）", years: 31, specialty: ["石付き", "真柏", "ジン・シャリ"],
+      garden: "岩井園", area: "東京・立川のあたり", years: 31, specialty: ["石付き", "真柏", "ジン・シャリ"],
       title: "石付きと真柏の職人", bio: "石を山の崖に見立てる石付きが専門。真柏の枯れた部分（ジン・シャリ）の仕立ても得意。", answers: 64 }
   ],
 
   /* 架空の愛好家 */
   aikouka: [
-    { id: "a1", name: "Emma (sample)", place: "Portland, USA", lang: "en", tree: "Small wired conifer" },
-    { id: "a2", name: "Lucía (sample)", place: "Valencia, España", lang: "es", tree: "Juniper" },
-    { id: "a3", name: "Wei (sample)", place: "成都, 中国", lang: "zh", tree: "Trident maple" }
+    { id: "a1", name: "Emma", place: "Portland, USA", lang: "en", tree: "Small wired conifer" },
+    { id: "a2", name: "Lucía", place: "Valencia, España", lang: "es", tree: "Juniper" },
+    { id: "a3", name: "Wei", place: "成都, 中国", lang: "zh", tree: "Trident maple" }
   ],
 
   /* デモの中心になる相談（03 → 04 → 05 → 12 → 16 で同じものを使う） */
@@ -81,7 +81,7 @@ window.SAMPLE = {
   /* 投稿の下書き（12で使う） */
   sns: {
     x: "The wire looks tight? Take it off now, before it scars. Cut it off one turn at a time. Never unwind it. (Advice from a Japanese bonsai craftsperson, sample) #bonsai #bonsaiwiring",
-    facebook: "A bonsai lover in Portland asked when to take the wire off a tree wired a few months ago. The craftsperson's answer: now, before it scars. Don't unwind it; cut it off one turn at a time. In bonsai, wire is a temporary guide, and knowing when to remove it matters as much as putting it on. (sample)",
-    instagram: "The wire looks tight. Now what?\nA craftsperson in Japan marked the photo: the wire near the top is starting to bite in.\nCut it off one turn at a time. Don't unwind it.\n#bonsai #japanesebonsai #bonsaiwiring #bonsaicare (sample)"
+    facebook: "A bonsai lover in Portland asked when to take the wire off a tree wired a few months ago. The craftsperson's answer: now, before it scars. Don't unwind it; cut it off one turn at a time. In bonsai, wire is a temporary guide, and knowing when to remove it matters as much as putting it on.",
+    instagram: "The wire looks tight. Now what?\nA craftsperson in Japan marked the photo: the wire near the top is starting to bite in.\nCut it off one turn at a time. Don't unwind it.\n#bonsai #japanesebonsai #bonsaiwiring #bonsaicare"
   }
 };

@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>11 用語集｜盆栽マッチング 試作</title>
+<title>用語集</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .contrast { margin: 0 0 var(--s6); }
   .contrast__word { display: flex; align-items: baseline; gap: var(--s3); flex-wrap: wrap; margin: var(--s4) 0 var(--s1); }
@@ -78,7 +85,7 @@
         <p class="contrast__label"><span class="t"><span data-l="ja">なぜそうするか</span><span data-l="en">Why it's done</span><span data-l="es">Por qué se hace</span><span data-l="zh">为什么这样做</span></span></p>
         <p id="c-why"></p>
       </div>
-      <p class="note" style="margin-top:var(--s3)"><span class="t"><span data-l="ja">この3点セットが、全122語に入っています。</span><span data-l="en">Every term in the glossary carries this same set of three.</span><span data-l="es">Cada término incluye estos tres elementos.</span><span data-l="zh">每个术语都附有这三项内容。</span></span> <span class="sample t"><span data-l="ja">下書きを含む</span><span data-l="en">includes drafts</span><span data-l="es">incluye borradores</span><span data-l="zh">含草稿</span></span></p>
+      <p class="note" style="margin-top:var(--s3)"><span class="t"><span data-l="ja">この3点セットが、全122語に入っています。</span><span data-l="en">Every term in the glossary carries this same set of three.</span><span data-l="es">Cada término incluye estos tres elementos.</span><span data-l="zh">每个术语都附有这三项内容。</span></span> <span class="sample t demo-only"><span data-l="ja">下書きを含む</span><span data-l="en">includes drafts</span><span data-l="es">incluye borradores</span><span data-l="zh">含草稿</span></span></p>
     </section>
 
     <div class="counts" aria-label="count">
@@ -204,7 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
       es: "Mostrando " + rows.length + " de " + Y.length + " términos", zh: "显示 " + rows.length + " / " + Y.length + " 个术语" });
     var empty = document.getElementById("empty");
     empty.hidden = rows.length > 0;
-    empty.textContent = B.T({ ja: "見つかりませんでした。ほかの言葉や、くくりを変えて試してください。", en: "Nothing found. Try another word or a different category.", es: "Sin resultados. Prueba otra palabra.", zh: "没有找到。请换个词或类别试试。" });
+    if (rows.length) UI.clear(empty);
+    else UI.state(empty, "empty", { ja: "見つかりませんでした。ほかの言葉や、くくりを変えて試してください。", en: "Nothing found. Try another word or a different category.", es: "Sin resultados. Prueba otra palabra.", zh: "没有找到。请换个词或类别试试。" });
   }
   document.getElementById("q").addEventListener("input", function (e) { state.q = e.target.value.trim(); drawList(); });
   function all() { drawContrast(); drawControls(); drawList(); }

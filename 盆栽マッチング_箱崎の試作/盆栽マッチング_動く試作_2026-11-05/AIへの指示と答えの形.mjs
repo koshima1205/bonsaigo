@@ -47,6 +47,17 @@ Write in plain Japanese using the words craftspeople actually use. Keep what the
     }),
   },
 
+  // 届いた相談 → 職人が答える前に見る「答えの案」（職人が選ぶまで相手には出さない）
+  draftAnswer: {
+    effort: "high",
+    instruction: `Before a Japanese bonsai craftsperson replies to a question from abroad, prepare one possible answer they can adopt, change, or ignore. It is only a draft for them; they decide, and nothing reaches the asker until they send it.
+- draft_ja: two to four short sentences of plain spoken Japanese, the way a craftsperson would say it aloud to a student. Give what to do and, briefly, why. Stick to standard, widely accepted bonsai practice. Where the photo and question are not enough to judge, say what needs checking rather than guessing.
+- <tree_history> lists earlier questions about this same tree and what the craftsperson answered then. If it is relevant, stay consistent with what they said before and build on it (for example, "前に言った通り…"). Never contradict their earlier answer without saying why.
+- used_history_ja: one short sentence on what you took from the earlier exchanges. Null if there were none or you used none.
+- check_ja: up to three short points the craftsperson should confirm before using the draft, such as things the photo cannot show or anything you were unsure of. Empty if nothing.`,
+    schema: obj({ draft_ja: str, used_history_ja: nullableStr, check_ja: strs }),
+  },
+
   // 職人の声の答え → 相手の言語の意訳
   toLearner: {
     effort: "high",

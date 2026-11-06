@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>03 職人への相談（愛好家側）｜盆栽マッチング 試作</title>
+<title>職人に相談する｜盆栽の間</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .step { display: flex; gap: var(--s3); align-items: baseline; margin: var(--s6) 0 var(--s3); }
   .step__no { font-family: var(--mincho); font-weight: 700; color: var(--sumi); font-size: var(--fs-l); }
@@ -52,9 +59,23 @@
     </span></p>
 
     <form id="form" novalidate>
+      <label class="field" id="tree-pick" hidden>
+        <span class="field__label"><span class="t"><span data-l="ja">どの木の相談ですか</span><span data-l="en">Which tree is this about?</span><span data-l="es">¿Sobre qué árbol es?</span><span data-l="zh">是关于哪棵树的？</span></span></span>
+        <select class="textarea" id="tree-select" style="min-height:48px"></select>
+        <span class="note" style="display:block;margin-top:var(--s1)"><span class="t">
+          <span data-l="ja">前に相談した木を選ぶと、職人とAIが前のやり取りをふまえて答えます。</span>
+          <span data-l="en">Pick a tree you asked about before, and the craftsperson and the AI will build on that earlier exchange.</span>
+          <span data-l="es">Si eliges un árbol ya consultado, el maestro y la IA tendrán en cuenta lo hablado antes.</span>
+          <span data-l="zh">选择之前咨询过的树，匠人和 AI 会参考之前的交流来回答。</span></span></span>
+      </label>
       <div class="step"><span class="step__no">1</span><h2 class="step__title"><span class="t"><span data-l="ja">木の写真</span><span data-l="en">Photo of your tree</span><span data-l="es">Foto del árbol</span><span data-l="zh">树的照片</span></span></h2></div>
-      <figure class="zu" data-zu="soudan" data-cap="none"></figure>
-      <p class="note" style="margin-top:var(--s2)"><span class="t">
+      <figure class="zu" id="tree-fig" data-zu="soudan" data-cap="none"></figure>
+      <p class="note no-demo" style="margin-top:var(--s2)"><span class="t">
+        <span data-l="ja">あなたの木の写真を選んでください。なくても送れます。</span>
+        <span data-l="en">Choose a photo of your tree. You can also send without one.</span>
+        <span data-l="es">Elige una foto de tu árbol. También puedes enviar sin foto.</span>
+        <span data-l="zh">请选择你的树的照片，没有照片也可以发送。</span></span></p>
+      <p class="note demo-only" style="margin-top:var(--s2)"><span class="t">
         <span data-l="ja">いまは見本の木が入っています。あなたの木の写真に変えられます。</span>
         <span data-l="en">A sample tree is in place. Replace it with a photo of your own tree.</span>
         <span data-l="es">Hay un árbol de muestra. Cámbialo por una foto del tuyo.</span>
@@ -67,7 +88,7 @@
         <span class="field__label"><span class="t"><span data-l="ja">質問</span><span data-l="en">Question</span><span data-l="es">Pregunta</span><span data-l="zh">问题</span></span></span>
         <textarea class="textarea" id="question" rows="5" data-ph-ja="例：針金がきつく見えます。いつ外せばいいですか？" data-ph-en="e.g. The wire looks tight. When should I take it off?" data-ph-es="Ej.: El alambre se ve apretado. ¿Cuándo lo quito?" data-ph-zh="例如：铁丝看起来很紧，什么时候拆？"></textarea>
       </label>
-      <p class="note"><span class="t">
+      <p class="note demo-only"><span class="t">
         <span data-l="ja">言語を切り替えると、見本の質問も変わります。</span>
         <span data-l="en">Switch the language at the top and the sample question changes too.</span>
         <span data-l="es">Al cambiar el idioma, cambia también la pregunta de ejemplo.</span>
@@ -84,6 +105,7 @@
       </div>
 
       <p class="note" id="c-offer" style="margin-top:var(--s3)"></p>
+      <div id="c-state"></div>
       <div style="margin-top:var(--s6)">
         <button type="submit" class="btn btn--main btn--wide" id="send" style="min-height:52px"><span class="t"><span data-l="ja">職人に送る</span><span data-l="en">Send to the craftsperson</span><span data-l="es">Enviar al maestro</span><span data-l="zh">发送给匠人</span></span></button>
       </div>
@@ -98,13 +120,18 @@
           <p class="result__label"><span class="t"><span data-l="ja">要点</span><span data-l="en">Key points</span><span data-l="es">Puntos clave</span><span data-l="zh">要点</span></span></p>
           <ul id="r-points" lang="ja"></ul>
         </div>
-        <p class="note" id="r-note" style="margin-top:var(--s2)"><span class="t">
+        <p class="note" style="margin-top:var(--s2)"><span class="t">
+          <span data-l="ja">職人には、この日本語の形で届きます。</span>
+          <span data-l="en">This is what the craftsperson receives, in Japanese bonsai terms.</span>
+          <span data-l="es">Esto es lo que recibe el maestro, en japonés y con términos de bonsái.</span>
+          <span data-l="zh">匠人收到的是这段日语的盆栽用语。</span></span></p>
+        <p class="note demo-only" id="r-note" style="margin-top:var(--s2)"><span class="t">
           <span data-l="ja">「針金がきつい」を、盆栽の言葉の「針金外し」の相談に直しています。</span>
           <span data-l="en">Your plain words are turned into bonsai terms (here, "the wire looks tight" becomes a question about 針金外し, wire removal).</span>
           <span data-l="es">Tus palabras se convierten en términos de bonsái (aquí, 針金外し = quitar el alambre).</span>
           <span data-l="zh">你的描述被转换成盆栽术语（这里是“針金外し”，即拆除铁丝）。</span></span></p>
         <div style="display:grid;gap:var(--s3);margin-top:var(--s5)">
-          <a class="btn btn--main btn--wide" id="go-craftsperson" href="04_職人の画面_相談を受ける.html"><span class="t"><span data-l="ja">職人にはこう届きます</span><span data-l="en">See how it arrives for the craftsperson</span><span data-l="es">Así le llega al maestro</span><span data-l="zh">匠人收到的样子</span></span></a>
+          <a class="btn btn--main btn--wide demo-only" id="go-craftsperson" href="04_職人の画面_相談を受ける.html"><span class="t"><span data-l="ja">職人にはこう届きます</span><span data-l="en">See how it arrives for the craftsperson</span><span data-l="es">Así le llega al maestro</span><span data-l="zh">匠人收到的样子</span></span></a>
           <a class="btn btn--wide" id="go-answer" href="05_答えが届く_愛好家.html"><span class="t"><span data-l="ja">答えの画面を見る</span><span data-l="en">Go to the answer page</span><span data-l="es">Ir a la respuesta</span><span data-l="zh">前往回答页面</span></span></a>
         </div>
       </div>
@@ -138,18 +165,24 @@ document.addEventListener("DOMContentLoaded", function () {
     { ja: "届きました", en: "Delivered", es: "Entregado", zh: "已送达" }
   ];
   var state = -1; /* -1:まだ 0,1,2:進行 3:完了 */
+  /* 本番の表示では、見本の木の絵は出さない（自分の木を選んだら出る） */
+  document.getElementById("tree-fig").hidden = !isDemo();
 
   function questionText() { var l = B.getLang(); return l === "ja" ? JA_Q : (q.question[l] || q.question.en); }
   ta.addEventListener("input", function () { edited = true; });
 
   function render() {
-    if (!edited) ta.value = questionText();
+    if (!edited) ta.value = isDemo() ? questionText() : "";
     var ja = B.getLang() === "ja";
     document.getElementById("c-name").textContent = registered ? (ja ? registered.name_ja : registered.name_en) : (ja ? s1.name : s1.en_name);
-    document.getElementById("c-meta").textContent = registered ? (registered.specialty_ja || []).join(" · ") : (ja ? s1.garden + "・" + s1.title : s1.en_garden + " · " + s1.en_title);
+    document.getElementById("c-meta").textContent = registered ? (ja ? (registered.specialty_ja || []).join(" · ") : specEn(registered)) : (ja ? s1.garden + "・" + s1.title : s1.en_garden + " · " + s1.en_title);
     var o = offers.find(function (x) { return x.id === offerId; });
-    document.getElementById("c-offer").textContent = o ? (o[B.getLang()] || o.en) + " · $" + o.usd + " · " + B.T({ ja: "料金はサンプルです。お金はかかりません。", en: "Sample price. You will not be charged.", es: "Precio de ejemplo. No se cobra nada.", zh: "示例价格，不会收费。" }) : "";
+    document.getElementById("c-offer").textContent = o ? (o[B.getLang()] || o.en) + " · $" + o.usd + " · " + B.T({ ja: "料金はまだ決まっていません。お金はかかりません。", en: "Pricing isn't final yet. You will not be charged.", es: "El precio aún no es definitivo. No se cobra nada.", zh: "价格尚未确定，不会收费。" }) : "";
     renderProgress();
+  }
+  function specEn(t) {
+    var e = (t.bio && t.bio.en) || t.bio_en || "", s = e.split(/(?<=[.!?])\s/)[0];
+    return s && s.length <= 80 ? s : "Craftsperson";
   }
   function renderProgress() {
     document.getElementById("progress").innerHTML = steps.map(function (s, i) {
@@ -171,13 +204,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function sendReal() {
     state = 1; renderProgress();
-    (photo ? Promise.resolve(photo) : API.samplePhoto()).then(function (im) {
-      return API.post("/api/consultations", { question: ta.value.trim(), lang: B.getLang(), teacher_id: toId, offer_id: offerId, images: [{ media_type: im.media_type, data: im.data }] });
+    (photo ? Promise.resolve(photo) : (isDemo() ? API.samplePhoto() : Promise.resolve(null))).then(function (im) {
+      return API.post("/api/consultations", { question: ta.value.trim(), lang: B.getLang(), teacher_id: toId, offer_id: offerId, tree_id: document.getElementById("tree-select").value || null, images: im ? [{ media_type: im.media_type, data: im.data }] : [] });
     }).then(function (c) {
       state = 3; renderProgress(); showAfter(c);
       document.getElementById("after").scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, function (e) {
-      toast(e.message); sending = false; state = -1; renderProgress();
+      toast(B.T({ ja: "送れませんでした。少し待って、もう一度「職人に送る」を押してください", en: "Couldn't send it. Please wait a moment and press Send again.", es: "No se pudo enviar. Espera un momento y vuelve a pulsar Enviar.", zh: "发送失败。请稍等片刻，再按一次发送。" })); sending = false; state = -1; renderProgress();
       document.getElementById("send").disabled = false;
       document.getElementById("result").hidden = true;
     });
@@ -203,12 +236,43 @@ document.addEventListener("DOMContentLoaded", function () {
     API.photoFromFile(file).then(function (im) {
       photo = im;
       document.querySelector("figure.zu .zu__frame").innerHTML = API.photoHtml(im, "");
-    }, function (er) { toast(er.message); });
+      document.getElementById("tree-fig").hidden = false;
+    }, function () { toast(B.T({ ja: "写真を読み込めませんでした。ほかの写真でお試しください", en: "Couldn't read that photo. Please try another one.", es: "No se pudo leer la foto. Prueba con otra.", zh: "无法读取这张照片，请换一张试试。" })); });
   });
-  API.status().then(function (st) { offers = st.offers || []; render(); });
-  if (API.online && toId.indexOf("t-") === 0) API.get("/api/teachers").then(function (r) {
-    registered = r.teachers.find(function (t) { return t.id === toId; }) || null; render();
+  /* 前に相談した木（同じ木の相談は、職人とAIが前のやり取りを読む） */
+  var trees = [];
+  function renderTrees() {
+    var sel = document.getElementById("tree-select"), keep = sel.value;
+    sel.innerHTML = '<option value="">' + esc(B.T({ ja: "新しい木", en: "A new tree", es: "Un árbol nuevo", zh: "一棵新的树" })) + "</option>" +
+      trees.map(function (t) {
+        var d = new Date(t.at), label = (d.getMonth() + 1) + "/" + d.getDate() + " · " + (t.question.length > 40 ? t.question.slice(0, 40) + "…" : t.question);
+        return '<option value="' + esc(t.tree_id) + '">' + esc(label) + "</option>";
+      }).join("");
+    sel.value = keep;
+    document.getElementById("tree-pick").hidden = !trees.length;
+  }
+  if (API.online) API.get("/api/consultations").then(function (r) {
+    var seen = {};
+    trees = r.consultations.filter(function (c) {
+      if (!c.tree_id || seen[c.tree_id]) return false;
+      seen[c.tree_id] = true; return true;
+    });
+    var want = P.get("tree");
+    renderTrees();
+    if (want && seen[want]) document.getElementById("tree-select").value = want;
   }, function () {});
+  document.addEventListener("langchange", renderTrees);
+  API.status().then(function (st) { offers = st.offers || []; render(); });
+  function loadTeacher() {
+    var box = document.getElementById("c-state");
+    UI.state(box, "loading", { ja: "職人の情報を読み込んでいます", en: "Loading the craftsperson…", es: "Cargando al maestro…", zh: "正在加载匠人信息…" });
+    API.get("/api/teachers").then(function (r) {
+      registered = r.teachers.find(function (t) { return t.id === toId; }) || null; UI.clear(box); render();
+    }, function () {
+      UI.state(box, "error", { ja: "職人の情報を読み込めませんでした。表示の名前が正しくない場合があります", en: "Couldn't load the craftsperson's details. The name shown may not be right.", es: "No se pudo cargar al maestro. El nombre mostrado puede no ser correcto.", zh: "无法加载匠人信息，显示的名字可能不正确。" }, { retry: loadTeacher });
+    });
+  }
+  if (API.online && toId.indexOf("t-") === 0) loadTeacher();
   render();
   document.addEventListener("langchange", render);
 });

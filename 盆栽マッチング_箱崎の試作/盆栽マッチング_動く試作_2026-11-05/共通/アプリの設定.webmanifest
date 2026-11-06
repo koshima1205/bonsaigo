@@ -1,0 +1,16 @@
+{
+  "name": "盆栽マッチング",
+  "short_name": "盆栽",
+  "description": "日本の盆栽職人と、海外で盆栽を学ぶ人をつなぐ（試作）",
+  "lang": "ja",
+  "start_url": "../00_ホーム_職人と愛好家.html",
+  "scope": "../",
+  "display": "standalone",
+  "background_color": "#FBFAF7",
+  "theme_color": "#FBFAF7",
+  "icons": [
+    { "src": "アプリのアイコン_192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "アプリのアイコン_512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "アプリのアイコン_丸く切られる用_512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

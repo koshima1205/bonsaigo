@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>18 知りたいことから職人を探す｜盆栽マッチング 試作</title>
+<title>知りたいことから職人を探す｜盆栽の間</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .understood { font-family: var(--mincho); font-size: var(--fs-l); line-height: 1.7; border-left: 3px solid var(--kin); padding-left: var(--s3); margin: var(--s5) 0; }
   .match { padding: var(--s5) 0; border-top: 1px solid var(--sen); }
@@ -31,7 +38,7 @@
         <textarea class="textarea" id="want" rows="4"></textarea>
       </label>
       <button type="submit" class="btn btn--main btn--wide" id="send" style="min-height:52px"></button>
-      <button type="button" class="btn btn--wide" id="fill" style="min-height:48px;margin-top:var(--s2)"></button>
+      <button type="button" class="btn btn--wide demo-only" id="fill" style="min-height:48px;margin-top:var(--s2)"></button>
     </form>
     <p class="note" id="wait" role="status" hidden></p>
     <p class="note" id="err" role="alert" style="color:var(--shu);font-weight:700" hidden></p>
@@ -56,7 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
     ph: { ja: "例：針金をかけた木の、外す時期が分からない。木を見てくれる人に習いたい。", en: "e.g. I don't know when to take the wire off my tree. I want to learn from someone who can see my tree.", es: "Ej.: No sé cuándo quitar el alambre de mi árbol. Quiero aprender de alguien que vea mi árbol.", zh: "例如：不知道什么时候拆树上的铁丝，想向能看我树的人学习。" },
     ask: { ja: "この職人に相談する", en: "Ask this craftsperson", es: "Consultar a este maestro", zh: "向这位匠人咨询" },
     first: { ja: "最初の一言の例", en: "A first message you could send", es: "Un primer mensaje posible", zh: "可以这样开始" },
-    price: { ja: "料金はサンプルです", en: "Sample price", es: "Precio de ejemplo", zh: "示例价格" },
+    price: { ja: "料金はまだ決まっていません", en: "Price not final yet", es: "Precio aún sin definir", zh: "价格尚未确定" },
+    offline: { ja: "いまはつながっていません。つながる状態にしてから、もう一度お試しください。", en: "Not connected right now. Please connect and try again.", es: "Sin conexión ahora. Conéctate e inténtalo de nuevo.", zh: "目前未连接，请连接后再试。" },
+    retryHint: { ja: "言い方を変えて、もう一度書いてみてください。", en: "Try describing it another way.", es: "Prueba a describirlo de otra forma.", zh: "请换一种说法再试一次。" },
     none: { ja: "いま合う職人が見つかりませんでした。", en: "No good match right now.", es: "Ahora no hay un maestro adecuado.", zh: "暂时没有合适的匠人。" },
     empty: { ja: "知りたいことを書いてください。", en: "Please write what you want to learn.", es: "Escribe lo que quieres aprender.", zh: "请写下想学的内容。" },
     fill: { ja: "見本の質問で試す", en: "Try a sample question", es: "Probar con una pregunta de ejemplo", zh: "用示例问题试试" },
@@ -72,43 +81,54 @@ document.addEventListener("DOMContentLoaded", function () {
     $("send").textContent = B.T(TX.send); $("fill").textContent = B.T(TX.fill); $("wait").textContent = B.T(TX.wait); $("want").placeholder = B.T(TX.ph);
     $("teach").innerHTML = esc(B.T(TX.teach)) + '<a href="19_話して先生に登録_職人.html" style="display:inline-flex;align-items:center;min-height:44px">' + esc(B.T(TX.teachLink)) + "</a>";
   }
+  function specEn(t) {
+    var e = (t.bio && t.bio.en) || t.bio_en || "", s = e.split(/(?<=[.!?])\s/)[0];
+    return s && s.length <= 80 ? s : "Craftsperson";
+  }
   function teacher(id) {
     var s = S.shokunin.find(function (x) { return x.id === id; });
     if (s) return { name: B.getLang() === "ja" ? s.name : s.en_name, meta: B.getLang() === "ja" ? s.title : s.en_title, seal: SEAL[id] };
     var t = added.find(function (x) { return x.id === id; });
-    return t ? { name: B.getLang() === "ja" ? t.name_ja : t.name_en, meta: (t.specialty_ja || []).join("・"), seal: (t.name_ja || "職").charAt(0) } : { name: id, meta: "", seal: "職" };
+    return t ? { name: B.getLang() === "ja" ? t.name_ja : t.name_en, meta: B.getLang() === "ja" ? (t.specialty_ja || []).join("・") : specEn(t), seal: (t.name_ja || "職").charAt(0) } : { name: id, meta: "", seal: "職" };
   }
   function offerName(o) { return o[B.getLang()] || o.en; }
   function paintResult() {
     var d = last;
     if (!d) { $("result").innerHTML = ""; return; }
     var html = d.understood ? '<p class="understood">' + esc(d.understood) + "</p>" : "";
-    if (!d.matches.length) html += "<p>" + esc(d.no_match_reason || B.T(TX.none)) + "</p>";
+    if (!d.matches.length) html += '<div id="no-match"></div>';
     html += d.matches.map(function (m) {
       var t = teacher(m.teacher_id), o = offers.find(function (x) { return x.id === m.offer_id; }) || { en: "", usd: 0 };
       var q = encodeURIComponent(m.first_question);
       return '<article class="match"><div class="match__head"><div class="seal" aria-hidden="true">' + esc(t.seal) + '</div><div><p class="row__title">' + esc(t.name) + '</p><p class="row__meta">' + esc(t.meta) + "</p></div></div>" +
         '<p class="match__why">' + esc(m.reason) + "</p>" +
-        '<p class="match__offer"><span>' + esc(offerName(o)) + " · " + esc(B.T(TX.price)) + "</span><b>$" + o.usd + "</b></p>" +
+        (o.usd ? '<p class="match__offer"><span>' + esc(offerName(o)) + " · " + esc(B.T(TX.price)) + "</span><b>$" + o.usd + "</b></p>" : "") +
         '<p class="first"><b>' + esc(B.T(TX.first)) + "</b>" + esc(m.first_question) + "</p>" +
         '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(m.teacher_id) + "&offer=" + encodeURIComponent(m.offer_id) + "&q=" + q + '">' + esc(B.T(TX.ask)) + "</a></article>";
     }).join("");
     $("result").innerHTML = html;
+    if (!d.matches.length) UI.state($("no-match"), "empty", (d.no_match_reason || B.T(TX.none)) + " " + B.T(TX.retryHint));
   }
   API.status().then(function (st) { offers = st.offers || []; });
-  if (API.online) API.get("/api/teachers").then(function (r) { added = r.teachers; }, function () {});
+  function loadTeachers() { return API.get("/api/teachers").then(function (r) { added = r.teachers; }, function () {}); }
+  if (API.online) loadTeachers();
 
   $("form").addEventListener("submit", function (e) {
     e.preventDefault();
     var want = $("want").value.trim();
     $("err").hidden = true;
     if (!want) { $("err").textContent = B.T(TX.empty); $("err").hidden = false; $("want").focus(); return; }
-    if (!API.online) { $("err").textContent = "サーバーなしで開いています。Please start the server to try this."; $("err").hidden = false; return; }
+    if (!API.online) { $("err").textContent = B.T(TX.offline); $("err").hidden = false; return; }
     $("send").disabled = true; $("wait").hidden = false; $("result").innerHTML = "";
     API.post("/api/match", { want: want, lang: B.getLang() }).then(function (d) {
+      var unknown = d.matches.some(function (m) { return !S.shokunin.some(function (x) { return x.id === m.teacher_id; }) && !added.some(function (x) { return x.id === m.teacher_id; }); });
+      return (unknown ? loadTeachers() : Promise.resolve()).then(function () { return d; });
+    }).then(function (d) {
       last = d; paintResult();
       $("result").scrollIntoView({ behavior: "smooth", block: "start" });
-    }, function (er) { $("err").textContent = er.message; $("err").hidden = false; }).then(function () {
+    }, function (er) {
+      UI.state($("result"), "error", null, { retry: function () { $("form").requestSubmit(); } });
+    }).then(function () {
       $("send").disabled = false; $("wait").hidden = true;
     });
   });

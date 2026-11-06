@@ -98,6 +98,14 @@ body.no-tabbar .app { padding-bottom: var(--s7); }
   font-size: 14px; color: var(--sumi-2); border: 1px solid var(--sen);
   padding: 0 var(--s2); border-radius: var(--r-s); white-space: nowrap;
 }
+/* 職人の右上のアカウント（入ったお金） */
+.appbar__account {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 var(--s3);
+  border: 1px solid var(--waku); border-radius: 999px; text-decoration: none; color: var(--sumi);
+  font-size: 1rem; font-weight: 700; background: var(--kami-3); white-space: nowrap;
+}
+.appbar__account svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.appbar__account[aria-current="page"] { background: var(--koke); color: var(--kin-moji); border-color: var(--koke); }
 .lang {
   display: inline-flex; border: 1px solid var(--sen); border-radius: var(--r); overflow: hidden;
   background: var(--kami-3);
@@ -266,7 +274,7 @@ body.role-shokunin .lead { font-size: 1.25rem; }
 body:not(.is-demo) .demo-only, body.is-demo .no-demo { display: none !important; }
 
 /* 埋め込み表示（比べる画面の中で使う） */
-body.embed .appbar__back, body.embed .tabbar, body.embed .lang { display: none; }
+body.embed .appbar__back, body.embed .tabbar, body.embed .lang, body.embed .appbar__account { display: none; }
 body.embed .app { box-shadow: none; padding-bottom: var(--s6); }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -279,3 +287,41 @@ body.embed .app { box-shadow: none; padding-bottom: var(--s6); }
 .flowbar { margin: 0 0 var(--s4); padding: 0 0 0 var(--s3); border-left: 3px solid var(--shu); color: var(--sumi-2); font-size: 14px; font-weight: 700; line-height: 1.6; display: block; }
 .flowbar--s { border-left-color: var(--sumi); color: var(--sumi); }
 .mode-note { margin: var(--s6) 0 0; padding: var(--s2) 0 0; border-top: 1px dashed var(--sen); color: var(--sumi-2); font-size: 14px; line-height: 1.6; }
+
+/* ---------- アプリらしさ（2026-11-06 追加） ---------- */
+/* 画面が切り替わるとき、ふっと入れ替わる（対応するブラウザだけ） */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
+/* 押したときの手ごたえ */
+a, button { -webkit-tap-highlight-color: transparent; }
+.btn:active, .big-btn:active, .btn-urushi:active, .tabbar a:active, .appbar__account:active, .menu a:active { transform: scale(0.98); opacity: 0.85; }
+.btn, .big-btn, .btn-urushi, .tabbar a, .menu a { transition: transform 80ms ease, opacity 80ms ease; }
+/* デモのときだけ出すもの：試作の注記・「仮」の札 */
+body:not(.is-demo) .mock-foot, body:not(.is-demo) .kari { display: none !important; }
+/* 下のタブの件数の印 */
+.tab-badge {
+  position: absolute; top: 6px; right: calc(50% - 30px); min-width: 20px; height: 20px; padding: 0 5px;
+  border-radius: 10px; background: var(--shu); color: #fff; font-size: 12px; font-weight: 700; line-height: 20px; text-align: center;
+}
+/* 待ち・0件・失敗の表示 */
+.state { display: grid; justify-items: center; gap: var(--s3); text-align: center; padding: var(--s6) var(--s4); color: var(--sumi-2); }
+.state__text { margin: 0; font-size: var(--fs-m); line-height: 1.7; max-width: 30em; }
+.state__icon { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.state--error { color: var(--shu); }
+.state--error .state__text { color: var(--sumi); }
+.state__btn { min-width: 160px; }
+.state__spin { width: 28px; height: 28px; border-radius: 50%; border: 3px solid var(--sen); border-top-color: var(--sumi); }
+@media (prefers-reduced-motion: no-preference) { .state__spin { animation: state-spin 0.9s linear infinite; } @keyframes state-spin { to { transform: rotate(360deg); } } }
+/* ホーム画面から全画面で開いたとき、上の時計の帯に重ならない */
+@media (display-mode: standalone) { .appbar { padding-top: env(safe-area-inset-top, 0px); height: calc(var(--appbar-h) + env(safe-area-inset-top, 0px)); top: 0; } }
+/* 職人の画面：知らせ・注記・待ちの表示も本文に近い大きさに */
+body.role-shokunin .tabbar a { font-size: 1.125rem; }
+body.role-shokunin .toast { font-size: 1.125rem; }
+body.role-shokunin .note, body.role-shokunin .state__text { font-size: 1.125rem; }
+/* 下のタブ：絵と文字をいっしょに（2026-11-06 見直しで変更） */
+.tabbar a { flex-direction: column; gap: 2px; }
+.tabbar a svg { display: block; width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.tabbar a[aria-current="page"] svg { stroke-width: 2.2; }
+body.role-shokunin .tabbar a svg { width: 26px; height: 26px; }
+body.role-shokunin { --tabbar-h: 68px; }

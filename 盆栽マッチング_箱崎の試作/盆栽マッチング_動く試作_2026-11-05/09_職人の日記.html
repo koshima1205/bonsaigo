@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>09 職人の日記｜盆栽マッチング 試作</title>
+<title>職人の日記</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .legacy { border-left: 3px solid var(--kin); padding: var(--s1) 0 var(--s1) var(--s4); margin: 0 0 var(--s5); color: var(--sumi-2); font-family: var(--mincho); font-size: var(--fs-m); line-height: 1.9; }
   .row-btn { width: 100%; text-align: left; background: none; border: 0; padding: var(--s4) 0; cursor: pointer; display: block; min-height: 44px; }
@@ -54,7 +61,7 @@
           <g class="t"><text data-l="ja" x="311" y="90" text-anchor="middle" font-size="14">日記</text><text data-l="en" x="311" y="90" text-anchor="middle" font-size="14">Journal</text><text data-l="es" x="311" y="90" text-anchor="middle" font-size="14">Diario</text><text data-l="zh" x="311" y="90" text-anchor="middle" font-size="14">日记</text></g>
         </svg>
         <p class="note"><span class="t"><span data-l="ja">職人は「話す」を押して、いつもの言葉で話すだけ。書く・直す・翻訳するのはAIがします。公開するかどうかは、職人が「OK」で決めます。</span><span data-l="en">The craftsperson presses “Talk” and speaks as usual. The AI does the writing and translating. The craftsperson decides whether to publish with a single “OK”.</span><span data-l="es">El maestro pulsa «Hablar»; la IA escribe y traduce. Publicar depende de su «OK».</span><span data-l="zh">匠人按下“说话”，像平时一样说就行。写作和翻译由AI完成，是否发布由匠人点“OK”决定。</span></span></p>
-        <a class="btn btn--wide" href="04_職人の画面_相談を受ける.html"><span class="t"><span data-l="ja">職人の画面を見る</span><span data-l="en">See the craftsperson's screen</span><span data-l="es">Ver la pantalla del maestro</span><span data-l="zh">查看匠人界面</span></span></a>
+        <a class="btn btn--wide demo-only" href="04_職人の画面_相談を受ける.html"><span class="t"><span data-l="ja">職人の画面を見る</span><span data-l="en">See the craftsperson's screen</span><span data-l="es">Ver la pantalla del maestro</span><span data-l="zh">查看匠人界面</span></span></a>
       </section>
     </section>
 
@@ -127,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var h = '<p class="eyebrow">' + d.date + " ・ " + esc(pick(d.season)) + "</p>" +
       '<h1 class="h1" style="font-size:var(--fs-xl)">' + esc(pick(d.title)) + "</h1>" +
       '<p class="row__meta"><a href="13_職人を探す.html" style="color:var(--kin);font-weight:700;text-decoration:none">' + esc(nameOf(s)) + "</a> ・ " + esc(lang === "ja" ? s.garden : s.en_garden) + "</p>" +
-      '<figure class="zu" style="margin:var(--s4) 0" data-zu="' + ({ s1: "moyogi", s2: "momiji", s3: "shimpaku" }[d.s] || "moyogi") + '" data-cap="' + esc(T({ ja: "この職人の木（写真の代わりの図）", en: "One of this craftsperson's trees (a drawing stands in for a photo)", es: "Un árbol del maestro (dibujo)", zh: "这位匠人的树（示意图）" })) + '"></figure>' +
+      '<figure class="zu" style="margin:var(--s4) 0" data-zu="' + ({ s1: "moyogi", s2: "momiji", s3: "shimpaku" }[d.s] || "moyogi") + '" data-cap="' + esc(T({ ja: "この職人の木", en: "One of this craftsperson's trees", es: "Un árbol del maestro", zh: "这位匠人的树" })) + '"></figure>' +
       '<section class="stage"><p class="stage__no">' + esc(T({ ja: "1　職人が話した言葉（日本語・文字起こし）", en: "1  What the craftsperson said (Japanese, transcribed)", es: "1  Lo que dijo el maestro (japonés)", zh: "1  匠人说的话（日语・文字记录）" })) + "</p>" +
       '<div class="voice-box" lang="ja">「' + esc(d.voice) + '」<p class="note">' + esc(T({ ja: "話したままの言葉です。言い直しや整えはしていません。", en: "Exactly as spoken, not edited.", es: "Tal como se dijo, sin editar.", zh: "原样记录，未作修改。" })) + "</p></div></section>" +
       '<div class="arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>' +

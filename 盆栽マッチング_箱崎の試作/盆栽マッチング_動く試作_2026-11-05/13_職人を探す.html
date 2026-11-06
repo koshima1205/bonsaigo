@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>13 職人を探す｜盆栽マッチング 試作</title>
+<title>職人を探す｜盆栽の間</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .idea { display: inline-block; font-size: var(--fs-s); color: var(--sumi-2); border: 1px solid var(--sen); border-radius: 99px; padding: 2px 10px; margin-bottom: var(--s3); }
   .chips .chip { min-height: 44px; display: inline-flex; align-items: center; }
@@ -42,10 +49,11 @@
       <span data-l="es">Elige a un maestro que conozca tu tipo de árbol.</span>
       <span data-l="zh">选择熟悉你那种树的匠人。</span>
     </span></h1>
-    <p class="lead"><span class="t"><span data-l="ja">得意な木の種類で絞れます。3人とも架空の職人です。</span><span data-l="en">Filter by the trees they know best. All three are fictional craftspeople.</span><span data-l="es">Filtra por especialidad. Los tres son ficticios.</span><span data-l="zh">可按擅长树种筛选。三位均为虚构匠人。</span></span></p>
+    <p class="lead"><span class="t"><span data-l="ja">得意な木の種類で絞れます。</span><span data-l="en">Filter by the trees they know best.</span><span data-l="es">Filtra por especialidad.</span><span data-l="zh">可按擅长树种筛选。</span></span><span class="t demo-only"> <span data-l="ja">3人とも架空の職人です。</span><span data-l="en">All three are fictional craftspeople.</span><span data-l="es">Los tres son ficticios.</span><span data-l="zh">三位均为虚构匠人。</span></span></p>
 
     <div class="chips" id="filters" role="group"></div>
     <ul class="rows list" id="list"></ul>
+    <div id="load-state"></div>
 
     <section class="profile" id="profile" aria-live="polite"></section>
   </main>
@@ -78,7 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return s.specialty.some(function (sp) { return f.m.indexOf(sp) >= 0; });
   }
   var SPEN = { "黒松": "Black pine", "五葉松": "Five-needle pine", "真柏": "Shimpaku juniper", "もみじ": "Maple", "ボケ": "Flowering quince", "皐月": "Satsuki azalea", "石付き": "Rock planting", "ジン・シャリ": "Deadwood (jin and shari)" };
-  function sp(x) { return B.getLang() === "ja" || !SPEN[x] ? x : SPEN[x] + " · " + x; }
+  function sp(x) { return B.getLang() === "ja" ? x : (SPEN[x] ? SPEN[x] + " · " + x : null); }
+  function spTags(s) { return s.specialty.map(sp).filter(Boolean).map(function (x) { return "<span>" + esc(x) + "</span>"; }).join(""); }
   function nm(s) { return B.getLang() === "ja" ? s.name : s.en_name; }
   function gd(s) { return B.getLang() === "ja" ? s.garden : s.en_garden; }
   function ttl(s) { return B.getLang() === "ja" ? s.title : s.en_title; }
@@ -96,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         '<span class="seal" aria-hidden="true">' + SEAL[s.id] + "</span>" +
         '<span class="row__body"><span class="row__title" style="display:block">' + esc(nm(s)) + "</span>" +
         '<span class="row__meta" style="display:block">' + esc(ttl(s)) + "</span>" +
-        '<span class="spec-tags">' + s.specialty.map(function (x) { return "<span>" + esc(sp(x)) + "</span>"; }).join("") + "</span></span>" +
+        '<span class="spec-tags">' + spTags(s) + "</span></span>" +
         (s.id === openId ? '<span class="sel">' + esc(B.T({ ja: "選択中", en: "Selected", es: "Seleccionado", zh: "已选择" })) + "</span>" : "") + "</button></li>";
     }).join("") : '<li class="empty">' + esc(B.T({ ja: "この木が得意な職人は、まだいません。", en: "No craftsperson for this tree yet.", es: "Aún no hay maestros para este árbol.", zh: "暂时没有擅长此树的匠人。" })) + "</li>";
 
@@ -104,13 +113,13 @@ document.addEventListener("DOMContentLoaded", function () {
     var box = document.getElementById("profile");
     if (!s || !shown.length) { box.innerHTML = ""; return; }
     box.innerHTML =
-      '<div class="profile__head"><div class="seal" aria-hidden="true">' + SEAL[s.id] + '</div><div><p class="row__title" style="font-size:var(--fs-l)">' + esc(nm(s)) + '</p><p class="row__meta">' + esc(gd(s)) + " · " + esc(area(s)) + "</p></div></div>" +
+      '<div class="profile__head"><div class="seal" aria-hidden="true">' + SEAL[s.id] + '</div><div><p class="row__title" style="font-size:var(--fs-l)">' + esc(nm(s)) + '</p><p class="row__meta">' + esc([gd(s), area(s)].filter(Boolean).join(" · ")) + "</p></div></div>" +
       '<div class="facts">' + (s.years === "-" ? "" : "<div><b>" + s.years + "</b><small>" + esc(B.T({ ja: "年の経験", en: "years", es: "años", zh: "年经验" })) + "</small></div>") +
       "<div><b>" + s.answers + "</b><small>" + esc(B.T({ ja: "答えた数", en: "answers given", es: "respuestas", zh: "回答数" })) + "</small></div>" +
       "<div><b>" + s.specialty.length + "</b><small>" + esc(B.T({ ja: "得意な木", en: "specialties", es: "especialidades", zh: "擅长树种" })) + "</small></div></div>" +
-      '<p class="note">' + esc(B.T({ ja: "年数・答えた数はサンプルです。", en: "Years and answer counts are sample data.", es: "Cifras de muestra.", zh: "数字为样例。" })) + "</p>" +
+      '<p class="note demo-only">' + esc(B.T({ ja: "年数・答えた数はサンプルです。", en: "Years and answer counts are sample data.", es: "Cifras de muestra.", zh: "数字为样例。" })) + "</p>" +
       '<p class="row__meta">' + esc(B.T({ ja: "得意な木", en: "Specialties", es: "Especialidad", zh: "擅长" })) + "</p>" +
-      '<div class="spec-tags" style="margin-bottom:var(--s4)">' + s.specialty.map(function (x) { return "<span>" + esc(sp(x)) + "</span>"; }).join("") + "</div>" +
+      '<div class="spec-tags" style="margin-bottom:var(--s4)">' + spTags(s) + "</div>" +
       "<p>" + esc(bio(s)) + "</p>" +
       '<p class="words">' + esc(B.T(HITO[s.id])) + "</p>" +
       '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(s.id) + '">' + esc(B.T({ ja: "この職人に相談する", en: "Ask this craftsperson", es: "Consultar a este maestro", zh: "向这位匠人咨询" })) + "</a>";
@@ -125,15 +134,23 @@ document.addEventListener("DOMContentLoaded", function () {
   render();
   document.addEventListener("langchange", render);
   /* 話して登録した職人も、一覧に足す */
-  if (API.online) API.get("/api/teachers").then(function (r) {
-    r.teachers.slice().reverse().forEach(function (t) {
-      if (S.shokunin.some(function (x) { return x.id === t.id; })) return;
-      S.shokunin.unshift({ id: t.id, name: t.name_ja, en_name: t.name_en, garden: "新しく登録した職人", en_garden: "Newly joined", area: "サンプル", en_area: "sample", years: "-", answers: 0, specialty: t.specialty_ja, title: t.title_ja, en_title: "Craftsperson (sample)", bio: t.bio.ja, en_bio: t.bio.en });
-      SEAL[t.id] = t.name_ja.charAt(0);
-      HITO[t.id] = t.first_words;
+  function loadTeachers() {
+    var box = document.getElementById("load-state");
+    UI.state(box, "loading", { ja: "登録した職人を探しています", en: "Looking for newly joined craftspeople…", es: "Buscando maestros nuevos…", zh: "正在查找新登记的匠人…" });
+    API.get("/api/teachers").then(function (r) {
+      UI.clear(box);
+      r.teachers.slice().reverse().forEach(function (t) {
+        if (S.shokunin.some(function (x) { return x.id === t.id; })) return;
+        S.shokunin.unshift({ id: t.id, name: t.name_ja, en_name: t.name_en, garden: "新しく登録した職人", en_garden: "Newly joined", area: "", en_area: "", years: "-", answers: 0, specialty: t.specialty_ja, title: t.title_ja, en_title: "Craftsperson", bio: t.bio.ja, en_bio: t.bio.en });
+        SEAL[t.id] = t.name_ja.charAt(0);
+        HITO[t.id] = t.first_words;
+      });
+      if (r.teachers.length) { openId = r.teachers[0].id; render(); }
+    }, function () {
+      UI.state(box, "error", { ja: "新しく登録した職人を読み込めませんでした。ほかの職人だけを表示しています", en: "Couldn't load newly joined craftspeople. Only the others are shown.", es: "No se pudieron cargar los maestros nuevos. Solo se ven los demás.", zh: "无法加载新登记的匠人，目前只显示其他匠人。" }, { retry: loadTeachers });
     });
-    if (r.teachers.length) { openId = r.teachers[0].id; render(); }
-  }, function () {});
+  }
+  if (API.online) loadTeachers();
 });
 </script>
 </body>

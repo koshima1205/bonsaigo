@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>05 答えが届く（愛好家側）｜盆栽マッチング 試作</title>
+<title>職人からの答え｜盆栽の間</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .marked { position: relative; }
   .marked svg.marks { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
@@ -18,6 +25,8 @@
   }
   .answer p { font-size: var(--fs-l); line-height: 1.85; }
   .voice { border-left: 2px solid var(--sen); padding-left: var(--s3); color: var(--sumi-2); font-size: var(--fs-s); }
+  .checked { display: flex; gap: var(--s2); align-items: flex-start; margin: var(--s3) 0 var(--s5); padding: var(--s3); border-radius: var(--r); background: var(--koke-usu); font-size: var(--fs-s); line-height: 1.6; }
+  .checked svg { flex: none; margin-top: 2px; }
   .hint { display: flex; gap: var(--s2); align-items: center; font-size: var(--fs-s); color: var(--koke); margin: 0 0 var(--s4); }
 </style>
 </head>
@@ -25,7 +34,7 @@
 <div class="app">
   <header id="appbar"></header>
   <main class="page">
-    <p class="eyebrow"><span class="t"><span data-l="ja">相談 q-0142 ・ 針金外し</span><span data-l="en">Question q-0142 · Removing wire</span><span data-l="es">Consulta q-0142 · Quitar el alambre</span><span data-l="zh">咨询 q-0142 · 拆除铁丝</span></span></p>
+    <p class="eyebrow"><span class="t"><span data-l="ja">相談 ・ 針金外し</span><span data-l="en">Question · Removing wire</span><span data-l="es">Consulta · Quitar el alambre</span><span data-l="zh">咨询 · 拆除铁丝</span></span></p>
     <h1 class="h1"><span class="t">
       <span data-l="ja">上の針金は、いま外す。ほどかずに切って。</span>
       <span data-l="en">Take the top wire off now. Cut it, don't unwind it.</span>
@@ -36,7 +45,7 @@
     <figure class="zu marked" data-zu="soudan" data-cap="none" id="photo"></figure>
     <ul class="mark-legend" id="legend"></ul>
 
-    <div class="from">
+    <div class="from" id="from">
       <div class="from__seal" aria-hidden="true">松</div>
       <div>
         <p class="row__title" id="from-name"></p>
@@ -44,22 +53,23 @@
       </div>
     </div>
 
-    <p class="hint"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+    <p class="hint" id="hint"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
       <span class="t"><span data-l="ja">点線の言葉に触ると、意味と理由が開きます</span><span data-l="en">Tap a dotted word to see what it means, and why.</span><span data-l="es">Toca una palabra subrayada para ver su sentido.</span><span data-l="zh">点击虚线词语，查看含义和原因。</span></span></p>
 
     <div class="answer" id="answer"></div>
+    <p class="checked" id="checked"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span id="checked-text"><span class="t"><span data-l="ja">職人が確かめて送った答えです。別のAIが、職人の言葉とずれていないかも確かめています。</span><span data-l="en">The craftsperson checked and sent this answer. A second AI also checked that the translation matches their own words.</span><span data-l="es">El maestro revisó y envió esta respuesta. Otra IA comprobó que la traducción coincide con sus palabras.</span><span data-l="zh">这是匠人确认后发送的回答。另一个 AI 也核对了译文与匠人原话是否一致。</span></span></span></p>
 
-    <h2 class="h3"><span class="t"><span data-l="ja">職人が話した言葉（日本語のまま）</span><span data-l="en">What the craftsperson actually said (Japanese)</span><span data-l="es">Lo que dijo el maestro (japonés)</span><span data-l="zh">匠人的原话（日语）</span></span></h2>
+    <h2 class="h3" id="voice-h"><span class="t"><span data-l="ja">職人が話した言葉（日本語のまま）</span><span data-l="en">What the craftsperson actually said (Japanese)</span><span data-l="es">Lo que dijo el maestro (japonés)</span><span data-l="zh">匠人的原话（日语）</span></span></h2>
     <p class="voice" id="voice"></p>
-    <p class="note"><span class="t"><span data-l="ja">言葉を一語ずつ置き換えず、用語集の「意味」と「なぜそうするか」を使って言い直しています。</span><span data-l="en">We don't translate word by word. Each term is re-explained using our glossary — what it means and why craftspeople do it.</span><span data-l="es">No traducimos palabra por palabra: usamos el glosario.</span><span data-l="zh">我们不逐字翻译，而是用术语表解释含义和原因。</span></span></p>
+    <p class="note" id="voice-note"><span class="t"><span data-l="ja">言葉を一語ずつ置き換えず、用語集の「意味」と「なぜそうするか」を使って言い直しています。</span><span data-l="en">We don't translate word by word. Each term is re-explained using our glossary — what it means and why craftspeople do it.</span><span data-l="es">No traducimos palabra por palabra: usamos el glosario.</span><span data-l="zh">我们不逐字翻译，而是用术语表解释含义和原因。</span></span></p>
 
     <hr class="rule">
     <div style="display:grid;gap:var(--s3)">
       <a class="btn btn--main btn--wide demo-only" href="20_職人に入るお金_職人.html"><span class="t"><span data-l="ja">次へ：この答えで職人に入るお金を見る</span><span data-l="en">Next: see what the craftsperson earns</span><span data-l="es">Siguiente: lo que gana el maestro</span><span data-l="zh">下一步：查看匠人的收入</span></span></a>
-      <a class="btn btn--main btn--wide no-demo" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">もう一度、職人に相談する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续向匠人提问</span></span></a>
+      <a class="btn btn--main btn--wide no-demo" id="follow-1" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">もう一度、職人に相談する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续向匠人提问</span></span></a>
       <a class="btn btn--wide" href="06_質問と答え_QandA.html"><span class="t"><span data-l="ja">ほかの職人の答えも見る</span><span data-l="en">See other craftspeople's answers</span><span data-l="es">Ver otras respuestas</span><span data-l="zh">查看其他匠人的回答</span></span></a>
-      <a class="btn btn--wide" href="15_職人の手直しを図で_仮.html"><span class="t"><span data-l="ja">手直しを図で見る</span><span data-l="en">See the correction drawn on the tree</span><span data-l="es">Ver la corrección dibujada</span><span data-l="zh">查看修整示意图</span></span> <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Idea</span><span data-l="es">Idea</span><span data-l="zh">暂定</span></span></span></a>
-      <a class="btn btn--quiet btn--wide" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">続けて質問する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续提问</span></span></a>
+      <a class="btn btn--wide" id="go-fig" href="15_職人の手直しを図で_仮.html"><span class="t"><span data-l="ja">手直しを図で見る</span><span data-l="en">See the correction drawn on the tree</span><span data-l="es">Ver la corrección dibujada</span><span data-l="zh">查看修整示意图</span></span> <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Idea</span><span data-l="es">Idea</span><span data-l="zh">暂定</span></span></span></a>
+      <a class="btn btn--quiet btn--wide demo-only" id="follow-2" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">続けて質問する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续提问</span></span></a>
     </div>
   </main>
   <nav id="tabbar"></nav>
@@ -97,44 +107,92 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("voice").textContent = "「" + q.answer_ja_voice + "」";
   }
   render();
-  document.addEventListener("langchange", function () { if (!real) render(); });
+  document.addEventListener("langchange", function () { if (!real && !(API.online && id)) render(); });
 
   /* 本物の相談の答えを出す */
-  var real = null, params = new URLSearchParams(location.search), id = params.get("id");
-  if (API.online && id && params.get("embed") !== "1") {
+  var real = null, params = new URLSearchParams(location.search), id = params.get("id"), waitTimer = null;
+  var TITLE = { ja: "職人からの答え", en: "The craftsperson's answer", es: "La respuesta del maestro", zh: "匠人的回答" };
+  function extras(show) { ["hint", "voice-h", "voice-note"].forEach(function (x) { document.getElementById(x).hidden = !show; }); }
+  function specEn(t) {
+    var e = (t.bio && t.bio.en) || t.bio_en || "", s = e.split(/(?<=[.!?])\s/)[0];
+    return s && s.length <= 80 ? s : "Craftsperson";
+  }
+  function showProblem(kind, msg, opt) {
+    extras(false); document.getElementById("from").hidden = true; document.getElementById("go-fig").hidden = true;
+    document.querySelector(".h1").innerHTML = tSpan({ ja: "職人からの答え", en: "The craftsperson's answer", es: "La respuesta del maestro", zh: "匠人的回答" });
+    document.getElementById("legend").innerHTML = "";
+    fig.hidden = true;
+    document.getElementById("checked").hidden = true;
+    document.getElementById("voice").textContent = "";
+    UI.state(document.getElementById("answer"), kind, msg, opt);
+  }
+  function loadReal(quiet) {
+    clearTimeout(waitTimer);
+    if (!quiet) {
+      /* 読み込み中は、見本の見出し・写真・職人の名前を出さない */
+      document.querySelector(".h1").innerHTML = tSpan(TITLE);
+      document.querySelector(".eyebrow").innerHTML = tSpan(TITLE);
+      document.getElementById("legend").innerHTML = "";
+      fig.hidden = true; document.getElementById("from").hidden = true; document.getElementById("go-fig").hidden = true;
+      extras(false);
+      document.getElementById("checked").hidden = true;
+      document.getElementById("voice").textContent = "";
+      UI.state(document.getElementById("answer"), "loading", { ja: "答えを読み込んでいます", en: "Loading the answer…", es: "Cargando la respuesta…", zh: "正在加载回答…" });
+    }
     API.get("/api/consultations").then(function (r) {
       var c = r.consultations.find(function (x) { return x.id === id; });
-      if (!c) return;
+      if (!c) {
+        showProblem("empty", { ja: "この相談は見つかりませんでした。もう一度、職人に相談してみてください", en: "We couldn't find this question. Try asking the craftsperson again.", es: "No encontramos esta consulta. Vuelve a consultar al maestro.", zh: "没有找到这条咨询。请再向匠人咨询一次。" },
+          { action: { href: "03_職人への相談_愛好家.html", t: { ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" } } });
+        return;
+      }
       real = c;
+      document.getElementById("answer").innerHTML = "";
       document.querySelector(".eyebrow").innerHTML = tSpan({ ja: "職人からの答え", en: "The craftsperson's answer", es: "La respuesta del maestro", zh: "匠人的回答" });
       document.getElementById("legend").innerHTML = "";
       var frame = fig.querySelector(".zu__frame");
       frame.innerHTML = (c.image ? API.photoHtml(c.image, "") : "");
+      fig.hidden = !c.image; document.getElementById("from").hidden = false;
       var teacher = S.shokunin.find(function (x) { return x.id === c.teacher_id; });
       document.getElementById("from-name").textContent = teacher ? (c.lang === "ja" ? teacher.name : teacher.en_name) : "";
       document.getElementById("from-meta").textContent = teacher ? (c.lang === "ja" ? teacher.title : teacher.en_title) : "";
+      document.querySelector(".from__seal").textContent = teacher ? (teacher.name || "職").charAt(0) : "職";
       if (!teacher) API.get("/api/teachers").then(function (t) {
         var added = t.teachers.find(function (x) { return x.id === c.teacher_id; });
         if (!added) return;
         document.getElementById("from-name").textContent = c.lang === "ja" ? added.name_ja : added.name_en;
-        document.getElementById("from-meta").textContent = (added.specialty_ja || []).join("・");
+        document.getElementById("from-meta").textContent = c.lang === "ja" ? (added.specialty_ja || []).join("・") : specEn(added);
         document.querySelector(".from__seal").textContent = (added.name_ja || "職").charAt(0);
       }, function () {});
       if (!c.answer) {
         document.querySelector(".h1").innerHTML = tSpan({ ja: "職人の答えを待っています。", en: "Waiting for the craftsperson's answer.", es: "Esperando la respuesta del maestro.", zh: "正在等待匠人的回答。" });
-        document.getElementById("answer").innerHTML = "";
+        extras(false);
+        document.getElementById("checked").hidden = true;
         document.getElementById("voice").textContent = "";
+        UI.state(document.getElementById("answer"), "empty", { ja: "答えが届くと、ここに表示されます。しばらくして、もう一度開いてください", en: "The answer will appear here once the craftsperson replies. Check back in a little while.", es: "La respuesta aparecerá aquí cuando el maestro conteste. Vuelve en un rato.", zh: "匠人回答后会显示在这里，请稍后再来看看。" },
+          { action: { href: window.homeHref(false), t: { ja: "ホームへ", en: "Back to home", es: "Volver al inicio", zh: "返回首页" } } });
+        waitTimer = setTimeout(function () { loadReal(true); }, 30000);
         return;
       }
       var a = c.answer;
+      extras(true);
+      document.getElementById("checked").hidden = false;
       document.querySelector(".h1").textContent = API.dropTermMarks(a.headline);
       if (a.marks.length) frame.insertAdjacentHTML("beforeend", '<svg class="marks" viewBox="0 0 320 240" aria-hidden="true">' + a.marks.map(function (d) {
         return '<path d="' + esc(d) + '" fill="none" stroke="#A6432A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>';
       }).join("") + "</svg>");
       document.getElementById("answer").innerHTML = a.paragraphs.map(function (p) { return "<p>" + API.markTerms(p) + "</p>"; }).join("");
       document.getElementById("voice").textContent = a.voice_ja ? "「" + a.voice_ja + "」" : "";
-    }, function () {});
+      var follow = "03_職人への相談_愛好家.html" + (c.tree_id ? "?tree=" + encodeURIComponent(c.tree_id) : "");
+      document.getElementById("follow-1").href = follow; document.getElementById("follow-2").href = follow;
+      if (!a.voice_ja) document.getElementById("checked").hidden = true;
+      else if (!a.review.checked) document.getElementById("checked-text").innerHTML = tSpan({ ja: "職人が確かめて送った答えです。", en: "The craftsperson checked and sent this answer.", es: "El maestro revisó y envió esta respuesta.", zh: "这是匠人确认后发送的回答。" });
+    }, function () {
+      if (quiet) { waitTimer = setTimeout(function () { loadReal(true); }, 30000); return; }
+      showProblem("error", null, { retry: function () { loadReal(); } });
+    });
   }
+  if (API.online && id && params.get("embed") !== "1") loadReal();
 });
 </script>
 </body>

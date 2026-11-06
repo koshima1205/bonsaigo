@@ -45,16 +45,16 @@ const OFFERS = [
 const CRAFTSPERSON_SHARE = 0.8;
 
 const SAMPLE_TEACHERS = [
-  { id: "s1", name_ja: "松風 清（サンプル）", name_en: "Kiyoshi Matsukaze (sample)", specialty_ja: ["黒松", "五葉松", "真柏"], can_teach_ja: ["松の水やりと置き場所", "針金かけ", "写真に線を引いて枝の見立てを伝える"], bio_en: "Has cared for black pines for over 40 years. Prefers drawing on your photo to long sentences.", offers: ["one_question", "video_lesson", "monthly"] },
-  { id: "s2", name_ja: "楓 ゆき（サンプル）", name_en: "Yuki Kaede (sample)", specialty_ja: ["もみじ", "ボケ", "皐月"], can_teach_ja: ["季節の木の水やりと置き場所", "もみじの葉刈り", "花ものの手入れ"], bio_en: "Specializes in seasonal trees: maples, quince, azalea. Known for clear advice on watering and placement.", offers: ["one_question", "video_lesson"] },
-  { id: "s3", name_ja: "岩井 正道（サンプル）", name_en: "Masamichi Iwai (sample)", specialty_ja: ["石付き", "真柏", "ジン・シャリ"], can_teach_ja: ["石を山に見立てる石付き", "枯れた部分（ジン・シャリ）の仕立て"], bio_en: "Builds landscapes where the stone becomes a mountain cliff. Junipers and deadwood are the strength.", offers: ["one_question", "monthly"] },
+  { id: "s1", name_ja: "松風 清", name_en: "Kiyoshi Matsukaze", specialty_ja: ["黒松", "五葉松", "真柏"], can_teach_ja: ["松の水やりと置き場所", "針金かけ", "写真に線を引いて枝の見立てを伝える"], bio_en: "Has cared for black pines for over 40 years. Prefers drawing on your photo to long sentences.", offers: ["one_question", "video_lesson", "monthly"] },
+  { id: "s2", name_ja: "楓 ゆき", name_en: "Yuki Kaede", specialty_ja: ["もみじ", "ボケ", "皐月"], can_teach_ja: ["季節の木の水やりと置き場所", "もみじの葉刈り", "花ものの手入れ"], bio_en: "Specializes in seasonal trees: maples, quince, azalea. Known for clear advice on watering and placement.", offers: ["one_question", "video_lesson"] },
+  { id: "s3", name_ja: "岩井 正道", name_en: "Masamichi Iwai", specialty_ja: ["石付き", "真柏", "ジン・シャリ"], can_teach_ja: ["石を山に見立てる石付き", "枯れた部分（ジン・シャリ）の仕立て"], bio_en: "Builds landscapes where the stone becomes a mountain cliff. Junipers and deadwood are the strength.", offers: ["one_question", "monthly"] },
 ];
 
 // 木を探している人（見せるためのサンプル。実在の人ではない）
 const SAMPLE_WANTED = [
-  { id: "w1", overseas: true, ja: "アメリカの方：針金の仕事を学べる小さな木を探しています（サンプル）", detail: "small tree with visible wiring to learn from, buyer in the USA" },
-  { id: "w2", overseas: true, ja: "ドイツの方：動きのある幹の小さな木を探しています（サンプル）", detail: "small tree with a trunk that has movement, buyer in Germany" },
-  { id: "w3", overseas: false, ja: "日本の方：紅葉を楽しめるもみじを探しています（サンプル）", detail: "maple with autumn color, buyer in Japan" },
+  { id: "w1", overseas: true, ja: "アメリカの方：針金の仕事を学べる小さな木を探しています", detail: "small tree with visible wiring to learn from, buyer in the USA" },
+  { id: "w2", overseas: true, ja: "ドイツの方：動きのある幹の小さな木を探しています", detail: "small tree with a trunk that has movement, buyer in Germany" },
+  { id: "w3", overseas: false, ja: "日本の方：紅葉を楽しめるもみじを探しています", detail: "maple with autumn color, buyer in Japan" },
 ];
 
 /* ---------- 保存（手元の1ファイル） ---------- */
@@ -189,7 +189,28 @@ function cleanTermMarks(s) {
 function allTeachers() { return [...SAMPLE_TEACHERS, ...store.teachers]; }
 function teacherById(id) { return allTeachers().find((t) => t.id === id); }
 
-const publicConsultation = (c) => c;
+// 同じ木の、前の相談と職人の答え（新しい順に3件まで）。AIには全部ではなく、この分だけ渡す
+const HISTORY_LIMIT = 3;
+function treeHistory(c) {
+  if (!c.tree_id) return [];
+  return store.consultations
+    .filter((x) => x.id !== c.id && x.tree_id === c.tree_id && x.answer && x.answer.voice_ja && x.at < c.at)
+    .slice(0, HISTORY_LIMIT)
+    .map((x) => ({ at: x.at, question_ja: x.for_craftsperson.summary_ja, answer_ja: x.answer.voice_ja }));
+}
+const publicConsultation = (c) => ({ ...c, tree_history: treeHistory(c) });
+
+// 職人が答える前に見る「答えの案」。失敗しても相談そのものは届ける
+async function makeDraft(c, images) {
+  const history = treeHistory(c);
+  const material = `The asker's question, already rewritten for the craftsperson:\n${input(`${c.for_craftsperson.summary_ja}\n${c.for_craftsperson.points_ja.join("\n")}`)}\nWhat can be seen in the photo (not a diagnosis): ${input(c.for_craftsperson.ai_mitate_ja)}\n<tree_history>\n${history.length ? JSON.stringify(history) : "none"}\n</tree_history>`;
+  try {
+    return await ask("draftAnswer", material, images, history.length ? "draftAnswerWithHistory" : "draftAnswer");
+  } catch (e) {
+    console.error("答えの案を作れませんでした:", e.message);
+    return null;
+  }
+}
 
 // 写真の書き込みの知らせ。AIに任せず、必ず同じ言い方で出す
 const MARK_NOTE = {
@@ -293,7 +314,7 @@ const routes = {
     const p = b.profile;
     if (!p || !p.bio || !p.first_words) throw new BadRequest("紹介ページの下書きがありません");
     const name = text(b.name, 40, "お名前");
-    const t = { id: `t-${randomUUID().slice(0, 8)}`, name_ja: `${name}（サンプル）`, name_en: `${name} (sample)`, title_ja: p.title_ja, specialty_ja: p.specialty_ja, can_teach_ja: p.can_teach_ja, bio_en: p.bio.en, bio: p.bio, first_words: p.first_words, offers: OFFERS.map((o) => o.id) };
+    const t = { id: `t-${randomUUID().slice(0, 8)}`, name_ja: name, name_en: name, title_ja: p.title_ja, specialty_ja: p.specialty_ja, can_teach_ja: p.can_teach_ja, bio_en: p.bio.en, bio: p.bio, first_words: p.first_words, offers: OFFERS.map((o) => o.id) };
     store.teachers.unshift(t);
     await save();
     return t;
@@ -308,10 +329,14 @@ const routes = {
     const offer = OFFERS.find((o) => o.id === b.offer_id) || OFFERS[0];
     const forCraftsperson = await ask("toCraftsperson", `Asker's language: ${langName(l)}.\nTheir question:\n${input(question)}`, images);
     forCraftsperson.terms_ja = (forCraftsperson.terms_ja || []).filter((w) => GLOSSARY_WORDS.has(w));
-    const c = { id: randomUUID(), at: new Date().toISOString(), lang: l, question, image: images[0] || null, teacher_id: teacher.id, offer_id: offer.id, usd: offer.usd, for_craftsperson: forCraftsperson, answer: null };
+    // どの木の相談か。前に相談した木なら同じ番号を使い、なければ新しい木にする
+    const known = typeof b.tree_id === "string" && store.consultations.some((x) => x.tree_id === b.tree_id);
+    const c = { id: randomUUID(), at: new Date().toISOString(), lang: l, question, image: images[0] || null, tree_id: known ? b.tree_id : randomUUID(), teacher_id: teacher.id, offer_id: offer.id, usd: offer.usd, for_craftsperson: forCraftsperson, ai_draft: null, ai_draft_status: "making", answer: null };
     store.consultations.unshift(c);
     await save();
-    return c;
+    // 答えの案は裏で作る。相談した人は待たせない
+    makeDraft(c, images).then((d) => { c.ai_draft = d; c.ai_draft_status = d ? "done" : "failed"; return save(); });
+    return publicConsultation(c);
   },
   "GET /api/consultations": async () => ({ consultations: store.consultations.slice(0, 30).map(publicConsultation) }),
 
@@ -338,14 +363,14 @@ const routes = {
     const paragraphs = fixed.paragraphs.map(cleanTermMarks);
     if (marks.length) paragraphs.push(MARK_NOTE[c.lang]);
     c.answer = {
-      at: new Date().toISOString(), voice_ja: voice, marks,
+      at: new Date().toISOString(), voice_ja: voice, marks, from_draft: Boolean(b.from_draft) && Boolean(voice),
       headline: cleanTermMarks(fixed.headline),
       paragraphs,
       back_translation_ja: [fixed.back_translation_ja, marks.length ? MARK_NOTE.ja : ""].filter(Boolean).join("\n"),
       review: { ok: review.ok, problems_ja: review.problems_ja || [], checked: Boolean(voice) && MODE !== "sample" },
     };
     await save();
-    return c;
+    return publicConsultation(c);
   },
 
   /* 相談から投稿の下書き */
@@ -368,7 +393,7 @@ const routes = {
 class NotFound extends Error {}
 
 /* ---------- 配る ---------- */
-const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg" };
+const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".webmanifest": "application/manifest+json; charset=utf-8" };
 const PRIVATE = new Set(["データ", "node_modules", "サーバー.mjs", "AIへの指示と答えの形.mjs", "package.json", "package-lock.json"]);
 
 async function serveFile(req, res, pathname) {

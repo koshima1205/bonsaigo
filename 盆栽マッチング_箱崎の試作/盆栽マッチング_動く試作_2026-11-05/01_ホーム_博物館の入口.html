@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>01 ホーム（博物館の入口）｜盆栽マッチング 試作</title>
+<title>盆栽の間 読みもの</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .hero { padding-bottom: var(--s4); }
   .hero .h1 { font-size: 1.5rem; margin-bottom: var(--s2); }
@@ -61,7 +68,7 @@
         <span data-l="zh">用你的语言，读日本匠人的智慧。</span>
       </span></h1>
       <p class="lead"><span class="t"><span data-l="ja">意味が伝わる形で、世界へ。気になる部屋から、ゆっくりどうぞ。</span><span data-l="en">Carried across languages by meaning, not word for word.</span><span data-l="es">Traducido por su sentido, no palabra por palabra.</span><span data-l="zh">按含义而非逐字传达。</span></span></p>
-      <p class="diff"><span class="t"><span data-l="ja">多くの盆栽アプリは一般論を答えるだけ。ここでは職人が、あなたの木を見て答えます。</span><span data-l="en">Most bonsai apps give general advice. Here, a real craftsperson looks at your tree.</span><span data-l="es">La mayoría de las apps de bonsái dan consejos generales. Aquí, un maestro real mira tu árbol.</span><span data-l="zh">多数盆栽应用只给出一般性建议。在这里，真正的匠人会看着你的树来回答。</span></span></p>
+      <p class="diff"><span class="t"><span data-l="ja">ここでは職人が、あなたの木を見て答えます。</span><span data-l="en">Here, a real craftsperson looks at your own tree and answers.</span><span data-l="es">Aquí, un maestro real mira tu propio árbol y responde.</span><span data-l="zh">在这里，真正的匠人会看着你的树来回答。</span></span></p>
       <a class="btn btn--main" href="18_知りたいことから職人を探す.html"><span class="t"><span data-l="ja">教わりたい職人を見つける</span><span data-l="en">Find your craftsperson</span><span data-l="es">Encuentra a tu maestro</span><span data-l="zh">找到你的匠人</span></span></a>
       <button type="button" class="mini" id="mini-kengai" aria-label="懸崖">
         <span class="mini__row"><span class="mini__ja">懸崖</span><span class="mini__lit" id="mini-lit"></span><span class="mini__hint"><span class="t"><span data-l="ja">意味を見る</span><span data-l="en">See the meaning</span><span data-l="es">Ver el sentido</span><span data-l="zh">查看含义</span></span></span></span>
@@ -97,15 +104,15 @@
     <section class="room" aria-labelledby="r1">
       <div class="room__no"><b><span class="t"><span data-l="ja">第一室</span><span data-l="en">ROOM 1</span><span data-l="es">SALA 1</span><span data-l="zh">第一展厅</span></span></b>
         <h2 id="r1"><span class="t"><span data-l="ja">今日、職人が答えた相談</span><span data-l="en">A question answered today</span><span data-l="es">Una consulta respondida hoy</span><span data-l="zh">今天匠人回答的咨询</span></span></h2></div>
-      <a class="exhibit" href="05_答えが届く_愛好家.html">
+      <a class="exhibit" href="06_質問と答え_QandA.html#q-0142">
         <figure class="zu" data-zu="kiiro" data-cap="none"></figure>
         <div>
           <p class="exhibit__title"><span class="t"><span data-l="ja">黒松の葉が黄色くなった。原因は水のやりすぎ。</span><span data-l="en">Yellow needles on a black pine: too much water.</span><span data-l="es">Pino negro amarillo: demasiada agua.</span><span data-l="zh">黑松叶子变黄：浇水过多。</span></span></p>
-          <p class="row__meta">q-0142 · Emma (sample) → <span data-shokunin="s1"></span></p>
+          <p class="row__meta">Emma → <span data-shokunin="s1"></span></p>
           <div class="qline"><span class="badge-ok"><span class="t"><span data-l="ja">職人が回答</span><span data-l="en">Answered</span><span data-l="es">Respondida</span><span data-l="zh">已回答</span></span></span></div>
         </div>
       </a>
-      <a class="more" href="05_答えが届く_愛好家.html"><span class="t"><span data-l="ja">答えを読む →</span><span data-l="en">Read the answer →</span><span data-l="es">Leer la respuesta →</span><span data-l="zh">阅读回答 →</span></span></a>
+      <a class="more" href="06_質問と答え_QandA.html#q-0142"><span class="t"><span data-l="ja">答えを読む →</span><span data-l="en">Read the answer →</span><span data-l="es">Leer la respuesta →</span><span data-l="zh">阅读回答 →</span></span></a>
 
       <ul class="rows" style="margin-top:var(--s4)">
         <li><a class="row-link" href="06_質問と答え_QandA.html"><div class="row__body">
@@ -122,7 +129,7 @@
       <a class="exhibit" href="02_1鉢のページ.html" style="grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)">
         <figure class="zu" data-zu="moyogi" data-cap="none"></figure>
         <div>
-          <p class="exhibit__title"><span class="t"><span data-l="ja">黒松・模様木（サンプル）</span><span data-l="en">Black pine, informal upright (sample)</span><span data-l="es">Pino negro, moyogi (muestra)</span><span data-l="zh">黑松·模样木（样例）</span></span></p>
+          <p class="exhibit__title"><span class="t"><span data-l="ja">黒松・模様木</span><span data-l="en">Black pine, informal upright</span><span data-l="es">Pino negro, moyogi</span><span data-l="zh">黑松·模样木</span></span></p>
           <p class="row__meta"><span class="t"><span data-l="ja">樹齢 推定およそ60年</span><span data-l="en">Estimated age: about 60 years</span><span data-l="es">Edad estimada: unos 60 años</span><span data-l="zh">推定树龄约60年</span></span></p>
         </div>
       </a>
@@ -134,7 +141,7 @@
         <h2 id="r3"><span class="t"><span data-l="ja">職人の日記、受け継がれる言葉</span><span data-l="en">A craftsperson's journal</span><span data-l="es">El diario de un maestro</span><span data-l="zh">匠人的日记</span></span></h2></div>
       <blockquote class="diary" style="margin-left:0;margin-right:0">
         <q><span class="t"><span data-l="ja">水やりは三年。同じ木でも、季節と鉢で乾き方が違う。</span><span data-l="en">Watering takes three years to learn. Even one tree dries differently by season and pot.</span><span data-l="es">Regar se aprende en tres años.</span><span data-l="zh">浇水要学三年。</span></span></q>
-        <cite><span data-shokunin="s1"></span> <span class="sample"><span class="t"><span data-l="ja">サンプル</span><span data-l="en">sample</span><span data-l="es">muestra</span><span data-l="zh">样例</span></span></span></cite>
+        <cite><span data-shokunin="s1"></span> <span class="sample demo-only"><span class="t"><span data-l="ja">サンプル</span><span data-l="en">sample</span><span data-l="es">muestra</span><span data-l="zh">样例</span></span></span></cite>
       </blockquote>
       <a class="more" href="09_職人の日記.html"><span class="t"><span data-l="ja">日記を読む →</span><span data-l="en">Read the journal →</span><span data-l="es">Leer el diario →</span><span data-l="zh">阅读日记 →</span></span></a>
     </section>
@@ -144,11 +151,11 @@
       <div class="room__no"><b><span class="t"><span data-l="ja">第四室</span><span data-l="en">ROOM 4</span><span data-l="es">SALA 4</span><span data-l="zh">第四展厅</span></span></b>
         <h2 id="r4"><span class="t"><span data-l="ja">盆栽の歴史と、育て方を学ぶ</span><span data-l="en">Learn the history and the care</span><span data-l="es">Historia y cuidados</span><span data-l="zh">学习历史与养护</span></span></h2></div>
       <ul class="rows">
-        <li><a class="row-link" href="10_学ぶ_歴史と育て方.html"><div class="row__body">
-          <p class="row__title"><span class="t"><span data-l="ja">盆栽はどこから来たのか</span><span data-l="en">Where bonsai comes from</span><span data-l="es">De dónde viene el bonsái</span><span data-l="zh">盆栽从何而来</span></span> <span class="badge-mi"><span class="t"><span data-l="ja">下書き・未確認</span><span data-l="en">Draft · unchecked</span><span data-l="es">Borrador</span><span data-l="zh">草稿·未核实</span></span></span></p>
-          <p class="row__meta"><span class="t"><span data-l="ja">歴史</span><span data-l="en">History</span><span data-l="es">Historia</span><span data-l="zh">历史</span></span></p></div></a></li>
-        <li><a class="row-link" href="10_学ぶ_歴史と育て方.html"><div class="row__body">
-          <p class="row__title"><span class="t"><span data-l="ja">はじめての水やり</span><span data-l="en">Your first watering</span><span data-l="es">Tu primer riego</span><span data-l="zh">第一次浇水</span></span> <span class="badge-mi"><span class="t"><span data-l="ja">下書き・未確認</span><span data-l="en">Draft · unchecked</span><span data-l="es">Borrador</span><span data-l="zh">草稿·未核实</span></span></span></p>
+        <li><a class="row-link" href="10_学ぶ_歴史と育て方.html#j1"><div class="row__body">
+          <p class="row__title"><span class="t"><span data-l="ja">直幹・模様木・懸崖を見分ける</span><span data-l="en">Telling upright, informal and cascade styles apart</span><span data-l="es">Distinguir tres formas</span><span data-l="zh">区分直干、模样木、悬崖</span></span></p>
+          <p class="row__meta"><span class="t"><span data-l="ja">樹形</span><span data-l="en">Tree styles</span><span data-l="es">Formas del árbol</span><span data-l="zh">树形</span></span></p></div></a></li>
+        <li><a class="row-link" href="10_学ぶ_歴史と育て方.html#s1"><div class="row__body">
+          <p class="row__title"><span class="t"><span data-l="ja">水やりの基本：乾いてから、たっぷり</span><span data-l="en">Watering basics: let it dry, then water deeply</span><span data-l="es">Riego básico</span><span data-l="zh">浇水基础</span></span></p>
           <p class="row__meta"><span class="t"><span data-l="ja">育て方</span><span data-l="en">Care</span><span data-l="es">Cuidados</span><span data-l="zh">养护</span></span></p></div></a></li>
       </ul>
     </section>
@@ -162,7 +169,7 @@
         <li><a href="19_話して先生に登録_職人.html"><span><b><span class="t"><span data-l="ja">職人の方へ：話すだけで先生に</span><span data-l="en">For craftspeople (Japanese only)</span><span data-l="es">Para maestros (solo en japonés)</span><span data-l="zh">匠人入口（仅日语）</span></span></b></span><span class="arrow" aria-hidden="true">→</span></a></li>
         <li><a href="13_職人を探す.html"><span><b><span class="t"><span data-l="ja">職人を探す</span><span data-l="en">Find a craftsperson</span><span data-l="es">Buscar un maestro</span><span data-l="zh">寻找匠人</span></span></b><small><span class="t"><span data-l="ja">得意な木で選んで相談する</span><span data-l="en">Choose by the trees they know best</span><span data-l="es">Elige por especialidad</span><span data-l="zh">按擅长树种选择</span></span></small></span><span class="arrow">→</span></a></li>
         <li><a href="11_用語集.html"><span><b><span class="t"><span data-l="ja">用語集</span><span data-l="en">Glossary</span><span data-l="es">Glosario</span><span data-l="zh">术语表</span></span></b><small><span class="t"><span data-l="ja">直訳ではなく、意味と理由で説明</span><span data-l="en">Explained by meaning and reason, not word for word</span><span data-l="es">Por sentido y razón</span><span data-l="zh">按含义和原因解释</span></span></small></span><span class="arrow">→</span></a></li>
-        <li><a href="14_欲しい盆栽を伝える_仮.html"><span><b><span class="t"><span data-l="ja">欲しい盆栽を伝える</span><span data-l="en">Tell us the tree you want</span><span data-l="es">Cuéntanos qué árbol buscas</span><span data-l="zh">说出你想要的盆栽</span></span> <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Draft</span><span data-l="es">Borrador</span><span data-l="zh">暂定</span></span></span></b><small><span class="t"><span data-l="ja">会議で議論中の案</span><span data-l="en">An idea still under discussion</span><span data-l="es">Idea en discusión</span><span data-l="zh">讨论中的方案</span></span></small></span><span class="arrow">→</span></a></li>
+        <li><a href="14_欲しい盆栽を伝える_仮.html"><span><b><span class="t"><span data-l="ja">欲しい盆栽を伝える</span><span data-l="en">Tell us the tree you want</span><span data-l="es">Cuéntanos qué árbol buscas</span><span data-l="zh">说出你想要的盆栽</span></span> <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Draft</span><span data-l="es">Borrador</span><span data-l="zh">暂定</span></span></span></b><small class="demo-only"><span class="t"><span data-l="ja">会議で議論中の案</span><span data-l="en">An idea still under discussion</span><span data-l="es">Idea en discusión</span><span data-l="zh">讨论中的方案</span></span></small></span><span class="arrow">→</span></a></li>
       </ul>
     </section>
 

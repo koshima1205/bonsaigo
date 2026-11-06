@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>06 質問と答え（Q&A）｜盆栽マッチング 試作</title>
+<title>質問と答え</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .chips-scroll { margin: 0 calc(var(--s4) * -1) var(--s4); padding: 0 var(--s4); display: flex; gap: var(--s2); overflow-x: auto; scrollbar-width: none; }
   .chips-scroll::-webkit-scrollbar { display: none; }
@@ -43,7 +50,7 @@
       <p class="lead"><span class="t"><span data-l="ja">1つの質問に、何人もの職人が答えます。</span><span data-l="en">Each question is answered by several craftspeople, not just one.</span><span data-l="es">Cada pregunta la responden varios maestros.</span><span data-l="zh">每个问题由多位匠人回答。</span></span></p>
       <div class="chips-scroll" id="axes" role="group" aria-label="axis"></div>
       <ul class="rows" id="qlist"></ul>
-      <p class="note" style="margin-top:var(--s4)"><span class="t"><span data-l="ja">質問の数・答えた人数はサンプルです。</span><span data-l="en">Question and answer counts are sample figures.</span><span data-l="es">Las cifras son de ejemplo.</span><span data-l="zh">数字均为示例。</span></span></p>
+      <p class="note demo-only" style="margin-top:var(--s4)"><span class="t"><span data-l="ja">質問の数・答えた人数はサンプルです。</span><span data-l="en">Question and answer counts are sample figures.</span><span data-l="es">Las cifras son de ejemplo.</span><span data-l="zh">数字均为示例。</span></span></p>
     </section>
 
     <section id="view-detail" hidden>
@@ -76,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var Q = [
     { id: "q-0142", axis: "water", n: 3, tree: { ja: "黒松", en: "Black pine", es: "Pino negro", zh: "黑松" },
       title: { ja: "黒松の葉が黄色くなりました。毎日水をやっています", en: "My black pine's needles are turning yellow. I water it every day", es: "Las hojas de mi pino negro se ponen amarillas. Lo riego a diario", zh: "我的黑松叶子变黄了，我每天都浇水" },
-      from: "Emma (sample) ・ Portland",
+      from: "Emma ・ Portland",
       answers: [
         { s: "s1", view: { ja: "根と土", en: "Roots & soil", es: "Raíces y tierra", zh: "根与土" },
           body: {
@@ -99,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     { id: "q-0087", axis: "water", n: 4, tree: { ja: "もみじ", en: "Trident maple", es: "Arce tridente", zh: "三角枫" },
       title: { ja: "夏に葉の先が茶色くなります。水が足りないのでしょうか", en: "Leaf edges turn brown in summer. Is it lack of water?", es: "En verano las puntas de las hojas se ponen marrones", zh: "夏天叶尖发褐，是缺水吗？" },
-      from: "Wei (sample) ・ 成都",
+      from: "Wei ・ 成都",
       answers: [
         { s: "s2", view: { ja: "置き場所", en: "Placement", es: "Ubicación", zh: "摆放位置" }, body: { ja: ["水切れより<b class=\"term\" data-term=\"葉焼け\">葉焼け</b>のことが多いです。真夏の午後は<b class=\"term\" data-term=\"遮光\">遮光</b>してみてください。"], en: ["It's more often <b class=\"term\" data-term=\"葉焼け\">leaf scorch</b> than thirst. In midsummer afternoons, try <b class=\"term\" data-term=\"遮光\">shading</b> the tree."] } },
         { s: "s1", view: { ja: "水やり", en: "Watering", es: "Riego", zh: "浇水" }, body: { ja: ["朝にたっぷり、土の表面が乾いたら夕方にも。<b class=\"term\" data-term=\"乾湿のメリハリ\">乾湿のメリハリ</b>が大事です。"], en: ["Water deeply in the morning, and again in the evening if the surface has dried. <b class=\"term\" data-term=\"乾湿のメリハリ\">Let it dry and wet in turns</b>."] } }
@@ -109,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     { id: "q-0119", axis: "prune", n: 3, tree: { ja: "真柏", en: "Juniper", es: "Enebro", zh: "真柏" },
       title: { ja: "針金を掛けたら、枝の跡が残ってしまいました", en: "The wire left marks on the branches", es: "El alambre dejó marcas en las ramas", zh: "蟠扎后枝条留下了痕迹" },
-      from: "Lucía (sample) ・ Valencia",
+      from: "Lucía ・ Valencia",
       answers: [
         { s: "s3", view: { ja: "掛ける時期", en: "Timing", es: "Momento", zh: "时机" }, body: { ja: ["<b class=\"term\" data-term=\"針金掛け\">針金掛け</b>は、枝が太るより前に外すのが基本です。早めに様子を見てください。"], en: ["With <b class=\"term\" data-term=\"針金掛け\">wiring</b>, remove the wire before the branch thickens into it. Check early and often."] } },
         { s: "s1", view: { ja: "外し方", en: "Removing", es: "Cómo quitarlo", zh: "拆除方法" }, body: { ja: ["<b class=\"term\" data-term=\"針金外し\">針金外し</b>は、巻いた向きとは逆に、短く切りながら外すと枝を傷めにくいです。"], en: ["For <b class=\"term\" data-term=\"針金外し\">unwiring</b>, cut the wire into short pieces rather than unwinding it, to spare the branch."] } },
@@ -120,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     { id: "q-0131", axis: "repot", n: 3, tree: { ja: "黒松", en: "Black pine", es: "Pino negro", zh: "黑松" },
       title: { ja: "植え替えはいつ、どんな土でするのがよいですか", en: "When should I repot, and with what soil?", es: "¿Cuándo trasplantar y con qué sustrato?", zh: "什么时候换盆？用什么土？" },
-      from: "Emma (sample) ・ Portland",
+      from: "Emma ・ Portland",
       answers: [
         { s: "s1", view: { ja: "時期", en: "Timing", es: "Momento", zh: "时期" }, body: { ja: ["多くの木は、春の<b class=\"term\" data-term=\"芽出し\">芽出し</b>の前が目安です。木によって違うので、写真を送ってください。"], en: ["For many trees, the weeks before spring <b class=\"term\" data-term=\"芽出し\">bud break</b> are a good guide. It varies by tree, so send a photo."] } },
         { s: "s3", view: { ja: "土", en: "Soil", es: "Sustrato", zh: "土壤" }, body: { ja: ["<b class=\"term\" data-term=\"赤玉土\">赤玉土</b>を中心に、<b class=\"term\" data-term=\"水はけ\">水はけ</b>のよい<b class=\"term\" data-term=\"用土\">用土</b>を選びます。"], en: ["Choose a free-draining <b class=\"term\" data-term=\"用土\">soil mix</b>, built around <b class=\"term\" data-term=\"赤玉土\">akadama</b>."] } },
@@ -131,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     { id: "q-0098", axis: "sick", n: 2, tree: { ja: "皐月", en: "Satsuki azalea", es: "Azalea satsuki", zh: "皋月杜鹃" },
       title: { ja: "葉に白い粉のようなものがつきました", en: "A white powder has appeared on the leaves", es: "Un polvo blanco en las hojas", zh: "叶子上出现了白色粉末" },
-      from: "Lucía (sample) ・ Valencia",
+      from: "Lucía ・ Valencia",
       answers: [
         { s: "s2", view: { ja: "風通し", en: "Airflow", es: "Ventilación", zh: "通风" }, body: { ja: ["<b class=\"term\" data-term=\"うどんこ病\">うどんこ病</b>の可能性があります。<b class=\"term\" data-term=\"風通し\">風通し</b>をよくし、傷んだ葉は取ってください。"], en: ["It may be <b class=\"term\" data-term=\"うどんこ病\">powdery mildew</b>. Improve <b class=\"term\" data-term=\"風通し\">airflow</b> and remove damaged leaves."] } },
         { s: "s1", view: { ja: "写真で確認", en: "Send a photo", es: "Envía una foto", zh: "发照片确认" }, body: { ja: ["別の原因もあるので、近くから撮った写真を送ってもらえると確かです。"], en: ["Other causes are possible; a close-up photo would let me be sure."] } }
@@ -141,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     { id: "q-0074", axis: "shape", n: 2, tree: { ja: "石付き", en: "Rock planting", es: "Sobre roca", zh: "石附" },
       title: { ja: "石付きの盆栽は、どの角度から見るのがよいですか", en: "From which angle should a rock planting be viewed?", es: "¿Desde qué ángulo se ve mejor un bonsái sobre roca?", zh: "石附盆景从哪个角度欣赏最好？" },
-      from: "Wei (sample) ・ 成都",
+      from: "Wei ・ 成都",
       answers: [
         { s: "s3", view: { ja: "見立て", en: "The idea", es: "La idea", zh: "意境" }, body: { ja: ["<b class=\"term\" data-term=\"石付き\">石付き</b>は、石を山の崖に見立てます。崖の迫力が伝わる側を<b class=\"term\" data-term=\"正面\">正面</b>にします。"], en: ["In a <b class=\"term\" data-term=\"石付き\">rock planting</b>, the stone stands for a mountain cliff. Choose as the <b class=\"term\" data-term=\"正面\">front</b> the side where the cliff looks most dramatic."] } },
         { s: "s1", view: { ja: "木の向き", en: "The tree", es: "El árbol", zh: "树的朝向" }, body: { ja: ["木の幹の動きが、石の形とつり合う向きも見てください。"], en: ["Also look for the angle where the trunk's movement balances the shape of the stone."] } }
@@ -150,6 +157,8 @@ document.addEventListener("DOMContentLoaded", function () {
       rel: ["q-0142"] }
   ];
 
+  /* 答えた人数は、その質問に載っている答えの数から出す */
+  Q.forEach(function (q) { q.n = q.answers.length; });
   function qOf(id) { return Q.find(function (q) { return q.id === id; }); }
   function sOf(id) { return S.shokunin.find(function (s) { return s.id === id; }); }
   function nameOf(s) { return B.getLang() === "ja" ? s.name : s.en_name; }
@@ -157,7 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderAxes() {
     var box = document.getElementById("axes");
-    box.innerHTML = AXES.map(function (a) {
+    /* 質問が1つもない分類は出さない */
+    box.innerHTML = AXES.filter(function (a) { return a.k === "all" || Q.some(function (q) { return q.axis === a.k; }); }).map(function (a) {
       return '<button type="button" class="chip" data-k="' + a.k + '" aria-pressed="' + (axis === a.k) + '">' + esc(T(a.t)) + "</button>";
     }).join("");
     box.querySelectorAll(".chip").forEach(function (b) {
@@ -167,12 +177,12 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderList() {
     var rows = Q.filter(function (q) { return axis === "all" || q.axis === axis; });
     var ul = document.getElementById("qlist");
-    if (!rows.length) { ul.innerHTML = '<li><p class="muted" style="padding:var(--s4) 0">' + esc(T({ ja: "この軸の質問はまだありません。", en: "No questions on this topic yet." })) + "</p></li>"; return; }
+    if (!rows.length) { ul.innerHTML = "<li></li>"; UI.state(ul.firstChild, "empty", { ja: "この軸の質問はまだありません。「すべて」に戻すと、ほかの質問が見られます。", en: "No questions on this topic yet. Switch back to “All” to see the others.", es: "Aún no hay preguntas de este tema. Vuelve a «Todas».", zh: "这个分类暂无问题。请切换回“全部”查看其他问题。" }); return; }
     ul.innerHTML = rows.map(function (q) {
       var ax = AXES.find(function (a) { return a.k === q.axis; });
       return '<li><button type="button" class="qrow" data-id="' + q.id + '"><p class="qrow__title">' + esc(T2(q.title)) + "</p>" +
         '<p class="qrow__meta"><span><b>' + esc(T({ ja: q.n + "人の職人が回答", en: q.n + " craftspeople answered", es: q.n + " maestros respondieron", zh: q.n + "位匠人回答" })) + "</b></span>" +
-        "<span>" + esc(T2(q.tree)) + "</span><span>" + esc(T(ax.t)) + "</span><span>" + q.id + "</span></p></button></li>";
+        "<span>" + esc(T2(q.tree)) + "</span><span>" + esc(T(ax.t)) + "</span></p></button></li>";
     }).join("");
     ul.querySelectorAll(".qrow").forEach(function (b) { b.addEventListener("click", function () { open(b.getAttribute("data-id")); }); });
   }
@@ -193,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderDetail() {
     if (!openId) return;
     var q = qOf(openId), lang = B.getLang();
-    var h = '<p class="eyebrow">' + q.id + " ・ " + esc(T2(q.tree)) + " ・ " + esc(q.from) + "</p>" +
+    var h = '<p class="eyebrow">' + esc(T2(q.tree)) + " ・ " + esc(q.from) + "</p>" +
       '<div class="qhead"><h1 class="h1" style="font-size:var(--fs-xl);margin:0">' + esc(T2(q.title)) + "</h1></div>" +
       '<p class="lead" style="margin-top:var(--s3)">' + esc(T({ ja: "1つの質問に、" + q.n + "人の職人が答えています", en: q.n + " craftspeople have answered this one question", es: q.n + " maestros respondieron esta pregunta", zh: q.n + "位匠人回答了这个问题" })) + "</p>";
     if (q.id === "q-0142") h += '<figure class="zu" data-zu="kiiro" data-cap="none" style="max-width:240px"></figure>';
@@ -208,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     h += '<section class="panel panel--koke sumbox"><p class="row__title" style="margin:0">' +
       esc(T({ ja: "職人の答えが重なった所", en: "Where the craftspeople's answers overlap", es: "Dónde coinciden las respuestas", zh: "匠人回答的共同点" })) +
       ' <span class="sample">' + esc(T({ ja: "AIがまとめました", en: "Summarized by AI", es: "Resumen de IA", zh: "AI总结" })) + "</span></p><ul>" +
-      sum.map(function (x) { return "<li>" + esc((q.n >= 3 ? T({ ja: "3人とも：", en: "All three: ", es: "Los tres: ", zh: "三位都说：" }) : T({ ja: "2人とも：", en: "Both: ", es: "Los dos: ", zh: "两位都说：" })) + x) + "</li>"; }).join("") + "</ul></section>";
+      sum.map(function (x) { return "<li>" + esc((q.n >= 4 ? T({ ja: q.n + "人とも：", en: "All " + q.n + ": ", es: "Los " + q.n + ": ", zh: q.n + "位都说：" }) : q.n === 3 ? T({ ja: "3人とも：", en: "All three: ", es: "Los tres: ", zh: "三位都说：" }) : T({ ja: "2人とも：", en: "Both: ", es: "Los dos: ", zh: "两位都说：" })) + x) + "</li>"; }).join("") + "</ul></section>";
     h += '<hr class="rule"><h2 class="h3" style="margin-top:0">' + esc(T({ ja: "知見がたまる", en: "Knowledge builds up", es: "El conocimiento se acumula", zh: "知识在积累" })) + "</h2>";
     var rel = (q.rel || []).map(qOf).filter(Boolean);
     h += '<ul class="rows">' + rel.map(function (r) {
@@ -235,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("back").addEventListener("click", close);
   renderAxes(); renderList();
   document.addEventListener("langchange", function () { renderAxes(); renderList(); renderDetail(); });
-  if (location.hash === "#q-0142") open("q-0142");
+  if (location.hash && qOf(location.hash.slice(1))) open(location.hash.slice(1));
 });
 </script>
 </body>

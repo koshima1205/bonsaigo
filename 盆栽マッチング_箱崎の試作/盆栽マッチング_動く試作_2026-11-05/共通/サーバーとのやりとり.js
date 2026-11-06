@@ -151,7 +151,7 @@
       if (!page || !no || no === "20" || document.querySelector(".mode-note")) return;
       if (st.mode !== "sample" && st.mode !== "offline") return;
       var n = document.createElement("p");
-      n.className = "mode-note";
+      n.className = "mode-note demo-only";
       n.innerHTML = st.mode === "sample"
         ? window.tSpan({ ja: "いまはAIにつないでいません。入れた内容に関係なく、記録しておいた見本の答えを出します。", en: "AI is not connected. You will see a recorded sample answer, whatever you enter.", es: "La IA no está conectada. Verás una respuesta de muestra grabada.", zh: "AI 未连接。无论输入什么，都会显示录制的示例回答。" })
         : window.tSpan({ ja: "サーバーなしで開いています。見た目と流れだけの確認です。", en: "Opened without the server, so this only shows the look and flow.", es: "Abierto sin servidor: solo muestra el aspecto y el flujo.", zh: "未连接服务器，仅展示界面和流程。" });
@@ -172,8 +172,7 @@
     var page = document.querySelector(".page");
     var i = FLOW.findIndex(function (f) { return f.no === no; });
     /* 発表の流れで見ているとき（?demo=1 から入ったとき）だけ出す */
-    var demo = false;
-    try { if (new URLSearchParams(location.search).get("demo") === "1") sessionStorage.setItem("bonsai-demo", "1"); demo = sessionStorage.getItem("bonsai-demo") === "1"; } catch (e) {}
+    var demo = window.isDemo ? window.isDemo() : false;
     document.body.classList.toggle("is-demo", demo);
     if (i < 0 || !page || !demo || new URLSearchParams(location.search).get("embed") === "1") return;
     var isS = FLOW[i].who === "s";

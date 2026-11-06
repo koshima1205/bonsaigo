@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>12 SNS投稿の下書き｜盆栽マッチング 試作</title>
+<title>SNS投稿の下書き｜盆栽マッチング</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .h1 { font-size: 1.75rem; }
   .sns { margin: var(--s6) 0 0; }
@@ -31,6 +38,8 @@
   .done { margin-top: var(--s4); border-radius: var(--r); background: var(--koke); color: #fff; padding: var(--s5) var(--s4); text-align: center; }
   .done__title { font-family: var(--mincho); font-size: 1.5rem; font-weight: 700; margin: 0 0 var(--s2); line-height: 1.5; }
   .done p { margin: 0; font-size: 1rem; }
+  .out { list-style: none; margin: var(--s4) 0 0; padding: 0; display: grid; gap: var(--s2); }
+  #next { margin-top: var(--s4); }
   .fix { margin-top: var(--s3); border: 2px solid var(--shu); border-radius: var(--r); background: var(--shu-usu); padding: var(--s4); }
   .fix p { margin: 0; font-weight: 700; color: var(--shu); }
   .fix small { display: block; font-weight: 400; color: var(--sumi-2); margin-top: var(--s1); font-size: 0.9375rem; }
@@ -40,14 +49,15 @@
 <div class="app">
   <header id="appbar"></header>
   <main class="page">
-    <p class="eyebrow">相談 q-0142 と、Q&amp;Aから作りました</p>
+    <p class="eyebrow demo-only">相談 q-0142 と、Q&amp;Aから作りました</p>
     <h1 class="h1">海外に向けた投稿の下書きができました。</h1>
+    <div id="load-state"></div>
     <p class="lead">針金が食い込みそう、というポートランドの方の相談と、あなたの答えをもとにしています。見て、よければ「OK」を押してください。</p>
 
     <section class="sns" id="sec-x">
       <p class="sns__name"><b>X</b><span>短い一言</span></p>
       <div class="post">
-        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">盆栽の間（サンプル）<small>@bonsai_hall_sample</small></div></div>
+        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">盆栽の間<small>@bonsai_hall</small></div></div>
         <p class="post__text" id="p-x"></p>
         <div class="post__bar"><span>返信</span><span>リポスト</span><span>いいね</span></div>
       </div>
@@ -60,7 +70,7 @@
     <section class="sns" id="sec-fb">
       <p class="sns__name"><b>Facebook</b><span>少し長めの紹介</span></p>
       <div class="post">
-        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">盆栽の間（サンプル）<small>公開・たった今</small></div></div>
+        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">盆栽の間<small>公開・たった今</small></div></div>
         <p class="post__text" id="p-fb"></p>
         <div class="post__bar"><span>いいね</span><span>コメント</span><span>シェア</span></div>
       </div>
@@ -73,7 +83,7 @@
     <section class="sns" id="sec-ig">
       <p class="sns__name"><b>Instagram</b><span>写真が主役</span></p>
       <div class="post post--ig">
-        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">bonsai_hall_sample</div></div>
+        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">bonsai_hall</div></div>
         <figure class="zu" data-zu="soudan" data-cap="none"></figure>
         <p class="post__text" id="p-ig"></p>
       </div>
@@ -90,13 +100,15 @@
         <button type="button" class="big-btn big-btn--main" id="btn-ok">OK</button>
       </div>
       <div class="sub">
-        <button type="button" class="btn btn--quiet btn--wide" id="btn-fix">直してほしい（話す）</button>
+        <a class="btn btn--quiet btn--wide" id="btn-fix" href="17_撮るだけで発信_職人.html">写真を撮り直して、作り直す</a>
       </div>
-      <div class="fix" id="fix" hidden><p>録音しています。直してほしいところを話してください。<small>（試作では、ここで止まります。声で書き直すのは画面17で試せます）</small></p></div>
+      <div class="fix" id="fix" hidden></div>
       <div class="done" id="done" hidden role="status">
         <p class="done__title">発信の準備ができました。</p>
-        <p>実際の投稿はしていません。</p><p style="margin-top:var(--s2)"><a href="20_職人に入るお金_職人.html" style="color:#fff">次へ：入るお金を見る</a></p>
+        <p>まだ投稿はしていません。下書きとして残しました。下の押しボタンで開いて、最後に投稿を押してください。</p><p class="demo-only" style="margin-top:var(--s2)"><a href="20_職人に入るお金_職人.html" style="color:#fff">次へ：入るお金を見る</a></p>
       </div>
+      <ul class="out" id="out" hidden></ul>
+      <div class="big-actions" id="next" hidden><a class="big-btn big-btn--main" href="00_ホーム_職人と愛好家.html?role=shokunin">ホームに戻る</a></div>
     </section>
   </main>
   <nav id="tabbar"></nav>
@@ -115,10 +127,18 @@ document.addEventListener("DOMContentLoaded", function () {
   $("p-ig").innerHTML = withTags(sns.instagram);
   $("p-x").lang = $("p-fb").lang = $("p-ig").lang = "en";
 
+  /* つながっているときは、本物の下書きができるまで見本の投稿を見せない */
+  var BODY = document.querySelectorAll(".sns, .lead, #actions");
+  function showBody(on) { Array.prototype.forEach.call(BODY, function (el) { el.hidden = !on; }); }
+  var H1_DONE = document.querySelector(".h1").textContent;
+  if (API.online) { showBody(false); document.querySelector(".h1").textContent = "投稿の下書き"; }
+
   /* 本物の相談から作るとき */
   var draft = null, photo = null, urlId = new URLSearchParams(location.search).get("id");
   function loadReal(id) {
     $("btn-ok").disabled = true;
+    showBody(false);
+    UI.state($("load-state"), "loading", "投稿の下書きを作っています");
     document.querySelector(".h1").textContent = "投稿の下書きを作っています。";
     API.get("/api/consultations").then(function (r) {
       var c = r.consultations.find(function (x) { return x.id === id; });
@@ -137,37 +157,67 @@ document.addEventListener("DOMContentLoaded", function () {
       Object.keys(conf).forEach(function (k) { document.querySelector("#" + k + " .jp p:last-child").textContent = conf[k]; });
       $("check").hidden = !d.please_check_ja.length;
       $("check-list").innerHTML = d.please_check_ja.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("");
-      if (photo) document.querySelector("#sec-ig .zu__frame").innerHTML = API.photoHtml(photo, "");
+      var fig = document.querySelector("#sec-ig .zu");
+      if (photo) fig.querySelector(".zu__frame").innerHTML = API.photoHtml(photo, "");
+      else fig.style.display = "none";
       $("btn-ok").disabled = false;
+      UI.clear($("load-state"));
+      showBody(true);
     }).catch(function (e) {
       document.querySelector(".h1").textContent = "下書きを作れませんでした。";
-      toast(e.message);
+      showBody(false);
+      UI.state($("load-state"), "error", "つながりませんでした。少し待って、もう一度お試しください", { retry: function () { loadReal(id); } });
     });
   }
   if (API.online && urlId) loadReal(urlId);
-  else if (API.online) API.status().then(function (st) {
-    /* 見本のときは、直接開いても直近の相談から作る（AIを動かすときは、開くだけで使わないようにする） */
-    if (st.mode !== "sample") return;
-    return API.get("/api/consultations").then(function (r) {
-      var c = r.consultations.find(function (x) { return x.answer; });
-      if (c) loadReal(c.id);
-    });
-  }, function () {});
+  else if (API.online) {
+    var noDraft = function () {
+      UI.state($("load-state"), "empty", "相談に答えると、ここで海外向けの投稿の下書きを作れます", { action: { href: "22_届いた相談の一覧_職人.html", t: { ja: "届いた相談の一覧を見る" } } });
+    };
+    UI.state($("load-state"), "loading", "読み込んでいます");
+    API.status().then(function (st) {
+      /* 見本のときは、直接開いても直近の相談から作る（AIを動かすときは、開くだけで使わないようにする） */
+      if (st.mode !== "sample") { noDraft(); return; }
+      return API.get("/api/consultations").then(function (r) {
+        var c = r.consultations.find(function (x) { return x.answer; });
+        if (c) loadReal(c.id);
+        else { UI.clear($("load-state")); document.querySelector(".h1").textContent = H1_DONE; showBody(true); }
+      });
+    }).catch(function () { UI.state($("load-state"), "error", null, { retry: function () { location.reload(); } }); });
+  }
+
+  /* 各SNSを開くボタン。17番と同じ。投稿そのものは本人が押す */
+  var NAMES = { x: "X", facebook: "Facebook", instagram: "Instagram" };
+  var OPEN = {
+    x: function (t) { return "https://x.com/intent/tweet?text=" + encodeURIComponent(t); },
+    instagram: function () { return "https://www.instagram.com/"; },
+    facebook: function () { return "https://www.facebook.com/"; }
+  };
+  function postText(k) { return draft ? draft.posts[k].en : sns[k]; }
+  $("out").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-open]"); if (!b) return;
+    var k = b.getAttribute("data-open"), t = postText(k);
+    window.open(OPEN[k](t), "_blank", "noopener");
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { toast("文をコピーしました"); }, function () {});
+  });
 
   var okd = false;
   $("btn-ok").addEventListener("click", function () {
     if (okd) return;
     okd = true;
-    if (draft) API.post("/api/posts/ok", { draft: draft, images: photo ? [photo] : [] }).catch(function (e) { toast(e.message); });
+    if (draft) API.post("/api/posts/ok", { draft: draft, images: photo ? [photo] : [] }).catch(function (e) {
+      okd = false; $("btn-ok").classList.remove("is-on"); $("btn-ok").textContent = "OK"; $("done").hidden = true; $("out").hidden = true; $("next").hidden = true;
+      toast("保存できませんでした。もう一度OKを押してください");
+    });
     $("btn-ok").classList.add("is-on");
     $("btn-ok").textContent = "OKしました";
     $("fix").hidden = true;
+    $("out").innerHTML = Object.keys(NAMES).map(function (k) {
+      return '<li><button type="button" class="btn btn--wide" style="min-height:56px;font-size:1.125rem" data-open="' + k + '">' + NAMES[k] + " を開く（英語の文をコピー）</button></li>";
+    }).join("");
+    $("out").hidden = false; $("next").hidden = false;
     $("done").hidden = false;
     $("done").scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
-  $("btn-fix").addEventListener("click", function () {
-    if (okd) { toast("OK済みです。直すときは開き直してください"); return; }
-    $("fix").hidden = !$("fix").hidden;
   });
 });
 </script>

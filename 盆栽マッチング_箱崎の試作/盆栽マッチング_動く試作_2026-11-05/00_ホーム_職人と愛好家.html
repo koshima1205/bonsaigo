@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>00 ホーム（職人と海外の愛好家）｜盆栽マッチング 試作</title>
+<title>盆栽の間 ホーム</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   /* ホームだけの見た目。区切りは線と余白。影なし */
   .page { padding-left: var(--s5); padding-right: var(--s5); }
@@ -44,11 +51,28 @@
   .home-photo-main { display: flex; align-items: center; justify-content: center; gap: var(--s3); }
   .about a { color: var(--sumi-2); }
   .loading { color: var(--sumi-2); font-size: 14px; }
+  /* 右上の「お金」は職人のときだけ */
+  body:not(.role-shokunin) .home-top .appbar__account { display: none; }
+  .home-top-right { display: flex; align-items: flex-end; gap: var(--s4); }
+  /* 職人の画面は字を大きく（70歳の目でも読める） */
+  body.role-shokunin .menu b { font-size: 1.25rem; }
+  body.role-shokunin .menu small, body.role-shokunin .from, body.role-shokunin .quote-note, body.role-shokunin .tree-acts small, body.role-shokunin .tree-note, body.role-shokunin .home-date, body.role-shokunin .about { font-size: 1.0625rem; }
+  body.role-shokunin .hanko { font-size: 1rem; min-width: 48px; height: 48px; }
+  body.role-shokunin .menu .count { font-size: 1rem; min-width: 32px; height: 32px; }
+  body.role-shokunin .tree-acts b { font-size: 1.25rem; }
+  .home-follow { display: flex; align-items: center; min-height: 48px; margin-top: var(--s3); color: var(--sumi); font-size: 1.0625rem; }
   .hero-photo { margin: var(--s5) 0 0; }
   .hero-photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 45%; border-radius: var(--r-s); display: block; background: var(--kami-2); }
   .hero-photo figcaption { font-size: 14px; color: var(--sumi-2); margin-top: var(--s2); }
   /* 字間を広げるのは日本語のときだけ（英語などは詰める） */
   html:not([lang="ja"]) .home-h1, html:not([lang="ja"]) .home-h2, html:not([lang="ja"]) .quote, html:not([lang="ja"]) .btn-urushi { letter-spacing: 0.01em; }
+  /* 海外の人の「あなたの相談」一覧。字は職人側と同じ大きさ、押せる行は48px以上 */
+  .my-cons .menu a { min-height: 72px; }
+  .my-cons .menu b { font-size: 1.25rem; font-weight: 700; }
+  .my-cons .menu small { font-size: 1.0625rem; }
+  .my-cons .menu .stat { margin-left: auto; flex: none; max-width: 40%; text-align: right; font-size: 1.0625rem; color: var(--sumi-2); }
+  .my-cons .menu .stat.is-new { color: var(--shu); font-weight: 700; }
+  .my-cons .menu .q { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 </style>
 </head>
 <body data-screen="00">
@@ -57,19 +81,24 @@
   (function () {
     var KEY = "bonsai-home-role", q = new URLSearchParams(location.search).get("role"), r = null;
     try { r = q || localStorage.getItem(KEY); if (q) localStorage.setItem(KEY, q); } catch (e) { r = q; }
+    /* まだ役割が決まっていないとき、日本語以外の言語のブラウザなら海外の愛好家の入口にする */
+    if (!r && !/^ja/i.test(navigator.language || "ja")) r = "aikouka";
     if (r !== "aikouka") document.body.classList.add("role-shokunin");
   })();
 </script>
 <div class="app">
   <header class="home-top">
     <a class="home-brand" href="00_ホーム_職人と愛好家.html" title="ホーム">盆栽の間</a>
-    <nav class="who-pick" aria-label="使う人">
+    <div class="home-top-right">
+    <nav class="who-pick demo-only" aria-label="使う人">
       <a href="00_ホーム_職人と愛好家.html?role=shokunin" id="pick-s"><span class="t"><span data-l="ja">職人</span><span data-l="en">Craftsperson</span><span data-l="es">Maestro</span><span data-l="zh">匠人</span></span></a>
       <a href="00_ホーム_職人と愛好家.html?role=aikouka" id="pick-a"><span class="t"><span data-l="ja">海外の愛好家</span><span data-l="en">Learner</span><span data-l="es">Aprendiz</span><span data-l="zh">学习者</span></span></a>
     </nav>
+    <a class="appbar__account" href="20_職人に入るお金_職人.html" aria-label="アカウント（入ったお金）"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>お金</span></a>
+    </div>
   </header>
   <div class="home-lang" id="lang-row" hidden></div>
-  <main class="page"><div id="home"><p class="loading">読み込んでいます…</p></div></main>
+  <main class="page"><div id="home"></div></main>
   <nav id="tabbar"></nav>
 </div>
 <script src="共通/用語集データ.js"></script>
@@ -79,7 +108,6 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var shokunin = document.body.classList.contains("role-shokunin");
-  try { sessionStorage.removeItem("bonsai-demo"); } catch (e) {}
   var $ = function (id) { return document.getElementById(id); };
   var home = $("home");
   $(shokunin ? "pick-s" : "pick-a").setAttribute("aria-current", "page");
@@ -99,9 +127,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function li(href, title, note, right) {
     return '<li><a href="' + href + '"><span><b>' + title + "</b><small>" + note + "</small></span>" + (right || '<span class="go" aria-hidden="true">→</span>') + "</a></li>";
   }
+  var failed = false;
   function getList(url, key) {
     if (!API.online) return Promise.resolve([]);
-    return API.get(url).then(function (r) { return r[key] || []; }).catch(function () { return []; });
+    return API.get(url).then(function (r) { return r[key] || []; }).catch(function () { failed = true; return []; });
   }
 
   /* ---------- 職人のホーム ---------- */
@@ -122,24 +151,57 @@ document.addEventListener("DOMContentLoaded", function () {
       h += '<h1 class="home-h1">今日は、<br>どの木を撮りますか。</h1>' +
         '<section class="main-block" aria-label="今日やること">' +
         '<p class="quote-note" style="margin-top:0">撮るだけで、AIが英語・スペイン語・中国語の投稿の下書きを作ります。海外から相談が届くと、ここに日本語で出ます。</p>' +
-        '<a class="btn-urushi" href="' + go("17") + (tree ? "?tree=" + encodeURIComponent(tree.id) : "") + '">写真を撮る</a></section>';
+        '<a class="btn-urushi" href="' + go("17") + '">写真を撮る</a>' +
+        (tree ? '<a class="home-follow" href="' + go("17") + "?tree=" + encodeURIComponent(tree.id) + '">この木で投稿を作る　→</a>' : "") + "</section>";
     }
     var photo = tree && tree.image ? "data:" + tree.image.media_type + ";base64," + tree.image.data : "共通/見本の写真_盆栽.jpg";
     h += '<h2 class="home-h2">あなたの木を、世界へ</h2>' +
-      '<div class="tree"><img src="' + photo + '" alt="' + (tree ? "あなたの木の写真" : "見本の木の写真") + '">' +
-      '<div class="tree-acts">' + (c ? '<a href="' + go("17") + (tree ? "?tree=" + encodeURIComponent(tree.id) : "") + '"><b>撮る</b><small>写真から3か国語の投稿</small></a>' : "") +
+      '<div class="tree"><img src="' + photo + '" alt="' + (tree ? "あなたの木の写真" : "盆栽の写真") + '">' +
+      '<div class="tree-acts">' + (c ? '<a href="' + go("17") + '"><b>撮る</b><small>写真から3か国語の投稿</small></a>' : "") +
       '<a href="' + go("21") + '"><b>話す</b><small>売りたい・教えたいも、言うだけ</small></a>' +
       (c ? "" : '<a href="' + go("21") + '#trees"><b>私の木</b><small>木ごとの記録' + (trees.length ? "（" + trees.length + "鉢）" : "") + '</small></a>') + "</div></div>" +
-      '<p class="tree-note">' + (tree ? esc(tree.title_ja || "あなたの木") + "　記録 " + ((tree.log || []).length) + "件" : "見本の写真です。撮ると、あなたの木がここに出ます") + "</p>";
+      '<p class="tree-note">' + (tree ? esc(tree.title_ja || "あなたの木") + "　記録 " + ((tree.log || []).length) + "件" : "まだ木の記録がありません。撮ると、あなたの木がここに出ます") + "</p>";
     h += '<h2 class="home-h2">ほかのこと</h2><ul class="menu">' +
       (c ? li(go("21") + "#trees", "私の木", "木ごとの記録と、出品の下書き", trees.length ? '<span class="go">' + trees.length + "鉢 →</span>" : "") : "") +
-      li(go("04"), "届いた相談", c ? "海外の人の質問が、日本語で届きます" : "どんなふうに届くか、見本で見られます", open.length > 1 ? '<span class="count" aria-label="答えていない相談">' + open.length + "</span>" : "") +
+      li(go("22"), "届いた相談", c ? "海外の人の質問が、日本語で届きます" : "海外の人からの質問が、ここに並びます", open.length > 1 ? '<span class="count" aria-label="答えていない相談">' + open.length + "</span>" : "") +
       li(go("19"), "先生として登録", "話すだけで、紹介文が3か国語でできます") +
-      li(go("12"), "投稿の下書き", "相談とQ&Aから、SNSの下書きを作ります") +
+      li(go("12"), "投稿の下書き", "答えた相談から、海外向けの投稿の文を作ります") +
       li(go("20"), "入ってくるお金", "答えた相談から、いくら入るか") +
       "</ul>" +
-      '<p class="about"><a href="index.html">この試作の紹介と、すべての画面の一覧</a></p>';
+      '<p class="about demo-only"><a href="index.html">この試作の紹介と、すべての画面の一覧</a></p>';
     home.innerHTML = h;
+  }
+
+  /* 「あなたの相談」：答えが届いたものを上に、新しい順に最大3件 */
+  function agoText(iso) {
+    var ms = Date.now() - new Date(iso).getTime();
+    if (!(ms >= 0)) return null;
+    var m = Math.floor(ms / 60000), h = Math.floor(m / 60), d = Math.floor(h / 24);
+    if (m < 60) return { ja: "いま", en: "just now", es: "ahora", zh: "刚刚" };
+    if (h < 24) return { ja: h + "時間前", en: h + (h === 1 ? " hour ago" : " hours ago"), es: "hace " + h + (h === 1 ? " hora" : " horas"), zh: h + "小时前" };
+    return { ja: d + "日前", en: d + (d === 1 ? " day ago" : " days ago"), es: "hace " + d + (d === 1 ? " día" : " días"), zh: d + "天前" };
+  }
+  function myConsultations(cons) {
+    var t = window.tSpan;
+    function time(c) { return new Date((c.answer && c.answer.at) || c.at || 0).getTime() || 0; }
+    var list = cons.slice().sort(function (a, b) {
+      var da = a.answer ? 1 : 0, db = b.answer ? 1 : 0;
+      return da !== db ? db - da : time(b) - time(a);
+    }).slice(0, 3);
+    if (!list.length) return "";
+    return '<section class="my-cons" aria-label="' + esc("Your questions") + '"><h2 class="home-h2">' + t({ ja: "あなたの相談", en: "Your questions", es: "Tus consultas", zh: "你的咨询" }) + '</h2><ul class="menu">' +
+      list.map(function (c) {
+        var q = String(c.question || "");
+        var stat;
+        if (c.answer) {
+          stat = '<span class="stat is-new">' + t({ ja: "答えが届いた", en: "Answer received", es: "Respuesta recibida", zh: "已收到回答" }) + "</span>";
+        } else {
+          var ago = agoText(c.at);
+          stat = '<span class="stat">' + t({ ja: "答え待ち", en: "Waiting for an answer", es: "Esperando respuesta", zh: "等待回答" }) +
+            (ago ? "<br>" + t(ago) : "") + "</span>";
+        }
+        return '<li><a href="' + go("05") + "?id=" + encodeURIComponent(c.id) + '"><span><small class="q" lang="' + esc(c.lang || "en") + '">' + esc(API.dropTermMarks(q.slice(0, 80)) + (q.length > 80 ? "…" : "")) + "</small></span>" + stat + "</a></li>";
+      }).join("") + "</ul></section>";
   }
 
   /* ---------- 海外の愛好家のホーム（4か国語） ---------- */
@@ -159,7 +221,8 @@ document.addEventListener("DOMContentLoaded", function () {
         '<a class="btn-urushi" href="' + go("18") + '">' + t({ ja: "職人を見つける", en: "Find your craftsperson", es: "Encuentra a tu maestro", zh: "找到你的匠人" }) + "</a></section>";
     }
     h +=
-      '<figure class="hero-photo"><img src="共通/見本の写真_盆栽.jpg" alt=""><figcaption>' + t({ ja: "写真を送れば、職人があなたの木を見て答えます（写真は見本）", en: "Send a photo, and a craftsperson looks at your own tree (sample photo)", es: "Envía una foto y un maestro mira tu propio árbol (foto de muestra)", zh: "发送照片，匠人会看着你的树回答（示例照片）" }) + "</figcaption></figure>";
+      '<figure class="hero-photo"><img src="共通/見本の写真_盆栽.jpg" alt=""><figcaption>' + t({ ja: "写真を送れば、職人があなたの木を見て答えます", en: "Send a photo, and a craftsperson looks at your own tree", es: "Envía una foto y un maestro mira tu propio árbol", zh: "发送照片，匠人会看着你的树回答" }) + "</figcaption></figure>";
+    h += myConsultations(cons);
     h += '<h2 class="home-h2">' + t({ ja: "できること", en: "What you can do", es: "Qué puedes hacer", zh: "你可以做的事" }) + '</h2><ul class="menu">' +
       li(go("03"), t({ ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" }), t({ ja: "木の写真をつけて、自分の言葉で", en: "Add a photo of your tree and ask in your words", es: "Con una foto de tu árbol, en tus palabras", zh: "附上树的照片，用自己的话提问" })) +
       li(go("13"), t({ ja: "職人の紹介", en: "Meet the craftspeople", es: "Conoce a los maestros", zh: "匠人介绍" }), t({ ja: "得意な木と、教えられること", en: "What they know and what they can teach", es: "Qué saben y qué enseñan", zh: "擅长的树种与可教内容" })) +
@@ -168,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
       li(go("06"), t({ ja: "質問と答え", en: "Q&A", es: "Preguntas", zh: "问答" }), t({ ja: "ほかの人の質問への、職人の答え", en: "Craftspeople's answers to others' questions", es: "Respuestas de maestros a otras preguntas", zh: "匠人对他人问题的回答" })) +
       li(go("01"), t({ ja: "盆栽の間（読みもの）", en: "The Bonsai Hall (stories)", es: "Sala del Bonsái (lecturas)", zh: "盆栽之馆（读物）" }), t({ ja: "職人の日記と、1鉢の見方", en: "Journals and how to look at a tree", es: "Diarios y cómo mirar un árbol", zh: "匠人日记与赏树方法" })) +
       "</ul>" +
-      '<p class="about"><a href="index.html">' + t({ ja: "この試作の紹介と、すべての画面の一覧", en: "About this prototype and all screens", es: "Sobre este prototipo y todas las pantallas", zh: "关于本试作与全部页面" }) + "</a></p>";
+      '<p class="about demo-only"><a href="index.html">' + t({ ja: "この試作の紹介と、すべての画面の一覧", en: "About this prototype and all screens", es: "Sobre este prototipo y todas las pantallas", zh: "关于本试作与全部页面" }) + "</a></p>";
     home.innerHTML = h;
     /* 言葉の切り替え */
     var row = $("lang-row");
@@ -180,9 +243,16 @@ document.addEventListener("DOMContentLoaded", function () {
     BONSAI.applyLang();
   }
 
-  Promise.all([getList("/api/consultations", "consultations"), getList("/api/trees", "trees")]).then(function (r) {
-    if (shokunin) drawShokunin(r[0], r[1]); else drawAikouka(r[0]);
-  });
+  function load() {
+    failed = false;
+    UI.state(home, "loading", shokunin ? { ja: "届いている相談を確かめています" } : { ja: "届いている答えを確かめています", en: "Checking for new answers…", es: "Buscando respuestas nuevas…", zh: "正在查看新的回答…" });
+    Promise.all([getList("/api/consultations", "consultations"), getList("/api/trees", "trees")]).then(function (r) {
+      /* 2つとも取れなかったときだけ、つながらなかったことを知らせる（一部だけなら出せる分を出す） */
+      if (failed && !r[0].length && !r[1].length) { UI.state(home, "error", null, { retry: load }); return; }
+      if (shokunin) drawShokunin(r[0], r[1]); else drawAikouka(r[0]);
+    });
+  }
+  load();
 });
 </script>
 </body>

@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>21 話すか撮るだけ・1鉢の記録と出品の下書き（職人）｜盆栽マッチング 試作</title>
+<title>私の木｜盆栽マッチング</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .h1 { font-size: 1.75rem; }
   .pick input { position: absolute; width: 1px; height: 1px; opacity: 0; }
@@ -21,26 +28,33 @@
   .tree__label { font-size: 1rem; font-weight: 700; color: var(--sumi-3); margin: var(--s5) 0 var(--s2); }
   .log { list-style: none; margin: 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--sen); font-size: 1.0625rem; line-height: 1.6; }
   .log li { margin-bottom: var(--s2); }
-  .log small { display: block; color: var(--sumi-3); font-size: 14px; }
+  .log small { display: block; color: var(--sumi-3); font-size: 1rem; }
+  .people a { display: flex; justify-content: space-between; gap: var(--s3); align-items: center; width: 100%; min-height: 56px; color: inherit; text-decoration: none; }
   .idea { display: block; width: 100%; text-align: left; margin-bottom: var(--s2); padding: var(--s3); min-height: 52px; background: var(--kami-3); border: 1px solid var(--sen); border-radius: var(--r); color: inherit; text-decoration: none; font-size: 1.0625rem; line-height: 1.5; }
   .choice { display: flex; gap: var(--s3); align-items: center; min-height: 48px; font-size: 1.125rem; }
   .choice input { width: 22px; height: 22px; }
   .listing { margin-top: var(--s4); border: 1px solid var(--sen); border-radius: var(--r); background: var(--kami-3); padding: var(--s4); }
   .listing h3 { font-family: var(--mincho); margin: 0 0 var(--s2); font-size: 1.25rem; line-height: 1.4; }
   .listing p { margin: 0 0 var(--s2); line-height: 1.6; }
-  .state { display: inline-block; font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 99px; background: var(--shu-usu); color: var(--shu); margin-bottom: var(--s2); }
+  .listing-badge { display: inline-block; font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 99px; background: var(--shu-usu); color: var(--shu); margin-bottom: var(--s2); }
   .wanted { border-top: 1px solid var(--sen); padding: var(--s3) 0; }
   .wanted b { display: block; }
+  .sell { margin-top: var(--s5); border-top: 1px solid var(--sen); }
+  .sell > summary { min-height: 56px; display: flex; align-items: center; cursor: pointer; font-size: 1.125rem; font-weight: 700; color: var(--sumi-2); }
   .people { list-style: none; margin: 0; padding: 0; font-size: 1.0625rem; }
-  .people li { display: flex; justify-content: space-between; gap: var(--s3); padding: var(--s3) 0; border-bottom: 1px solid var(--sen); }
+  .people li { border-bottom: 1px solid var(--sen); }
 </style>
 </head>
 <body data-screen="21" class="role-shokunin">
 <div class="app">
   <header id="appbar"></header>
   <main class="page">
-    <h1 class="h1">話すか撮るだけ。画面を覚えなくて大丈夫です。</h1>
-    <p class="lead">やりたいことを言ってください。発信するのか、売りたいのか、AIが聞き分けて、木ごとの記録に残します。</p>
+    <h1 class="h1">私の木</h1>
+    <div id="page-state"></div>
+
+    <section id="input-area">
+    <h2 class="h2">新しく記録する</h2>
+    <p class="lead">話すか撮るだけで大丈夫です。やりたいことを言ってください。発信するのか、売りたいのか、AIが聞き分けて、木ごとの記録に残します。</p>
 
     <div class="big-actions">
       <label class="big-btn big-btn--main pick">
@@ -60,9 +74,9 @@
     </label>
     <p class="note" id="voice-msg" hidden></p>
     <div class="big-actions" style="margin-top:var(--s3)">
-      <button type="button" class="big-btn" id="btn-go">AIに任せる</button>
+      <button type="button" class="big-btn" id="btn-go">これで記録する</button>
     </div>
-    <button type="button" class="btn btn--wide" id="btn-sample" style="min-height:48px;margin-top:var(--s3)">見本の写真と言葉で試す</button>
+    <button type="button" class="btn btn--wide demo-only" id="btn-sample" style="min-height:48px;margin-top:var(--s3)">見本の写真と言葉で試す</button>
 
     <p class="wait" id="wait" role="status" hidden>聞き分けています。少しお待ちください。</p>
     <div class="err" id="err" role="alert" hidden></div>
@@ -73,13 +87,18 @@
       <div class="big-actions" id="next" style="margin-top:var(--s4)"></div>
     </div>
 
-    <h2 class="h2" style="margin-top:var(--s7)">あなたの鉢</h2>
+    </section>
+
+    <section id="mine">
+    <h2 class="h2" style="margin-top:var(--s7)">木ごとの記録</h2>
     <p class="note" id="empty">まだありません。話すか撮ると、木ごとの記録がここにできます。</p>
     <div id="trees"></div>
 
     <h2 class="h2" style="margin-top:var(--s7)">つながった海外の人</h2>
     <p class="note" id="people-empty">まだいません。相談が届くと、ここに並びます。</p>
+    <div id="people-state"></div>
     <ul class="people" id="people"></ul>
+    </section>
 
     <div class="big-actions" style="margin-top:var(--s6)"><a class="big-btn" href="20_職人に入るお金_職人.html">入るお金を見る</a></div>
   </main>
@@ -92,7 +111,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var $ = function (id) { return document.getElementById(id); };
-  var image = null, trees = [], talking = false, busy = false;
+  var image = null, trees = [], talking = false, busy = false, openSell = {};
   var SAMPLE_WORDS = "この木、海外の人に見せたい。売ってもええと思っとる。";
   var LOG_WHEN = function (at) { var d = new Date(at); return (d.getMonth() + 1) + "月" + d.getDate() + "日"; };
   var ACTION = {
@@ -107,7 +126,11 @@ document.addEventListener("DOMContentLoaded", function () {
     '<p style="margin:0 0 var(--s2);line-height:1.6">EU・英国向けは、2026年9月1日から生産園地の登録なども必要です。アメリカなどほかの国の条件と、この木が送れるかは、ここでは確かめていません。植物防疫所と相手の国の機関にご確認ください。</p>' +
     '<a href="https://www.maff.go.jp/pps/j/business/export/faq/export_faq_japanese.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;min-height:44px">植物防疫所の輸出のQ&Aを開く</a></details>';
 
-  function showErr(m) { $("err").textContent = m; $("err").hidden = false; }
+  function showErr(m) {
+    if (/サーバー/.test(m || "")) m = "つながりませんでした。少し待って、もう一度お試しください";
+    $("err").textContent = m; $("err").hidden = false;
+    $("err").scrollIntoView({ behavior: "smooth", block: "center" });
+  }
   function list(items) { return items.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join(""); }
 
   function renderTree(t) {
@@ -117,13 +140,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }).join("");
     var l = t.listing;
     var listing = l
-      ? '<div class="listing"><span class="state">下書き。公開していません</span><p>' + (l.format === "auction" ? "売り方：入札で決める" : "売り方：決まった値段") + (l.price_note ? "（" + esc(l.price_note) + "）" : "") + "</p>" +
+      ? '<div class="listing"><span class="listing-badge">下書き。公開していません</span><p>' + (l.format === "auction" ? "売り方：入札で決める" : "売り方：決まった値段") + (l.price_note ? "（" + esc(l.price_note) + "）" : "") + "</p>" +
         "<h3 lang=\"en\">" + esc(l.title.en) + '</h3><p lang="en">' + esc(l.description.en) + "</p>" +
         "<p>" + esc(l.confirm_ja) + "</p>" +
-        (l.wanted_matches.length ? '<p class="tree__label">探している人（サンプル）</p>' + l.wanted_matches.map(function (m) { return '<div class="wanted"><b>' + esc(m.wanted_ja) + "</b>" + esc(m.reason_ja) + (m.overseas ? '<small style="display:block;color:var(--shu);margin-top:4px">海外へ送るには検疫が要ります。時間がかかり、国によっては送れないこともあります。</small>' : "") + "</div>"; }).join("") : "") +
+        (l.wanted_matches.length ? '<p class="tree__label">探している人<span class="demo-only">（サンプル）</span></p>' + l.wanted_matches.map(function (m) { return '<div class="wanted"><b>' + esc(m.wanted_ja) + "</b>" + esc(m.reason_ja) + (m.overseas ? '<small style="display:block;color:var(--shu);margin-top:4px">海外へ送るには検疫が要ります。時間がかかり、国によっては送れないこともあります。</small>' : "") + "</div>"; }).join("") : "") +
         (l.please_check_ja.length ? '<div class="check"><b>ここだけ確かめてください</b><ul>' + list(l.please_check_ja) + "</ul></div>" : "") +
         EXPORT_HELP +
-        '<p class="note" style="margin-top:var(--s3)">この試作に、公開・入札・決済の機能はありません。</p></div>'
+        '<p class="note" style="margin-top:var(--s3)">公開・入札・お金のやりとりは、まだできません。</p></div>'
       : '<label class="choice"><input type="radio" name="f-' + t.id + '" value="fixed" checked>決まった値段で売る</label>' +
         '<label class="choice"><input type="radio" name="f-' + t.id + '" value="auction">入札で決める</label>' +
         '<label class="field"><span class="field__label" style="font-size:1rem">値段の希望（なければ空で大丈夫です）</span><input class="input" data-price="' + t.id + '" style="font-size:1.125rem" autocomplete="off"></label>' +
@@ -133,11 +156,15 @@ document.addEventListener("DOMContentLoaded", function () {
       '<p class="tree__label">この木の記録</p><ul class="log">' + t.log.map(function (e) { return "<li><small>" + LOG_WHEN(e.at) + "</small>" + esc(e.text) + "</li>"; }).join("") + "</ul>" +
       '<a class="btn btn--wide" href="17_撮るだけで発信_職人.html?tree=' + t.id + '" style="min-height:52px;margin-top:var(--s4)">この木の投稿を作る</a>' +
       (ideas ? '<p class="tree__label">次に出すとよい投稿の案</p>' + ideas : "") +
-      '<p class="tree__label">売りたいとき</p>' + listing + "</section>";
+      '<details class="sell" id="sell-' + t.id + '"' + (openSell[t.id] ? " open" : "") + '><summary>' + (l ? "出品の下書きを見る" : "売りたいとき：出品の下書きを作る") + "</summary>" + listing + "</details></section>";
   }
   function renderTrees() {
     $("empty").hidden = trees.length > 0;
     $("trees").innerHTML = trees.map(renderTree).join("");
+    /* 木が1鉢でもあれば、木の一覧を上に、話す・撮るを下に置く */
+    var main = $("mine").parentNode;
+    if (trees.length > 0) main.insertBefore($("mine"), $("input-area"));
+    else main.insertBefore($("input-area"), $("mine"));
   }
   function load() {
     return API.get("/api/trees").then(function (r) { trees = r.trees; renderTrees(); });
@@ -158,7 +185,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }).join("");
       $("answer").hidden = false;
       return load().then(function () { $("answer").scrollIntoView({ behavior: "smooth", block: "start" }); });
-    }, function (e) { showErr(e.message); }).then(function () { busy = false; $("wait").hidden = true; });
+    }, function (e) { showErr(e.message); })
+    .catch(function () { showErr("木の記録を読み直せませんでした。画面を開き直してください"); })
+    .then(function () { busy = false; $("wait").hidden = true; });
   }
 
   $("in-photo").addEventListener("change", function (e) {
@@ -174,10 +203,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var rec = API.makeRecognizer({
     onText: function (t) { $("voice").value = t; },
     onEnd: function () { talking = false; $("talk-label").textContent = "話す"; $("btn-talk").classList.remove("is-on"); },
-    onError: function () { $("voice-msg").textContent = "声を聞き取れませんでした。書くか、見本で試せます。"; $("voice-msg").hidden = false; }
+    onError: function () { $("voice-msg").textContent = "声を聞き取れませんでした。書いても大丈夫です。"; $("voice-msg").hidden = false; }
   });
   $("btn-talk").addEventListener("click", function () {
-    if (!rec) { $("voice-msg").textContent = "この端末では声を使えません。書くか、見本で試せます。"; $("voice-msg").hidden = false; $("voice").focus(); return; }
+    if (!rec) { $("voice-msg").textContent = "この端末では声を使えません。書いても大丈夫です。"; $("voice-msg").hidden = false; $("voice").focus(); return; }
     if (talking) { rec.stop(); return; }
     talking = true; $("voice-msg").hidden = true; $("talk-label").textContent = "聞いています（押すと終わり）"; $("btn-talk").classList.add("is-on");
     rec.start($("voice").value);
@@ -190,20 +219,47 @@ document.addEventListener("DOMContentLoaded", function () {
     var price = document.querySelector('[data-price="' + id + '"]').value.trim();
     b.disabled = true; b.textContent = "下書きを書いています。少しお待ちください。";
     API.post("/api/trees/" + id + "/listing", { format: format, price_note: price }).then(function () {
+      openSell[id] = true;
       return load().then(function () { $("tree-" + id).scrollIntoView({ behavior: "smooth", block: "start" }); });
     }, function (er) { b.disabled = false; b.textContent = "出品の下書きを作る"; showErr(er.message); });
   });
 
-  if (API.online) {
-    load().then(function () { if (location.hash) { var el = document.querySelector(location.hash); if (el) el.scrollIntoView(); } }, function () {});
+  /* 開いた直後は読み込み中だけを見せ、木が読み込まれて並びが決まってから入力欄と一覧を出す（画面が動かないように） */
+  function reveal() { $("input-area").hidden = false; $("mine").hidden = false; }
+  function openHash() {
+    if (!location.hash) return;
+    var el; try { el = document.querySelector(location.hash); } catch (x) { return; }
+    if (!el) return;
+    var sell = el.querySelector && el.querySelector(".sell");
+    if (sell && /^#tree-/.test(location.hash) && ACTION_HASH) { sell.open = true; openSell[el.id.replace("tree-", "")] = true; }
+    el.scrollIntoView();
+  }
+  var ACTION_HASH = false;
+  window.addEventListener("hashchange", function () { ACTION_HASH = true; openHash(); });
+  document.addEventListener("toggle", function (e) {
+    var d = e.target; if (d && d.classList && d.classList.contains("sell")) openSell[d.id.replace("sell-", "")] = d.open;
+  }, true);
+  function loadTrees() {
+    $("input-area").hidden = true; $("mine").hidden = true;
+    UI.state($("page-state"), "loading", "あなたの鉢を読み込んでいます");
+    load().then(function () { UI.clear($("page-state")); reveal(); openHash(); },
+      function () {
+        UI.clear($("page-state")); reveal(); $("empty").hidden = true;
+        UI.state($("trees"), "error", null, { retry: function () { UI.state($("trees"), "loading", "あなたの鉢を読み込んでいます"); load().then(function () { UI.clear($("trees")); }, function () { UI.state($("trees"), "error", null, { retry: loadTrees }); }); } });
+      });
+  }
+  function loadPeople() {
+    $("people-empty").hidden = true; UI.state($("people-state"), "loading", "読み込んでいます");
     API.get("/api/consultations").then(function (r) {
+      UI.clear($("people-state"));
       var names = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" };
       $("people-empty").hidden = r.consultations.length > 0;
       $("people").innerHTML = r.consultations.map(function (c) {
-        return "<li><span>" + esc(names[c.lang] || "") + "で相談した方<br><small>" + esc(c.for_craftsperson.title_ja) + "</small></span><b style=\"white-space:nowrap\">" + (c.answer ? "答えた" : "返事待ち") + "</b></li>";
+        return '<li><a href="04_職人の画面_相談を受ける.html?id=' + encodeURIComponent(c.id) + '"><span>' + esc(names[c.lang] || "") + "で相談した方<br><small>" + esc(c.for_craftsperson.title_ja) + "</small></span><b style=\"white-space:nowrap\">" + (c.answer ? "答えた" : "まだ答えていない") + "</b></a></li>";
       }).join("");
-    }, function () {});
+    }, function () { UI.state($("people-state"), "error", null, { retry: loadPeople }); });
   }
+  if (API.online) { loadTrees(); loadPeople(); }
 });
 </script>
 </body>

@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>15 職人の手直しを図で見せる（仮）｜盆栽マッチング 試作</title>
+<title>職人の手直しを図で見る｜盆栽の間</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
 <style>
   .back-link { display: inline-flex; align-items: center; gap: var(--s1); min-height: 44px; font-size: var(--fs-s); text-decoration: none; margin: 0 0 var(--s2); }
   .marked svg.marks { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
@@ -48,7 +55,7 @@
 <div class="app">
   <header id="appbar"></header>
   <main class="page">
-    <div class="draft-banner">
+    <div class="draft-banner demo-only">
       <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Draft</span><span data-l="es">Borrador</span><span data-l="zh">暂定</span></span></span>
       <strong><span class="t"><span data-l="ja">3D（Blender）での見せ方は未決定。いまは図で代用</span><span data-l="en">How to show this in 3D (Blender) is not decided yet</span><span data-l="es">El formato 3D (Blender) está por decidir</span><span data-l="zh">3D（Blender）呈现方式未定</span></span></strong><br>
       <span class="t">
@@ -59,12 +66,12 @@
       </span>
     </div>
 
-    <a class="back-link" href="05_答えが届く_愛好家.html">
+    <a class="back-link" id="back-top" href="05_答えが届く_愛好家.html">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>
-      <span class="t"><span data-l="ja">05 の答えに戻る</span><span data-l="en">Back to the answer (screen 05)</span><span data-l="es">Volver a la respuesta (05)</span><span data-l="zh">返回回答（05）</span></span>
+      <span class="t"><span data-l="ja">答えに戻る</span><span data-l="en">Back to the answer</span><span data-l="es">Volver a la respuesta</span><span data-l="zh">返回回答</span></span>
     </a>
 
-    <p class="eyebrow"><span class="t"><span data-l="ja">相談 q-0142 ・ 手直しの図（サンプル）</span><span data-l="en">Question q-0142 · Correction drawing (sample)</span><span data-l="es">Consulta q-0142 · Dibujo de corrección (ejemplo)</span><span data-l="zh">咨询 q-0142 · 修整示意（示例）</span></span></p>
+    <p class="eyebrow"><span class="t"><span data-l="ja">相談 ・ 手直しの図</span><span data-l="en">Question · Correction drawing</span><span data-l="es">Consulta · Dibujo de corrección</span><span data-l="zh">咨询 · 修整示意</span></span></p>
     <h1 class="h1"><span class="t">
       <span data-l="ja">線を引くだけで、言葉がいらない</span>
       <span data-l="en">Draw a line. No words needed.</span>
@@ -133,7 +140,7 @@
 
     <hr class="rule">
     <div style="display:grid;gap:var(--s3)">
-      <a class="btn btn--main btn--wide" href="05_答えが届く_愛好家.html"><span class="t"><span data-l="ja">05 の答えに戻る</span><span data-l="en">Back to the answer (screen 05)</span><span data-l="es">Volver a la respuesta (05)</span><span data-l="zh">返回回答（05）</span></span></a>
+      <a class="btn btn--main btn--wide" id="back-bottom" href="05_答えが届く_愛好家.html"><span class="t"><span data-l="ja">答えに戻る</span><span data-l="en">Back to the answer</span><span data-l="es">Volver a la respuesta</span><span data-l="zh">返回回答</span></span></a>
       <button type="button" class="btn btn--wide" id="ask-again"><span class="t"><span data-l="ja">この線について質問する</span><span data-l="en">Ask about these marks</span><span data-l="es">Preguntar sobre estas líneas</span><span data-l="zh">就这些线条提问</span></span></button>
     </div>
   </main>
@@ -185,10 +192,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
   document.addEventListener("langchange", function () { show(stage); });
-  document.getElementById("ask-again").addEventListener("click", function () {
-    window.toast(B.T({ ja: "相談の画面へ移ります（見本）", en: "Taking you to the ask screen (sample)", es: "Pasando a la pantalla de consulta (ejemplo)", zh: "前往咨询页面（示例）" }));
-    setTimeout(function () { location.href = window.fileOf("03"); }, 900);
-  });
+  /* 答えの相談の番号を受け取っていたら、戻るリンクにも付ける */
+  var qid = new URLSearchParams(location.search).get("id");
+  if (qid) ["back-top", "back-bottom"].forEach(function (x) { var a = document.getElementById(x); a.href = a.getAttribute("href") + "?id=" + encodeURIComponent(qid); });
+  document.getElementById("ask-again").addEventListener("click", function () { location.href = window.fileOf("03"); });
   show(0);
 });
 </script>

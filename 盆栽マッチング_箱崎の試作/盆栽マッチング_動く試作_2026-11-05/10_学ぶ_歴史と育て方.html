@@ -83,6 +83,12 @@
 document.addEventListener("DOMContentLoaded", function () {
   var B = window.BONSAI;
   function tm(ja, label) { return '<b class="term" data-term="' + ja + '">' + (label || ja) + "</b>"; }
+  var GROUPS = [
+    { id: "rekishi", t: { ja: "盆栽の歴史", en: "History of bonsai" }, lead: { ja: "盆栽がどう受け継がれてきたかを知る", en: "How bonsai has been handed down" } },
+    { id: "jukei", t: { ja: "樹形を知る", en: "Tree styles" }, lead: { ja: "木の形の見分け方と呼び方を知る", en: "How to tell the styles apart" } },
+    { id: "sodate", t: { ja: "育て方", en: "Care" }, lead: { ja: "毎日の世話と手入れの基本を知る", en: "The basics of daily care" } },
+    { id: "kisetsu", t: { ja: "季節の手入れ", en: "Through the seasons" }, lead: { ja: "季節ごとにすることを知る", en: "What to do in each season" } }
+  ];
   /* 本文は用語集（用語集.json）の「意味」「なぜそうするか」に書いてあることだけで書く。年号・人名・数字は書かない。
      本文がまだない記事は soon:true にして、一覧で「近日公開」と出し、押せなくする */
   var ARTICLES = [

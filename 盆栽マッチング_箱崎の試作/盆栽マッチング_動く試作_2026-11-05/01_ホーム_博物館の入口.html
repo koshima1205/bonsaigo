@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>01 ホーム（博物館の入口）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .hero { padding-bottom: var(--s4); }
+  .hero .h1 { font-size: 1.5rem; margin-bottom: var(--s2); }
+  .hero .lead { font-size: var(--fs-m); margin-bottom: var(--s2); }
+  .hero .eyebrow { margin-bottom: 0; }
+  .diff { font-size: var(--fs-m); font-weight: 700; margin: 0 0 var(--s3); padding-left: var(--s3); border-left: 3px solid var(--kin); line-height: 1.6; }
+  .hero .btn--main { width: 100%; }
+  .mini { display: block; width: 100%; text-align: left; margin-top: var(--s3); padding: var(--s2) 0; background: none; border: 0; border-top: 1px solid var(--sen); border-bottom: 1px solid var(--sen); cursor: pointer; min-height: 44px; }
+  .mini__row { display: flex; align-items: baseline; gap: var(--s3); flex-wrap: wrap; }
+  .mini__ja { font-family: var(--mincho); font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+  .mini__lit { color: var(--sumi-2); text-decoration: line-through; text-decoration-color: var(--shu); text-decoration-thickness: 2px; font-size: var(--fs-m); }
+  .mini__mean { display: block; font-size: var(--fs-s); color: var(--sumi-2); line-height: 1.5; margin-top: 2px; }
+  .mini__hint { font-size: 14px; color: var(--koke); font-weight: 700; }
+  .langnote { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; padding: var(--s2) var(--s3); background: var(--koke-usu); border-radius: var(--r); margin: var(--s3) 0 0; }
+  .langnote strong { font-size: var(--fs-s); }
+  .langnote .chips { gap: var(--s1); }
+  .langnote .chip { min-height: 44px; font-size: 14px; padding: 4px 8px; display: inline-flex; align-items: center; cursor: pointer; }
+  .room { margin-top: var(--s7); }
+  .room__no { display: flex; align-items: baseline; gap: var(--s3); border-bottom: 2px solid var(--sumi); padding-bottom: var(--s2); margin-bottom: var(--s4); }
+  .room__no b { font-family: var(--mincho); font-size: var(--fs-s); letter-spacing: 0.12em; color: var(--kin); white-space: nowrap; }
+  .room__no h2 { font-family: var(--mincho); font-size: var(--fs-xl); line-height: 1.4; margin: 0; }
+  .room__lead { color: var(--sumi-2); margin: 0 0 var(--s4); }
+  .exhibit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--s4); align-items: start; text-decoration: none; color: inherit; }
+  .exhibit__title { font-family: var(--mincho); font-size: var(--fs-l); font-weight: 700; margin: 0 0 var(--s2); line-height: 1.5; }
+  .qline { display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; margin-top: var(--s2); }
+  .more { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+  .doors { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sen); }
+  .doors li { border-bottom: 1px solid var(--sen); }
+  .doors a { display: flex; align-items: center; gap: var(--s3); min-height: 56px; padding: var(--s3) 0; text-decoration: none; color: inherit; }
+  .doors a > span:first-child { flex: 1; min-width: 0; }
+  .doors b { display: block; line-height: 1.4; }
+  .doors small { color: var(--sumi-3); font-size: var(--fs-s); line-height: 1.4; display: block; }
+  .doors .arrow { color: var(--koke); font-size: var(--fs-l); flex: none; }
+  .diary { border-left: 3px solid var(--kin); padding-left: var(--s4); margin: 0 0 var(--s4); }
+  .diary q { font-family: var(--mincho); font-size: var(--fs-l); line-height: 1.8; quotes: none; display: block; }
+  .diary cite { display: block; font-style: normal; font-size: var(--fs-s); color: var(--sumi-3); margin-top: var(--s2); }
+  .why3 { list-style: none; counter-reset: w; margin: var(--s5) 0 0; padding: 0; border-top: 1px solid var(--sen); }
+  .why3 li { counter-increment: w; position: relative; padding: var(--s3) 0 var(--s3) 2.4em; border-bottom: 1px solid var(--sen); font-size: var(--fs-s); color: var(--sumi-2); }
+  .why3 li::before { content: counter(w); position: absolute; left: 0; top: var(--s2); font-family: var(--mincho); font-size: 1.5rem; color: var(--kin); }
+  .why3 b { display: block; color: var(--sumi); font-size: var(--fs-m); }
+</style>
+</head>
+<body data-screen="01">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+
+    <section class="hero">
+      <p class="eyebrow"><span class="t"><span data-l="ja">盆栽の間　日本の職人の知恵の博物館</span><span data-l="en">The Bonsai Hall · a museum of Japanese craft knowledge</span><span data-l="es">Sala del Bonsái · museo del saber artesano japonés</span><span data-l="zh">盆栽之馆 · 日本匠人智慧博物馆</span></span></p>
+      <h1 class="h1"><span class="t">
+        <span data-l="ja">日本の職人の知恵を、あなたの言葉で。</span>
+        <span data-l="en">The knowledge of Japan's bonsai craftspeople, in your own language.</span>
+        <span data-l="es">El saber de los maestros japoneses, en tu idioma.</span>
+        <span data-l="zh">用你的语言，读日本匠人的智慧。</span>
+      </span></h1>
+      <p class="lead"><span class="t"><span data-l="ja">意味が伝わる形で、世界へ。気になる部屋から、ゆっくりどうぞ。</span><span data-l="en">Carried across languages by meaning, not word for word.</span><span data-l="es">Traducido por su sentido, no palabra por palabra.</span><span data-l="zh">按含义而非逐字传达。</span></span></p>
+      <p class="diff"><span class="t"><span data-l="ja">多くの盆栽アプリは一般論を答えるだけ。ここでは職人が、あなたの木を見て答えます。</span><span data-l="en">Most bonsai apps give general advice. Here, a real craftsperson looks at your tree.</span><span data-l="es">La mayoría de las apps de bonsái dan consejos generales. Aquí, un maestro real mira tu árbol.</span><span data-l="zh">多数盆栽应用只给出一般性建议。在这里，真正的匠人会看着你的树来回答。</span></span></p>
+      <a class="btn btn--main" href="18_知りたいことから職人を探す.html"><span class="t"><span data-l="ja">教わりたい職人を見つける</span><span data-l="en">Find your craftsperson</span><span data-l="es">Encuentra a tu maestro</span><span data-l="zh">找到你的匠人</span></span></a>
+      <button type="button" class="mini" id="mini-kengai" aria-label="懸崖">
+        <span class="mini__row"><span class="mini__ja">懸崖</span><span class="mini__lit" id="mini-lit"></span><span class="mini__hint"><span class="t"><span data-l="ja">意味を見る</span><span data-l="en">See the meaning</span><span data-l="es">Ver el sentido</span><span data-l="zh">查看含义</span></span></span></span>
+        <span class="mini__mean" id="mini-mean"></span>
+      </button>
+      <div class="langnote">
+        <strong><span class="t"><span data-l="ja">言語</span><span data-l="en">Language</span><span data-l="es">Idioma</span><span data-l="zh">语言</span></span></strong>
+        <div class="chips" role="group" aria-label="Language">
+          <button type="button" class="chip" data-pick="ja">日本語</button>
+          <button type="button" class="chip" data-pick="en">English</button>
+          <button type="button" class="chip" data-pick="es">Español</button>
+          <button type="button" class="chip" data-pick="zh">中文</button>
+        </div>
+      </div>
+      <ol class="why3">
+        <li><b><span class="t"><span data-l="ja">言葉ではなく、意味で訳す</span><span data-l="en">Translated by meaning, not word for word</span><span data-l="es">Traducido por su sentido</span><span data-l="zh">按含义翻译</span></span></b>
+          <span class="t"><span data-l="ja">盆栽の用語122語を「直訳・意味・なぜそうするか」で持っています</span><span data-l="en">A 122-term bonsai glossary explains what each word means and why craftspeople do it.</span><span data-l="es">Un glosario de 122 términos explica el sentido y el porqué.</span><span data-l="zh">122个盆栽术语，附含义与原因。</span></span></li>
+        <li><b><span class="t"><span data-l="ja">職人が、あなたの木を見て答える</span><span data-l="en">A craftsperson looks at your own tree</span><span data-l="es">Un maestro mira tu propio árbol</span><span data-l="zh">匠人看着你的树回答</span></span></b>
+          <span class="t"><span data-l="ja">写真に線を引いて、話した言葉で答えます</span><span data-l="en">They draw on your photo and answer in their own words.</span><span data-l="es">Dibuja sobre tu foto y responde con sus palabras.</span><span data-l="zh">在照片上画线，用自己的话回答。</span></span></li>
+        <li><b><span class="t"><span data-l="ja">何人もの職人の知恵がたまる</span><span data-l="en">Many craftspeople, one growing body of knowledge</span><span data-l="es">Muchos maestros, un saber que crece</span><span data-l="zh">众多匠人的智慧不断积累</span></span></b>
+          <span class="t"><span data-l="ja">1つの質問に複数の職人が答え、残っていきます</span><span data-l="en">Each question is answered by several craftspeople, and the answers stay.</span><span data-l="es">Varios maestros responden y las respuestas quedan.</span><span data-l="zh">一个问题由多位匠人回答并保存下来。</span></span></li>
+      </ol>
+    </section>
+
+    <!-- 第一室 -->
+    <section class="room" id="feed-room" aria-labelledby="r0" hidden>
+      <div class="room__no"><b><span class="t"><span data-l="ja">新着</span><span data-l="en">JUST IN</span><span data-l="es">NOVEDADES</span><span data-l="zh">最新</span></span></b>
+      <h2 id="r0"><span class="t"><span data-l="ja">日本の職人から、いま届いたもの。</span><span data-l="en">Just in from craftspeople in Japan.</span><span data-l="es">Recién llegado de los maestros de Japón.</span><span data-l="zh">刚刚来自日本匠人的分享。</span></span></h2></div>
+      <div id="feed"></div>
+      <a class="more" href="18_知りたいことから職人を探す.html"><span class="t"><span data-l="ja">この職人たちに教わる →</span><span data-l="en">Learn from these craftspeople →</span><span data-l="es">Aprende de estos maestros →</span><span data-l="zh">向这些匠人学习 →</span></span></a>
+    </section>
+
+    <section class="room" aria-labelledby="r1">
+      <div class="room__no"><b><span class="t"><span data-l="ja">第一室</span><span data-l="en">ROOM 1</span><span data-l="es">SALA 1</span><span data-l="zh">第一展厅</span></span></b>
+        <h2 id="r1"><span class="t"><span data-l="ja">今日、職人が答えた相談</span><span data-l="en">A question answered today</span><span data-l="es">Una consulta respondida hoy</span><span data-l="zh">今天匠人回答的咨询</span></span></h2></div>
+      <a class="exhibit" href="05_答えが届く_愛好家.html">
+        <figure class="zu" data-zu="kiiro" data-cap="none"></figure>
+        <div>
+          <p class="exhibit__title"><span class="t"><span data-l="ja">黒松の葉が黄色くなった。原因は水のやりすぎ。</span><span data-l="en">Yellow needles on a black pine: too much water.</span><span data-l="es">Pino negro amarillo: demasiada agua.</span><span data-l="zh">黑松叶子变黄：浇水过多。</span></span></p>
+          <p class="row__meta">q-0142 · Emma (sample) → <span data-shokunin="s1"></span></p>
+          <div class="qline"><span class="badge-ok"><span class="t"><span data-l="ja">職人が回答</span><span data-l="en">Answered</span><span data-l="es">Respondida</span><span data-l="zh">已回答</span></span></span></div>
+        </div>
+      </a>
+      <a class="more" href="05_答えが届く_愛好家.html"><span class="t"><span data-l="ja">答えを読む →</span><span data-l="en">Read the answer →</span><span data-l="es">Leer la respuesta →</span><span data-l="zh">阅读回答 →</span></span></a>
+
+      <ul class="rows" style="margin-top:var(--s4)">
+        <li><a class="row-link" href="06_質問と答え_QandA.html"><div class="row__body">
+          <p class="row__title"><span class="t"><span data-l="ja">1つの質問に、3人の職人が答えています</span><span data-l="en">One question, three craftspeople's answers</span><span data-l="es">Una pregunta, tres maestros</span><span data-l="zh">一个问题，三位匠人回答</span></span></p>
+          <p class="row__meta"><span class="t"><span data-l="ja">Q&A ・ 育て方 ・ 水やり</span><span data-l="en">Q&amp;A · Care · Watering</span><span data-l="es">Preguntas · Cuidados · Riego</span><span data-l="zh">问答 · 养护 · 浇水</span></span></p></div></a></li>
+      </ul>
+    </section>
+
+    <!-- 第二室 -->
+    <section class="room" aria-labelledby="r2">
+      <div class="room__no"><b><span class="t"><span data-l="ja">第二室</span><span data-l="en">ROOM 2</span><span data-l="es">SALA 2</span><span data-l="zh">第二展厅</span></span></b>
+        <h2 id="r2"><span class="t"><span data-l="ja">一鉢を、ゆっくり見る</span><span data-l="en">Look at one tree, slowly</span><span data-l="es">Mira un árbol con calma</span><span data-l="zh">慢慢欣赏一盆</span></span></h2></div>
+      <p class="room__lead"><span class="t"><span data-l="ja">樹形、樹齢、手入れの履歴、見どころ。正面だけでなく、下から見上げた姿も。</span><span data-l="en">Style, age, care history and what to look for, seen from the front and from below.</span><span data-l="es">Estilo, edad, cuidados y puntos de interés.</span><span data-l="zh">树形、树龄、养护记录和看点。</span></span></p>
+      <a class="exhibit" href="02_1鉢のページ.html" style="grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)">
+        <figure class="zu" data-zu="moyogi" data-cap="none"></figure>
+        <div>
+          <p class="exhibit__title"><span class="t"><span data-l="ja">黒松・模様木（サンプル）</span><span data-l="en">Black pine, informal upright (sample)</span><span data-l="es">Pino negro, moyogi (muestra)</span><span data-l="zh">黑松·模样木（样例）</span></span></p>
+          <p class="row__meta"><span class="t"><span data-l="ja">樹齢 推定およそ60年</span><span data-l="en">Estimated age: about 60 years</span><span data-l="es">Edad estimada: unos 60 años</span><span data-l="zh">推定树龄约60年</span></span></p>
+        </div>
+      </a>
+    </section>
+
+    <!-- 第三室 -->
+    <section class="room" aria-labelledby="r3">
+      <div class="room__no"><b><span class="t"><span data-l="ja">第三室</span><span data-l="en">ROOM 3</span><span data-l="es">SALA 3</span><span data-l="zh">第三展厅</span></span></b>
+        <h2 id="r3"><span class="t"><span data-l="ja">職人の日記、受け継がれる言葉</span><span data-l="en">A craftsperson's journal</span><span data-l="es">El diario de un maestro</span><span data-l="zh">匠人的日记</span></span></h2></div>
+      <blockquote class="diary" style="margin-left:0;margin-right:0">
+        <q><span class="t"><span data-l="ja">水やりは三年。同じ木でも、季節と鉢で乾き方が違う。</span><span data-l="en">Watering takes three years to learn. Even one tree dries differently by season and pot.</span><span data-l="es">Regar se aprende en tres años.</span><span data-l="zh">浇水要学三年。</span></span></q>
+        <cite><span data-shokunin="s1"></span> <span class="sample"><span class="t"><span data-l="ja">サンプル</span><span data-l="en">sample</span><span data-l="es">muestra</span><span data-l="zh">样例</span></span></span></cite>
+      </blockquote>
+      <a class="more" href="09_職人の日記.html"><span class="t"><span data-l="ja">日記を読む →</span><span data-l="en">Read the journal →</span><span data-l="es">Leer el diario →</span><span data-l="zh">阅读日记 →</span></span></a>
+    </section>
+
+    <!-- 第四室 -->
+    <section class="room" aria-labelledby="r4">
+      <div class="room__no"><b><span class="t"><span data-l="ja">第四室</span><span data-l="en">ROOM 4</span><span data-l="es">SALA 4</span><span data-l="zh">第四展厅</span></span></b>
+        <h2 id="r4"><span class="t"><span data-l="ja">盆栽の歴史と、育て方を学ぶ</span><span data-l="en">Learn the history and the care</span><span data-l="es">Historia y cuidados</span><span data-l="zh">学习历史与养护</span></span></h2></div>
+      <ul class="rows">
+        <li><a class="row-link" href="10_学ぶ_歴史と育て方.html"><div class="row__body">
+          <p class="row__title"><span class="t"><span data-l="ja">盆栽はどこから来たのか</span><span data-l="en">Where bonsai comes from</span><span data-l="es">De dónde viene el bonsái</span><span data-l="zh">盆栽从何而来</span></span> <span class="badge-mi"><span class="t"><span data-l="ja">下書き・未確認</span><span data-l="en">Draft · unchecked</span><span data-l="es">Borrador</span><span data-l="zh">草稿·未核实</span></span></span></p>
+          <p class="row__meta"><span class="t"><span data-l="ja">歴史</span><span data-l="en">History</span><span data-l="es">Historia</span><span data-l="zh">历史</span></span></p></div></a></li>
+        <li><a class="row-link" href="10_学ぶ_歴史と育て方.html"><div class="row__body">
+          <p class="row__title"><span class="t"><span data-l="ja">はじめての水やり</span><span data-l="en">Your first watering</span><span data-l="es">Tu primer riego</span><span data-l="zh">第一次浇水</span></span> <span class="badge-mi"><span class="t"><span data-l="ja">下書き・未確認</span><span data-l="en">Draft · unchecked</span><span data-l="es">Borrador</span><span data-l="zh">草稿·未核实</span></span></span></p>
+          <p class="row__meta"><span class="t"><span data-l="ja">育て方</span><span data-l="en">Care</span><span data-l="es">Cuidados</span><span data-l="zh">养护</span></span></p></div></a></li>
+      </ul>
+    </section>
+
+    <!-- 出口・案内所 -->
+    <section class="room" aria-labelledby="r5">
+      <div class="room__no"><b><span class="t"><span data-l="ja">案内所</span><span data-l="en">INFORMATION</span><span data-l="es">INFORMACIÓN</span><span data-l="zh">服务台</span></span></b>
+        <h2 id="r5"><span class="t"><span data-l="ja">わからないことは、聞いてみる</span><span data-l="en">When you are unsure, ask</span><span data-l="es">Si dudas, pregunta</span><span data-l="zh">不明白就问问</span></span></h2></div>
+      <ul class="doors">
+        <li><a href="08_AIの相談窓口.html"><span><b><span class="t"><span data-l="ja">AIの相談窓口</span><span data-l="en">AI helper</span><span data-l="es">Asistente IA</span><span data-l="zh">AI 助手</span></span></b><small><span class="t"><span data-l="ja">まずAIに聞く。答えきれなければ職人へ</span><span data-l="en">Ask the AI first; it hands over to a craftsperson if needed</span><span data-l="es">Primero la IA; si no basta, un maestro</span><span data-l="zh">先问AI，不够再问匠人</span></span></small></span><span class="arrow">→</span></a></li>
+        <li><a href="19_話して先生に登録_職人.html"><span><b><span class="t"><span data-l="ja">職人の方へ：話すだけで先生に</span><span data-l="en">For craftspeople (Japanese only)</span><span data-l="es">Para maestros (solo en japonés)</span><span data-l="zh">匠人入口（仅日语）</span></span></b></span><span class="arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="13_職人を探す.html"><span><b><span class="t"><span data-l="ja">職人を探す</span><span data-l="en">Find a craftsperson</span><span data-l="es">Buscar un maestro</span><span data-l="zh">寻找匠人</span></span></b><small><span class="t"><span data-l="ja">得意な木で選んで相談する</span><span data-l="en">Choose by the trees they know best</span><span data-l="es">Elige por especialidad</span><span data-l="zh">按擅长树种选择</span></span></small></span><span class="arrow">→</span></a></li>
+        <li><a href="11_用語集.html"><span><b><span class="t"><span data-l="ja">用語集</span><span data-l="en">Glossary</span><span data-l="es">Glosario</span><span data-l="zh">术语表</span></span></b><small><span class="t"><span data-l="ja">直訳ではなく、意味と理由で説明</span><span data-l="en">Explained by meaning and reason, not word for word</span><span data-l="es">Por sentido y razón</span><span data-l="zh">按含义和原因解释</span></span></small></span><span class="arrow">→</span></a></li>
+        <li><a href="14_欲しい盆栽を伝える_仮.html"><span><b><span class="t"><span data-l="ja">欲しい盆栽を伝える</span><span data-l="en">Tell us the tree you want</span><span data-l="es">Cuéntanos qué árbol buscas</span><span data-l="zh">说出你想要的盆栽</span></span> <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Draft</span><span data-l="es">Borrador</span><span data-l="zh">暂定</span></span></span></b><small><span class="t"><span data-l="ja">会議で議論中の案</span><span data-l="en">An idea still under discussion</span><span data-l="es">Idea en discusión</span><span data-l="zh">讨论中的方案</span></span></small></span><span class="arrow">→</span></a></li>
+      </ul>
+    </section>
+
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("[data-pick]").forEach(function (b) {
+    b.addEventListener("click", function () { BONSAI.setLang(b.getAttribute("data-pick")); });
+  });
+  function mark() {
+    var l = BONSAI.getLang();
+    document.querySelectorAll("[data-pick]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-pick") === l)); });
+  }
+  function names() {
+    var l = BONSAI.getLang();
+    document.querySelectorAll("[data-shokunin]").forEach(function (el) {
+      var p = SAMPLE.shokunin.filter(function (x) { return x.id === el.getAttribute("data-shokunin"); })[0];
+      if (p) el.textContent = l === "ja" ? p.name : p.en_name;
+    });
+    var t = window.findTerm("懸崖");
+    if (t) {
+      document.getElementById("mini-lit").textContent = "“" + t.literal_en + "”";
+      document.getElementById("mini-mean").textContent = BONSAI.T({
+        ja: "幹が鉢の縁から、鉢の底より下まで垂れ下がる木の形。",
+        en: "A tree whose trunk hangs down below the bottom of its pot.",
+        es: "Árbol cuyo tronco cuelga por debajo del fondo de la maceta.",
+        zh: "树干从盆沿垂下、低于盆底的树形。" });
+    }
+  }
+  document.getElementById("mini-kengai").addEventListener("click", function () { window.openTerm("懸崖"); });
+  mark(); names();
+  document.addEventListener("langchange", function () { mark(); names(); });
+});
+
+/* 職人がOKした発信を、新着として出す */
+document.addEventListener("DOMContentLoaded", function () {
+  if (!API.online) return;
+  var items = [];
+  function paint() {
+    var lang = window.BONSAI.getLang();
+    document.getElementById("feed").innerHTML = items.slice(0, 2).map(function (f) {
+      var note = f.culture_note[lang] || f.culture_note.en;
+      return '<article style="margin-bottom:var(--s5)">' + (f.image ? API.photoHtml(f.image, "") : "") +
+        '<p style="font-family:var(--mincho);font-size:var(--fs-l);line-height:1.7;margin:var(--s3) 0 0">' + esc(note) + "</p></article>";
+    }).join("");
+  }
+  API.get("/api/feed").then(function (r) {
+    items = r.feed;
+    if (!items.length) return;
+    document.getElementById("feed-room").hidden = false;
+    paint();
+  }, function () {});
+  document.addEventListener("langchange", function () { if (items.length) paint(); });
+});
+</script>
+</body>
+</html>

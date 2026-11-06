@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>04 職人の画面（相談を受ける）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .who { margin: 0 0 var(--s4); color: var(--sumi-2); }
+  .h1 { font-size: 1.75rem; }
+  .draw-wrap { position: relative; }
+  .draw-wrap svg.draw { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .draw-wrap.is-drawing svg.draw { pointer-events: auto; touch-action: none; cursor: crosshair; }
+  .draw-wrap.is-drawing .zu__frame { outline: 3px solid var(--shu); outline-offset: -3px; }
+  .draw-hint { color: var(--sumi); font-weight: 700; margin: var(--s2) 0 0; font-size: 1.125rem; }
+  .block { margin: var(--s5) 0 0; }
+  .block__label { font-size: 1rem; color: var(--sumi-3); font-weight: 700; margin: 0 0 var(--s1); }
+  .block p { margin: 0 0 var(--s2); line-height: 1.7; }
+  .block ul { margin: 0; padding-left: 1.2em; }
+  .block li { margin-bottom: var(--s1); }
+  .mitate { border-left: 3px solid var(--kin); padding-left: var(--s3); }
+  .spacer { height: var(--s5); }
+  .big-actions { margin-top: var(--s6); }
+  .rec { margin-top: var(--s4); border: 2px solid var(--shu); border-radius: var(--r); padding: var(--s4); background: var(--shu-usu); }
+  .rec__head { display: flex; align-items: center; gap: var(--s3); font-weight: 700; color: var(--shu); font-size: 1.25rem; }
+  .rec__dot { width: 16px; height: 16px; border-radius: 50%; background: var(--shu); flex: none; }
+  @media (prefers-reduced-motion: no-preference) { .rec__dot { animation: pulse 1s ease-in-out infinite; } @keyframes pulse { 50% { opacity: 0.25; } } }
+  .said { margin-top: var(--s4); border: 2px solid var(--sen); border-radius: var(--r); padding: var(--s4); background: var(--kami-3); }
+  .said__label { font-size: 1rem; color: var(--sumi-3); font-weight: 700; margin: 0 0 var(--s2); }
+  .said p { margin: 0; line-height: 1.8; }
+  .sent { margin-top: var(--s5); border-radius: var(--r); background: var(--koke); color: #fff; padding: var(--s5) var(--s4); text-align: center; }
+  .sent__title { font-family: var(--mincho); font-size: 1.75rem; font-weight: 700; margin: 0 0 var(--s2); line-height: 1.5; }
+  .sent p { margin: 0; font-size: 1.125rem; }
+  .sent a { color: #fff; font-size: 1rem; }
+  /* LINEから開いた場合の絵 */
+  .line-note { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px dashed var(--sen); }
+  .line-note h2 { font-size: 1rem; margin: 0 0 var(--s2); color: var(--sumi-2); }
+  .line-note .note { font-size: 0.875rem; }
+  .line-frames { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin-top: var(--s3); }
+  .mini { border: 1px solid var(--sen); border-radius: var(--r); background: var(--kami-3); overflow: hidden; font-size: 14px; line-height: 1.5; }
+  .mini__head { background: var(--kami-2); padding: 4px 8px; color: var(--sumi-2); border-bottom: 1px solid var(--sen); font-weight: 700; }
+  .mini__body { padding: var(--s2); min-height: 150px; }
+  .mini__cap { padding: 4px 8px; color: var(--sumi-3); border-top: 1px solid var(--sen); }
+  .bubble { background: var(--koke-usu); border: 1px solid var(--koke); border-radius: 12px 12px 12px 2px; padding: 6px 8px; margin-bottom: var(--s2); max-width: 92%; color: var(--sumi); }
+  .bubble--link { text-decoration: underline; color: var(--koke); }
+  .mini__page { border: 1px solid var(--sen); border-radius: 6px; padding: 6px; background: var(--kami); }
+  .mini__page b { display: block; font-family: var(--mincho); font-size: 14px; margin-bottom: 4px; }
+  .mini__btns { display: grid; gap: 3px; margin-top: 6px; }
+  .mini__btns i { display: block; font-style: normal; border: 1.5px solid var(--sumi); border-radius: 5px; text-align: center; padding: 2px 0; font-weight: 700; }
+</style>
+</head>
+<body data-screen="04" class="role-shokunin">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <p class="eyebrow">相談が届きました ・ 針金外し</p>
+    <h1 class="h1">針金が食い込みそう、との相談です。</h1>
+    <p class="who">アメリカ・ポートランドの方（サンプル）より</p>
+
+    <div class="draw-wrap" id="drawWrap">
+      <figure class="zu" data-zu="soudan" data-cap="none" id="photo"></figure>
+      <svg class="draw" id="draw" viewBox="0 0 320 240" aria-label="写真の上に線を書けます"></svg>
+    </div>
+    <div id="drawHint" hidden>
+      <p class="draw-hint">写真の上を、指でなぞってください。</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s2)">
+        <button type="button" class="btn btn--main" id="btn-draw-end" style="min-height:52px;font-size:1.125rem">線を引き終わる</button>
+        <button type="button" class="btn" id="btn-undo" style="min-height:52px;font-size:1.125rem">1本消す</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <p class="block__label">要約</p>
+      <p id="summary"></p>
+    </div>
+    <div class="block">
+      <p class="block__label">要点</p>
+      <ul id="points"></ul>
+    </div>
+    <div class="block mitate">
+      <p class="block__label">AIの見立て</p>
+      <p id="mitate"></p>
+    </div>
+
+    <div class="big-actions">
+      <button type="button" class="big-btn" id="btn-talk">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        <span id="talk-label">話す</span>
+      </button>
+      <button type="button" class="big-btn" id="btn-draw" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg>
+        <span id="draw-label">書き込む</span>
+      </button>
+    </div>
+
+    <div class="rec" id="rec" hidden>
+      <div class="rec__head"><span class="rec__dot"></span><span>録音しています。話してください。</span></div>
+    </div>
+    <div class="said" id="said">
+      <p class="said__label">話した言葉（直せます）</p>
+      <p class="note" id="voice-msg" hidden></p>
+      <button type="button" class="btn btn--wide" id="btn-fill" style="margin-bottom:var(--s2);min-height:48px">声が使えないときは、見本の言葉を入れる</button>
+      <textarea class="textarea" id="said-text" rows="5" style="font-size:1.125rem"></textarea>
+    </div>
+    <div class="big-actions" style="margin-top:var(--s4)">
+      <button type="button" class="big-btn big-btn--main" id="btn-send">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l16-8-6 16-3-7z"/></svg>
+        <span>送る</span>
+      </button>
+    </div>
+    <p id="sending" role="status" style="margin-top:var(--s4);text-align:center;font-size:1.25rem;font-weight:700;color:var(--koke)" hidden>相手の言葉に直しています。少しお待ちください。</p>
+    <div class="block mitate" id="back" hidden><p class="block__label">相手にはこう伝えます（日本語に戻した文）</p><p id="back-text"></p><p id="back-review" class="note" style="font-size:1rem"></p></div>
+    <div class="sent" id="sent" hidden role="status">
+      <p class="sent__title" id="sent-title">送りました。<br>英語に直して届けます。</p>
+      <p><a id="go-learner" href="05_答えが届く_愛好家.html?lang=en">次へ：相手の画面で見る</a></p>
+      <p style="margin-top:var(--s2)"><a id="go-posts" href="12_SNS投稿の下書き.html" hidden>この話を海外へ発信する</a></p>
+    </div>
+
+    <section class="line-note" aria-label="LINEから開いた場合の見え方">
+      <h2>LINEから開いた場合の見え方</h2>
+      <div class="line-frames">
+        <div class="mini">
+          <div class="mini__head">トーク（サンプル）</div>
+          <div class="mini__body">
+            <div class="bubble">相談が届きました。針金が食い込みそう、とのことです。</div>
+            <div class="bubble bubble--link">開いて見る</div>
+          </div>
+          <div class="mini__cap">1. 通知の吹き出しを押す</div>
+        </div>
+        <div class="mini">
+          <div class="mini__head">このページ</div>
+          <div class="mini__body">
+            <div class="mini__page">
+              <b>針金が食い込みそう</b>
+              <div class="mini__btns"><i>話す</i><i>書き込む</i><i>送る</i></div>
+            </div>
+          </div>
+          <div class="mini__cap">2. このページが開く</div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:var(--s3)"><span class="kari">仮</span> 職人がLINEから使うかアプリから使うかは未決定</p>
+    </section>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var q = window.SAMPLE.soudan, f = q.for_shokunin;
+  document.getElementById("summary").innerHTML = esc(f.summary).replace("針金外し", '<b class="term" data-term="針金外し">針金外し</b>');
+  document.getElementById("points").innerHTML = f.points.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("");
+  document.getElementById("mitate").textContent = f.ai_mitate;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var talking = false, drawing = false, sent = false, real = null;
+  function voiceMsg(m) { $("voice-msg").textContent = m; $("voice-msg").hidden = false; }
+
+  /* 話す：ブラウザの音声認識で文字にする。使えないときは書いて答えられる */
+  var rec = API.makeRecognizer({
+    onText: function (t) { $("said-text").value = t; },
+    onEnd: function () { talking = false; $("btn-talk").classList.remove("is-on"); $("talk-label").textContent = "話す"; $("rec").hidden = true; },
+    onError: function () { voiceMsg("声を聞き取れませんでした。書くか、下の見本の言葉を使えます。"); }
+  });
+  $("btn-talk").addEventListener("click", function () {
+    if (sent) return;
+    $("said").hidden = false;
+    if (!rec) { $("said-text").focus(); voiceMsg("この端末では声を使えません。書くか、下の見本の言葉を使えます。"); return; }
+    if (talking) { rec.stop(); return; }
+    talking = true;
+    $("btn-talk").classList.add("is-on");
+    $("talk-label").textContent = "聞いています（押すと終わり）";
+    $("rec").hidden = false;
+    rec.start($("said-text").value);
+    $("said").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  $("btn-fill").addEventListener("click", function () { $("said-text").value = q.answer_ja_voice; $("voice-msg").hidden = true; });
+
+  /* 書き込む：写真の上に指で線を描く */
+  var svg = $("draw"), path = null;
+  function pt(e) {
+    var r = svg.getBoundingClientRect();
+    return [((e.clientX - r.left) / r.width * 320).toFixed(1), ((e.clientY - r.top) / r.height * 240).toFixed(1)];
+  }
+  function setDraw(on) {
+    drawing = on;
+    $("drawWrap").classList.toggle("is-drawing", on);
+    $("btn-draw").classList.toggle("is-on", on);
+    $("btn-draw").setAttribute("aria-pressed", String(on));
+    $("draw-label").textContent = on ? "線を引いています" : (svg.querySelector("path") ? "線を足す" : "書き込む");
+    $("drawHint").hidden = !on;
+  }
+  $("btn-draw").addEventListener("click", function () {
+    if (sent) return;
+    setDraw(!drawing);
+    if (drawing) $("drawWrap").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  $("btn-draw-end").addEventListener("click", function () { setDraw(false); });
+  $("btn-undo").addEventListener("click", function () { var ps = svg.querySelectorAll("path"); if (ps.length) ps[ps.length - 1].remove(); });
+  svg.addEventListener("pointerdown", function (e) {
+    if (!drawing) return;
+    svg.setPointerCapture(e.pointerId);
+    var p = pt(e);
+    path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M" + p[0] + " " + p[1]);
+    path.setAttribute("fill", "none"); path.setAttribute("stroke", "#A6432A");
+    path.setAttribute("stroke-width", "3.5"); path.setAttribute("stroke-linecap", "round"); path.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(path);
+    e.preventDefault();
+  });
+  svg.addEventListener("pointermove", function (e) {
+    if (!path) return;
+    var p = pt(e);
+    path.setAttribute("d", path.getAttribute("d") + " L" + p[0] + " " + p[1]);
+  });
+  function end() { path = null; }
+  svg.addEventListener("pointerup", end);
+  svg.addEventListener("pointercancel", end);
+
+  /* 送る */
+  $("btn-send").addEventListener("click", function () {
+    if (sent) return;
+    var voice = $("said-text").value.trim();
+    var marks = Array.prototype.map.call(svg.querySelectorAll("path"), function (p) { return p.getAttribute("d"); });
+    if (real && !voice && !marks.length) { toast("話すか、写真に書き込んでください"); return; }
+    sent = true;
+    setDraw(false);
+    if (talking && rec) rec.stop();
+    $("rec").hidden = true;
+    $("btn-send").classList.add("is-on");
+    if (!real) { $("sent").hidden = false; $("sent").scrollIntoView({ behavior: "smooth", block: "nearest" }); return; }
+    $("sending").hidden = false;
+    API.post("/api/consultations/" + real.id + "/answer", { voice: voice, marks: marks }).then(function (c) {
+      real = c;
+      showSent(c);
+    }, function (e) {
+      sent = false; $("btn-send").classList.remove("is-on"); toast(e.message);
+    }).then(function () { $("sending").hidden = true; });
+  });
+
+  function showSent(c) {
+    var names = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" };
+    $("sent-title").innerHTML = "送りました。<br>" + names[c.lang] + "に直して届けました。";
+    $("go-learner").href = "05_答えが届く_愛好家.html?id=" + c.id + "&lang=" + c.lang;
+    $("go-posts").href = "12_SNS投稿の下書き.html?id=" + c.id; $("go-posts").hidden = false;
+    $("back-text").textContent = c.answer.back_translation_ja;
+    $("back-review").textContent = !c.answer.review.checked
+      ? (c.answer.voice_ja ? "いまは見本の答えです。本番では、別のAIがあなたの言葉とずれていないか確かめます。" : "")
+      : c.answer.review.ok
+      ? "別のAIが、あなたの言葉とずれていないか確かめました。"
+      : "別のAIが直しました：" + c.answer.review.problems_ja.join(" ");
+    $("back").hidden = false; $("sent").hidden = false;
+    $("sent").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  /* 届いた本物の相談を出す。埋め込み（画面の比べ）のときは見本のまま */
+  var params = new URLSearchParams(location.search);
+  if (API.online && params.get("embed") !== "1") {
+    API.get("/api/consultations").then(function (r) {
+      var id = params.get("id");
+      var list = r.consultations;
+      var c = id ? list.find(function (x) { return x.id === id; }) : list.find(function (x) { return !x.answer; });
+      if (!c) return;
+      real = c;
+      document.querySelector(".line-note").hidden = true;
+      var f = c.for_craftsperson, langName = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" }[c.lang];
+      document.querySelector(".eyebrow").textContent = "相談が届きました ・ もとは" + langName + "の質問";
+      document.querySelector(".h1").textContent = f.title_ja;
+      document.querySelector(".who").textContent = "海外の方より（料金 $" + c.usd + "・サンプル）";
+      $("summary").textContent = f.summary_ja;
+      $("points").innerHTML = f.points_ja.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("");
+      $("mitate").textContent = f.ai_mitate_ja + (f.photo_problem_ja ? "（" + f.photo_problem_ja + "）" : "");
+      if (c.image) document.querySelector("#photo .zu__frame").innerHTML = API.photoHtml(c.image, "相談の写真");
+      if (c.answer) { sent = true; $("btn-send").classList.add("is-on"); showSent(c); }
+    }, function () {});
+  }
+});
+</script>
+</body>
+</html>

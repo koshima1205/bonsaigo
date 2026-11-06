@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>14 欲しい盆栽を伝える（仮）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .drop { display: grid; place-items: center; text-align: center; gap: var(--s1); min-height: 112px; padding: var(--s4); border: 1.5px dashed var(--sumi-3); border-radius: var(--r); background: var(--kami-3); color: var(--sumi-2); cursor: pointer; width: 100%; }
+  .drops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); margin-bottom: var(--s4); }
+  .drop.is-added { border-style: solid; border-color: var(--koke); background: var(--koke-usu); color: var(--koke); }
+  .drop svg { width: 28px; height: 28px; stroke: currentColor; fill: none; stroke-width: 1.5; margin: 0 auto; }
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); }
+  .flow { list-style: none; margin: 0; padding: 0; counter-reset: f; border-top: 1px solid var(--sen); }
+  .flow li { counter-increment: f; display: grid; grid-template-columns: 2.2em minmax(0, 1fr); gap: var(--s3); padding: var(--s4) 0; border-bottom: 1px solid var(--sen); }
+  .flow li::before { content: counter(f); font-family: var(--mincho); font-size: var(--fs-xl); color: var(--kin); line-height: 1.2; }
+  .flow b { display: block; }
+  .match { margin-top: var(--s4); }
+  .match[hidden] { display: none; }
+  .craft { display: flex; gap: var(--s3); align-items: center; padding: var(--s3) 0; border-bottom: 1px solid var(--sen); }
+  .craft:first-of-type { border-top: 1px solid var(--sen); }
+  .seal { width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.125rem; }
+  .range { display: flex; align-items: center; gap: var(--s2); }
+  .range .input { min-width: 0; }
+  .range span { flex: none; color: var(--sumi-3); }
+  .draft-banner { position: sticky; top: calc(var(--appbar-h) + env(safe-area-inset-top, 0px)); z-index: 10; margin: calc(var(--s5) * -1) calc(var(--s4) * -1) var(--s5); border-radius: 0; display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body data-screen="14">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <div class="draft-banner" role="note"><span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Draft</span><span data-l="es">Borrador</span><span data-l="zh">暂定</span></span></span> <strong><span class="t"><span data-l="ja">仮：会議で議論中。決まっていません</span><span data-l="en">Draft: under discussion, not decided</span><span data-l="es">Borrador: en discusión, sin decidir</span><span data-l="zh">暂定：会议讨论中，尚未决定</span></span></strong></div>
+
+    <p class="eyebrow"><span class="t"><span data-l="ja">欲しい盆栽を伝える</span><span data-l="en">Request a tree</span><span data-l="es">Pedir un árbol</span><span data-l="zh">发布需求</span></span></p>
+    <h1 class="h1"><span class="t">
+      <span data-l="ja">欲しい木を先に伝えると、合う職人が手伝います。</span>
+      <span data-l="en">Describe the tree you want, and a suitable craftsperson will help.</span>
+      <span data-l="es">Cuenta qué árbol quieres y un maestro adecuado te ayudará.</span>
+      <span data-l="zh">先说出想要的树，合适的匠人来帮你。</span>
+    </span></h1>
+    <p class="lead"><span class="t">
+      <span data-l="ja">このアプリの方針として、日本から木は送りません。お住まいの国の木を選ぶのを、職人が手伝います。</span>
+      <span data-l="en">This idea does not ship trees from Japan. A craftsperson helps you choose one in your own country.</span>
+      <span data-l="es">Esta idea no envía árboles desde Japón. Un maestro te ayuda a elegir uno en tu propio país.</span>
+      <span data-l="zh">这个方案不从日本寄送树木。匠人会帮你在所在国家挑选一棵。</span>
+    </span></p>
+
+    <h2 class="h3" style="margin-top:var(--s5)"><span class="t"><span data-l="ja">1. 好みの盆栽の写真・動画</span><span data-l="en">1. Photos or videos you like</span><span data-l="es">1. Fotos o vídeos que te gusten</span><span data-l="zh">1. 喜欢的盆栽照片/视频</span></span></h2>
+    <div class="drops">
+      <button type="button" class="drop" data-add="photo"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/></svg><span class="t"><span data-l="ja">写真を足す（仮の枠）</span><span data-l="en">Add a photo (placeholder)</span><span data-l="es">Añadir foto (marcador)</span><span data-l="zh">添加照片（占位）</span></span></button>
+      <button type="button" class="drop" data-add="video"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg><span class="t"><span data-l="ja">動画を足す（仮の枠）</span><span data-l="en">Add a video (placeholder)</span><span data-l="es">Añadir vídeo (marcador)</span><span data-l="zh">添加视频（占位）</span></span></button>
+    </div>
+
+    <h2 class="h3"><span class="t"><span data-l="ja">2. 条件</span><span data-l="en">2. Your conditions</span><span data-l="es">2. Tus condiciones</span><span data-l="zh">2. 条件</span></span></h2>
+    <label class="field"><span class="field__label"><span class="t"><span data-l="ja">樹種</span><span data-l="en">Species</span><span data-l="es">Especie</span><span data-l="zh">树种</span></span></span>
+      <select class="select" id="f-species">
+        <option value="pine" data-o-ja="黒松" data-o-en="Japanese black pine" data-o-es="Pino negro japonés" data-o-zh="日本黑松">Japanese black pine</option>
+        <option value="juniper" data-o-ja="真柏" data-o-en="Juniper (shimpaku)" data-o-es="Enebro" data-o-zh="真柏">Juniper (shimpaku)</option>
+        <option value="maple" data-o-ja="もみじ" data-o-en="Japanese maple" data-o-es="Arce japonés" data-o-zh="日本红枫">Japanese maple</option>
+        <option value="any" data-o-ja="まだ決めていない" data-o-en="Not sure yet" data-o-es="Aún no lo sé" data-o-zh="还没决定">Not sure yet</option>
+      </select></label>
+    <label class="field"><span class="field__label"><span class="t"><span data-l="ja">大きさ</span><span data-l="en">Size</span><span data-l="es">Tamaño</span><span data-l="zh">大小</span></span></span>
+      <select class="select" id="f-size">
+        <option value="s" data-o-ja="小さめ（〜20cm）" data-o-en="Small (up to 20 cm)" data-o-es="Pequeño (hasta 20 cm)" data-o-zh="小型（20厘米以内）">Small (up to 20 cm)</option>
+        <option value="m" selected data-o-ja="中くらい（20〜50cm）" data-o-en="Medium (20–50 cm)" data-o-es="Mediano (20–50 cm)" data-o-zh="中型（20–50厘米）">Medium (20–50 cm)</option>
+        <option value="l" data-o-ja="大きめ（50cm〜）" data-o-en="Large (50 cm and up)" data-o-es="Grande (más de 50 cm)" data-o-zh="大型（50厘米以上）">Large (50 cm and up)</option>
+      </select></label>
+    <div class="field"><span class="field__label"><span class="t"><span data-l="ja">予算の幅（米ドル）</span><span data-l="en">Budget range (USD)</span><span data-l="es">Presupuesto (USD)</span><span data-l="zh">预算范围（美元）</span></span></span>
+      <div class="range"><input class="input" id="f-min" inputmode="numeric" value="100" aria-label="min"><span>〜</span><input class="input" id="f-max" inputmode="numeric" value="300" aria-label="max"></div></div>
+    <label class="field"><span class="field__label"><span class="t"><span data-l="ja">届け先の国</span><span data-l="en">Your country</span><span data-l="es">Tu país</span><span data-l="zh">所在国家</span></span></span>
+      <select class="select" id="f-country">
+        <option>United States</option><option>España</option><option data-o-ja="中国" data-o-en="China" data-o-es="China" data-o-zh="中国">China</option><option>United Kingdom</option><option>Deutschland</option>
+      </select></label>
+    <label class="field"><span class="field__label"><span class="t"><span data-l="ja">ひとこと</span><span data-l="en">A few words</span><span data-l="es">Unas palabras</span><span data-l="zh">补充说明</span></span></span>
+      <textarea class="textarea" id="f-note" data-ph-ja="例：ベランダで育てたい。初心者です。" data-ph-en="e.g. I want to keep it on my balcony. I'm a beginner." data-ph-es="Ej.: quiero tenerlo en el balcón. Soy principiante." data-ph-zh="例如：想放在阳台，我是新手。"></textarea></label>
+
+    <button type="button" class="btn btn--main btn--wide" id="send"><span class="t"><span data-l="ja">この条件で職人とつなぐ</span><span data-l="en">Connect me with craftspeople</span><span data-l="es">Ponerme en contacto con maestros</span><span data-l="zh">按此条件联系匠人</span></span></button>
+
+    <div class="match" id="match" hidden>
+      <h2 class="h3"><span class="t"><span data-l="ja">合いそうな職人</span><span data-l="en">Craftspeople who may fit</span><span data-l="es">Maestros que podrían encajar</span><span data-l="zh">可能合适的匠人</span></span></h2>
+      <div id="match-list"></div>
+      <a class="btn btn--wide" style="margin-top:var(--s4)" href="13_職人を探す.html"><span class="t"><span data-l="ja">ほかの職人も見る</span><span data-l="en">See all craftspeople</span><span data-l="es">Ver a todos</span><span data-l="zh">查看所有匠人</span></span></a>
+    </div>
+
+    <hr class="rule">
+    <h2 class="h3" style="margin-top:0"><span class="t"><span data-l="ja">このあとの流れ</span><span data-l="en">What happens next</span><span data-l="es">Qué pasa después</span><span data-l="zh">之后的流程</span></span></h2>
+    <ol class="flow">
+      <li><span><b><span class="t"><span data-l="ja">条件を送る</span><span data-l="en">You send your request</span><span data-l="es">Envías tu solicitud</span><span data-l="zh">发送条件</span></span></b><span class="note"><span class="t"><span data-l="ja">母語のままで大丈夫です</span><span data-l="en">Your own language is fine.</span><span data-l="es">Tu idioma está bien.</span><span data-l="zh">用母语即可。</span></span></span></span></li>
+      <li><span><b><span class="t"><span data-l="ja">合う職人が見ます</span><span data-l="en">A fitting craftsperson reads it</span><span data-l="es">Un maestro la lee</span><span data-l="zh">合适的匠人查看</span></span></b><span class="note"><span class="t"><span data-l="ja">得意な木の種類で選ばれます</span><span data-l="en">Matched by the trees they know best.</span><span data-l="es">Según su especialidad.</span><span data-l="zh">按擅长树种匹配。</span></span></span></span></li>
+      <li><span><b><span class="t"><span data-l="ja">お住まいの国の木を一緒に選ぶ</span><span data-l="en">Choose a tree in your country together</span><span data-l="es">Elegís un árbol de tu país</span><span data-l="zh">一起挑选当地的树</span></span></b><span class="note"><span class="t"><span data-l="ja">選び方・仕立て方は、写真に線を引いて伝えます</span><span data-l="en">How to choose and shape it is shown by drawing on photos.</span><span data-l="es">Se explica dibujando sobre fotos.</span><span data-l="zh">在照片上画线说明选法和塑形。</span></span></span></span></li>
+    </ol>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI, S = window.SAMPLE;
+  var sent = false;
+  var SEAL = { s1: "松", s2: "楓", s3: "岩" };
+  var FIT = { pine: ["s1"], juniper: ["s3", "s1"], maple: ["s2"], any: ["s1", "s2", "s3"] };
+
+  document.querySelectorAll("[data-add]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      b.classList.toggle("is-added");
+      var on = b.classList.contains("is-added");
+      var kind = b.getAttribute("data-add");
+      window.toast(B.T(on
+        ? { ja: (kind === "photo" ? "写真" : "動画") + "の枠を足しました（モック）", en: (kind === "photo" ? "Photo" : "Video") + " slot added (mock)", es: "Añadido (maqueta)", zh: "已添加（模型）" }
+        : { ja: "外しました", en: "Removed", es: "Quitado", zh: "已移除" }));
+    });
+  });
+
+  function renderMatch() {
+    var box = document.getElementById("match");
+    if (!sent) { box.hidden = true; return; }
+    var ids = FIT[document.getElementById("f-species").value] || FIT.any;
+    var ja = B.getLang() === "ja";
+    document.getElementById("match-list").innerHTML = ids.map(function (id) {
+      var s = S.shokunin.find(function (x) { return x.id === id; });
+      return '<div class="craft"><div class="seal" aria-hidden="true">' + SEAL[id] + '</div><div style="flex:1;min-width:0"><p class="row__title">' + esc(ja ? s.name : s.en_name) + '</p><p class="row__meta">' + esc(ja ? s.title : s.en_title) + "</p></div></div>";
+    }).join("");
+    box.hidden = false;
+  }
+  document.getElementById("send").addEventListener("click", function () {
+    sent = true;
+    window.toast(B.T({ ja: "送りました（モック）", en: "Sent (mock)", es: "Enviado (maqueta)", zh: "已发送（模型）" }));
+    renderMatch();
+    document.getElementById("match").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  document.getElementById("f-species").addEventListener("change", renderMatch);
+  document.addEventListener("langchange", renderMatch);
+});
+</script>
+</body>
+</html>

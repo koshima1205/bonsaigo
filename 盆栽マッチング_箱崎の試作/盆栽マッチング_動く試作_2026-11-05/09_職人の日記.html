@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>09 職人の日記｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .legacy { border-left: 3px solid var(--kin); padding: var(--s1) 0 var(--s1) var(--s4); margin: 0 0 var(--s5); color: var(--sumi-2); font-family: var(--mincho); font-size: var(--fs-m); line-height: 1.9; }
+  .row-btn { width: 100%; text-align: left; background: none; border: 0; padding: var(--s4) 0; cursor: pointer; display: block; min-height: 44px; }
+  .rows > li { padding: 0; }
+  .row-btn__date { font-size: var(--fs-s); color: var(--sumi-3); margin: 0; }
+  .row-btn__title { font-weight: 700; line-height: 1.5; margin: 0 0 var(--s1); }
+  .row-btn__meta { display: flex; flex-wrap: wrap; gap: 0 var(--s3); font-size: var(--fs-s); color: var(--sumi-3); margin: 0; }
+  .season { display: inline-block; font-size: 14px; padding: 2px 8px; border-radius: 99px; background: var(--koke-usu); color: var(--koke); }
+  .back { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; color: var(--koke); font-weight: 700; cursor: pointer; }
+  .stage { margin: var(--s5) 0; }
+  .stage__no { font-size: 14px; color: var(--sumi-3); letter-spacing: 0.08em; margin: 0 0 var(--s1); }
+  .voice-box { background: var(--kami-2); border-radius: var(--r); padding: var(--s4); font-size: var(--fs-m); line-height: 1.9; }
+  .voice-box .note { margin: var(--s2) 0 0; }
+  .arrow { display: flex; justify-content: center; color: var(--sumi-3); margin: var(--s2) 0; }
+  .diary { font-family: var(--mincho); }
+  .diary p { font-size: 1.0625rem; line-height: 1.95; }
+  .how { margin-top: var(--s7); padding-top: var(--s5); border-top: 1px solid var(--sen); }
+  .how svg { width: 100%; height: auto; max-width: 360px; margin: var(--s3) 0; }
+  .how svg text { font-family: var(--gothic); fill: var(--sumi); }
+</style>
+</head>
+<body data-screen="09">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+
+    <section id="view-list">
+      
+      <h1 class="h1"><span class="t"><span data-l="ja">話すだけで、職人の日記になります</span><span data-l="en">Just by talking, a craftsperson's journal is written</span><span data-l="es">Con solo hablar, nace el diario del maestro</span><span data-l="zh">只要说话，就能成为匠人日记</span></span></h1>
+      <p class="legacy"><span class="t"><span data-l="ja">引退とともに消えてしまう知恵を、日々の言葉のまま残していきます。</span><span data-l="en">Wisdom that would disappear with retirement is kept, in the craftsperson's own everyday words.</span><span data-l="es">La sabiduría que desaparecería con la jubilación se conserva con las palabras del maestro.</span><span data-l="zh">将随着引退而消失的智慧，用匠人日常的话保留下来。</span></span></p>
+
+      <ul class="rows" id="dlist"></ul>
+
+      <section class="how">
+        <h2 class="h3" style="margin-top:0"><span class="t"><span data-l="ja">職人の側は、ボタン1つ</span><span data-l="en">For the craftsperson: one button</span><span data-l="es">Para el maestro: un solo botón</span><span data-l="zh">匠人这边：只需一个按钮</span></span></h2>
+        <svg viewBox="0 0 360 120" role="img" aria-label="Talk, speech becomes text, text becomes a journal">
+          <rect x="8" y="10" width="64" height="100" rx="10" fill="none" stroke="#23201B" stroke-width="2"/>
+          <circle cx="40" cy="78" r="21" fill="#26201B"/>
+          <g class="t"><text data-l="ja" x="40" y="83" text-anchor="middle" font-size="13" font-weight="700" style="fill:#fff">話す</text><text data-l="en" x="40" y="83" text-anchor="middle" font-size="13" font-weight="700" style="fill:#fff">Talk</text><text data-l="es" x="40" y="83" text-anchor="middle" font-size="13" font-weight="700" style="fill:#fff">Hablar</text><text data-l="zh" x="40" y="83" text-anchor="middle" font-size="13" font-weight="700" style="fill:#fff">说话</text></g>
+          <g class="t"><text data-l="ja" x="40" y="45" text-anchor="middle" font-size="13">押すだけ</text><text data-l="en" x="40" y="45" text-anchor="middle" font-size="13">Press</text><text data-l="es" x="40" y="45" text-anchor="middle" font-size="13">Pulsa</text><text data-l="zh" x="40" y="45" text-anchor="middle" font-size="13">按一下</text></g>
+          <path d="M82 60h34" stroke="#8C8577" stroke-width="2"/><path d="M110 54l8 6-8 6" fill="none" stroke="#8C8577" stroke-width="2"/>
+          <rect x="124" y="30" width="96" height="60" rx="6" fill="#F1EEE8" stroke="#E3DED4"/>
+          <g class="t"><text data-l="ja" x="172" y="60" text-anchor="middle" font-size="13">声が文字になる</text><text data-l="en" x="172" y="60" text-anchor="middle" font-size="13">Voice to text</text><text data-l="es" x="172" y="60" text-anchor="middle" font-size="13">Voz a texto</text><text data-l="zh" x="172" y="60" text-anchor="middle" font-size="13">声音变文字</text></g>
+          <path d="M228 60h34" stroke="#8C8577" stroke-width="2"/><path d="M256 54l8 6-8 6" fill="none" stroke="#8C8577" stroke-width="2"/>
+          <rect x="270" y="20" width="82" height="80" rx="4" fill="#FBF8F2" stroke="#D8CFBC"/>
+          <path d="M280 40h62M280 54h62M280 68h46" stroke="#8C8577" stroke-width="2"/>
+          <g class="t"><text data-l="ja" x="311" y="90" text-anchor="middle" font-size="14">日記</text><text data-l="en" x="311" y="90" text-anchor="middle" font-size="14">Journal</text><text data-l="es" x="311" y="90" text-anchor="middle" font-size="14">Diario</text><text data-l="zh" x="311" y="90" text-anchor="middle" font-size="14">日记</text></g>
+        </svg>
+        <p class="note"><span class="t"><span data-l="ja">職人は「話す」を押して、いつもの言葉で話すだけ。書く・直す・翻訳するのはAIがします。公開するかどうかは、職人が「OK」で決めます。</span><span data-l="en">The craftsperson presses “Talk” and speaks as usual. The AI does the writing and translating. The craftsperson decides whether to publish with a single “OK”.</span><span data-l="es">El maestro pulsa «Hablar»; la IA escribe y traduce. Publicar depende de su «OK».</span><span data-l="zh">匠人按下“说话”，像平时一样说就行。写作和翻译由AI完成，是否发布由匠人点“OK”决定。</span></span></p>
+        <a class="btn btn--wide" href="04_職人の画面_相談を受ける.html"><span class="t"><span data-l="ja">職人の画面を見る</span><span data-l="en">See the craftsperson's screen</span><span data-l="es">Ver la pantalla del maestro</span><span data-l="zh">查看匠人界面</span></span></a>
+      </section>
+    </section>
+
+    <section id="view-detail" hidden>
+      <button type="button" class="back" id="back"><span class="t"><span data-l="ja">← 日記の一覧へ</span><span data-l="en">← All entries</span><span data-l="es">← Todas las entradas</span><span data-l="zh">← 全部日记</span></span></button>
+      <div id="detail"></div>
+    </section>
+
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var S = window.SAMPLE, B = window.BONSAI, T = B.T;
+  var openId = null;
+
+  /* 日記のサンプル。季節の作業として一般に言える範囲にとどめる */
+  var D = [
+    { id: "d3", date: "2026-11-02", s: "s1", season: { ja: "晩秋", en: "Late autumn", es: "Otoño tardío", zh: "晚秋" },
+      title: { ja: "黒松の古葉を取る", en: "Pulling the old needles from the black pines", es: "Quitar las agujas viejas del pino negro", zh: "摘除黑松的老叶" },
+      voice: "今日は黒松の古葉取りをした。内側の茶色くなった葉を、手でそっと引いてやる。風通しがよくなると、中の芽にも日が入るんだよ。やりすぎると木が弱るから、ほどほどにね。",
+      diary: {
+        ja: ["今日は黒松の<b class=\"term\" data-term=\"古葉取り\">古葉取り</b>をした。内側で茶色くなった葉を、手でそっと引く。", "<b class=\"term\" data-term=\"風通し\">風通し</b>がよくなり、中の芽にも日が届く。ただし、やりすぎると木が弱るので、ほどほどにしている。"],
+        en: ["Today I pulled the old needles from the black pines (<b class=\"term\" data-term=\"古葉取り\">old-needle removal</b>) — gently, by hand, taking the browned ones from the inside.", "It improves <b class=\"term\" data-term=\"風通し\">airflow</b> and lets light reach the buds within. But overdoing it weakens the tree, so I keep it moderate."],
+        es: ["Hoy quité las agujas viejas del pino negro, con la mano y con cuidado.", "Mejora la ventilación y deja pasar la luz a las yemas interiores. Sin pasarse."],
+        zh: ["今天摘了黑松的老叶，用手轻轻拉下内侧变褐的叶子。", "通风变好，里面的芽也能见光；但摘太多会让树变弱，所以适度。"] } },
+    { id: "d2", date: "2026-10-26", s: "s2", season: { ja: "秋", en: "Autumn", es: "Otoño", zh: "秋" },
+      title: { ja: "もみじの色づきを待つ", en: "Waiting for the maples to color", es: "Esperando el color de los arces", zh: "等待枫树变色" },
+      voice: "もみじが色づいてきた。朝晩が冷えると赤くなるのが早いね。この時期は水を切らさないように。葉が傷むから、強い風の当たる所は避けて置いてる。",
+      diary: {
+        ja: ["もみじが色づいてきた。朝晩の冷え込みがあると、<b class=\"term\" data-term=\"紅葉\">紅葉</b>が進むのが早い。", "この時期も<b class=\"term\" data-term=\"水切れ\">水切れ</b>には気をつける。強い風で葉が傷まないよう、<b class=\"term\" data-term=\"置き場所\">置き場所</b>も選んでいる。"],
+        en: ["The maples have begun to color. Cool mornings and evenings tend to speed up the <b class=\"term\" data-term=\"紅葉\">autumn color</b>.", "Even now I watch out for <b class=\"term\" data-term=\"水切れ\">drying out</b>, and I choose the <b class=\"term\" data-term=\"置き場所\">placement</b> so strong wind doesn't damage the leaves."],
+        es: ["Los arces empiezan a colorear. El frío de mañanas y noches acelera el color.", "Sigo vigilando que no se seque y los coloco lejos del viento."],
+        zh: ["枫树开始变色了。早晚凉的时候，红得更快。", "这个季节也要小心缺水，并把树放在不被大风吹到的地方。"] } },
+    { id: "d1", date: "2026-10-19", s: "s3", season: { ja: "秋", en: "Autumn", es: "Otoño", zh: "秋" },
+      title: { ja: "真柏の針金をはずす", en: "Removing the wire from the juniper", es: "Quitar el alambre del enebro", zh: "拆除真柏的铁丝" },
+      voice: "真柏の針金を外した。去年の春に掛けたやつ。枝が太ってきて、食い込む前に外さないといかん。切りながら、ゆっくり外していく。形が決まったら、しばらくそのままにする。",
+      diary: {
+        ja: ["真柏の<b class=\"term\" data-term=\"針金外し\">針金外し</b>をした。去年の春に掛けたものだ。", "枝が太って食い込む前に外すのが基本。短く切りながら、ゆっくり外す。形が決まったら、しばらくそのままにしておく。"],
+        en: ["I removed the wire from the juniper (<b class=\"term\" data-term=\"針金外し\">unwiring</b>) — wire I'd put on last spring.", "The basic rule is to take it off before the branch thickens and the wire bites in. I cut it into short pieces and remove it slowly. Once the shape has set, I leave the tree alone for a while."],
+        es: ["Quité el alambre del enebro, puesto la primavera pasada.", "Hay que quitarlo antes de que la rama engorde y el alambre se clave."],
+        zh: ["拆除了真柏的铁丝，是去年春天缠上的。", "基本原则是在枝条变粗、铁丝嵌入之前拆下，边剪短边慢慢拆。"] } }
+  ];
+
+  function sOf(id) { return S.shokunin.find(function (s) { return s.id === id; }); }
+  function nameOf(s) { return B.getLang() === "ja" ? s.name : s.en_name; }
+  function pick(o) { var l = B.getLang(); return o[l] || o.en || o.ja; }
+
+  function renderList() {
+    document.getElementById("dlist").innerHTML = D.map(function (d) {
+      var s = sOf(d.s);
+      return '<li><button type="button" class="row-btn" data-id="' + d.id + '"><p class="row-btn__date">' + d.date + "</p>" +
+        '<p class="row-btn__title">' + esc(pick(d.title)) + "</p>" +
+        '<p class="row-btn__meta"><span>' + esc(nameOf(s)) + '</span><span class="season">' + esc(pick(d.season)) + "</span></p></button></li>";
+    }).join("");
+    document.querySelectorAll(".row-btn").forEach(function (b) { b.addEventListener("click", function () { open(b.getAttribute("data-id")); }); });
+  }
+  function open(id) {
+    openId = id;
+    document.getElementById("view-list").hidden = true; document.getElementById("view-detail").hidden = false;
+    renderDetail(); window.scrollTo(0, 0);
+  }
+  function renderDetail() {
+    if (!openId) return;
+    var d = D.find(function (x) { return x.id === openId; }), s = sOf(d.s), lang = B.getLang();
+    var body = d.diary[lang] || d.diary.en;
+    var h = '<p class="eyebrow">' + d.date + " ・ " + esc(pick(d.season)) + "</p>" +
+      '<h1 class="h1" style="font-size:var(--fs-xl)">' + esc(pick(d.title)) + "</h1>" +
+      '<p class="row__meta"><a href="13_職人を探す.html" style="color:var(--kin);font-weight:700;text-decoration:none">' + esc(nameOf(s)) + "</a> ・ " + esc(lang === "ja" ? s.garden : s.en_garden) + "</p>" +
+      '<figure class="zu" style="margin:var(--s4) 0" data-zu="' + ({ s1: "moyogi", s2: "momiji", s3: "shimpaku" }[d.s] || "moyogi") + '" data-cap="' + esc(T({ ja: "この職人の木（写真の代わりの図）", en: "One of this craftsperson's trees (a drawing stands in for a photo)", es: "Un árbol del maestro (dibujo)", zh: "这位匠人的树（示意图）" })) + '"></figure>' +
+      '<section class="stage"><p class="stage__no">' + esc(T({ ja: "1　職人が話した言葉（日本語・文字起こし）", en: "1  What the craftsperson said (Japanese, transcribed)", es: "1  Lo que dijo el maestro (japonés)", zh: "1  匠人说的话（日语・文字记录）" })) + "</p>" +
+      '<div class="voice-box" lang="ja">「' + esc(d.voice) + '」<p class="note">' + esc(T({ ja: "話したままの言葉です。言い直しや整えはしていません。", en: "Exactly as spoken, not edited.", es: "Tal como se dijo, sin editar.", zh: "原样记录，未作修改。" })) + "</p></div></section>" +
+      '<div class="arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v16M6 14l6 6 6-6"/></svg></div>' +
+      '<section class="stage"><p class="stage__no">' + esc(T({ ja: "2　AIがまとめた日記", en: "2  The journal entry, written by AI", es: "2  El diario, redactado por la IA", zh: "2  AI整理的日记" })) +
+      ' <span class="sample">' + esc(T({ ja: "職人が確認してから公開", en: "Published after the craftsperson's OK", es: "Se publica tras el OK del maestro", zh: "匠人确认后发布" })) + '</span></p><div class="diary">' +
+      body.map(function (p) { return "<p>" + p + "</p>"; }).join("") + "</div></section>" +
+      '<p class="note">' + esc(T({ ja: "内容は季節の作業として一般的なことです。木や地域によって時期ややり方は変わります。", en: "This describes a common seasonal task; timing and method vary by tree and region.", es: "Describe una labor estacional habitual; varía según el árbol y la zona.", zh: "内容为常见的季节性作业，时期和做法因树种和地区而异。" })) + "</p>" +
+      '<div style="display:grid;gap:var(--s3);margin-top:var(--s5)"><a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html">' + esc(T({ ja: "この職人に自分の木のことを聞く", en: "Ask this craftsperson about your tree", es: "Consultar a este maestro", zh: "就我的树请教这位匠人" })) + "</a>" +
+      '<a class="btn btn--quiet btn--wide" href="06_質問と答え_QandA.html">' + esc(T({ ja: "関連する質問と答えを見る", en: "See related questions", es: "Ver preguntas relacionadas", zh: "查看相关问答" })) + "</a></div>";
+    document.getElementById("detail").innerHTML = h;
+    window.drawZu(document.getElementById("detail"));
+  }
+  document.getElementById("back").addEventListener("click", function () {
+    openId = null; document.getElementById("view-list").hidden = false; document.getElementById("view-detail").hidden = true;
+  });
+  renderList();
+  document.addEventListener("langchange", function () { renderList(); renderDetail(); });
+});
+</script>
+</body>
+</html>

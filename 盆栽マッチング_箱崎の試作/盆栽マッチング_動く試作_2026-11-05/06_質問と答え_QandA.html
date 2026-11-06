@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>06 質問と答え（Q&A）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .chips-scroll { margin: 0 calc(var(--s4) * -1) var(--s4); padding: 0 var(--s4); display: flex; gap: var(--s2); overflow-x: auto; scrollbar-width: none; }
+  .chips-scroll::-webkit-scrollbar { display: none; }
+  .chips-scroll .chip { flex: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .qrow { width: 100%; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; display: block; }
+  .qrow__title { font-weight: 700; line-height: 1.5; margin: 0 0 var(--s1); }
+  .qrow__meta { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); font-size: var(--fs-s); color: var(--sumi-3); margin: 0; }
+  .qrow__meta b { color: var(--kin); font-weight: 700; }
+  .rows > li { padding: 0; }
+  .rows > li > .qrow { padding: var(--s4) 0; min-height: 44px; }
+  .back { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; color: var(--koke); font-weight: 700; cursor: pointer; }
+  .qhead { display: flex; gap: var(--s3); align-items: flex-start; }
+  .qhead .zu { width: 96px; flex: none; }
+  .ans { padding: var(--s5) 0; border-top: 1px solid var(--sen); }
+  .ans__who { display: flex; gap: var(--s3); align-items: center; margin-bottom: var(--s3); }
+  .seal { width: 40px; height: 40px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.0625rem; }
+  .ans__who a { color: var(--kin); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--sen); }
+  .view { display: inline-block; font-size: 14px; padding: 2px 8px; border: 1px solid var(--kin); color: var(--kin); border-radius: 99px; margin-left: var(--s2); }
+  .ans p { line-height: 1.85; }
+  .sumbox { margin: var(--s5) 0; }
+  .sumbox ul { margin: var(--s2) 0 0; padding-left: 1.2em; }
+  .sumbox li { margin-bottom: var(--s2); }
+  .grow { display: grid; gap: var(--s1); }
+  .glo { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s2); }
+  .glo .chip { min-height: 44px; display: inline-flex; align-items: center; }
+</style>
+</head>
+<body data-screen="06">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+
+    <section id="view-list">
+      <p class="eyebrow"><span class="t"><span data-l="ja">職人が答えた質問</span><span data-l="en">Questions answered by craftspeople</span><span data-l="es">Preguntas respondidas por maestros</span><span data-l="zh">匠人回答过的问题</span></span></p>
+      <h1 class="h1"><span class="t"><span data-l="ja">質問が増えるほど、答えの重なりが見えてきます</span><span data-l="en">The more questions, the clearer the pattern</span><span data-l="es">Cuantas más preguntas, más claro el patrón</span><span data-l="zh">问题越多，共通的答案越清楚</span></span></h1>
+      <p class="lead"><span class="t"><span data-l="ja">1つの質問に、何人もの職人が答えます。</span><span data-l="en">Each question is answered by several craftspeople, not just one.</span><span data-l="es">Cada pregunta la responden varios maestros.</span><span data-l="zh">每个问题由多位匠人回答。</span></span></p>
+      <div class="chips-scroll" id="axes" role="group" aria-label="axis"></div>
+      <ul class="rows" id="qlist"></ul>
+      <p class="note" style="margin-top:var(--s4)"><span class="t"><span data-l="ja">質問の数・答えた人数はサンプルです。</span><span data-l="en">Question and answer counts are sample figures.</span><span data-l="es">Las cifras son de ejemplo.</span><span data-l="zh">数字均为示例。</span></span></p>
+    </section>
+
+    <section id="view-detail" hidden>
+      <button type="button" class="back" id="back"><span class="t"><span data-l="ja">← 質問の一覧へ</span><span data-l="en">← All questions</span><span data-l="es">← Todas las preguntas</span><span data-l="zh">← 全部问题</span></span></button>
+      <div id="detail"></div>
+    </section>
+
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var S = window.SAMPLE, B = window.BONSAI, T = B.T;
+  var axis = "all", openId = null;
+
+  var AXES = [
+    { k: "all", t: { ja: "すべて", en: "All", es: "Todas", zh: "全部" } },
+    { k: "grow", t: { ja: "育て方", en: "Basics", es: "Cuidados", zh: "养护" } },
+    { k: "water", t: { ja: "水やり", en: "Watering", es: "Riego", zh: "浇水" } },
+    { k: "prune", t: { ja: "剪定と針金", en: "Pruning & wiring", es: "Poda y alambre", zh: "修剪与蟠扎" } },
+    { k: "repot", t: { ja: "植え替えと土", en: "Repotting & soil", es: "Trasplante y sustrato", zh: "换盆与土" } },
+    { k: "sick", t: { ja: "病気と不調", en: "Problems", es: "Problemas", zh: "病害与不适" } },
+    { k: "shape", t: { ja: "木の形", en: "Tree styles", es: "Estilos", zh: "树形" } }
+  ];
+
+  /* 質問のサンプル。q-0142 を一番上にして、3人の答えを載せる */
+  var Q = [
+    { id: "q-0142", axis: "water", n: 3, tree: { ja: "黒松", en: "Black pine", es: "Pino negro", zh: "黑松" },
+      title: { ja: "黒松の葉が黄色くなりました。毎日水をやっています", en: "My black pine's needles are turning yellow. I water it every day", es: "Las hojas de mi pino negro se ponen amarillas. Lo riego a diario", zh: "我的黑松叶子变黄了，我每天都浇水" },
+      from: "Emma (sample) ・ Portland",
+      answers: [
+        { s: "s1", view: { ja: "根と土", en: "Roots & soil", es: "Raíces y tierra", zh: "根与土" },
+          body: {
+            ja: ["写真を見ると、黄色いのは下のほうの古い葉です。土の表面が湿ったままなので、<b class=\"term\" data-term=\"水のやりすぎ\">水のやりすぎ</b>が考えられます。", "鉢の土が乾いてから、たっぷりやってください。毎日やらなくて大丈夫です。"],
+            en: ["In the photo, the yellow needles are the older ones low on the tree, and the soil surface stays wet. That points to <b class=\"term\" data-term=\"水のやりすぎ\">overwatering</b>.", "Wait until the soil in the pot has dried, then water deeply. Daily watering isn't needed."],
+            es: ["Las hojas amarillas son las viejas, y la tierra sigue húmeda: parece <b class=\"term\" data-term=\"水のやりすぎ\">exceso de riego</b>."], zh: ["黄的是下面的老叶，土表一直是湿的，可能是<b class=\"term\" data-term=\"水のやりすぎ\">浇水过多</b>。"] } },
+        { s: "s2", view: { ja: "置き場所", en: "Placement", es: "Ubicación", zh: "摆放位置" },
+          body: {
+            ja: ["ベランダの午後の日（<b class=\"term\" data-term=\"西日\">西日</b>）は、鉢の中が熱くなりやすいです。私はまず<b class=\"term\" data-term=\"置き場所\">置き場所</b>を見ます。", "午後は半日陰に動かして、鉢の中の温度が上がりすぎないようにしてください。"],
+            en: ["Strong afternoon sun (<b class=\"term\" data-term=\"西日\">late-afternoon sun</b>) can overheat the pot. I look at <b class=\"term\" data-term=\"置き場所\">placement</b> first.", "Move the tree into partial shade in the afternoon so the pot doesn't get too hot."],
+            es: ["El sol de la tarde calienta mucho la maceta. Ponlo a media sombra por la tarde."], zh: ["下午的西晒会让盆里过热，下午请移到半阴处。"] } },
+        { s: "s3", view: { ja: "根を見る", en: "Check the roots", es: "Mira las raíces", zh: "检查根部" },
+          body: {
+            ja: ["原因が水か日当たりかは、根を見ないと決められません。来年の春の<b class=\"term\" data-term=\"植え替え\">植え替え</b>のとき、<b class=\"term\" data-term=\"根腐れ\">根腐れ</b>がないか確かめてください。", "根が茶色くやわらかければ、土の<b class=\"term\" data-term=\"水はけ\">水はけ</b>も見直します。"],
+            en: ["Whether it's water or sun, you can't tell without seeing the roots. At next spring's <b class=\"term\" data-term=\"植え替え\">repotting</b>, check for <b class=\"term\" data-term=\"根腐れ\">root rot</b>.", "If the roots are brown and soft, rethink the soil's <b class=\"term\" data-term=\"水はけ\">drainage</b> too."],
+            es: ["Revisa las raíces al trasplantar en primavera."], zh: ["明年春天换盆时，请检查根部。"] } }
+      ],
+      sum: { ja: ["水は「毎日」ではなく、土が乾いてから", "午後の強い日ざしは避ける", "決め手は根。春の植え替えで確かめる"], en: ["Water when the soil has dried, not on a daily schedule", "Avoid strong afternoon sun", "The roots decide it — check them at spring repotting"], es: ["Riega cuando la tierra se seque, no a diario", "Evita el sol fuerte de la tarde", "Las raíces deciden: revísalas al trasplantar"], zh: ["土干了再浇，不要每天浇", "避开下午的强光", "关键在根，春天换盆时检查"] },
+      rel: ["q-0087", "q-0131"] },
+
+    { id: "q-0087", axis: "water", n: 4, tree: { ja: "もみじ", en: "Trident maple", es: "Arce tridente", zh: "三角枫" },
+      title: { ja: "夏に葉の先が茶色くなります。水が足りないのでしょうか", en: "Leaf edges turn brown in summer. Is it lack of water?", es: "En verano las puntas de las hojas se ponen marrones", zh: "夏天叶尖发褐，是缺水吗？" },
+      from: "Wei (sample) ・ 成都",
+      answers: [
+        { s: "s2", view: { ja: "置き場所", en: "Placement", es: "Ubicación", zh: "摆放位置" }, body: { ja: ["水切れより<b class=\"term\" data-term=\"葉焼け\">葉焼け</b>のことが多いです。真夏の午後は<b class=\"term\" data-term=\"遮光\">遮光</b>してみてください。"], en: ["It's more often <b class=\"term\" data-term=\"葉焼け\">leaf scorch</b> than thirst. In midsummer afternoons, try <b class=\"term\" data-term=\"遮光\">shading</b> the tree."] } },
+        { s: "s1", view: { ja: "水やり", en: "Watering", es: "Riego", zh: "浇水" }, body: { ja: ["朝にたっぷり、土の表面が乾いたら夕方にも。<b class=\"term\" data-term=\"乾湿のメリハリ\">乾湿のメリハリ</b>が大事です。"], en: ["Water deeply in the morning, and again in the evening if the surface has dried. <b class=\"term\" data-term=\"乾湿のメリハリ\">Let it dry and wet in turns</b>."] } }
+      ],
+      sum: { ja: ["夏は水切れと葉焼けの両方に気をつける", "午後の日ざしを弱める"], en: ["In summer, watch for both thirst and scorch", "Soften the afternoon sun"], es: ["En verano, vigila la sed y las quemaduras"], zh: ["夏天既要防缺水，也要防叶烧"] },
+      rel: ["q-0142"] },
+
+    { id: "q-0119", axis: "prune", n: 3, tree: { ja: "真柏", en: "Juniper", es: "Enebro", zh: "真柏" },
+      title: { ja: "針金を掛けたら、枝の跡が残ってしまいました", en: "The wire left marks on the branches", es: "El alambre dejó marcas en las ramas", zh: "蟠扎后枝条留下了痕迹" },
+      from: "Lucía (sample) ・ Valencia",
+      answers: [
+        { s: "s3", view: { ja: "掛ける時期", en: "Timing", es: "Momento", zh: "时机" }, body: { ja: ["<b class=\"term\" data-term=\"針金掛け\">針金掛け</b>は、枝が太るより前に外すのが基本です。早めに様子を見てください。"], en: ["With <b class=\"term\" data-term=\"針金掛け\">wiring</b>, remove the wire before the branch thickens into it. Check early and often."] } },
+        { s: "s1", view: { ja: "外し方", en: "Removing", es: "Cómo quitarlo", zh: "拆除方法" }, body: { ja: ["<b class=\"term\" data-term=\"針金外し\">針金外し</b>は、巻いた向きとは逆に、短く切りながら外すと枝を傷めにくいです。"], en: ["For <b class=\"term\" data-term=\"針金外し\">unwiring</b>, cut the wire into short pieces rather than unwinding it, to spare the branch."] } },
+        { s: "s2", view: { ja: "木の様子", en: "Tree health", es: "Estado del árbol", zh: "树势" }, body: { ja: ["<b class=\"term\" data-term=\"樹勢\">樹勢</b>が弱っているときは、針金は控えめにします。"], en: ["If the tree's <b class=\"term\" data-term=\"樹勢\">vigor</b> is low, wire lightly."] } }
+      ],
+      sum: { ja: ["枝が太る前に外す", "外すときは短く切る"], en: ["Remove before the branch thickens", "Cut the wire into short pieces"], es: ["Quítalo antes de que la rama engorde"], zh: ["在枝条变粗前拆除"] },
+      rel: ["q-0142"] },
+
+    { id: "q-0131", axis: "repot", n: 3, tree: { ja: "黒松", en: "Black pine", es: "Pino negro", zh: "黑松" },
+      title: { ja: "植え替えはいつ、どんな土でするのがよいですか", en: "When should I repot, and with what soil?", es: "¿Cuándo trasplantar y con qué sustrato?", zh: "什么时候换盆？用什么土？" },
+      from: "Emma (sample) ・ Portland",
+      answers: [
+        { s: "s1", view: { ja: "時期", en: "Timing", es: "Momento", zh: "时期" }, body: { ja: ["多くの木は、春の<b class=\"term\" data-term=\"芽出し\">芽出し</b>の前が目安です。木によって違うので、写真を送ってください。"], en: ["For many trees, the weeks before spring <b class=\"term\" data-term=\"芽出し\">bud break</b> are a good guide. It varies by tree, so send a photo."] } },
+        { s: "s3", view: { ja: "土", en: "Soil", es: "Sustrato", zh: "土壤" }, body: { ja: ["<b class=\"term\" data-term=\"赤玉土\">赤玉土</b>を中心に、<b class=\"term\" data-term=\"水はけ\">水はけ</b>のよい<b class=\"term\" data-term=\"用土\">用土</b>を選びます。"], en: ["Choose a free-draining <b class=\"term\" data-term=\"用土\">soil mix</b>, built around <b class=\"term\" data-term=\"赤玉土\">akadama</b>."] } },
+        { s: "s2", view: { ja: "根", en: "Roots", es: "Raíces", zh: "根" }, body: { ja: ["鉢の底から根が出ていたら<b class=\"term\" data-term=\"根詰まり\">根詰まり</b>のしるしです。"], en: ["Roots coming out of the pot's bottom are a sign of <b class=\"term\" data-term=\"根詰まり\">root-bound</b>."] } }
+      ],
+      sum: { ja: ["時期は芽が動く前の春が目安", "水はけのよい土を選ぶ"], en: ["Spring, before buds move, is a common guide", "Pick a free-draining soil"], es: ["La primavera antes de brotar es una guía común"], zh: ["春天发芽前是常见的时机"] },
+      rel: ["q-0142"] },
+
+    { id: "q-0098", axis: "sick", n: 2, tree: { ja: "皐月", en: "Satsuki azalea", es: "Azalea satsuki", zh: "皋月杜鹃" },
+      title: { ja: "葉に白い粉のようなものがつきました", en: "A white powder has appeared on the leaves", es: "Un polvo blanco en las hojas", zh: "叶子上出现了白色粉末" },
+      from: "Lucía (sample) ・ Valencia",
+      answers: [
+        { s: "s2", view: { ja: "風通し", en: "Airflow", es: "Ventilación", zh: "通风" }, body: { ja: ["<b class=\"term\" data-term=\"うどんこ病\">うどんこ病</b>の可能性があります。<b class=\"term\" data-term=\"風通し\">風通し</b>をよくし、傷んだ葉は取ってください。"], en: ["It may be <b class=\"term\" data-term=\"うどんこ病\">powdery mildew</b>. Improve <b class=\"term\" data-term=\"風通し\">airflow</b> and remove damaged leaves."] } },
+        { s: "s1", view: { ja: "写真で確認", en: "Send a photo", es: "Envía una foto", zh: "发照片确认" }, body: { ja: ["別の原因もあるので、近くから撮った写真を送ってもらえると確かです。"], en: ["Other causes are possible; a close-up photo would let me be sure."] } }
+      ],
+      sum: { ja: ["風通しをよくする", "近くからの写真で原因を確かめる"], en: ["Improve airflow", "Confirm the cause with a close-up photo"], es: ["Mejora la ventilación"], zh: ["改善通风"] },
+      rel: ["q-0142"] },
+
+    { id: "q-0074", axis: "shape", n: 2, tree: { ja: "石付き", en: "Rock planting", es: "Sobre roca", zh: "石附" },
+      title: { ja: "石付きの盆栽は、どの角度から見るのがよいですか", en: "From which angle should a rock planting be viewed?", es: "¿Desde qué ángulo se ve mejor un bonsái sobre roca?", zh: "石附盆景从哪个角度欣赏最好？" },
+      from: "Wei (sample) ・ 成都",
+      answers: [
+        { s: "s3", view: { ja: "見立て", en: "The idea", es: "La idea", zh: "意境" }, body: { ja: ["<b class=\"term\" data-term=\"石付き\">石付き</b>は、石を山の崖に見立てます。崖の迫力が伝わる側を<b class=\"term\" data-term=\"正面\">正面</b>にします。"], en: ["In a <b class=\"term\" data-term=\"石付き\">rock planting</b>, the stone stands for a mountain cliff. Choose as the <b class=\"term\" data-term=\"正面\">front</b> the side where the cliff looks most dramatic."] } },
+        { s: "s1", view: { ja: "木の向き", en: "The tree", es: "El árbol", zh: "树的朝向" }, body: { ja: ["木の幹の動きが、石の形とつり合う向きも見てください。"], en: ["Also look for the angle where the trunk's movement balances the shape of the stone."] } }
+      ],
+      sum: { ja: ["石を崖に見立て、迫力が出る側を正面に", "幹と石のつり合いも見る"], en: ["Treat the stone as a cliff; front is where it looks strongest", "Check the balance of trunk and stone"], es: ["La roca es un acantilado"], zh: ["把石头看作山崖"] },
+      rel: ["q-0142"] }
+  ];
+
+  function qOf(id) { return Q.find(function (q) { return q.id === id; }); }
+  function sOf(id) { return S.shokunin.find(function (s) { return s.id === id; }); }
+  function nameOf(s) { return B.getLang() === "ja" ? s.name : s.en_name; }
+  function T2(o) { return o[B.getLang()] || o.en || o.ja; }
+
+  function renderAxes() {
+    var box = document.getElementById("axes");
+    box.innerHTML = AXES.map(function (a) {
+      return '<button type="button" class="chip" data-k="' + a.k + '" aria-pressed="' + (axis === a.k) + '">' + esc(T(a.t)) + "</button>";
+    }).join("");
+    box.querySelectorAll(".chip").forEach(function (b) {
+      b.addEventListener("click", function () { axis = b.getAttribute("data-k"); renderAxes(); renderList(); });
+    });
+  }
+  function renderList() {
+    var rows = Q.filter(function (q) { return axis === "all" || q.axis === axis; });
+    var ul = document.getElementById("qlist");
+    if (!rows.length) { ul.innerHTML = '<li><p class="muted" style="padding:var(--s4) 0">' + esc(T({ ja: "この軸の質問はまだありません。", en: "No questions on this topic yet." })) + "</p></li>"; return; }
+    ul.innerHTML = rows.map(function (q) {
+      var ax = AXES.find(function (a) { return a.k === q.axis; });
+      return '<li><button type="button" class="qrow" data-id="' + q.id + '"><p class="qrow__title">' + esc(T2(q.title)) + "</p>" +
+        '<p class="qrow__meta"><span><b>' + esc(T({ ja: q.n + "人の職人が回答", en: q.n + " craftspeople answered", es: q.n + " maestros respondieron", zh: q.n + "位匠人回答" })) + "</b></span>" +
+        "<span>" + esc(T2(q.tree)) + "</span><span>" + esc(T(ax.t)) + "</span><span>" + q.id + "</span></p></button></li>";
+    }).join("");
+    ul.querySelectorAll(".qrow").forEach(function (b) { b.addEventListener("click", function () { open(b.getAttribute("data-id")); }); });
+  }
+
+  function open(id) {
+    openId = id;
+    document.getElementById("view-list").hidden = true;
+    document.getElementById("view-detail").hidden = false;
+    renderDetail();
+    window.scrollTo(0, 0);
+  }
+  function close() {
+    openId = null;
+    document.getElementById("view-list").hidden = false;
+    document.getElementById("view-detail").hidden = true;
+  }
+
+  function renderDetail() {
+    if (!openId) return;
+    var q = qOf(openId), lang = B.getLang();
+    var h = '<p class="eyebrow">' + q.id + " ・ " + esc(T2(q.tree)) + " ・ " + esc(q.from) + "</p>" +
+      '<div class="qhead"><h1 class="h1" style="font-size:var(--fs-xl);margin:0">' + esc(T2(q.title)) + "</h1></div>" +
+      '<p class="lead" style="margin-top:var(--s3)">' + esc(T({ ja: "1つの質問に、" + q.n + "人の職人が答えています", en: q.n + " craftspeople have answered this one question", es: q.n + " maestros respondieron esta pregunta", zh: q.n + "位匠人回答了这个问题" })) + "</p>";
+    if (q.id === "q-0142") h += '<figure class="zu" data-zu="kiiro" data-cap="none" style="max-width:240px"></figure>';
+    h += q.answers.map(function (a) {
+      var s = sOf(a.s), paras = a.body[lang] || a.body.en || a.body.ja;
+      return '<article class="ans"><div class="ans__who"><div class="seal" aria-hidden="true">' + esc(s.name.charAt(0)) + "</div><div>" +
+        '<a href="13_職人を探す.html">' + esc(nameOf(s)) + '</a><span class="view">' + esc(T2(a.view)) + "</span>" +
+        '<p class="row__meta">' + esc(lang === "ja" ? s.garden + "・" + s.title : s.en_garden + " · " + s.en_title) + "</p></div></div>" +
+        paras.map(function (p) { return "<p>" + p + "</p>"; }).join("") + "</article>";
+    }).join("");
+    var sum = q.sum[lang] || q.sum.en;
+    h += '<section class="panel panel--koke sumbox"><p class="row__title" style="margin:0">' +
+      esc(T({ ja: "職人の答えが重なった所", en: "Where the craftspeople's answers overlap", es: "Dónde coinciden las respuestas", zh: "匠人回答的共同点" })) +
+      ' <span class="sample">' + esc(T({ ja: "AIがまとめました", en: "Summarized by AI", es: "Resumen de IA", zh: "AI总结" })) + "</span></p><ul>" +
+      sum.map(function (x) { return "<li>" + esc((q.n >= 3 ? T({ ja: "3人とも：", en: "All three: ", es: "Los tres: ", zh: "三位都说：" }) : T({ ja: "2人とも：", en: "Both: ", es: "Los dos: ", zh: "两位都说：" })) + x) + "</li>"; }).join("") + "</ul></section>";
+    h += '<hr class="rule"><h2 class="h3" style="margin-top:0">' + esc(T({ ja: "知見がたまる", en: "Knowledge builds up", es: "El conocimiento se acumula", zh: "知识在积累" })) + "</h2>";
+    var rel = (q.rel || []).map(qOf).filter(Boolean);
+    h += '<ul class="rows">' + rel.map(function (r) {
+      return '<li><button type="button" class="qrow" data-id="' + r.id + '" style="padding:var(--s3) 0"><p class="qrow__title" style="margin:0">' + esc(T2(r.title)) + '</p><p class="qrow__meta"><span>' + esc(T({ ja: "関連の質問", en: "Related question", es: "Pregunta relacionada", zh: "相关问题" })) + "</span></p></button></li>";
+    }).join("") + "</ul>";
+    h += '<div id="glo-note" style="margin-top:var(--s4)"></div>';
+    h += '<div style="display:grid;gap:var(--s3);margin-top:var(--s5)"><a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html">' +
+      esc(T({ ja: "自分の木のことを職人に聞く", en: "Ask a craftsperson about your own tree", es: "Consultar sobre mi árbol", zh: "就我的树请教匠人" })) + '</a>' +
+      '<a class="btn btn--quiet btn--wide" href="11_用語集.html">' + esc(T({ ja: "用語集を開く", en: "Open the glossary", es: "Abrir el glosario", zh: "打开术语表" })) + "</a></div>";
+    var box = document.getElementById("detail");
+    box.innerHTML = h;
+    window.drawZu(box);
+    box.querySelectorAll(".term").forEach(function (e) { e.setAttribute("data-term", e.getAttribute("data-term")); });
+    box.querySelectorAll(".qrow").forEach(function (b) { b.addEventListener("click", function () { open(b.getAttribute("data-id")); }); });
+    /* 用語集につながっている語の数 */
+    var terms = {};
+    box.querySelectorAll("article [data-term]").forEach(function (e) { terms[e.getAttribute("data-term")] = 1; });
+    var keys = Object.keys(terms);
+    document.getElementById("glo-note").innerHTML = '<p class="note" style="margin:0">' +
+      esc(T({ ja: "この答えは用語集の" + keys.length + "語につながっています", en: "These answers connect to " + keys.length + " glossary terms", es: "Estas respuestas se enlazan con " + keys.length + " términos del glosario", zh: "这些回答连接到术语表中的" + keys.length + "个词" })) +
+      '</p><div class="glo">' + keys.map(function (k) { var tt = window.findTerm(k); return '<b class="chip term" data-term="' + esc(k) + '">' + esc(k) + (tt && B.getLang() !== "ja" ? " · " + esc(tt.common_en) : "") + "</b>"; }).join("") + "</div>";
+  }
+
+  document.getElementById("back").addEventListener("click", close);
+  renderAxes(); renderList();
+  document.addEventListener("langchange", function () { renderAxes(); renderList(); renderDetail(); });
+  if (location.hash === "#q-0142") open("q-0142");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>10 学ぶ（歴史と育て方）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .group-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s3); margin: var(--s7) 0 var(--s2); }
+  .group-head:first-of-type { margin-top: var(--s5); }
+  .group-head .h2 { margin: 0; font-size: 1.3125rem; }
+  .group-head span.n { font-size: var(--fs-s); color: var(--sumi-3); white-space: nowrap; }
+  .group-lead { font-size: var(--fs-s); color: var(--sumi-2); margin: 0 0 var(--s3); }
+  .alink { display: flex; gap: var(--s3); align-items: center; width: 100%; min-height: 64px; padding: 0; background: none; border: 0; text-align: left; cursor: pointer; }
+  .alink:hover .row__title { color: var(--koke); }
+  .alink .row__thumb { width: 72px; flex: none; }
+  .alink .thumb-blank { width: 72px; height: 54px; flex: none; border-radius: var(--r); border: 1px dashed var(--sen); display: grid; place-items: center; font-family: var(--mincho); font-size: 1.25rem; color: var(--sumi-3); }
+  .alink > svg { width: 16px; height: 16px; stroke: var(--sumi-3); fill: none; stroke-width: 1.8; flex: none; }
+  .rows > li.a-li { padding: var(--s3) 0; }
+  .backbtn { display: inline-flex; align-items: center; gap: var(--s1); min-height: 44px; padding: 0; border: 0; background: none; color: var(--koke); cursor: pointer; font-weight: 700; font-size: var(--fs-s); margin: 0 0 var(--s2); }
+  .backbtn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  .draft-banner .en { display: block; margin-top: var(--s1); color: var(--sumi-2); }
+  .art h2.h3 { margin-top: var(--s6); font-family: var(--mincho); font-size: 1.3125rem; }
+  .art p { font-size: var(--fs-m); line-height: 1.9; }
+  .art .dummy { color: var(--sumi-2); }
+  .art .zu { margin: var(--s4) 0; }
+  .used-terms { margin-top: var(--s6); }
+  .chips .chip { min-height: 44px; display: inline-flex; align-items: center; font-family: inherit; }
+  .next { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); width: 100%; min-height: 64px; padding: var(--s3) var(--s4); border: 1px solid var(--sen); border-radius: var(--r); background: var(--kami-3); text-align: left; cursor: pointer; }
+  .next small { display: block; color: var(--sumi-3); font-size: 14px; }
+  .next strong { font-family: var(--mincho); font-size: var(--fs-l); line-height: 1.4; }
+</style>
+</head>
+<body data-screen="10">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <!-- 一覧 -->
+    <section id="view-list">
+      <p class="eyebrow"><span class="t"><span data-l="ja">学ぶ</span><span data-l="en">Learn</span><span data-l="es">Aprender</span><span data-l="zh">学习</span></span></p>
+      <h1 class="h1"><span class="t">
+        <span data-l="ja">盆栽の歴史と育て方を、順番に読めます</span>
+        <span data-l="en">Read the history and care of bonsai, step by step</span>
+        <span data-l="es">Historia y cuidados del bonsái, paso a paso</span>
+        <span data-l="zh">按顺序阅读盆栽的历史与养护</span>
+      </span></h1>
+      <div class="draft-banner">
+        <strong>【下書き・未確認】</strong> 記事の本文は、これから私たちが職人の話をもとに書きます。いまは並びと見せ方の見本です。
+        <span class="en">Draft, unchecked. The article text will be written by our team, based on what craftspeople tell us. This page only shows how the articles are arranged.</span>
+      </div>
+      <div id="groups"></div>
+      <hr class="rule">
+      <div style="display:grid;gap:var(--s3)">
+        <a class="btn btn--main btn--wide" href="11_用語集.html"><span class="t"><span data-l="ja">用語集で言葉を調べる（全122語）</span><span data-l="en">Look up terms in the glossary (122)</span><span data-l="es">Buscar en el glosario (122)</span><span data-l="zh">在术语表中查词（122 个）</span></span></a>
+        <a class="btn btn--quiet btn--wide" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">読んでも分からないことは職人に聞く</span><span data-l="en">Still unsure? Ask a craftsperson</span><span data-l="es">¿Dudas? Pregunta a un maestro</span><span data-l="zh">仍有疑问？请教匠人</span></span></a>
+      </div>
+    </section>
+
+    <!-- 1本の記事 -->
+    <article id="view-article" class="art" hidden>
+      <button type="button" class="backbtn" id="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span class="t"><span data-l="ja">記事の一覧へ</span><span data-l="en">All articles</span><span data-l="es">Todos los artículos</span><span data-l="zh">文章列表</span></span></button>
+      <div class="draft-banner">
+        <strong>【下書き・未確認】</strong> この記事の本文は、これから私たちが職人の話をもとに書きます。いまは並びと見せ方の見本です。本文は仮の文で、事実ではありません。
+        <span class="en">Draft, unchecked. Our team will write this text with the craftspeople. The paragraphs below are placeholders, not facts. Only the layout is real.</span>
+      </div>
+      <p class="eyebrow" id="a-group"></p>
+      <h1 class="h1" id="a-title"></h1>
+      <div id="a-fig"></div>
+      <div id="a-body"></div>
+      <div class="used-terms">
+        <p class="filter-label note" style="font-weight:700"><span class="t"><span data-l="ja">この記事に出てくる用語（触ると意味が開きます）</span><span data-l="en">Terms in this article (tap to open)</span><span data-l="es">Términos de este artículo</span><span data-l="zh">本文出现的术语（点击查看）</span></span></p>
+        <div class="chips" id="a-terms"></div>
+      </div>
+      <hr class="rule">
+      <button type="button" class="next" id="a-next"></button>
+    </article>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI;
+  function tm(ja, label) { return '<b class="term" data-term="' + ja + '">' + (label || ja) + "</b>"; }
+  var DUMMY = { ja: "（ここに本文が入ります。内容はこれから決めます。）", en: "(Body text goes here. The content is yet to be written.)" };
+
+  var GROUPS = [
+    { id: "rekishi", t: { ja: "歴史", en: "History", es: "Historia", zh: "历史" }, lead: { ja: "どこから来て、どう広がったか", en: "Where it came from, and how it spread" } },
+    { id: "jukei", t: { ja: "樹形", en: "Tree styles", es: "Formas del árbol", zh: "树形" }, lead: { ja: "木の姿の見分け方", en: "How to tell one shape from another" } },
+    { id: "sodate", t: { ja: "育て方", en: "How to grow", es: "Cómo cultivar", zh: "养护方法" }, lead: { ja: "毎日の世話の基本", en: "The basics of everyday care" } },
+    { id: "kisetsu", t: { ja: "季節の手入れ", en: "Seasonal care", es: "Cuidados por estación", zh: "四季养护" }, lead: { ja: "季節ごとにすること", en: "What to do in each season" } }
+  ];
+
+  /* 本文はすべてダミー。年号・人名・事実は書かない */
+  var ARTICLES = [
+    { id: "r1", g: "rekishi", fig: null, mark: "歴",
+      t: { ja: "盆栽の歴史を、ひとつの流れでたどる", en: "Tracing the history of bonsai in one thread", es: "La historia del bonsái", zh: "盆栽历史的脉络" },
+      s: { ja: "はじまりから、いまの姿まで", en: "From the beginning to today" },
+      terms: [],
+      sec: [
+        { h: { ja: "はじまり", en: "The beginnings" }, p: { ja: "盆栽のはじまりには、いくつかの説があると言われる（未確認）。" + DUMMY.ja, en: "There are said to be several accounts of how bonsai began (unchecked). " + DUMMY.en } },
+        { h: { ja: "いまの形になるまで", en: "How it took its present form" }, p: DUMMY },
+        { h: { ja: "ことばの変わりかた", en: "How the words changed" }, p: DUMMY }
+      ] },
+    { id: "r2", g: "rekishi", fig: null, mark: "違",
+      t: { ja: "もとになった文化と、盆栽のちがい", en: "What bonsai grew out of, and how it differs", es: "Orígenes y diferencias", zh: "起源与差异" },
+      s: { ja: "他の国の似た楽しみ方と比べる", en: "Compared with similar traditions elsewhere" },
+      terms: [],
+      sec: [
+        { h: { ja: "似ているところ", en: "What is similar" }, p: DUMMY },
+        { h: { ja: "ちがうところ", en: "What is different" }, p: DUMMY }
+      ] },
+    { id: "r3", g: "rekishi", fig: null, mark: "海",
+      t: { ja: "海外で「BONSAI」と呼ばれるまで", en: "How it came to be called “BONSAI” abroad", es: "Cómo llegó al extranjero", zh: "“BONSAI”走向海外" },
+      s: { ja: "世界の愛好家とのつながり", en: "Connections with enthusiasts worldwide" },
+      terms: [],
+      sec: [
+        { h: { ja: "海外への広がり", en: "Spreading overseas" }, p: DUMMY },
+        { h: { ja: "いま、言葉の壁になっていること", en: "Where words still get in the way" }, p: DUMMY }
+      ] },
+
+    { id: "j1", g: "jukei", fig: "chokkan", mark: "樹",
+      t: { ja: "直幹・模様木・懸崖を見分ける", en: "Telling upright, informal and cascade styles apart", es: "Distinguir tres formas", zh: "区分直干、模样木、悬崖" },
+      s: { ja: "幹の立ち方で、木の印象が変わる", en: "How the trunk stands changes the whole look" },
+      terms: ["直幹", "模様木", "懸崖", "正面"],
+      sec: [
+        { h: { ja: "まっすぐ立つ木", en: "The upright tree" }, p: { ja: tm("直幹") + "は、幹がまっすぐ上へ伸びる姿。" + DUMMY.ja, en: "The " + tm("直幹", "chokkan (upright)") + " style: a trunk rising straight up. " + DUMMY.en } },
+        { h: { ja: "曲がりを楽しむ木", en: "The curving tree" }, p: { ja: tm("模様木") + "は、幹が曲がりながら立つ姿。" + DUMMY.ja, en: "The " + tm("模様木", "moyogi (informal upright)") + " style: a trunk that curves as it rises. " + DUMMY.en } },
+        { h: { ja: "垂れ下がる木", en: "The cascading tree" }, p: { ja: tm("懸崖") + "は、幹が鉢より下へ垂れる姿。" + DUMMY.ja, en: "The " + tm("懸崖", "kengai (cascade)") + " style: the trunk falls below the pot. " + DUMMY.en } }
+      ] },
+    { id: "j2", g: "jukei", fig: "ishitsuki", mark: "石",
+      t: { ja: "石付きと寄せ植えの見かた", en: "How to read rock plantings and group plantings", es: "Plantaciones en roca y grupo", zh: "石附与合植的看法" },
+      s: { ja: "石を山の崖に見立てる、など", en: "Seeing a stone as a mountain cliff, and more" },
+      terms: ["石付き", "寄せ植え", "文人木"],
+      sec: [
+        { h: { ja: "石を山に見立てる", en: "A stone as a mountain" }, p: { ja: tm("石付き") + "は、石に木を寄り添わせる姿。" + DUMMY.ja, en: tm("石付き", "Ishitsuki (rock planting)") + " places a tree against a stone. " + DUMMY.en } },
+        { h: { ja: "何本かを一つの鉢に", en: "Several trees in one pot" }, p: { ja: tm("寄せ植え") + "の見どころ。" + DUMMY.ja, en: "What to look for in " + tm("寄せ植え", "yose-ue (group planting)") + ". " + DUMMY.en } },
+        { h: { ja: "細く伸びやかな木", en: "The slender, airy tree" }, p: { ja: tm("文人木") + "の見どころ。" + DUMMY.ja, en: "What to look for in " + tm("文人木", "bunjin-gi (literati style)") + ". " + DUMMY.en } }
+      ] },
+
+    { id: "s1", g: "sodate", fig: "moyogi", mark: "水",
+      t: { ja: "水やりの基本：乾いてから、たっぷり", en: "Watering basics: let it dry, then water deeply", es: "Riego básico", zh: "浇水基础" },
+      s: { ja: "やりすぎと、足りないの見分け方", en: "Telling too much from too little" },
+      terms: ["水やり", "乾湿のメリハリ", "水のやりすぎ", "水はけ"],
+      sec: [
+        { h: { ja: "毎日やればよいわけではない", en: "Daily watering is not always right" }, p: { ja: tm("水やり") + "の回数は、木と季節で変わると言われる（未確認）。" + DUMMY.ja, en: "How often to do " + tm("水やり", "watering") + " is said to vary with the tree and season (unchecked). " + DUMMY.en } },
+        { h: { ja: "乾くと、湿る", en: "Dry, then wet" }, p: { ja: tm("乾湿のメリハリ") + "の考えかた。" + DUMMY.ja, en: "The idea of " + tm("乾湿のメリハリ", "letting it dry out between waterings") + ". " + DUMMY.en } },
+        { h: { ja: "やりすぎのサイン", en: "Signs of too much water" }, p: { ja: tm("水のやりすぎ") + "に気づくための目印。" + DUMMY.ja, en: "Clues that point to " + tm("水のやりすぎ", "overwatering") + ". " + DUMMY.en } }
+      ] },
+    { id: "s2", g: "sodate", fig: null, mark: "場",
+      t: { ja: "置き場所と日当たり", en: "Where to put your tree", es: "Dónde colocar el árbol", zh: "摆放位置与光照" },
+      s: { ja: "ベランダ・庭・室内のちがい", en: "Balcony, garden and indoors compared" },
+      terms: ["置き場所", "風通し", "西日"],
+      sec: [
+        { h: { ja: "日なたと日かげ", en: "Sun and shade" }, p: { ja: tm("置き場所") + "を決めるときの考えかた。" + DUMMY.ja, en: "How to decide the " + tm("置き場所", "placement") + ". " + DUMMY.en } },
+        { h: { ja: "風と、午後の日", en: "Wind and afternoon sun" }, p: { ja: tm("風通し") + "と" + tm("西日") + "について。" + DUMMY.ja, en: "About airflow (" + tm("風通し") + ") and strong afternoon sun (" + tm("西日") + "). " + DUMMY.en } }
+      ] },
+    { id: "s3", g: "sodate", fig: null, mark: "土",
+      t: { ja: "植え替えと土のえらびかた", en: "Repotting and choosing soil", es: "Trasplante y sustrato", zh: "换盆与选土" },
+      s: { ja: "根を見て、土を入れ替える", en: "Look at the roots, then renew the soil" },
+      terms: ["植え替え", "赤玉土", "用土", "根詰まり"],
+      sec: [
+        { h: { ja: "いつ、なぜ植え替えるか", en: "When and why to repot" }, p: { ja: tm("植え替え") + "の目的。" + DUMMY.ja, en: "The purpose of " + tm("植え替え", "repotting") + ". " + DUMMY.en } },
+        { h: { ja: "土の種類", en: "Kinds of soil" }, p: { ja: tm("赤玉土") + "など、" + tm("用土") + "の種類。" + DUMMY.ja, en: "Kinds of soil (" + tm("用土") + "), such as " + tm("赤玉土", "akadama") + ". " + DUMMY.en } },
+        { h: { ja: "根の込みぐあい", en: "A crowded root ball" }, p: { ja: tm("根詰まり") + "の見つけかた。" + DUMMY.ja, en: "How to spot " + tm("根詰まり", "root-bound") + " roots. " + DUMMY.en } }
+      ] },
+
+    { id: "k1", g: "kisetsu", fig: null, mark: "春",
+      t: { ja: "春：植え替えと芽出しのころ", en: "Spring: repotting and new growth", es: "Primavera", zh: "春季" },
+      s: { ja: "新しい芽が動きはじめる時期", en: "When new buds start to move" },
+      terms: ["芽出し", "植え替え", "芽摘み"],
+      sec: [
+        { h: { ja: "芽が動くころ", en: "When buds begin to move" }, p: { ja: tm("芽出し") + "の時期の手入れ。" + DUMMY.ja, en: "Care during " + tm("芽出し", "bud break") + ". " + DUMMY.en } },
+        { h: { ja: "伸びた芽をどうするか", en: "What to do with new shoots" }, p: { ja: tm("芽摘み") + "のタイミング。" + DUMMY.ja, en: "When to do " + tm("芽摘み", "pinching") + ". " + DUMMY.en } }
+      ] },
+    { id: "k2", g: "kisetsu", fig: null, mark: "夏",
+      t: { ja: "梅雨から夏：蒸れと水切れに気をつける", en: "Rainy season to summer: watch for stuffiness and dryness", es: "Lluvias y verano", zh: "梅雨与夏季" },
+      s: { ja: "雨の続く日と、暑い日の世話", en: "Care on rainy days and hot days" },
+      terms: ["梅雨の管理", "夏越し", "遮光", "蒸れ"],
+      sec: [
+        { h: { ja: "雨が続くとき", en: "During long rains" }, p: { ja: tm("梅雨の管理") + "の考えかた。" + DUMMY.ja, en: "Thinking about " + tm("梅雨の管理", "rainy-season care") + ". " + DUMMY.en } },
+        { h: { ja: "暑い夏をこえる", en: "Getting through summer" }, p: { ja: tm("夏越し") + "と" + tm("遮光") + "。" + DUMMY.ja, en: tm("夏越し", "Summer care") + " and shading (" + tm("遮光") + "). " + DUMMY.en } }
+      ] },
+    { id: "k3", g: "kisetsu", fig: null, mark: "冬",
+      t: { ja: "冬：休眠する木を守る", en: "Winter: protecting a dormant tree", es: "Invierno", zh: "冬季" },
+      s: { ja: "寒さと乾きから木を守る", en: "Protecting the tree from cold and dryness" },
+      terms: ["冬越し", "休眠", "室入れ"],
+      sec: [
+        { h: { ja: "木が休む時期", en: "When the tree rests" }, p: { ja: tm("休眠") + "とは何か。" + DUMMY.ja, en: "What " + tm("休眠", "dormancy") + " means. " + DUMMY.en } },
+        { h: { ja: "寒さからどう守るか", en: "How to shelter it from the cold" }, p: { ja: tm("冬越し") + "と" + tm("室入れ") + "。" + DUMMY.ja, en: tm("冬越し", "Overwintering") + " and moving into shelter (" + tm("室入れ") + "). " + DUMMY.en } }
+      ] }
+  ];
+
+  var listV = document.getElementById("view-list"), artV = document.getElementById("view-article");
+  var currentId = null;
+  function byId(id) { return ARTICLES.filter(function (a) { return a.id === id; })[0]; }
+  function groupOf(a) { return GROUPS.filter(function (g) { return g.id === a.g; })[0]; }
+  function pick(o) { return B.T(o); }
+
+  function drawList() {
+    document.getElementById("groups").innerHTML = GROUPS.map(function (g) {
+      var items = ARTICLES.filter(function (a) { return a.g === g.id; });
+      return '<div class="group-head"><h2 class="h2">' + esc(pick(g.t)) + '</h2><span class="n">' + items.length + " " + esc(pick({ ja: "本", en: items.length === 1 ? "article" : "articles", es: "art.", zh: "篇" })) + "</span></div>" +
+        '<p class="group-lead">' + esc(pick(g.lead)) + "</p>" +
+        '<ul class="rows">' + items.map(function (a) {
+          var thumb = '<span class="thumb-blank" aria-hidden="true">' + esc(a.mark) + "</span>";
+          return '<li class="a-li"><button type="button" class="alink" data-id="' + a.id + '">' + thumb +
+            '<span class="row__body"><span class="row__title" style="display:block;font-family:var(--mincho);font-size:var(--fs-l)">' + esc(pick(a.t)) + "</span>" +
+            '<span class="row__meta" style="display:block">' + esc(pick(a.s)) + "</span></span>" +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></li>';
+        }).join("") + "</ul>";
+    }).join("");
+    window.drawZu(document.getElementById("groups"));
+    document.querySelectorAll(".alink").forEach(function (b) {
+      b.addEventListener("click", function () { open(b.getAttribute("data-id"), true); });
+    });
+  }
+
+  function drawArticle() {
+    var a = byId(currentId); if (!a) return;
+    document.getElementById("a-group").textContent = pick(groupOf(a).t);
+    document.getElementById("a-title").textContent = pick(a.t);
+    var fig = document.getElementById("a-fig");
+    fig.innerHTML = a.fig ? '<figure class="zu" data-zu="' + a.fig + '" data-cap="' + esc(pick({ ja: "写真の代わりの図（見本）", en: "A drawing stands in for a photo (sample)" })) + '"></figure>' : "";
+    window.drawZu(fig);
+    document.getElementById("a-body").innerHTML = a.sec.map(function (s) {
+      return '<h2 class="h3">' + esc(pick(s.h)) + '</h2><p class="dummy">' + pick(s.p) + "</p>";
+    }).join("");
+    var terms = document.getElementById("a-terms");
+    terms.innerHTML = a.terms.length ? a.terms.map(function (j) {
+      var t = window.findTerm(j);
+      return '<button type="button" class="chip" data-term="' + esc(j) + '">' + esc(j) + (t && B.getLang() !== "ja" ? " · " + esc(t.common_en) : "") + "</button>";
+    }).join("") : '<span class="note muted">' + esc(pick({ ja: "この記事には、用語集の言葉はまだ出てきません。", en: "No glossary terms appear in this article yet." })) + "</span>";
+    /* 次の記事（同じ並びの次。最後は最初に戻る） */
+    var i = ARTICLES.indexOf(a), n = ARTICLES[(i + 1) % ARTICLES.length];
+    var nx = document.getElementById("a-next");
+    nx.innerHTML = "<span><small>" + esc(pick({ ja: "次の記事", en: "Next article", es: "Siguiente", zh: "下一篇" })) + "</small><strong>" + esc(pick(n.t)) + "</strong></span>" +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+    nx.onclick = function () { open(n.id, true); };
+  }
+
+  function open(id, push) {
+    currentId = id;
+    listV.hidden = true; artV.hidden = false;
+    drawArticle();
+    if (push) { try { history.pushState(null, "", "#" + id); } catch (e) { location.hash = id; } }
+    window.scrollTo(0, 0);
+  }
+  function showList(push) {
+    currentId = null;
+    artV.hidden = true; listV.hidden = false;
+    if (push) { try { history.pushState(null, "", location.pathname + location.search); } catch (e) {} }
+    window.scrollTo(0, 0);
+  }
+  document.getElementById("back").addEventListener("click", function () { showList(true); });
+  window.addEventListener("popstate", route);
+  window.addEventListener("hashchange", route);
+  function route() {
+    var id = location.hash.replace("#", "");
+    if (id && byId(id)) { currentId = id; listV.hidden = true; artV.hidden = false; drawArticle(); }
+    else { currentId = null; artV.hidden = true; listV.hidden = false; }
+  }
+  drawList();
+  route();
+  document.addEventListener("langchange", function () { drawList(); if (currentId) drawArticle(); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>20 職人に入るお金｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .h1 { font-size: 1.75rem; }
+  .money { margin: var(--s5) 0; padding: var(--s5) var(--s4); background: var(--sumi); color: var(--kami); border-radius: var(--r); }
+  .money small { display: block; font-size: 1rem; opacity: .8; }
+  .money b { display: block; font-family: var(--mincho); font-size: 3.25rem; line-height: 1.2; margin-top: var(--s1); }
+  .money span { display: block; font-size: 1rem; opacity: .8; margin-top: var(--s2); }
+  .facts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sen); font-size: 1.125rem; }
+  .facts li { display: flex; justify-content: space-between; gap: var(--s3); align-items: baseline; padding: var(--s3) 0; border-bottom: 1px solid var(--sen); }
+  .facts b { font-family: var(--mincho); font-size: 1.5rem; }
+  .ask { margin-top: var(--s6); }
+  .ask a { margin-top: var(--s3); }
+</style>
+</head>
+<body data-screen="20" class="role-shokunin">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <h1 class="h1">教えた分が、海外から入ります。</h1>
+    <div class="money">
+      <small>あなたに入る額（サンプル）</small>
+      <b id="m-you">$0</b>
+      <span id="m-rule"></span>
+    </div>
+    <p id="m-month" style="font-size:1.125rem;line-height:1.7"></p>
+    <ul class="facts">
+      <li><span>発信の準備をした投稿</span><b id="f-post">0</b></li>
+      <li><span>答えた相談</span><b id="f-done">0</b></li>
+      <li><span>返事を待っている相談</span><b id="f-wait">0</b></li>
+    </ul>
+    <p class="note" style="margin-top:var(--s4);font-size:1rem">料金と取り分は、見せるためのサンプルです。まだ決まっていません。実際のお金は動きません。</p>
+    <p style="margin-top:var(--s6);font-family:var(--mincho);font-size:1.375rem;line-height:1.7">職人が海外から稼げる仕事になれば、継ぎたいと思う人も増えるはずです。撮る人が増えるほど、世界で盆栽を目にする人が増えます。</p>
+    <p class="note" style="font-size:1rem">目指すのは、外国の人が「日本の伝統文化といえば」と聞かれて、最初に「盆栽」と答える世界です。</p>
+    <div class="ask">
+      <div class="big-actions">
+        <a class="big-btn big-btn--main" id="go-answer" href="04_職人の画面_相談を受ける.html">相談に答える</a>
+        <a class="big-btn" href="21_話すか撮るだけ_1鉢の記録と出品_職人.html">話すか撮るだけの入口へ</a>
+        <a class="btn btn--quiet btn--wide" href="index.html" style="min-height:48px">流れの最初に戻る</a>
+      </div>
+    </div>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var d0 = { usd_craftsperson: 0, usd_total: 0, share: 0.8, answered: 0, waiting: 0, posts: 0 };
+  (API.online ? API.get("/api/earnings") : Promise.resolve(d0)).catch(function () { return d0; }).then(function (d) {
+    $("m-you").textContent = "$" + d.usd_craftsperson;
+    $("m-rule").textContent = "相談料 合計 $" + d.usd_total + " のうち " + Math.round(d.share * 100) + "%。$25 の相談1件で $" + Math.round(25 * d.share) + " です。";
+    $("m-month").textContent = "例：$25 の相談に月20件答えると、$" + Math.round(25 * 20 * d.share) + " が入る計算です（サンプルの計算）。";
+    $("f-done").textContent = d.answered; $("f-wait").textContent = d.waiting; $("f-post").textContent = d.posts;
+  });
+});
+</script>
+</body>
+</html>

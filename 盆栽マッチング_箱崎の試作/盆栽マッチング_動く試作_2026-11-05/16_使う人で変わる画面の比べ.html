@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>16 使う人で変わる画面の比べ｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .app { max-width: 900px; }
+  .pair { display: grid; grid-template-columns: 1fr; gap: var(--s6); margin-top: var(--s5); }
+  .side { min-width: 0; }
+  .side__head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); min-height: 44px; margin-bottom: var(--s2); }
+  .side__title { font-family: var(--mincho); font-weight: 700; font-size: var(--fs-l); margin: 0; }
+  .side__sub { font-size: var(--fs-s); color: var(--sumi-3); margin: 0 0 var(--s2); }
+  .phone { width: 100%; max-width: 390px; margin: 0 auto; border: 2px solid var(--sumi); border-radius: 22px; padding: 8px; background: var(--kami-3); }
+  .phone iframe { display: block; width: 100%; height: 760px; border: 0; border-radius: 14px; background: var(--kami); }
+  .langsw { display: inline-flex; border: 1px solid var(--sen); border-radius: var(--r); overflow: hidden; background: var(--kami-3); }
+  .langsw button { border: 0; background: none; min-width: 44px; min-height: 44px; font-size: var(--fs-s); color: var(--sumi-2); cursor: pointer; }
+  .langsw button[aria-pressed="true"] { background: var(--koke); color: #fff; }
+  .tablewrap { overflow-x: auto; margin-top: var(--s3); }
+  table.cmp { width: 100%; border-collapse: collapse; font-size: var(--fs-s); }
+  table.cmp th, table.cmp td { text-align: left; vertical-align: top; padding: var(--s3) var(--s2); border-bottom: 1px solid var(--sen); }
+  table.cmp thead th { border-bottom: 2px solid var(--sumi); font-family: var(--mincho); font-size: var(--fs-m); }
+  table.cmp tbody th { color: var(--sumi-2); font-weight: 700; white-space: nowrap; }
+  .flow { margin: var(--s4) 0 0; padding: var(--s4); }
+  .flow p { margin: 0 0 var(--s2); }
+  .flow ol { margin: 0; padding-left: 1.3em; }
+  .flow li { margin-bottom: var(--s1); }
+  @media (min-width: 860px) {
+    .pair { grid-template-columns: 1fr 1fr; gap: var(--s5); }
+  }
+</style>
+</head>
+<body data-screen="16" class="no-tabbar">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <p class="eyebrow">相談 q-0142 ・ 針金が食い込みそう</p>
+    <h1 class="h1">同じやり取りが、使う人によってこう見える</h1>
+    <p class="lead">左は日本の職人に届いた画面、右は海外の愛好家に届いた答えの画面です。中で実際に押せます。</p>
+
+    <div class="pair">
+      <section class="side" aria-label="職人の画面">
+        <div class="side__head"><h2 class="side__title">職人の画面</h2></div>
+        <p class="side__sub">日本語だけ・字が大きい・ボタンは3つ</p>
+        <div class="phone"><iframe id="frame-shokunin" title="職人の画面" src="04_職人の画面_相談を受ける.html?embed=1"></iframe></div>
+      </section>
+      <section class="side" aria-label="海外の愛好家の画面">
+        <div class="side__head">
+          <h2 class="side__title">海外の愛好家の画面</h2>
+          <div class="langsw" role="group" aria-label="右の画面の言語">
+            <button type="button" data-lang="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang="es" aria-pressed="false">ES</button>
+            <button type="button" data-lang="zh" aria-pressed="false">中</button>
+          </div>
+        </div>
+        <p class="side__sub" id="side-sub">Portland, USA ・ English</p>
+        <div class="phone"><iframe id="frame-aikouka" title="海外の愛好家の画面" src="05_答えが届く_愛好家.html?embed=1&amp;lang=en"></iframe></div>
+      </section>
+    </div>
+
+    <h2 class="h2">比べると、こう違う</h2>
+    <div class="tablewrap">
+      <table class="cmp">
+        <thead><tr><th scope="col"></th><th scope="col">職人</th><th scope="col">愛好家</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">字の大きさ</th><td>大きい</td><td>ふつう</td></tr>
+          <tr><th scope="row">ボタンの数</th><td>3つ（話す・書き込む・送る）</td><td>少し多い（Q&amp;A、続けて質問 など）</td></tr>
+          <tr><th scope="row">言語</th><td>日本語だけ</td><td>英語・スペイン語・中国語（切り替え）</td></tr>
+          <tr><th scope="row">用語の説明</th><td>盆栽の言葉のまま。説明は要らない</td><td>触ると「直訳／意味／なぜそうするか」が開く</td></tr>
+          <tr><th scope="row">設定</th><td>なし</td><td>言語の切り替えあり</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h2">どうして変えられるのか</h2>
+    <div class="panel panel--koke flow">
+      <p>Claudeが「使う人の情報」を受け取って、画面と言葉づかいを決めます。</p>
+      <ol>
+        <li>使う人の情報：職人か愛好家か、年代、使う言語</li>
+        <li>職人には、日本語・大きい字・3つのボタンで、盆栽の言い方のまま届ける</li>
+        <li>愛好家には、母語に直し、用語は意味と理由まで添えて届ける</li>
+      </ol>
+    </div>
+    <a class="btn btn--wide" href="03_職人への相談_愛好家.html" style="margin-top:var(--s4)">最初の相談画面に戻る</a>
+    <a class="btn btn--wide" href="index.html" style="margin-top:var(--s2)">試作の画面一覧に戻る</a>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var frame = document.getElementById("frame-aikouka"), sub = document.getElementById("side-sub");
+  var info = { en: "Portland, USA ・ English", es: "Valencia, España ・ Español", zh: "成都，中国 ・ 中文" };
+  document.querySelectorAll(".langsw button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var lang = b.getAttribute("data-lang");
+      document.querySelectorAll(".langsw button").forEach(function (o) { o.setAttribute("aria-pressed", String(o === b)); });
+      frame.src = "05_答えが届く_愛好家.html?embed=1&lang=" + lang;
+      sub.textContent = info[lang];
+    });
+  });
+});
+</script>
+</body>
+</html>

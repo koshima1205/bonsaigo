@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>00 ホーム（職人と海外の愛好家）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  /* ホームだけの見た目。区切りは線と余白。影なし */
+  .page { padding-left: var(--s5); padding-right: var(--s5); }
+  .home-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s3); padding: var(--s5) var(--s5) var(--s3); border-bottom: 1px solid var(--sumi); }
+  .home-brand { display: inline-flex; align-items: center; min-height: 48px; font-family: var(--mincho); font-weight: 600; font-size: 1.125rem; letter-spacing: 0.2em; color: var(--sumi); text-decoration: none; white-space: nowrap; }
+  .who-pick { display: flex; flex-wrap: wrap; gap: var(--s4); font-size: 15px; }
+  .who-pick a { min-height: 48px; min-width: 48px; justify-content: center; display: flex; align-items: flex-end; padding-bottom: 4px; color: var(--sumi-2); text-decoration: none; white-space: nowrap; }
+  .who-pick a[aria-current] { color: var(--sumi); font-weight: 700; box-shadow: inset 0 -2px 0 var(--sumi); }
+  .home-lang { display: flex; justify-content: flex-end; padding: var(--s2) var(--s5) 0; }
+  .home-date { margin: var(--s5) 0 0; font-size: 14px; color: var(--sumi-2); letter-spacing: 0.12em; }
+  .home-h1 { font-family: var(--mincho); font-weight: 600; font-size: 1.875rem; line-height: 1.45; margin: var(--s1) 0 0; letter-spacing: 0.06em; }
+  body:not(.role-shokunin) .home-h1 { font-size: 1.625rem; letter-spacing: 0.03em; }
+  .main-block { margin: var(--s5) 0 0; padding: var(--s5) 0 var(--s5); border-top: 1px solid var(--sen); border-bottom: 1px solid var(--sen); }
+  .from { display: flex; align-items: center; gap: var(--s3); font-size: 15px; color: var(--sumi-2); margin: 0; }
+  .hanko { min-width: 40px; height: 40px; padding: 0 4px; flex: none; border: 2px solid var(--shu); color: var(--shu); font-family: var(--mincho); font-weight: 700; font-size: 14px; line-height: 1.1; display: grid; place-items: center; text-align: center; transform: rotate(-4deg); border-radius: 3px; }
+  .hanko--sumi { border-color: var(--sumi-2); color: var(--sumi-2); }
+  .quote { margin: var(--s4) 0 var(--s2); font-family: var(--mincho); font-size: 1.25rem; line-height: 1.7; letter-spacing: 0.03em; }
+  .quote-note { margin: 0 0 var(--s4); font-size: 15px; color: var(--sumi-2); }
+  .btn-urushi { display: flex; align-items: center; justify-content: center; min-height: 58px; border-radius: var(--r); background: var(--koke); color: var(--kin-moji); font-weight: 700; font-size: 1.125rem; letter-spacing: 0.12em; text-decoration: none; }
+  .btn-line { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: var(--r); border: 1px solid var(--sumi); color: var(--sumi); font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
+  .home-h2 { font-family: var(--mincho); font-weight: 600; font-size: 1.1875rem; margin: var(--s6) 0 var(--s3); letter-spacing: 0.08em; }
+  .tree { display: grid; grid-template-columns: 132px 1fr; gap: var(--s4); }
+  .tree img { width: 132px; height: 164px; object-fit: cover; object-position: center 45%; border-radius: var(--r-s); display: block; background: var(--kami-2); }
+  .tree-acts { display: flex; flex-direction: column; gap: var(--s3); }
+  .tree-acts a { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: var(--s2) var(--s4); border: 1px solid var(--sumi); border-radius: var(--r); min-height: 72px; color: var(--sumi); text-decoration: none; }
+  .tree-acts b { font-size: 1.125rem; letter-spacing: 0.1em; }
+  .tree-acts small { font-size: 14px; color: var(--sumi-2); line-height: 1.4; }
+  .tree-note { font-size: 14px; color: var(--sumi-2); margin: var(--s2) 0 0; }
+  .menu { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sen); }
+  .menu a { display: flex; align-items: center; gap: var(--s3); padding: var(--s3) 0; min-height: 64px; border-bottom: 1px solid var(--sen); color: var(--sumi); text-decoration: none; }
+  .menu b { display: block; font-size: 1rem; }
+  .menu small { display: block; font-size: 15px; color: var(--sumi-2); line-height: 1.5; }
+  .menu .go { margin-left: auto; color: var(--sumi-2); flex: none; }
+  .menu .count { margin-left: auto; flex: none; min-width: 26px; height: 26px; padding: 0 6px; border: 1.5px solid var(--shu); color: var(--shu); font-weight: 700; font-size: 14px; display: grid; place-items: center; border-radius: 2px; }
+  .about { margin: var(--s6) 0 0; font-size: 15px; }
+  .about a { display: inline-flex; align-items: center; min-height: 44px; }
+  .home-photo-main { display: flex; align-items: center; justify-content: center; gap: var(--s3); }
+  .about a { color: var(--sumi-2); }
+  .loading { color: var(--sumi-2); font-size: 14px; }
+  .hero-photo { margin: var(--s5) 0 0; }
+  .hero-photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 45%; border-radius: var(--r-s); display: block; background: var(--kami-2); }
+  .hero-photo figcaption { font-size: 14px; color: var(--sumi-2); margin-top: var(--s2); }
+  /* 字間を広げるのは日本語のときだけ（英語などは詰める） */
+  html:not([lang="ja"]) .home-h1, html:not([lang="ja"]) .home-h2, html:not([lang="ja"]) .quote, html:not([lang="ja"]) .btn-urushi { letter-spacing: 0.01em; }
+</style>
+</head>
+<body data-screen="00">
+<script>
+  /* 使う人（職人／海外の愛好家）を先に決める。URL の ?role= を優先し、なければ前回のまま */
+  (function () {
+    var KEY = "bonsai-home-role", q = new URLSearchParams(location.search).get("role"), r = null;
+    try { r = q || localStorage.getItem(KEY); if (q) localStorage.setItem(KEY, q); } catch (e) { r = q; }
+    if (r !== "aikouka") document.body.classList.add("role-shokunin");
+  })();
+</script>
+<div class="app">
+  <header class="home-top">
+    <a class="home-brand" href="00_ホーム_職人と愛好家.html" title="ホーム">盆栽の間</a>
+    <nav class="who-pick" aria-label="使う人">
+      <a href="00_ホーム_職人と愛好家.html?role=shokunin" id="pick-s"><span class="t"><span data-l="ja">職人</span><span data-l="en">Craftsperson</span><span data-l="es">Maestro</span><span data-l="zh">匠人</span></span></a>
+      <a href="00_ホーム_職人と愛好家.html?role=aikouka" id="pick-a"><span class="t"><span data-l="ja">海外の愛好家</span><span data-l="en">Learner</span><span data-l="es">Aprendiz</span><span data-l="zh">学习者</span></span></a>
+    </nav>
+  </header>
+  <div class="home-lang" id="lang-row" hidden></div>
+  <main class="page"><div id="home"><p class="loading">読み込んでいます…</p></div></main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var shokunin = document.body.classList.contains("role-shokunin");
+  try { sessionStorage.removeItem("bonsai-demo"); } catch (e) {}
+  var $ = function (id) { return document.getElementById(id); };
+  var home = $("home");
+  $(shokunin ? "pick-s" : "pick-a").setAttribute("aria-current", "page");
+  var go = function (no) { return window.fileOf(no); };
+  var LANG_JA = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" };
+
+  /* 日付は漢数字で（例：十一月六日 金曜日） */
+  function kansuji(n) {
+    var d = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+    if (n < 10) return d[n];
+    return (n >= 20 ? d[Math.floor(n / 10)] : "") + "十" + d[n % 10];
+  }
+  function today() {
+    var t = new Date(), w = "日月火水木金土".charAt(t.getDay());
+    return kansuji(t.getMonth() + 1) + "月" + kansuji(t.getDate()) + "日　" + w + "曜日";
+  }
+  function li(href, title, note, right) {
+    return '<li><a href="' + href + '"><span><b>' + title + "</b><small>" + note + "</small></span>" + (right || '<span class="go" aria-hidden="true">→</span>') + "</a></li>";
+  }
+  function getList(url, key) {
+    if (!API.online) return Promise.resolve([]);
+    return API.get(url).then(function (r) { return r[key] || []; }).catch(function () { return []; });
+  }
+
+  /* ---------- 職人のホーム ---------- */
+  function drawShokunin(cons, trees) {
+    var open = cons.filter(function (c) { return !c.answer; });
+    var c = open[0];
+    var tree = trees[0];
+    var h = '<p class="home-date">' + today() + "</p>";
+    if (c) {
+      var fc = c.for_craftsperson || {};
+      h += '<h1 class="home-h1">相談が' + kansuji(Math.min(open.length, 99)) + "件、<br>届いています。</h1>" +
+        '<section class="main-block" aria-label="届いた相談">' +
+        '<p class="from"><span class="hanko">新着</span>' + esc(LANG_JA[c.lang] || "海外") + "で届いた相談</p>" +
+        '<p class="quote">「' + esc(API.dropTermMarks(fc.title_ja || "")) + "」</p>" +
+        '<p class="quote-note">' + esc(LANG_JA[c.lang] || "相手の言葉") + "から訳しました。" + (c.image ? "写真が1枚ついています" : "写真はありません") + "</p>" +
+        '<a class="btn-urushi" href="' + go("04") + "?id=" + encodeURIComponent(c.id) + '">答える</a></section>';
+    } else {
+      h += '<h1 class="home-h1">今日は、<br>どの木を撮りますか。</h1>' +
+        '<section class="main-block" aria-label="今日やること">' +
+        '<p class="quote-note" style="margin-top:0">撮るだけで、AIが英語・スペイン語・中国語の投稿の下書きを作ります。海外から相談が届くと、ここに日本語で出ます。</p>' +
+        '<a class="btn-urushi" href="' + go("17") + (tree ? "?tree=" + encodeURIComponent(tree.id) : "") + '">写真を撮る</a></section>';
+    }
+    var photo = tree && tree.image ? "data:" + tree.image.media_type + ";base64," + tree.image.data : "共通/見本の写真_盆栽.jpg";
+    h += '<h2 class="home-h2">あなたの木を、世界へ</h2>' +
+      '<div class="tree"><img src="' + photo + '" alt="' + (tree ? "あなたの木の写真" : "見本の木の写真") + '">' +
+      '<div class="tree-acts">' + (c ? '<a href="' + go("17") + (tree ? "?tree=" + encodeURIComponent(tree.id) : "") + '"><b>撮る</b><small>写真から3か国語の投稿</small></a>' : "") +
+      '<a href="' + go("21") + '"><b>話す</b><small>売りたい・教えたいも、言うだけ</small></a>' +
+      (c ? "" : '<a href="' + go("21") + '#trees"><b>私の木</b><small>木ごとの記録' + (trees.length ? "（" + trees.length + "鉢）" : "") + '</small></a>') + "</div></div>" +
+      '<p class="tree-note">' + (tree ? esc(tree.title_ja || "あなたの木") + "　記録 " + ((tree.log || []).length) + "件" : "見本の写真です。撮ると、あなたの木がここに出ます") + "</p>";
+    h += '<h2 class="home-h2">ほかのこと</h2><ul class="menu">' +
+      (c ? li(go("21") + "#trees", "私の木", "木ごとの記録と、出品の下書き", trees.length ? '<span class="go">' + trees.length + "鉢 →</span>" : "") : "") +
+      li(go("04"), "届いた相談", c ? "海外の人の質問が、日本語で届きます" : "どんなふうに届くか、見本で見られます", open.length > 1 ? '<span class="count" aria-label="答えていない相談">' + open.length + "</span>" : "") +
+      li(go("19"), "先生として登録", "話すだけで、紹介文が3か国語でできます") +
+      li(go("12"), "投稿の下書き", "相談とQ&Aから、SNSの下書きを作ります") +
+      li(go("20"), "入ってくるお金", "答えた相談から、いくら入るか") +
+      "</ul>" +
+      '<p class="about"><a href="index.html">この試作の紹介と、すべての画面の一覧</a></p>';
+    home.innerHTML = h;
+  }
+
+  /* ---------- 海外の愛好家のホーム（4か国語） ---------- */
+  function drawAikouka(cons) {
+    var t = window.tSpan;
+    var done = cons.filter(function (c) { return c.answer; })[0];
+    var h = '<h1 class="home-h1">' + t({ ja: "日本の盆栽職人に、母語のまま聞けます。", en: "Ask a Japanese bonsai craftsperson, in your own language.", es: "Pregunta a un maestro de bonsái japonés, en tu idioma.", zh: "用你的母语，向日本盆栽匠人请教。" }) + "</h1>" ;
+    if (done) {
+      h += '<section class="main-block" aria-label="answer">' +
+        '<p class="from"><span class="hanko">' + t({ ja: "回答", en: "New", es: "Nuevo", zh: "新" }) + "</span>" + t({ ja: "職人から答えが届きました", en: "A craftsperson answered you", es: "Un maestro te respondió", zh: "匠人回复了你" }) + "</p>" +
+        '<p class="quote" lang="' + esc(done.lang || "en") + '">' + esc(API.dropTermMarks((done.answer && done.answer.headline) || "")) + "</p>" +
+        '<p class="quote-note">' + t({ ja: "あなたの質問：", en: "Your question: ", es: "Tu pregunta: ", zh: "你的问题：" }) + esc(String(done.question || "").slice(0, 60)) + (String(done.question || "").length > 60 ? "…" : "") + "</p>" +
+        '<a class="btn-urushi" href="' + go("05") + "?id=" + encodeURIComponent(done.id) + '">' + t({ ja: "答えを読む", en: "Read the answer", es: "Leer la respuesta", zh: "查看回答" }) + "</a></section>";
+    } else {
+      h += '<section class="main-block" aria-label="start">' +
+        '<p class="quote-note" style="margin-top:0">' + t({ ja: "知りたいことを書くと、合う職人が見つかります。職人は日本語で答え、あなたの言葉に訳して届きます。", en: "Write what you want to learn and we will find the right craftsperson. They answer in Japanese, and it reaches you in your language.", es: "Escribe lo que quieres aprender y encontraremos al maestro adecuado. Responde en japonés y te llega en tu idioma.", zh: "写下你想了解的内容，就能找到合适的匠人。匠人用日语回答，再翻译成你的语言。" }) + "</p>" +
+        '<a class="btn-urushi" href="' + go("18") + '">' + t({ ja: "職人を見つける", en: "Find your craftsperson", es: "Encuentra a tu maestro", zh: "找到你的匠人" }) + "</a></section>";
+    }
+    h +=
+      '<figure class="hero-photo"><img src="共通/見本の写真_盆栽.jpg" alt=""><figcaption>' + t({ ja: "写真を送れば、職人があなたの木を見て答えます（写真は見本）", en: "Send a photo, and a craftsperson looks at your own tree (sample photo)", es: "Envía una foto y un maestro mira tu propio árbol (foto de muestra)", zh: "发送照片，匠人会看着你的树回答（示例照片）" }) + "</figcaption></figure>";
+    h += '<h2 class="home-h2">' + t({ ja: "できること", en: "What you can do", es: "Qué puedes hacer", zh: "你可以做的事" }) + '</h2><ul class="menu">' +
+      li(go("03"), t({ ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" }), t({ ja: "木の写真をつけて、自分の言葉で", en: "Add a photo of your tree and ask in your words", es: "Con una foto de tu árbol, en tus palabras", zh: "附上树的照片，用自己的话提问" })) +
+      li(go("13"), t({ ja: "職人の紹介", en: "Meet the craftspeople", es: "Conoce a los maestros", zh: "匠人介绍" }), t({ ja: "得意な木と、教えられること", en: "What they know and what they can teach", es: "Qué saben y qué enseñan", zh: "擅长的树种与可教内容" })) +
+      li(go("10"), t({ ja: "学ぶ", en: "Learn", es: "Aprender", zh: "学习" }), t({ ja: "盆栽の歴史と育て方", en: "History and care of bonsai", es: "Historia y cuidados", zh: "盆栽的历史与养护" })) +
+      li(go("11"), t({ ja: "用語集", en: "Glossary", es: "Glosario", zh: "术语表" }), t({ ja: "直訳ではなく、意味と理由で", en: "Meaning and reason, not word for word", es: "Significado y motivo, no traducción literal", zh: "不是直译，而是含义与原因" })) +
+      li(go("06"), t({ ja: "質問と答え", en: "Q&A", es: "Preguntas", zh: "问答" }), t({ ja: "ほかの人の質問への、職人の答え", en: "Craftspeople's answers to others' questions", es: "Respuestas de maestros a otras preguntas", zh: "匠人对他人问题的回答" })) +
+      li(go("01"), t({ ja: "盆栽の間（読みもの）", en: "The Bonsai Hall (stories)", es: "Sala del Bonsái (lecturas)", zh: "盆栽之馆（读物）" }), t({ ja: "職人の日記と、1鉢の見方", en: "Journals and how to look at a tree", es: "Diarios y cómo mirar un árbol", zh: "匠人日记与赏树方法" })) +
+      "</ul>" +
+      '<p class="about"><a href="index.html">' + t({ ja: "この試作の紹介と、すべての画面の一覧", en: "About this prototype and all screens", es: "Sobre este prototipo y todas las pantallas", zh: "关于本试作与全部页面" }) + "</a></p>";
+    home.innerHTML = h;
+    /* 言葉の切り替え */
+    var row = $("lang-row");
+    row.hidden = false;
+    row.innerHTML = '<div class="lang" role="group" aria-label="Language">' + BONSAI.LANGS.map(function (l) {
+      return '<button type="button" data-code="' + l.code + '" title="' + l.label + '">' + l.short + "</button>";
+    }).join("") + "</div>";
+    row.querySelectorAll("button").forEach(function (b) { b.addEventListener("click", function () { BONSAI.setLang(b.getAttribute("data-code")); }); });
+    BONSAI.applyLang();
+  }
+
+  Promise.all([getList("/api/consultations", "consultations"), getList("/api/trees", "trees")]).then(function (r) {
+    if (shokunin) drawShokunin(r[0], r[1]); else drawAikouka(r[0]);
+  });
+});
+</script>
+</body>
+</html>

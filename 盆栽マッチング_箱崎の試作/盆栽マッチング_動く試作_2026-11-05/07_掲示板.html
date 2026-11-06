@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>07 掲示板｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .fgroup { margin: 0 0 var(--s3); }
+  .fgroup .select { min-height: 44px; }
+  .fgroup__label { font-size: var(--fs-s); color: var(--sumi-3); margin: 0 0 var(--s1); }
+  .chips-scroll { margin: 0 calc(var(--s4) * -1); padding: 0 var(--s4); display: flex; gap: var(--s2); overflow-x: auto; scrollbar-width: none; }
+  .chips-scroll::-webkit-scrollbar { display: none; }
+  .chips-scroll .chip { flex: none; min-height: 44px; display: inline-flex; align-items: center; }
+  .thread { width: 100%; text-align: left; background: none; border: 0; padding: var(--s4) 0; cursor: pointer; display: block; min-height: 44px; }
+  .rows > li { padding: 0; }
+  .thread__title { font-weight: 700; line-height: 1.5; margin: 0 0 var(--s1); }
+  .thread__meta { display: flex; flex-wrap: wrap; gap: 0 var(--s3); font-size: var(--fs-s); color: var(--sumi-3); margin: 0; }
+  .tr-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 1; padding: 3px 7px; border-radius: 99px; background: var(--koke-usu); color: var(--koke); }
+  .back { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: none; color: var(--koke); font-weight: 700; cursor: pointer; }
+  .post { padding: var(--s4) 0; border-bottom: 1px solid var(--sen); }
+  .post__head { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); align-items: center; font-size: var(--fs-s); color: var(--sumi-2); margin-bottom: var(--s2); }
+  .post__head b { color: var(--sumi); }
+  .post p { margin: 0 0 var(--s2); line-height: 1.8; }
+  .orig-btn { border: 0; background: none; padding: 0; min-height: 32px; color: var(--koke); font-size: var(--fs-s); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .orig { margin-top: var(--s2); padding: var(--s2) var(--s3); border-left: 2px solid var(--sen); color: var(--sumi-2); font-size: var(--fs-s); }
+  .form { margin-top: var(--s6); }
+</style>
+</head>
+<body data-screen="07">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+
+    <section id="view-list">
+      <p class="eyebrow"><span class="t"><span data-l="ja">自由に交流する場</span><span data-l="en">An open place to talk</span><span data-l="es">Un lugar para conversar</span><span data-l="zh">自由交流的地方</span></span></p>
+      <h1 class="h1"><span class="t"><span data-l="ja">世界の愛好家の話を、自分の言葉で読めます</span><span data-l="en">Read bonsai lovers worldwide, in your own language</span><span data-l="es">Lee a aficionados de todo el mundo en tu idioma</span><span data-l="zh">用你的语言阅读世界各地爱好者的帖子</span></span></h1>
+      <div class="fgroup"><p class="fgroup__label"><span class="t"><span data-l="ja">地域</span><span data-l="en">Region</span><span data-l="es">Región</span><span data-l="zh">地区</span></span></p><div class="chips-scroll" id="regions"></div></div>
+      <div class="fgroup"><p class="fgroup__label"><span class="t"><span data-l="ja">木の種類</span><span data-l="en">Tree type</span><span data-l="es">Tipo de árbol</span><span data-l="zh">树种</span></span></p><select class="select" id="trees"></select></div>
+      <ul class="rows" id="tlist" style="margin-top:var(--s4)"></ul>
+
+      <form class="form" id="newform">
+        <h2 class="h3" style="margin-top:0"><span class="t"><span data-l="ja">新しく書く</span><span data-l="en">Start a new thread</span><span data-l="es">Escribir un tema nuevo</span><span data-l="zh">发新帖</span></span></h2>
+        <label class="field"><span class="field__label"><span class="t"><span data-l="ja">題名</span><span data-l="en">Title</span><span data-l="es">Título</span><span data-l="zh">标题</span></span></span>
+          <input class="input" id="nt-title" data-ph-ja="例：冬越しの置き場所" data-ph-en="e.g. Where do you keep yours in winter?" data-ph-es="p. ej. ¿Dónde guardas el tuyo en invierno?" data-ph-zh="例如：冬天放在哪里？"></label>
+        <label class="field"><span class="field__label"><span class="t"><span data-l="ja">本文（自分の言葉で書けます）</span><span data-l="en">Message (write in your own language)</span><span data-l="es">Mensaje (en tu idioma)</span><span data-l="zh">内容（用你的语言写）</span></span></span>
+          <textarea class="textarea" id="nt-body" data-ph-ja="読む人の言語に自動で直されます" data-ph-en="It will be translated for each reader" data-ph-es="Se traducirá para cada lector" data-ph-zh="会自动翻译给每位读者"></textarea></label>
+        <button type="submit" class="btn btn--main btn--wide"><span class="t"><span data-l="ja">投稿する</span><span data-l="en">Post</span><span data-l="es">Publicar</span><span data-l="zh">发布</span></span></button>
+      </form>
+    </section>
+
+    <section id="view-detail" hidden>
+      <button type="button" class="back" id="back"><span class="t"><span data-l="ja">← 掲示板へ</span><span data-l="en">← Back to the board</span><span data-l="es">← Volver al tablón</span><span data-l="zh">← 返回交流区</span></span></button>
+      <div id="detail"></div>
+      <form class="form" id="replyform" style="margin-top:var(--s5)">
+        <label class="field"><span class="field__label"><span class="t"><span data-l="ja">返信を書く</span><span data-l="en">Write a reply</span><span data-l="es">Escribir una respuesta</span><span data-l="zh">写回复</span></span></span>
+          <textarea class="textarea" id="rp-body" style="min-height:96px" data-ph-ja="自分の言葉で書いてください" data-ph-en="Write in your own language" data-ph-es="Escribe en tu idioma" data-ph-zh="请用你的语言书写"></textarea></label>
+        <button type="submit" class="btn btn--main btn--wide"><span class="t"><span data-l="ja">返信する</span><span data-l="en">Reply</span><span data-l="es">Responder</span><span data-l="zh">回复</span></span></button>
+      </form>
+    </section>
+
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI, T = B.T;
+  var region = "all", tree = "all", openId = null, showOrig = {};
+
+  var REGIONS = [
+    { k: "all", t: { ja: "すべて", en: "All", es: "Todas", zh: "全部" } },
+    { k: "na", t: { ja: "北米", en: "North America", es: "Norteamérica", zh: "北美" } },
+    { k: "eu", t: { ja: "ヨーロッパ", en: "Europe", es: "Europa", zh: "欧洲" } },
+    { k: "latam", t: { ja: "中南米", en: "Latin America", es: "Latinoamérica", zh: "拉美" } },
+    { k: "asia", t: { ja: "アジア", en: "Asia", es: "Asia", zh: "亚洲" } },
+    { k: "jp", t: { ja: "日本", en: "Japan", es: "Japón", zh: "日本" } }
+  ];
+  var TREES = [
+    { k: "all", t: { ja: "すべて", en: "All", es: "Todos", zh: "全部" } },
+    { k: "pine", t: { ja: "松", en: "Pine", es: "Pino", zh: "松" } },
+    { k: "maple", t: { ja: "もみじ", en: "Maple", es: "Arce", zh: "枫" } },
+    { k: "juniper", t: { ja: "真柏", en: "Juniper", es: "Enebro", zh: "真柏" } },
+    { k: "azalea", t: { ja: "皐月", en: "Azalea", es: "Azalea", zh: "杜鹃" } }
+  ];
+
+  /* 投稿はそれぞれの母語（orig）で書かれ、読む人の言語に直されて出る */
+  var TH = [
+    { id: "t1", region: "na", tree: "pine", orig: "en", by: "Emma (sample)", place: "Portland, USA", date: "2026-11-01",
+      title: { en: "First winter with my black pine: what should I expect?", ja: "黒松と迎える初めての冬。何に気をつければよいですか", es: "Mi primer invierno con un pino negro: ¿qué esperar?", zh: "第一次和黑松过冬，要注意什么？" },
+      body: { en: "It's on a balcony in Portland, where it rarely drops below freezing. Should I bring it inside or leave it out?", ja: "ポートランドのベランダに置いています。氷点下になることはあまりありません。室内に入れるべきか、外のままでよいでしょうか。", es: "Está en un balcón en Portland, donde casi nunca hiela. ¿Lo meto o lo dejo fuera?", zh: "放在波特兰的阳台上，很少低于零度。该搬进屋里还是留在外面？" },
+      replies: [
+        { by: "Henrik (sample)", place: "Oslo, Norway", orig: "en", text: { en: "Mine stays outside all winter. Pines need the cold rest. Just protect the pot from hard frost.", ja: "うちは冬のあいだ外に出したままです。松は冷たい時期の休みが必要で、鉢が強く凍らないようにだけ守っています。", es: "El mío pasa el invierno fuera. Los pinos necesitan el frío. Solo protejo la maceta de las heladas fuertes." } },
+        { by: "Taro (sample)", place: "埼玉", orig: "ja", text: { ja: "冬の松は外が基本です。ただ、風が強い場所は避けてあげてください。", en: "Outdoors is the basic rule for pines in winter. Just avoid spots with strong wind." } }
+      ] },
+    { id: "t2", region: "eu", tree: "juniper", orig: "es", by: "Lucía (sample)", place: "Valencia, España", date: "2026-10-30",
+      title: { es: "Mi enebro tiene ramas secas. ¿Es normal?", ja: "真柏に枯れた枝があります。ふつうのことですか", en: "My juniper has some dry branches. Is that normal?", zh: "我的真柏有枯枝，正常吗？" },
+      body: { es: "Algunas ramas bajas se han puesto grises y secas. El resto del árbol está verde.", ja: "下のほうの枝が灰色に乾いています。ほかの部分は緑です。", en: "Some lower branches have turned grey and dry. The rest of the tree is green.", zh: "下面几根枝条变灰变干，其余部分是绿的。" },
+      replies: [
+        { by: "Masamichi (sample)", place: "東京", orig: "ja", text: { ja: "日が当たらない内側の枝は、枯れることがあります。ジンとして残して見せる方法もあります。", en: "Inner branches that get no light can die back. Some people keep the dry wood on purpose, as <i>jin</i>.", es: "Las ramas interiores sin luz pueden secarse. Algunos las dejan a propósito, como jin." } }
+      ] },
+    { id: "t3", region: "latam", tree: "maple", orig: "es", by: "Mateo (sample)", place: "Ciudad de México", date: "2026-10-29",
+      title: { es: "Arce tridente: ¿cuándo cambia de color en el trópico?", ja: "もみじの紅葉は、暖かい土地ではいつ色づきますか", en: "Trident maple: when does it turn red in a warm climate?", zh: "三角枫在温暖地区什么时候变红？" },
+      body: { es: "Aquí casi no hace frío. Mi arce se queda verde hasta diciembre. ¿Alguien tiene experiencia?", ja: "ここはほとんど寒くなりません。うちのもみじは12月まで緑のままです。経験のある方はいますか。", en: "It hardly gets cold here. My maple stays green until December. Anyone with experience?", zh: "这里几乎不冷，我的枫树到12月还是绿的。有经验的朋友吗？" },
+      replies: [
+        { by: "Yuki (sample)", place: "川口", orig: "ja", text: { ja: "朝晩の冷え込みが色づきの引き金になることが多いです。夜だけ涼しい場所に置く方法もあります。", en: "Cool mornings and evenings often trigger the color. Some people move the tree somewhere cooler just at night." } }
+      ] },
+    { id: "t4", region: "asia", tree: "azalea", orig: "zh", by: "Wei (sample)", place: "成都, 中国", date: "2026-10-27",
+      title: { zh: "皋月杜鹃花后的修剪，大家怎么做？", ja: "皐月の花が終わったあとの剪定、みなさんはどうしていますか", en: "How do you prune your satsuki after it flowers?", es: "¿Cómo podan la azalea después de la floración?" },
+      body: { zh: "今年花开得很好，现在想修剪，又怕影响明年的花芽。", ja: "今年はよく咲きました。剪定したいのですが、来年の花芽に響かないか心配です。", en: "It flowered well this year. I'd like to prune it now but worry about next year's flower buds.", es: "Floreció muy bien. Quiero podarla, pero me preocupan los botones del año que viene." },
+      replies: [
+        { by: "Emma (sample)", place: "Portland, USA", orig: "en", text: { en: "I was told to prune soon after flowering, before new buds form. Sorry, only what I've read!", ja: "花が終わってすぐ、新しい芽ができる前に切ると聞きました。読んだだけの知識ですみません。", zh: "听说要在花后、新芽形成之前修剪。我也只是看书得知的。" } }
+      ] },
+    { id: "t5", region: "jp", tree: "pine", orig: "ja", by: "Taro (sample)", place: "埼玉", date: "2026-10-25",
+      title: { ja: "黒松の古葉取り、みなさんはいつやりますか", en: "When do you pull the old needles on your black pines?", es: "¿Cuándo quitan las agujas viejas del pino negro?", zh: "黑松的古叶，大家什么时候摘？" },
+      body: { ja: "秋のうちに終わらせる人が多い印象ですが、地域で違いそうです。", en: "I get the impression many people finish it in autumn, but it probably differs by region.", es: "Parece que muchos lo hacen en otoño, pero quizá varía según la zona.", zh: "感觉很多人在秋天做完，不过各地可能不同。" },
+      replies: [
+        { by: "Lucía (sample)", place: "Valencia, España", orig: "es", text: { es: "Aquí lo hago en noviembre, cuando baja un poco la temperatura.", ja: "ここでは、気温が少し下がる11月にしています。", en: "Here I do it in November, when temperatures drop a little." } }
+      ] }
+  ];
+
+  function pick(o, lang) { return o[lang] || o.en || o.ja; }
+  var PLACES = { "埼玉": { en: "Saitama, Japan", es: "Saitama, Japón", zh: "埼玉，日本" }, "東京": { en: "Tokyo, Japan", es: "Tokio, Japón", zh: "东京，日本" }, "川口": { en: "Kawaguchi, Japan", es: "Kawaguchi, Japón", zh: "川口，日本" }, "成都, 中国": { ja: "成都, 中国", en: "Chengdu, China", es: "Chengdú, China", zh: "成都，中国" } };
+  function PL(p) { var o = PLACES[p]; if (!o) return p; o.ja = o.ja || p; return T(o); }
+  function chipsHtml(list, cur) {
+    return list.map(function (a) { return '<button type="button" class="chip" data-k="' + a.k + '" aria-pressed="' + (cur === a.k) + '">' + esc(T(a.t)) + "</button>"; }).join("");
+  }
+  function renderChips() {
+    var r = document.getElementById("regions"), t = document.getElementById("trees");
+    r.innerHTML = chipsHtml(REGIONS, region);
+    t.innerHTML = TREES.map(function (a) { return '<option value="' + a.k + '"' + (tree === a.k ? " selected" : "") + ">" + esc(T(a.t)) + "</option>"; }).join("");
+    r.querySelectorAll(".chip").forEach(function (b) { b.addEventListener("click", function () { region = b.getAttribute("data-k"); renderChips(); renderList(); }); });
+    t.onchange = function () { tree = t.value; renderList(); };
+  }
+  function trTag(orig) {
+    var lang = B.getLang();
+    return orig === lang ? "" : '<span class="tr-tag">' + esc(T({ ja: "読む言語に直して表示中", en: "Shown in your language", es: "Traducido a tu idioma", zh: "已译为你的语言" })) + "</span>";
+  }
+  function renderList() {
+    var lang = B.getLang();
+    var rows = TH.filter(function (x) { return (region === "all" || x.region === region) && (tree === "all" || x.tree === tree); });
+    var ul = document.getElementById("tlist");
+    if (!rows.length) { ul.innerHTML = '<li><p class="muted" style="padding:var(--s4) 0">' + esc(T({ ja: "この組み合わせの話題はまだありません。", en: "No threads for this combination yet." })) + "</p></li>"; return; }
+    ul.innerHTML = rows.map(function (x) {
+      var rg = REGIONS.find(function (a) { return a.k === x.region; });
+      return '<li><button type="button" class="thread" data-id="' + x.id + '"><p class="thread__title">' + esc(pick(x.title, lang)) + "</p>" +
+        '<p class="thread__meta"><span>' + esc(x.by) + "</span><span>" + esc(PL(x.place)) + "</span><span>" + esc(T(rg.t)) + "</span><span>" +
+        esc(T({ ja: "返信 " + x.replies.length, en: x.replies.length + " replies", es: x.replies.length + " respuestas", zh: x.replies.length + " 条回复" })) + "</span></p>" +
+        '<p class="thread__meta" style="margin-top:var(--s1)">' + trTag(x.orig) + "</p></button></li>";
+    }).join("");
+    ul.querySelectorAll(".thread").forEach(function (b) { b.addEventListener("click", function () { open(b.getAttribute("data-id")); }); });
+  }
+
+  function postHtml(key, by, place, date, orig, text, title) {
+    var lang = B.getLang(), tr = orig !== lang, on = !!showOrig[key];
+    var h = '<div class="post"><div class="post__head"><b>' + esc(by) + "</b><span>" + esc(place) + "</span>" + (date ? "<span>" + esc(date) + "</span>" : "") + trTag(orig) + "</div>";
+    if (title) h += '<p class="row__title" style="font-size:var(--fs-l)">' + esc(pick(title, lang)) + "</p>";
+    h += "<p>" + pick(text, lang) + "</p>";
+    if (tr) {
+      h += '<button type="button" class="orig-btn" data-key="' + key + '" aria-expanded="' + on + '">' + esc(on ? T({ ja: "元の文をとじる", en: "Hide original", es: "Ocultar original", zh: "收起原文" }) : T({ ja: "元の文を見る", en: "See original", es: "Ver original", zh: "查看原文" })) + "</button>";
+      if (on) h += '<div class="orig" lang="' + orig + '">' + (title ? "<b>" + esc(title[orig]) + "</b><br>" : "") + text[orig] + "</div>";
+    }
+    return h + "</div>";
+  }
+  function open(id) {
+    openId = id;
+    document.getElementById("view-list").hidden = true; document.getElementById("view-detail").hidden = false;
+    renderDetail(); window.scrollTo(0, 0);
+  }
+  function renderDetail() {
+    if (!openId) return;
+    var x = TH.find(function (a) { return a.id === openId; });
+    var h = postHtml(x.id, x.by, x.place, x.date, x.orig, x.body, x.title);
+    h += '<h2 class="h3">' + esc(T({ ja: "返信 " + x.replies.length + "件", en: x.replies.length + " replies", es: x.replies.length + " respuestas", zh: x.replies.length + " 条回复" })) + "</h2>";
+    h += x.replies.map(function (r, i) { return postHtml(x.id + "r" + i, r.by, r.place, "", r.orig, r.text); }).join("");
+    var box = document.getElementById("detail");
+    box.innerHTML = h;
+    box.querySelectorAll(".orig-btn").forEach(function (b) {
+      b.addEventListener("click", function () { var k = b.getAttribute("data-key"); showOrig[k] = !showOrig[k]; renderDetail(); });
+    });
+  }
+
+  document.getElementById("back").addEventListener("click", function () {
+    openId = null; document.getElementById("view-list").hidden = false; document.getElementById("view-detail").hidden = true;
+  });
+  document.getElementById("newform").addEventListener("submit", function (e) {
+    e.preventDefault();
+    toast(T({ ja: "投稿しました（モックなので保存はされません）", en: "Posted (mock — nothing is saved)", es: "Publicado (simulación)", zh: "已发布（模拟，不会保存）" }));
+    e.target.reset();
+  });
+  document.getElementById("replyform").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = document.getElementById("rp-body").value.trim();
+    if (v && openId) {
+      var x = TH.find(function (a) { return a.id === openId; }), lang = B.getLang(), o = {}; o[lang] = esc(v);
+      x.replies.push({ by: "You (sample)", place: "—", orig: lang, text: o });
+      renderDetail();
+    }
+    toast(T({ ja: "返信しました（モックなので保存はされません）", en: "Reply sent (mock — nothing is saved)", es: "Respuesta enviada (simulación)", zh: "已回复（模拟，不会保存）" }));
+    e.target.reset();
+  });
+  renderChips(); renderList();
+  document.addEventListener("langchange", function () { renderChips(); renderList(); renderDetail(); });
+});
+</script>
+</body>
+</html>

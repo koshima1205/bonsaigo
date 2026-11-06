@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>15 職人の手直しを図で見せる（仮）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .back-link { display: inline-flex; align-items: center; gap: var(--s1); min-height: 44px; font-size: var(--fs-s); text-decoration: none; margin: 0 0 var(--s2); }
+  .marked svg.marks { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .marks .num { font-family: var(--mincho); font-weight: 700; font-size: 17px; fill: var(--shu); }
+  .marks .m-x line, .marks .m-arrow path.shaft { fill: none; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .marks .m-x line { stroke: var(--shu); stroke-width: 4; }
+  .marks .m-arrow path.shaft { stroke: var(--koke-2); stroke-width: 4; }
+  .marks .m-arrow .head, .marks .m-x .num, .marks .m-arrow .num, .marks .m-goal { opacity: 0; }
+  .marks .m-goal path { fill: var(--koke); fill-opacity: 0.1; stroke: var(--koke-2); stroke-width: 2.5; stroke-dasharray: 2 6; stroke-linecap: round; }
+  .marks .m-goal .num { fill: var(--koke-2); }
+  .marks .m-goal .num, .marks .m-goal path { opacity: 1; }
+  .marks.is-1 .m-x line, .marks.is-2 .m-x line,
+  .marks.is-1 .m-arrow path.shaft, .marks.is-2 .m-arrow path.shaft { stroke-dashoffset: 0; }
+  .marks.is-1 .m-x .num, .marks.is-2 .m-x .num,
+  .marks.is-1 .m-arrow .head, .marks.is-2 .m-arrow .head,
+  .marks.is-1 .m-arrow .num, .marks.is-2 .m-arrow .num,
+  .marks.is-2 .m-goal { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) {
+    .marks .m-x line, .marks .m-arrow path.shaft { transition: stroke-dashoffset 0.5s ease-out; }
+    .marks .m-x .num, .marks .m-arrow .head, .marks .m-arrow .num, .marks .m-goal { transition: opacity 0.4s ease-out; }
+    .marks.is-1 .m-x line:nth-of-type(2) { transition-delay: 0.25s; }
+    .marks.is-1 .m-x .num { transition-delay: 0.5s; }
+    .marks.is-1 .m-arrow path.shaft { transition-delay: 0.8s; }
+    .marks.is-1 .m-arrow .head, .marks.is-1 .m-arrow .num { transition-delay: 1.2s; }
+    .marks.is-2 .m-goal { transition-delay: 0.1s; transition-duration: 0.7s; }
+  }
+  .stage { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); margin: var(--s4) 0 var(--s3); }
+  .stage button { min-height: 52px; padding: var(--s2); font-size: var(--fs-s); line-height: 1.35; text-align: center; }
+  .stage button[aria-pressed="true"] { background: var(--sumi); border-color: var(--sumi); color: var(--kami); }
+  .stage-note { min-height: 3.5em; margin: 0 0 var(--s4); }
+  .legend { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--sen); }
+  .legend li { display: flex; gap: var(--s3); align-items: center; padding: var(--s3) 0; border-bottom: 1px solid var(--sen); }
+  .legend svg { width: 56px; height: 36px; flex: none; }
+  .legend .n { font-family: var(--mincho); font-weight: 700; color: var(--shu); width: 1em; flex: none; }
+  .legend__body { flex: 1; min-width: 0; }
+  .legend__body b.term { font-weight: 700; }
+  .no-words { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); margin: var(--s3) 0 0; font-size: var(--fs-s); color: var(--sumi-2); }
+</style>
+</head>
+<body data-screen="15">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <div class="draft-banner">
+      <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Draft</span><span data-l="es">Borrador</span><span data-l="zh">暂定</span></span></span>
+      <strong><span class="t"><span data-l="ja">3D（Blender）での見せ方は未決定。いまは図で代用</span><span data-l="en">How to show this in 3D (Blender) is not decided yet</span><span data-l="es">El formato 3D (Blender) está por decidir</span><span data-l="zh">3D（Blender）呈现方式未定</span></span></strong><br>
+      <span class="t">
+        <span data-l="ja">会議で決まっていません。完成形ではなく、見せ方の見本です。</span>
+        <span data-l="en">A simple drawing stands in for now. This shows the idea, not the final form.</span>
+        <span data-l="es">Por ahora, un dibujo sencillo. Es una idea, no la versión final.</span>
+        <span data-l="zh">目前以简单示意图代替，并非最终形式。</span>
+      </span>
+    </div>
+
+    <a class="back-link" href="05_答えが届く_愛好家.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>
+      <span class="t"><span data-l="ja">05 の答えに戻る</span><span data-l="en">Back to the answer (screen 05)</span><span data-l="es">Volver a la respuesta (05)</span><span data-l="zh">返回回答（05）</span></span>
+    </a>
+
+    <p class="eyebrow"><span class="t"><span data-l="ja">相談 q-0142 ・ 手直しの図（サンプル）</span><span data-l="en">Question q-0142 · Correction drawing (sample)</span><span data-l="es">Consulta q-0142 · Dibujo de corrección (ejemplo)</span><span data-l="zh">咨询 q-0142 · 修整示意（示例）</span></span></p>
+    <h1 class="h1"><span class="t">
+      <span data-l="ja">線を引くだけで、言葉がいらない</span>
+      <span data-l="en">Draw a line. No words needed.</span>
+      <span data-l="es">Una línea basta. No hacen falta palabras.</span>
+      <span data-l="zh">画一条线。不需要语言。</span>
+    </span></h1>
+    <p class="lead"><span class="t">
+      <span data-l="ja">職人は木の図に、切る枝・伸ばす方向・仕上がりの輪郭を線で描きます。どの言語の人にも、そのまま伝わります。</span>
+      <span data-l="en">The craftsperson draws on the tree: which branch to cut, which way to grow, and the outline to aim for. It reads the same in any language.</span>
+      <span data-l="es">El maestro dibuja sobre el árbol qué rama cortar, hacia dónde crecer y el contorno final.</span>
+      <span data-l="zh">匠人在树的图上画出要剪的枝、生长的方向和目标轮廓。</span>
+    </span></p>
+
+    <figure class="zu marked" data-zu="moyogi" data-cap="none" id="photo"></figure>
+
+    <div class="stage" role="group" aria-label="stage" id="stage">
+      <button type="button" class="btn" data-stage="0" aria-pressed="true"><span class="t"><span data-l="ja">前</span><span data-l="en">Before</span><span data-l="es">Antes</span><span data-l="zh">修整前</span></span></button>
+      <button type="button" class="btn" data-stage="1" aria-pressed="false"><span class="t"><span data-l="ja">職人の手直し</span><span data-l="en">Marks</span><span data-l="es">Marcas</span><span data-l="zh">匠人的修整</span></span></button>
+      <button type="button" class="btn" data-stage="2" aria-pressed="false"><span class="t"><span data-l="ja">仕上がりの見込み</span><span data-l="en">Result</span><span data-l="es">Resultado</span><span data-l="zh">预期效果</span></span></button>
+    </div>
+    <p class="note stage-note" id="stage-note" aria-live="polite"></p>
+
+    <h2 class="h3"><span class="t"><span data-l="ja">線の意味（言葉がなくても分かる3つ）</span><span data-l="en">What each line means: three marks</span><span data-l="es">Qué significa cada línea</span><span data-l="zh">每种线条的含义</span></span></h2>
+    <ul class="legend">
+      <li>
+        <span class="n">1</span>
+        <svg viewBox="0 0 56 36" aria-hidden="true"><line x1="16" y1="8" x2="40" y2="28" stroke="#A6432A" stroke-width="4" stroke-linecap="round"/><line x1="40" y1="8" x2="16" y2="28" stroke="#A6432A" stroke-width="4" stroke-linecap="round"/></svg>
+        <div class="legend__body">
+          <strong class="t"><span data-l="ja">切る枝に × 印</span><span data-l="en">A cross on a branch to cut</span><span data-l="es">Cruz: rama que se corta</span><span data-l="zh">打叉：要剪掉的枝</span></strong><br>
+          <span class="note t">
+            <span data-l="ja">下向きや交わる<b class="term" data-term="忌み枝">忌み枝</b>を切る、<b class="term" data-term="剪定">剪定</b>の指示です。</span>
+            <span data-l="en">Pruning (<b class="term" data-term="剪定">剪定</b>) order for a "forbidden branch" (<b class="term" data-term="忌み枝">忌み枝</b>) that grows the wrong way.</span>
+            <span data-l="es">Orden de poda para una rama que crece en mala dirección.</span>
+            <span data-l="zh">修剪指示：剪去长向不对的枝。</span>
+          </span>
+        </div>
+      </li>
+      <li>
+        <span class="n">2</span>
+        <svg viewBox="0 0 56 36" aria-hidden="true"><path d="M8 28 L42 10" stroke="#2F4630" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M34 6 L48 8 L40 20" stroke="#2F4630" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        <div class="legend__body">
+          <strong class="t"><span data-l="ja">矢印は、伸ばしたい方向</span><span data-l="en">An arrow shows the direction to grow</span><span data-l="es">Flecha: dirección de crecimiento</span><span data-l="zh">箭头：希望生长的方向</span></strong><br>
+          <span class="note t">
+            <span data-l="ja">この枝は切らずに、矢印の向きへ育てます。</span>
+            <span data-l="en">Keep this branch and let it grow the way the arrow points.</span>
+            <span data-l="es">No se corta: se deja crecer hacia la flecha.</span>
+            <span data-l="zh">此枝不剪，朝箭头方向培养。</span>
+          </span>
+        </div>
+      </li>
+      <li>
+        <span class="n">3</span>
+        <svg viewBox="0 0 56 36" aria-hidden="true"><path d="M6 28 C10 14 22 6 32 5 C42 6 50 14 52 24 C40 28 24 22 6 28Z" fill="#3E5A3A" fill-opacity="0.1" stroke="#2F4630" stroke-width="2.5" stroke-dasharray="2 5" stroke-linecap="round"/></svg>
+        <div class="legend__body">
+          <strong class="t"><span data-l="ja">点線の輪郭は、目標の形</span><span data-l="en">A dotted outline is the target shape</span><span data-l="es">Contorno punteado: forma objetivo</span><span data-l="zh">虚线轮廓：目标形状</span></strong><br>
+          <span class="note t">
+            <span data-l="ja">葉のかたまり全体＝<b class="term" data-term="樹冠">樹冠</b>を、この輪郭に近づけます。</span>
+            <span data-l="en">Aim the whole leaf mass (the crown, <b class="term" data-term="樹冠">樹冠</b>) toward this outline.</span>
+            <span data-l="es">La copa completa debe acercarse a este contorno.</span>
+            <span data-l="zh">让整个树冠逐渐接近此轮廓。</span>
+          </span>
+        </div>
+      </li>
+    </ul>
+
+
+    <hr class="rule">
+    <div style="display:grid;gap:var(--s3)">
+      <a class="btn btn--main btn--wide" href="05_答えが届く_愛好家.html"><span class="t"><span data-l="ja">05 の答えに戻る</span><span data-l="en">Back to the answer (screen 05)</span><span data-l="es">Volver a la respuesta (05)</span><span data-l="zh">返回回答（05）</span></span></a>
+      <button type="button" class="btn btn--wide" id="ask-again"><span class="t"><span data-l="ja">この線について質問する</span><span data-l="en">Ask about these marks</span><span data-l="es">Preguntar sobre estas líneas</span><span data-l="zh">就这些线条提问</span></span></button>
+    </div>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI;
+  /* 木の図の上に、職人が引いた線を重ねる（0 前 / 1 手直し / 2 仕上がり） */
+  var fig = document.getElementById("photo");
+  var svg =
+    '<svg class="marks is-0" viewBox="0 0 320 240" aria-hidden="true" id="marks">' +
+      /* 3 目標の樹冠の輪郭（点線） */
+      '<g class="m-goal"><path d="M40 138 C44 104 100 58 140 30 C176 8 238 40 276 96 C246 112 170 96 124 130 C100 150 70 150 40 138Z"/>' +
+        '<text class="num" x="270" y="122">3</text></g>' +
+      /* 1 切る枝に × */
+      '<g class="m-x"><line pathLength="1" x1="54" y1="130" x2="78" y2="152"/><line pathLength="1" x1="78" y1="130" x2="54" y2="152"/>' +
+        '<text class="num" x="30" y="150">1</text></g>' +
+      /* 2 伸ばす方向の矢印 */
+      '<g class="m-arrow"><path class="shaft" pathLength="1" d="M236 96 L276 62"/>' +
+        '<path class="head" d="M262 58 L282 56 L278 76" fill="none" stroke="#2F4630" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<text class="num" x="292" y="52">2</text></g>' +
+    '</svg>';
+  fig.querySelector(".zu__frame").insertAdjacentHTML("beforeend", svg);
+  var marks = document.getElementById("marks");
+
+  var notes = [
+    { ja: "手直しの前の木です。まだ線はありません。", en: "The tree before any correction. No marks yet.", es: "El árbol antes de corregir. Aún sin líneas.", zh: "修整前的树，还没有任何线条。" },
+    { ja: "職人が線を引きます。まず切る枝に × 、つぎに伸ばす方向の矢印。", en: "The craftsperson draws: first a cross on the branch to cut, then an arrow for the direction to grow.", es: "El maestro dibuja: primero la cruz y luego la flecha.", zh: "匠人依次画出：先在要剪的枝上打叉，再画生长方向的箭头。" },
+    { ja: "点線は、整えたあとの樹冠の見込みです。実際の仕上がりは木の勢いで変わります。", en: "The dotted line is the expected crown after the work. The real result depends on how the tree responds.", es: "La línea punteada es la copa prevista. El resultado real depende del árbol.", zh: "虚线是修整后树冠的预期轮廓，实际效果取决于树的长势。" }
+  ];
+  var stage = 0;
+  function show(n) {
+    stage = n;
+    marks.setAttribute("class", "marks is-" + n);
+    document.querySelectorAll("#stage button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-stage") === String(n)));
+    });
+    document.getElementById("stage-note").textContent = B.T(notes[n]);
+  }
+  document.querySelectorAll("#stage button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var n = Number(b.getAttribute("data-stage"));
+      if (n === 1 && stage === 1) { show(0); void marks.getBoundingClientRect(); }
+      show(n);
+    });
+  });
+  document.addEventListener("langchange", function () { show(stage); });
+  document.getElementById("ask-again").addEventListener("click", function () {
+    window.toast(B.T({ ja: "相談の画面へ移ります（見本）", en: "Taking you to the ask screen (sample)", es: "Pasando a la pantalla de consulta (ejemplo)", zh: "前往咨询页面（示例）" }));
+    setTimeout(function () { location.href = window.fileOf("03"); }, 900);
+  });
+  show(0);
+});
+</script>
+</body>
+</html>

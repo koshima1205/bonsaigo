@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>11 用語集｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .contrast { margin: 0 0 var(--s6); }
+  .contrast__word { display: flex; align-items: baseline; gap: var(--s3); flex-wrap: wrap; margin: var(--s4) 0 var(--s1); }
+  .contrast__ja { font-family: var(--mincho); font-size: 3rem; font-weight: 700; line-height: 1.1; }
+  .contrast__yomi { color: var(--sumi-3); font-size: var(--fs-s); }
+  .contrast__label { font-size: var(--fs-s); font-weight: 700; color: var(--sumi-3); margin: var(--s4) 0 var(--s1); letter-spacing: 0.04em; }
+  .contrast__literal {
+    font-family: var(--mincho); font-size: 1.75rem; line-height: 1.3; margin: 0; color: var(--sumi-2);
+    text-decoration: line-through; text-decoration-color: var(--shu); text-decoration-thickness: 3px; overflow-wrap: anywhere;
+  }
+  .contrast__down { display: flex; align-items: center; gap: var(--s2); margin: var(--s3) 0; color: var(--koke); font-size: var(--fs-s); font-weight: 700; }
+  .contrast__down svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; flex: none; }
+  .contrast .panel--koke p { margin: 0; }
+  .contrast .panel--koke p + .contrast__label { margin-top: var(--s4); }
+  .contrast__meaning { font-size: var(--fs-l); line-height: 1.7; }
+  .counts { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--sen); border-bottom: 1px solid var(--sen); margin: var(--s4) 0; }
+  .counts > div { padding: var(--s3) var(--s2); text-align: center; }
+  .counts > div + div { border-left: 1px solid var(--sen); }
+  .counts b { display: block; font-family: var(--mincho); font-size: 1.75rem; line-height: 1.2; }
+  .counts span { font-size: var(--fs-s); color: var(--sumi-2); }
+  .explain { display: grid; gap: var(--s2); margin: 0 0 var(--s5); font-size: var(--fs-s); color: var(--sumi-2); }
+  .explain p { margin: 0; display: flex; gap: var(--s2); align-items: flex-start; }
+  .explain .badge-ok, .explain .badge-mi { flex: none; margin-top: 3px; }
+  .search { position: relative; margin: 0 0 var(--s3); }
+  .search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; stroke: var(--sumi-3); fill: none; stroke-width: 1.8; pointer-events: none; }
+  .search .input { padding-left: 40px; min-height: 48px; }
+  .chips .chip { min-height: 44px; display: inline-flex; align-items: center; }
+  .chips--row { flex-wrap: nowrap; overflow-x: auto; margin: 0 calc(var(--s4) * -1) var(--s3); padding: 0 var(--s4); scrollbar-width: none; }
+  .chips--row::-webkit-scrollbar { display: none; }
+  .chips--row .chip { flex: none; }
+  .seg { display: inline-flex; border: 1px solid var(--sen); border-radius: var(--r); overflow: hidden; background: var(--kami-3); }
+  .seg button { min-height: 44px; min-width: 48px; padding: 0 var(--s3); border: 0; background: none; color: var(--sumi-2); cursor: pointer; font-size: 14px; }
+  .seg button + button { border-left: 1px solid var(--sen); }
+  .seg button[aria-pressed="true"] { background: var(--sumi); color: var(--kami); }
+  .result-line { font-size: var(--fs-s); color: var(--sumi-3); margin: var(--s5) 0 var(--s2); }
+  .rows > li.yrow-li { padding: 0; }
+  .yrow { display: flex; gap: var(--s3); align-items: center; width: 100%; min-height: 64px; padding: var(--s3) 0; background: none; border: 0; text-align: left; cursor: pointer; }
+  .yrow:hover .yrow__ja { color: var(--koke); }
+  .yrow__body { flex: 1; min-width: 0; }
+  .yrow__ja { font-family: var(--mincho); font-weight: 700; font-size: var(--fs-l); line-height: 1.4; }
+  .yrow__yomi { font-family: var(--gothic); font-weight: 400; font-size: var(--fs-s); color: var(--sumi-3); }
+  .yrow__en { font-size: var(--fs-m); color: var(--sumi-2); line-height: 1.5; overflow-wrap: anywhere; }
+  .yrow__cat { font-size: 14px; color: var(--sumi-3); }
+  .yrow svg { width: 16px; height: 16px; stroke: var(--sumi-3); fill: none; stroke-width: 1.8; flex: none; }
+  .yrow .badge-ok, .yrow .badge-mi { flex: none; white-space: nowrap; }
+  .empty { padding: var(--s6) 0; text-align: center; color: var(--sumi-2); }
+</style>
+</head>
+<body data-screen="11">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <p class="eyebrow"><span class="t"><span data-l="ja">用語集</span><span data-l="en">Glossary</span><span data-l="es">Glosario</span><span data-l="zh">术语表</span></span></p>
+    <h1 class="h1"><span class="t">
+      <span data-l="ja">言葉を置き換えない。意味と理由を伝える。</span>
+      <span data-l="en">We don't swap words. We explain meaning and reason.</span>
+      <span data-l="es">No cambiamos palabras: explicamos el sentido.</span>
+      <span data-l="zh">不是换词，而是讲清含义和原因。</span>
+    </span></h1>
+
+    <!-- 直訳と意訳のちがい（懸崖の例。中身は用語集データから） -->
+    <section class="contrast" aria-labelledby="contrast-h">
+      <h2 class="h3" id="contrast-h" style="margin-top:0"><span class="t"><span data-l="ja">直訳と意訳のちがい（例：懸崖）</span><span data-l="en">Literal vs. explained: one example</span><span data-l="es">Literal frente a explicado: un ejemplo</span><span data-l="zh">直译与意译的区别：一个例子</span></span></h2>
+      <div class="contrast__word"><span class="contrast__ja" id="c-ja"></span><span class="contrast__yomi" id="c-yomi"></span></div>
+      <p class="contrast__label"><span class="t"><span data-l="ja">直訳すると（これだと伝わらない）</span><span data-l="en">Word for word (this misleads)</span><span data-l="es">Palabra por palabra (confunde)</span><span data-l="zh">逐字直译（会产生误解）</span></span></p>
+      <p class="contrast__literal" id="c-literal"></p>
+      <div class="contrast__down" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"/></svg><span class="t"><span data-l="ja">そこで、こう伝える</span><span data-l="en">So we say this instead</span><span data-l="es">Por eso lo explicamos así</span><span data-l="zh">所以我们这样说明</span></span></div>
+      <div class="panel panel--koke">
+        <p class="contrast__label" style="margin-top:0"><span class="t"><span data-l="ja">意味</span><span data-l="en">What it means</span><span data-l="es">Qué significa</span><span data-l="zh">含义</span></span></p>
+        <p class="contrast__meaning" id="c-meaning"></p>
+        <p class="contrast__label"><span class="t"><span data-l="ja">なぜそうするか</span><span data-l="en">Why it's done</span><span data-l="es">Por qué se hace</span><span data-l="zh">为什么这样做</span></span></p>
+        <p id="c-why"></p>
+      </div>
+      <p class="note" style="margin-top:var(--s3)"><span class="t"><span data-l="ja">この3点セットが、全122語に入っています。</span><span data-l="en">Every term in the glossary carries this same set of three.</span><span data-l="es">Cada término incluye estos tres elementos.</span><span data-l="zh">每个术语都附有这三项内容。</span></span> <span class="sample t"><span data-l="ja">下書きを含む</span><span data-l="en">includes drafts</span><span data-l="es">incluye borradores</span><span data-l="zh">含草稿</span></span></p>
+    </section>
+
+    <div class="counts" aria-label="count">
+      <div><b id="n-all">0</b><span class="t"><span data-l="ja">全部の語</span><span data-l="en">terms in all</span><span data-l="es">términos</span><span data-l="zh">全部术语</span></span></div>
+      <div><b id="n-ok" style="color:var(--koke)">0</b><span class="t"><span data-l="ja">確かめた語</span><span data-l="en">checked</span><span data-l="es">verificados</span><span data-l="zh">已核实</span></span></div>
+      <div><b id="n-mi" style="color:var(--shu)">0</b><span class="t"><span data-l="ja">未確認の語</span><span data-l="en">not yet checked</span><span data-l="es">sin verificar</span><span data-l="zh">未核实</span></span></div>
+    </div>
+    <div class="explain">
+      <p><span class="badge-ok"><span class="t"><span data-l="ja">確かめた</span><span data-l="en">Checked</span><span data-l="es">Verificado</span><span data-l="zh">已核实</span></span></span>
+        <span class="t"><span data-l="ja">公開されている解説ページで意味を確かめた語です。出どころのリンクを付けています。</span><span data-l="en">Each of these was checked against a publicly available explanatory page. The source link is attached.</span><span data-l="es">Su significado se comprobó en una página pública. Incluye enlace a la fuente.</span><span data-l="zh">已对照公开的解说页面核实含义，并附有出处链接。</span></span></p>
+      <p><span class="badge-mi"><span class="t"><span data-l="ja">未確認</span><span data-l="en">Not yet checked</span><span data-l="es">Sin verificar</span><span data-l="zh">未核实</span></span></span>
+        <span class="t"><span data-l="ja">まだ確かめていない仮の説明です。職人や専門の人の確認を待っています。</span><span data-l="en">A provisional explanation. It is waiting for a craftsperson or specialist to confirm it.</span><span data-l="es">Explicación provisional, pendiente de confirmación.</span><span data-l="zh">暂定说明，等待匠人或专家确认。</span></span></p>
+    </div>
+
+    <hr class="rule">
+
+    <label class="search" for="q">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <input id="q" class="input" type="search" autocomplete="off"
+        data-ph-ja="言葉・読み・英語で探す"
+        data-ph-en="Search: 水やり, pruning…"
+        data-ph-es="Buscar por palabra, lectura o inglés"
+        data-ph-zh="按词语、读音或英文搜索">
+    </label>
+    <div class="chips chips--row" id="cats" role="group" aria-label="category"></div>
+    <div class="seg" id="seg" role="group" aria-label="status"></div>
+
+    <p class="result-line" id="result-line" aria-live="polite"></p>
+    <ul class="rows" id="list"></ul>
+    <div class="empty" id="empty" hidden></div>
+
+    <hr class="rule">
+    <div style="display:grid;gap:var(--s3)">
+      <a class="btn btn--main btn--wide" href="10_学ぶ_歴史と育て方.html"><span class="t"><span data-l="ja">記事の中で用語を使う</span><span data-l="en">See the terms used in articles</span><span data-l="es">Ver los términos en los artículos</span><span data-l="zh">在文章中查看术语用法</span></span></a>
+      <a class="btn btn--quiet btn--wide" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">職人に聞いてみる</span><span data-l="en">Ask a craftsperson</span><span data-l="es">Preguntar a un maestro</span><span data-l="zh">向匠人提问</span></span></a>
+    </div>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI, Y = window.YOUGO;
+  var state = { q: "", cat: "all", st: "all" };
+  var CAT = {
+    "手入れ": { ja: "手入れ", en: "Care", es: "Cuidados", zh: "养护" },
+    "木の形": { ja: "木の形", en: "Tree styles", es: "Formas", zh: "树形" },
+    "木の部位": { ja: "木の部位", en: "Parts of a tree", es: "Partes", zh: "树的部位" },
+    "鉢と土": { ja: "鉢と土", en: "Pots and soil", es: "Macetas y tierra", zh: "盆与土" },
+    "病気・虫・不調": { ja: "病気・虫・不調", en: "Problems and pests", es: "Problemas y plagas", zh: "病虫害与不适" },
+    "季節の作業": { ja: "季節の作業", en: "Seasonal work", es: "Trabajo de temporada", zh: "季节作业" }
+  };
+  var ALL = { ja: "すべて", en: "All", es: "Todo", zh: "全部" };
+  var ST = [
+    { k: "all", t: { ja: "すべて", en: "All", es: "Todo", zh: "全部" } },
+    { k: "確かめた", t: { ja: "確かめた", en: "Checked", es: "Verificado", zh: "已核实" } },
+    { k: "未確認", t: { ja: "未確認", en: "Not yet checked", es: "Sin verificar", zh: "未核实" } }
+  ];
+  function isOk(t) { return t.status === "確かめた"; }
+  var nOk = Y.filter(isOk).length, nMi = Y.length - nOk;
+  document.getElementById("n-all").textContent = Y.length;
+  document.getElementById("n-ok").textContent = nOk;
+  document.getElementById("n-mi").textContent = nMi;
+  var cats = []; Y.forEach(function (t) { if (cats.indexOf(t.category) < 0) cats.push(t.category); });
+
+  function drawContrast() {
+    var t = window.findTerm("懸崖"); if (!t) return;
+    var ja = B.getLang() === "ja";
+    document.getElementById("c-ja").textContent = t.ja;
+    document.getElementById("c-yomi").textContent = t.yomi;
+    document.getElementById("c-literal").textContent = "“" + t.literal_en + "”";
+    document.getElementById("c-meaning").textContent = ja ? t.meaning_ja : t.meaning_en;
+    document.getElementById("c-why").textContent = ja ? t.why_ja : t.why_en;
+  }
+  function drawControls() {
+    var box = document.getElementById("cats");
+    var list = [{ k: "all", t: ALL, n: Y.length }].concat(cats.map(function (c) {
+      return { k: c, t: CAT[c] || { ja: c, en: c }, n: Y.filter(function (x) { return x.category === c; }).length };
+    }));
+    box.innerHTML = list.map(function (c) {
+      return '<button type="button" class="chip" data-cat="' + esc(c.k) + '" aria-pressed="' + (state.cat === c.k) + '">' + esc(B.T(c.t)) + " " + c.n + "</button>";
+    }).join("");
+    box.querySelectorAll("button").forEach(function (b) {
+      b.addEventListener("click", function () { state.cat = b.getAttribute("data-cat"); drawControls(); drawList(); });
+    });
+    var seg = document.getElementById("seg");
+    seg.innerHTML = ST.map(function (s) {
+      return '<button type="button" data-st="' + esc(s.k) + '" aria-pressed="' + (state.st === s.k) + '">' + esc(B.T(s.t)) + "</button>";
+    }).join("");
+    seg.querySelectorAll("button").forEach(function (b) {
+      b.addEventListener("click", function () { state.st = b.getAttribute("data-st"); drawControls(); drawList(); });
+    });
+  }
+  function match(t) {
+    if (state.cat !== "all" && t.category !== state.cat) return false;
+    if (state.st !== "all" && t.status !== state.st) return false;
+    if (!state.q) return true;
+    var q = state.q.toLowerCase();
+    return [t.ja, t.yomi, t.common_en, t.literal_en, t.meaning_ja, t.meaning_en].some(function (s) { return String(s || "").toLowerCase().indexOf(q) >= 0; });
+  }
+  function drawList() {
+    var rows = Y.filter(match);
+    var lang = B.getLang();
+    document.getElementById("list").innerHTML = rows.map(function (t) {
+      var badge = isOk(t)
+        ? '<span class="badge-ok">' + esc(B.T({ ja: "確かめた", en: "Checked", es: "Verificado", zh: "已核实" })) + "</span>"
+        : '<span class="badge-mi">' + esc(B.T({ ja: "未確認", en: "Not yet checked", es: "Sin verificar", zh: "未核实" })) + "</span>";
+      return '<li class="yrow-li"><button type="button" class="yrow" data-id="' + esc(t.id) + '">' +
+        '<span class="yrow__body">' +
+          '<span class="yrow__ja">' + esc(t.ja) + ' <span class="yrow__yomi">（' + esc(t.yomi) + '）</span></span><br>' +
+          '<span class="yrow__en">' + esc(t.common_en) + '</span> ' +
+          '<span class="yrow__cat">・ ' + esc(B.T(CAT[t.category] || { ja: t.category, en: t.category })) + '</span>' +
+        "</span>" + badge +
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></li>';
+    }).join("");
+    document.querySelectorAll("#list .yrow").forEach(function (b) {
+      b.addEventListener("click", function () { window.openTerm(b.getAttribute("data-id")); });
+    });
+    document.getElementById("result-line").textContent = B.T({
+      ja: rows.length + "語を表示中（全" + Y.length + "語）", en: "Showing " + rows.length + " of " + Y.length + " terms",
+      es: "Mostrando " + rows.length + " de " + Y.length + " términos", zh: "显示 " + rows.length + " / " + Y.length + " 个术语" });
+    var empty = document.getElementById("empty");
+    empty.hidden = rows.length > 0;
+    empty.textContent = B.T({ ja: "見つかりませんでした。ほかの言葉や、くくりを変えて試してください。", en: "Nothing found. Try another word or a different category.", es: "Sin resultados. Prueba otra palabra.", zh: "没有找到。请换个词或类别试试。" });
+  }
+  document.getElementById("q").addEventListener("input", function (e) { state.q = e.target.value.trim(); drawList(); });
+  function all() { drawContrast(); drawControls(); drawList(); }
+  all();
+  document.addEventListener("langchange", all);
+});
+</script>
+</body>
+</html>

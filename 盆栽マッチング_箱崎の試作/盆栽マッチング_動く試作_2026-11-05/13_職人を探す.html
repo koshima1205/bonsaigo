@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>13 職人を探す｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .idea { display: inline-block; font-size: var(--fs-s); color: var(--sumi-2); border: 1px solid var(--sen); border-radius: 99px; padding: 2px 10px; margin-bottom: var(--s3); }
+  .chips .chip { min-height: 44px; display: inline-flex; align-items: center; }
+  .list { margin-top: var(--s4); }
+  .list .row-link { position: relative; display: flex; gap: var(--s3); width: 100%; align-items: center; min-height: 72px; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
+  .list li { padding: var(--s3) 0; }
+  .seal { width: 48px; height: 48px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.25rem; }
+  .spec-tags { display: flex; flex-wrap: wrap; gap: var(--s1); margin-top: var(--s1); }
+  .spec-tags span { font-size: 14px; color: var(--koke); background: var(--koke-usu); padding: 1px 8px; border-radius: 99px; }
+  .list .row-link.is-open { background: var(--koke-usu); border-radius: var(--r); padding: var(--s2) var(--s3); }
+  .list .row-link { padding: var(--s2) var(--s3); }
+  .row-link.is-open .row__title { color: var(--koke); }
+  .sel { position: absolute; top: var(--s2); right: var(--s3); font-size: 14px; font-weight: 700; color: var(--koke); white-space: nowrap; }
+  .profile { border-top: 2px solid var(--sumi); padding-top: var(--s5); margin-top: var(--s6); }
+  .profile__head { display: flex; gap: var(--s4); align-items: center; margin-bottom: var(--s4); }
+  .profile__head .seal { width: 64px; height: 64px; font-size: 1.75rem; }
+  .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--s4) 0; border-top: 1px solid var(--sen); border-bottom: 1px solid var(--sen); }
+  .facts div { padding: var(--s3) var(--s2); text-align: center; border-right: 1px solid var(--sen); }
+  .facts div:last-child { border-right: 0; }
+  .facts b { display: block; font-family: var(--mincho); font-size: var(--fs-xl); line-height: 1.3; }
+  .facts small { color: var(--sumi-3); font-size: 14px; }
+  .words { font-family: var(--mincho); font-size: var(--fs-l); line-height: 1.85; border-left: 3px solid var(--kin); padding-left: var(--s4); margin: var(--s4) 0; }
+  .empty { padding: var(--s5) 0; color: var(--sumi-3); }
+</style>
+</head>
+<body data-screen="13">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <p class="eyebrow"><span class="t"><span data-l="ja">職人を探す</span><span data-l="en">Find a craftsperson</span><span data-l="es">Buscar un maestro</span><span data-l="zh">寻找匠人</span></span></p>
+    
+    <h1 class="h1"><span class="t">
+      <span data-l="ja">育てている木に詳しい職人を、選んで相談できます。</span>
+      <span data-l="en">Choose a craftsperson who knows your kind of tree.</span>
+      <span data-l="es">Elige a un maestro que conozca tu tipo de árbol.</span>
+      <span data-l="zh">选择熟悉你那种树的匠人。</span>
+    </span></h1>
+    <p class="lead"><span class="t"><span data-l="ja">得意な木の種類で絞れます。3人とも架空の職人です。</span><span data-l="en">Filter by the trees they know best. All three are fictional craftspeople.</span><span data-l="es">Filtra por especialidad. Los tres son ficticios.</span><span data-l="zh">可按擅长树种筛选。三位均为虚构匠人。</span></span></p>
+
+    <div class="chips" id="filters" role="group"></div>
+    <ul class="rows list" id="list"></ul>
+
+    <section class="profile" id="profile" aria-live="polite"></section>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI, S = window.SAMPLE;
+  var KINDS = [
+    { k: "all", t: { ja: "すべて", en: "All", es: "Todos", zh: "全部" } },
+    { k: "松", t: { ja: "松", en: "Pines", es: "Pinos", zh: "松" }, m: ["黒松", "五葉松"] },
+    { k: "真柏", t: { ja: "真柏", en: "Junipers", es: "Enebros", zh: "真柏" }, m: ["真柏"] },
+    { k: "もみじ", t: { ja: "もみじ・花もの", en: "Maples & flowering", es: "Arces y floridos", zh: "枫与花木" }, m: ["もみじ", "ボケ", "皐月"] },
+    { k: "石付き", t: { ja: "石付き", en: "Rock plantings", es: "Sobre roca", zh: "石附" }, m: ["石付き"] }
+  ];
+  var filter = "all", openId = "s1";
+  var SEAL = { s1: "松", s2: "楓", s3: "岩" };
+  var HITO = {
+    s1: { ja: "水は毎日やらなくていい。木と土を見て決めてください。", en: "You don't have to water every day. Look at the tree and the soil, then decide.", es: "No hace falta regar a diario. Mira el árbol y la tierra.", zh: "不必每天浇水，看树和土再决定。" },
+    s2: { ja: "季節で置き場所を変えるだけで、木は見違えます。", en: "Just moving the tree with the seasons can transform it.", es: "Cambiar el lugar según la estación transforma el árbol.", zh: "随季节换位置，树会大不一样。" },
+    s3: { ja: "石の形を読むと、木をどう植えるかが見えてきます。", en: "Read the shape of the stone, and you can see how the tree should be planted.", es: "Lee la forma de la roca y verás cómo plantar el árbol.", zh: "读懂石头的形状，就知道树该怎么种。" }
+  };
+  function matches(s) {
+    if (filter === "all") return true;
+    var f = KINDS.find(function (x) { return x.k === filter; });
+    return s.specialty.some(function (sp) { return f.m.indexOf(sp) >= 0; });
+  }
+  var SPEN = { "黒松": "Black pine", "五葉松": "Five-needle pine", "真柏": "Shimpaku juniper", "もみじ": "Maple", "ボケ": "Flowering quince", "皐月": "Satsuki azalea", "石付き": "Rock planting", "ジン・シャリ": "Deadwood (jin and shari)" };
+  function sp(x) { return B.getLang() === "ja" || !SPEN[x] ? x : SPEN[x] + " · " + x; }
+  function nm(s) { return B.getLang() === "ja" ? s.name : s.en_name; }
+  function gd(s) { return B.getLang() === "ja" ? s.garden : s.en_garden; }
+  function ttl(s) { return B.getLang() === "ja" ? s.title : s.en_title; }
+  function area(s) { return B.getLang() === "ja" ? s.area : s.en_area; }
+  function bio(s) { return B.getLang() === "ja" ? s.bio : s.en_bio; }
+
+  function render() {
+    document.getElementById("filters").innerHTML = KINDS.map(function (f) {
+      return '<button type="button" class="chip" data-k="' + f.k + '" aria-pressed="' + (filter === f.k) + '">' + esc(B.T(f.t)) + "</button>";
+    }).join("");
+    var shown = S.shokunin.filter(matches);
+    if (shown.length && !shown.some(function (s) { return s.id === openId; })) openId = shown[0].id;
+    document.getElementById("list").innerHTML = shown.length ? shown.map(function (s) {
+      return '<li><button type="button" class="row-link' + (s.id === openId ? " is-open" : "") + '" data-id="' + s.id + '" aria-expanded="' + (s.id === openId) + '">' +
+        '<span class="seal" aria-hidden="true">' + SEAL[s.id] + "</span>" +
+        '<span class="row__body"><span class="row__title" style="display:block">' + esc(nm(s)) + "</span>" +
+        '<span class="row__meta" style="display:block">' + esc(ttl(s)) + "</span>" +
+        '<span class="spec-tags">' + s.specialty.map(function (x) { return "<span>" + esc(sp(x)) + "</span>"; }).join("") + "</span></span>" +
+        (s.id === openId ? '<span class="sel">' + esc(B.T({ ja: "選択中", en: "Selected", es: "Seleccionado", zh: "已选择" })) + "</span>" : "") + "</button></li>";
+    }).join("") : '<li class="empty">' + esc(B.T({ ja: "この木が得意な職人は、まだいません。", en: "No craftsperson for this tree yet.", es: "Aún no hay maestros para este árbol.", zh: "暂时没有擅长此树的匠人。" })) + "</li>";
+
+    var s = S.shokunin.find(function (x) { return x.id === openId; });
+    var box = document.getElementById("profile");
+    if (!s || !shown.length) { box.innerHTML = ""; return; }
+    box.innerHTML =
+      '<div class="profile__head"><div class="seal" aria-hidden="true">' + SEAL[s.id] + '</div><div><p class="row__title" style="font-size:var(--fs-l)">' + esc(nm(s)) + '</p><p class="row__meta">' + esc(gd(s)) + " · " + esc(area(s)) + "</p></div></div>" +
+      '<div class="facts">' + (s.years === "-" ? "" : "<div><b>" + s.years + "</b><small>" + esc(B.T({ ja: "年の経験", en: "years", es: "años", zh: "年经验" })) + "</small></div>") +
+      "<div><b>" + s.answers + "</b><small>" + esc(B.T({ ja: "答えた数", en: "answers given", es: "respuestas", zh: "回答数" })) + "</small></div>" +
+      "<div><b>" + s.specialty.length + "</b><small>" + esc(B.T({ ja: "得意な木", en: "specialties", es: "especialidades", zh: "擅长树种" })) + "</small></div></div>" +
+      '<p class="note">' + esc(B.T({ ja: "年数・答えた数はサンプルです。", en: "Years and answer counts are sample data.", es: "Cifras de muestra.", zh: "数字为样例。" })) + "</p>" +
+      '<p class="row__meta">' + esc(B.T({ ja: "得意な木", en: "Specialties", es: "Especialidad", zh: "擅长" })) + "</p>" +
+      '<div class="spec-tags" style="margin-bottom:var(--s4)">' + s.specialty.map(function (x) { return "<span>" + esc(sp(x)) + "</span>"; }).join("") + "</div>" +
+      "<p>" + esc(bio(s)) + "</p>" +
+      '<p class="words">' + esc(B.T(HITO[s.id])) + "</p>" +
+      '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(s.id) + '">' + esc(B.T({ ja: "この職人に相談する", en: "Ask this craftsperson", es: "Consultar a este maestro", zh: "向这位匠人咨询" })) + "</a>";
+  }
+  document.getElementById("filters").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-k]"); if (!b) return; filter = b.getAttribute("data-k"); render();
+  });
+  document.getElementById("list").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-id]"); if (!b) return; openId = b.getAttribute("data-id"); render();
+    document.getElementById("profile").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  render();
+  document.addEventListener("langchange", render);
+  /* 話して登録した職人も、一覧に足す */
+  if (API.online) API.get("/api/teachers").then(function (r) {
+    r.teachers.slice().reverse().forEach(function (t) {
+      if (S.shokunin.some(function (x) { return x.id === t.id; })) return;
+      S.shokunin.unshift({ id: t.id, name: t.name_ja, en_name: t.name_en, garden: "新しく登録した職人", en_garden: "Newly joined", area: "サンプル", en_area: "sample", years: "-", answers: 0, specialty: t.specialty_ja, title: t.title_ja, en_title: "Craftsperson (sample)", bio: t.bio.ja, en_bio: t.bio.en });
+      SEAL[t.id] = t.name_ja.charAt(0);
+      HITO[t.id] = t.first_words;
+    });
+    if (r.teachers.length) { openId = r.teachers[0].id; render(); }
+  }, function () {});
+});
+</script>
+</body>
+</html>

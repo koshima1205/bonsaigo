@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>19 話して先生に登録（職人）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .h1 { font-size: 1.75rem; }
+  .big-field { font-size: 1.125rem; }
+  .field__label { font-size: 1rem; }
+  .box { margin: var(--s5) 0 0; }
+  .box__label { font-size: 1rem; color: var(--sumi-3); font-weight: 700; margin: 0 0 var(--s1); }
+  .box p { margin: 0; font-size: 1.125rem; line-height: 1.7; }
+  .box ul { margin: 0; padding-left: 1.2em; font-size: 1.125rem; }
+  .en { border-left: 3px solid var(--kin); padding-left: var(--s3); }
+  .en p { font-size: 1rem; }
+  .check { margin-top: var(--s5); border: 2px solid var(--shu); border-radius: var(--r); background: var(--shu-usu); padding: var(--s4); font-size: 1.125rem; }
+  .check b { color: var(--shu); }
+  .check ul { margin: var(--s2) 0 0; padding-left: 1.2em; }
+  .done { margin-top: var(--s5); border-radius: var(--r); background: var(--koke); color: #fff; padding: var(--s5) var(--s4); text-align: center; }
+  .done__title { font-family: var(--mincho); font-size: 1.5rem; font-weight: 700; margin: 0 0 var(--s2); }
+  .done a { color: #fff; font-size: 1.125rem; }
+  .err { margin-top: var(--s4); border: 2px solid var(--shu); border-radius: var(--r); padding: var(--s4); background: var(--shu-usu); font-size: 1.125rem; }
+  .wait { margin: var(--s5) 0; text-align: center; font-size: 1.25rem; font-weight: 700; color: var(--koke); }
+</style>
+</head>
+<body data-screen="19" class="role-shokunin">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <h1 class="h1">話すだけで、海外の生徒に見つけてもらえます。</h1>
+    <p class="lead">教えられることを話してください。紹介ページは英語・スペイン語・中国語でAIが作ります。</p>
+
+    <div class="big-actions">
+      <button type="button" class="big-btn big-btn--main" id="btn-talk">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+        <span id="talk-label">話す</span>
+      </button>
+    </div>
+    <label class="field" style="margin-top:var(--s4)">
+      <span class="field__label">話した言葉（書いても大丈夫です）</span>
+      <textarea class="textarea big-field" id="voice" rows="5" placeholder="例：松を四十年やっています。針金のかけ方と水やりなら教えられます。"></textarea>
+    </label>
+    <p class="note" id="voice-msg" hidden></p>
+    <button type="button" class="btn btn--wide" id="btn-fill" style="min-height:48px;margin-bottom:var(--s3)">声が使えないときは、見本の言葉で作る</button>
+    <div class="big-actions"><button type="button" class="big-btn" id="btn-make">紹介ページを作る</button></div>
+    <p class="wait" id="wait" role="status" hidden>紹介ページを作っています。</p>
+    <div class="err" id="err" role="alert" hidden></div>
+
+    <div id="result" hidden>
+      <div class="box"><p class="box__label">肩書き</p><p id="r-title"></p></div>
+      <div class="box"><p class="box__label">得意なこと</p><p id="r-spec"></p></div>
+      <div class="box"><p class="box__label">教えられること</p><ul id="r-teach"></ul></div>
+      <div class="box"><p class="box__label">紹介文</p><p id="r-bio"></p></div>
+      <div class="box en"><p class="box__label">海外の人にはこう見えます（英語）</p><p id="r-en" lang="en"></p></div>
+      <div class="check" id="check" hidden><b>ここだけ確かめてください</b><ul id="check-list"></ul></div>
+      <label class="field" style="margin-top:var(--s5)">
+        <span class="field__label">お名前（試作なので、架空の名前が入っています）</span>
+        <input class="input big-field" id="name" autocomplete="off" value="松田 一郎">
+      </label>
+      <div class="big-actions"><button type="button" class="big-btn big-btn--main" id="btn-ok">OK</button></div>
+      <div class="done" id="done" role="status" hidden>
+        <p class="done__title">登録しました。</p>
+        <a href="18_知りたいことから職人を探す.html?lang=en">次へ：海外の人の画面で見る</a>
+      </div>
+    </div>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var profile = null, talking = false;
+  function voiceMsg(m) { $("voice-msg").textContent = m; $("voice-msg").hidden = false; }
+  function showErr(m) { $("err").textContent = m; $("err").hidden = false; }
+  var rec = API.makeRecognizer({
+    onText: function (t) { $("voice").value = t; },
+    onEnd: function () { talking = false; $("talk-label").textContent = "話す"; $("btn-talk").classList.remove("is-on"); },
+    onError: function () { voiceMsg("声を聞き取れませんでした。書くか、下の見本の言葉を使えます。"); }
+  });
+  $("btn-talk").addEventListener("click", function () {
+    if (!rec) { voiceMsg("この端末では声を使えません。書くか、下の見本の言葉を使えます。"); $("voice").focus(); return; }
+    if (talking) { rec.stop(); return; }
+    talking = true; $("talk-label").textContent = "聞いています（押すと終わり）"; $("btn-talk").classList.add("is-on");
+    rec.start($("voice").value);
+  });
+  $("btn-fill").addEventListener("click", function () { $("voice").value = "松を四十年やっとります。針金のかけ方と、水やりなら教えられる。若い人に、木を見る目を伝えたい。英語はできんけど、写真に線を引いて伝えられる。"; $("voice-msg").hidden = true; $("btn-make").click(); });
+  $("btn-make").addEventListener("click", function () {
+    var v = $("voice").value.trim();
+    $("err").hidden = true;
+    if (!v) { showErr("教えられることを、話すか書いてください"); return; }
+    if (talking && rec) rec.stop();
+    $("btn-make").disabled = true; $("wait").hidden = false; $("result").hidden = true;
+    API.post("/api/teachers/draft", { voice: v }).then(function (p) {
+      profile = p;
+      $("r-title").textContent = p.title_ja;
+      $("r-spec").textContent = p.specialty_ja.join("・");
+      $("r-teach").innerHTML = p.can_teach_ja.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("");
+      $("r-bio").textContent = p.bio.ja;
+      $("r-en").textContent = p.bio.en;
+      $("check").hidden = !p.please_check_ja.length;
+      $("check-list").innerHTML = p.please_check_ja.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("");
+      $("done").hidden = true; $("btn-ok").disabled = false; $("btn-ok").textContent = "OK"; $("btn-ok").classList.remove("is-on");
+      $("result").hidden = false;
+      $("result").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, function (e) { showErr(e.message); }).then(function () { $("btn-make").disabled = false; $("wait").hidden = true; });
+  });
+  $("btn-ok").addEventListener("click", function () {
+    var n = $("name").value.trim() || "見本の職人";
+    $("err").hidden = true;
+    $("btn-ok").disabled = true;
+    API.post("/api/teachers", { name: n, profile: profile }).then(function () {
+      $("btn-ok").textContent = "OKしました"; $("btn-ok").classList.add("is-on"); $("done").hidden = false;
+      $("done").scrollIntoView({ behavior: "smooth", block: "center" });
+    }, function (e) { $("btn-ok").disabled = false; showErr(e.message); });
+  });
+});
+</script>
+</body>
+</html>

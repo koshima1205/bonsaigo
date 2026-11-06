@@ -1,0 +1,223 @@
+{
+  "toCraftsperson": {
+    "title_ja": "数か月前にかけた針金が、上のほうで枝に食い込みそうに見える、という相談です。",
+    "summary_ja": "数か月前に針金をかけた木です。上のほうの針金が枝にきつく見えるので、いつ、どうやって外せばよいかを知りたいそうです。",
+    "points_ja": [
+      "針金をかけたのは数か月前",
+      "上のほうの針金が、枝にきつく見える",
+      "外す時期と、外し方を知りたい",
+      "外したあと、枝が元に戻らないかも心配している"
+    ],
+    "ai_mitate_ja": "写真から見た様子で、診断ではありません。上の細い幹に黒い針金が何回か巻かれ、根元の曲がりの近くにも針金が見えます。樹皮に食い込んでいるかどうかは、この写真の大きさでは確かめられません。",
+    "terms_ja": [
+      "針金外し",
+      "針金掛け"
+    ],
+    "photo_problem_ja": null
+  },
+  "toLearner": {
+    "headline": "Take the top wire off now. Cut it off one turn at a time, and don't unwind it.",
+    "paragraphs": [
+      "The craftsperson says the wire near the top is starting to bite into the branch, so it should come off now, before it leaves a scar. This step is called [[wire removal|針金外し]].",
+      "Don't unwind it. Unwinding twists the branch and can tear the bark. Use wire cutters and snip the wire off one turn at a time.",
+      "A faint mark usually fades as the trunk thickens over the years, so there is no need to worry about a light line.",
+      "If the branch springs back after the wire is off, you can [[wire|針金掛け]] it again in spring."
+    ],
+    "back_translation_ja": "上のほうの針金が枝に食い込み始めているので、跡が残る前に、今のうちに外してください（針金外し）。ほどかないでください。ほどくと枝がねじれて、樹皮を傷めることがあります。針金切りで、1巻きずつ切って外します。うっすらした跡なら、何年かかけて幹が太るうちに目立たなくなることが多いので、心配はいりません。外したあと枝が戻ってしまうようなら、春にもう一度針金をかけ直せます（針金掛け）。"
+  },
+  "reviewAnswer": {
+    "ok": true,
+    "problems_ja": [],
+    "corrected_headline": null,
+    "corrected_paragraphs": null,
+    "corrected_back_translation_ja": null
+  },
+  "socialPosts": {
+    "what_i_saw_ja": "茶色の浅い鉢から、黒っぽくごつごつした太い幹が立ち上がり、すぐにほぼ真横へ曲がっています。その先の細い幹には黒い針金が巻かれ、緑の葉をつけた枝が左右に広がって、鉢の縁より外まで伸びています。",
+    "posts": {
+      "x": {
+        "en": "A dark, rough trunk climbs out of the soil, then turns almost flat. Above the turn, black wire still coils around the slimmer trunk. In one tree: the shape it holds, and the shape still being guided. #bonsai #bonsaiwiring #JapaneseCraft",
+        "es": "Un tronco oscuro y rugoso sale de la tierra y enseguida se tiende casi en horizontal. Más arriba, el alambre negro aún rodea la parte fina. En un solo árbol, la forma que ya sostiene y la que todavía se está guiando. #bonsái #alambrado #oficiojaponés",
+        "zh": "深色粗糙的树干从土里升起,随即几乎横着转了个弯。再往上,黑色金属丝还缠在较细的树干上。一棵树上,同时看得到已有的线条和仍在引导中的线条。#盆栽 #蟠扎 #日本工艺"
+      },
+      "instagram": {
+        "en": "That turn, not far above the soil, is what stops you.\n\nA dark, rough trunk rises from the pot and soon swings nearly flat to one side. From there a much slimmer trunk lifts upward, wrapped in coils of black wire, with branches reaching left and right and foliage stretching well past the rim of the pot. Its shadow falls softly across the white table.\n\nIn Japanese bonsai, the first stretch of trunk out of the soil has its own name: tachiagari (立ち上がり). It is considered the heart of a bonsai, the part finished so that it rises with strength and beauty.\n\nThe wire says something else. It is there to correct the direction of growth, and it is not meant to stay: it has to come off before it marks the bark. What you are looking at is a shape still being guided.\n\nWhat would you ask this craftsperson about this tree? The turn, the wire, anything you have wondered about your own tree? Send your question.\n\n#bonsai #tachiagari #bonsaiwiring #JapaneseCraft",
+        "es": "Lo primero que atrapa la mirada es ese giro, muy cerca de la tierra.\n\nEl tronco, oscuro y rugoso, sale de la maceta y pronto se tiende casi en horizontal. Desde ahí se eleva una parte mucho más fina, envuelta en espirales de alambre negro, con ramas hacia ambos lados y un follaje que sobrepasa con holgura el borde de la maceta. Su sombra cae, suave, sobre la mesa blanca.\n\nEn el bonsái japonés, el primer tramo del tronco que asoma de la tierra tiene nombre propio: tachiagari (立ち上がり). Se considera el corazón del bonsái, la parte que se trabaja para que se alce con fuerza y belleza.\n\nEl alambre cuenta otra cosa. Sirve para corregir la dirección del crecimiento y no está pensado para quedarse: hay que retirarlo antes de que marque la corteza. Lo que ves aquí es una forma que todavía se está guiando.\n\n¿Qué le preguntarías a la persona artesana que comparte este árbol? El giro, el alambre, o aquello que siempre quisiste saber sobre tu propio bonsái. Envía tu pregunta.\n\n#bonsái #tachiagari #alambrado #oficiojaponés",
+        "zh": "最先抓住视线的,是离土不远处的那个转弯。\n\n深色粗糙的树干从盆中升起,不久便几乎横向一侧。从那里再往上,是细得多的一段,一圈圈缠着黑色金属丝;枝条向左右伸展,枝叶远远越过盆沿。树影淡淡地落在白色桌面上。\n\n在日本盆栽里,树干刚从土中升起的这一段有专门的名字:立ち上がり(tachiagari)。它被视为盆栽的核心所在,要做到升起时既有力又优美。\n\n金属丝说的则是另一件事。它用来修正生长的方向,却不会一直留着,必须赶在勒出痕迹之前拆下。此刻你看到的,是一个仍在引导中的姿态。\n\n关于这棵树,你想问匠人什么?那个转弯、那些金属丝,或是你一直想弄明白的事,都欢迎把问题发过来。\n\n#盆栽 #蟠扎 #立ち上がり #日本工艺"
+      },
+      "facebook": {
+        "en": "Follow this tree from the bottom up and it keeps surprising you.\n\nThe trunk leaves the soil thick and dark, its bark rough and lumpy, and leans over until it is almost horizontal. At the end of that turn it narrows quickly and climbs again, black wire wound around it in plain view, while the branches split off to the left and right and reach well past the rim of the pot.\n\nYou will know the word tachiagari, and why that first stretch of trunk is called the heart of a bonsai. You will also know what the wire asks of whoever applied it: a fast-growing tree can show marks within weeks, so it cannot be forgotten.\n\nIf this tree were in front of you, what would you want to know first? Send your question to the craftsperson who shared it.",
+        "es": "Si recorres este árbol de abajo arriba, no deja de sorprenderte.\n\nEl tronco sale de la tierra grueso y oscuro, con la corteza rugosa y llena de relieves, y se inclina hasta quedar casi horizontal. Al final de ese giro se afina de golpe y vuelve a subir, con el alambre negro a la vista, mientras las ramas se abren a izquierda y derecha y sobrepasan con holgura el borde de la maceta.\n\nConoces la palabra tachiagari y sabes por qué ese primer tramo del tronco se considera el corazón del bonsái. También sabes lo que exige el alambre: en un árbol de crecimiento rápido puede dejar marca en pocas semanas, así que no se puede olvidar.\n\nSi tuvieras este árbol delante, ¿qué querrías saber primero? Envía tu pregunta a la persona artesana que lo comparte.",
+        "zh": "顺着这棵树从下往上看,每一段都不一样。\n\n树干出土时粗壮而深沉,树皮粗糙,布满起伏,然后一路倾斜,几乎成了水平。转弯的尽头,树干骤然变细,再度向上,黑色金属丝就这样明明白白地缠在上面;枝条分向左右,远远越过盆沿。\n\n喜欢盆栽的你,想必知道「立ち上がり」这个词,也知道为什么树干最初的这一段被视为盆栽的核心。你也一定明白金属丝的分量:生长快的树,几周内就可能留下痕迹,一刻也忘不得。\n\n如果这棵树就摆在你面前,你最想先问什么?欢迎把问题发给分享这棵树的匠人。"
+      },
+      "short_script": {
+        "en": "Start at the soil.\nA dark, rough trunk comes up,\nthen turns almost flat.\nIn Japan, this first stretch has its own name: tachiagari.\nIt's considered the heart of a bonsai.\nNow look higher.\nBlack wire, coiled around a slimmer trunk.\nWire corrects the direction of growth.\nAnd it has to come off before it marks the bark.\nThis shape is still being guided.\nWhat would you ask the craftsperson?",
+        "es": "Empieza por la tierra.\nUn tronco oscuro y rugoso sube\ny se tiende casi en horizontal.\nEn Japón, este primer tramo tiene nombre propio: tachiagari.\nSe considera el corazón del bonsái.\nAhora mira más arriba.\nAlambre negro, enrollado en un tronco más fino.\nEl alambre corrige la dirección del crecimiento.\nY hay que retirarlo antes de que marque la corteza.\nEsta forma todavía se está guiando.\n¿Qué le preguntarías a quien lo comparte?",
+        "zh": "先从土面看起。\n深色粗糙的树干升起来,\n接着几乎转成水平。\n在日本,这最初的一段有专门的名字:立ち上がり。\n它被视为盆栽的核心。\n再往上看。\n黑色金属丝,缠在较细的树干上。\n金属丝用来修正生长的方向。\n而且必须在留下痕迹之前拆掉。\n这个姿态,还在引导之中。\n你想问匠人什么?"
+      }
+    },
+    "culture_note": {
+      "ja": "盆栽の針金は木の一部ではなく、一時的な導きです。成長の向きを直すためのもので、樹皮に跡がつく前に外します。育ちの早い木では数週間で跡がつくこともあるため、針金を掛けた木は育つ様子を見守り続ける必要があります。",
+      "en": "Wire on a bonsai is a temporary guide, not part of the tree: it corrects the direction of growth and has to come off before it marks the bark, which on a fast-growing tree can happen within weeks. That is why a wired tree is never simply left alone; it has to be watched as it grows.",
+      "es": "En un bonsái, el alambre es una guía pasajera, no parte del árbol: corrige la dirección del crecimiento y debe retirarse antes de marcar la corteza, algo que en un árbol de crecimiento rápido puede ocurrir en pocas semanas. Por eso un árbol alambrado nunca se deja sin más: hay que observarlo mientras crece.",
+      "zh": "盆栽上的金属丝只是暂时的引导,并不是树的一部分:它用来修正生长方向,必须在勒伤树皮、留下痕迹之前拆除,生长快的树几周内就可能留痕。所以缠上金属丝的树不能放着不管,而要一路看着它生长。"
+    },
+    "confirm_ja": {
+      "x": "黒くごつごつした幹がほぼ真横に曲がる様子と、その上の細い幹に巻かれた針金を取り上げ、今の形とこれから導かれる形が一本の木に見える、と書いています。",
+      "instagram": "幹の曲がりと枝の広がりを描写し、「立ち上がり」という言葉と針金の役割を説明して、最後にあなたへの質問を呼びかけています。",
+      "facebook": "盆栽好きの人に向けて、木を根元から上へ順にたどる短い話として書き、立ち上がりと針金の跡の話を入れて、最後にあなたへの質問を呼びかけています。",
+      "short_script": "根元の曲がりから上の針金へと視線を動かしながら、「立ち上がり」と針金の役割を短い言葉で語り、最後に、あなたに何を聞きたいかを問いかけます。"
+    },
+    "please_check_ja": [
+      "木の種類は投稿に書いていません。写真からはビャクシンの仲間に見えますが、これは推定です。書いてよければ、正しい種類を教えてください。",
+      "針金について「今も形を導いている途中」と書きました。この木の今の状態と合っているか確認してください。",
+      "根元の黒い幹の部分を「立ち上がり」として紹介しました。この木の説明として違和感がないか確認してください。",
+      "下のほうの葉に茶色く見える部分があります。投稿では触れていません。気になるようでしたら、手入れの後に撮り直すこともできます。",
+      "メモがなかったので、樹齢、来歴、作り手のことは何も書いていません。伝えたいことがあれば教えてください。"
+    ],
+    "photo_problem_ja": null
+  },
+  "socialPostsFromAnswer": {
+    "what_i_saw_ja": "茶色の鉢に植わった小ぶりの針葉の木で、上の細い幹に黒い針金が何回か巻かれています。針金がきつく見える、という質問と合う様子です。食い込んでいるかどうかは、写真の大きさでは確かめられません。",
+    "posts": {
+      "x": {
+        "en": "The wire looks tight. Now what?\n\nA reader asked when to take the wire off their tree. A Japanese craftsperson's answer: now, before it scars. Cut it off one turn at a time. Never unwind it.\n\n#bonsai #bonsaiwiring #japanesebonsai",
+        "es": "El alambre se ve apretado. ¿Y ahora?\n\nUn lector preguntó cuándo quitar el alambre de su árbol. La respuesta de un maestro japonés: ahora, antes de que deje marca. Córtalo vuelta a vuelta. Nunca lo desenrolles.\n\n#bonsai #alambrado #bonsaijapones",
+        "zh": "铁丝看起来很紧，怎么办？\n\n有位读者问，什么时候该拆掉树上的铁丝。一位日本匠人的回答：现在就拆，趁还没留下痕迹。一圈一圈剪断，千万不要绕着解开。\n\n#盆栽 #蟠扎 #日本盆栽"
+      },
+      "instagram": {
+        "en": "The wire looks tight. Now what?\n\nA reader sent us this photo. They wired the tree a few months ago, and near the top the wire now looks snug against the branch.\n\nThe craftsperson's answer was short: take it off now, before it leaves a scar. Don't unwind it, because that twists the branch and can tear the bark. Snip it off one turn at a time.\n\nA faint line usually fades as the trunk thickens. If the branch springs back, wire it again in spring.\n\nWhat would you ask about your own tree?\n\n#bonsai #bonsaiwiring #japanesebonsai #bonsaicare",
+        "es": "El alambre se ve apretado. ¿Y ahora?\n\nUn lector nos envió esta foto. Alambró el árbol hace unos meses y, arriba, el alambre ya se ve ceñido a la rama.\n\nLa respuesta del maestro fue breve: quítalo ahora, antes de que deje marca. No lo desenrolles, porque tuerce la rama y puede romper la corteza. Córtalo vuelta a vuelta.\n\nUna marca leve suele desaparecer cuando el tronco engorda. Si la rama vuelve a su sitio, alámbrala otra vez en primavera.\n\n¿Qué preguntarías sobre tu árbol?\n\n#bonsai #alambrado #bonsaijapones",
+        "zh": "铁丝看起来很紧，怎么办？\n\n一位读者发来这张照片。几个月前给树缠了铁丝，现在上面的铁丝看起来已经贴紧了枝条。\n\n匠人的回答很简短：现在就拆，趁还没留下痕迹。不要绕着解开，那样会扭到枝条，还可能撕裂树皮。一圈一圈剪断。\n\n浅浅的痕迹，通常会随着树干变粗而淡去。如果枝条弹回原位，春天再缠一次就好。\n\n关于你自己的树，你想问什么？\n\n#盆栽 #蟠扎 #日本盆栽"
+      },
+      "facebook": {
+        "en": "A reader wrote to us about a tree they wired a few months ago. Near the top, the wire now looks tight against the branch, and they wanted to know when and how to take it off.\n\nThe craftsperson's answer was calm and clear: now, before it scars. Don't unwind the wire. Cut it off one turn at a time, so the branch doesn't twist and the bark doesn't tear. A light mark fades as the trunk thickens, and if the branch springs back, it can be wired again in spring.\n\nIn bonsai, wire is a temporary guide. Knowing when to take it off matters as much as putting it on.\n\nHave a question about your own tree? Ask a craftsperson.",
+        "es": "Un lector nos escribió sobre un árbol que alambró hace unos meses. Arriba, el alambre ya se ve apretado contra la rama, y quería saber cuándo y cómo quitarlo.\n\nLa respuesta del maestro fue tranquila y clara: ahora, antes de que deje marca. No desenrolles el alambre. Córtalo vuelta a vuelta, para que la rama no se tuerza ni se rompa la corteza. Una marca leve desaparece cuando el tronco engorda y, si la rama vuelve a su sitio, se puede alambrar otra vez en primavera.\n\nEn el bonsái, el alambre es una guía pasajera. Saber cuándo quitarlo importa tanto como ponerlo.\n\n¿Tienes una pregunta sobre tu árbol? Pregunta a un maestro.",
+        "zh": "有位读者来信，说几个月前给一棵树缠了铁丝，现在上面的铁丝看起来紧贴着枝条，想知道什么时候、怎样拆。\n\n匠人的回答平和又清楚：现在就拆，趁还没留下痕迹。不要绕着解开，要一圈一圈剪断，这样枝条不会被扭到，树皮也不会撕裂。浅浅的痕迹会随着树干变粗而淡去；如果枝条弹回原位，春天可以再缠一次。\n\n在盆栽里，铁丝只是暂时的引导。知道什么时候拆，和怎样缠一样重要。\n\n关于你自己的树有问题吗？来问问匠人吧。"
+      },
+      "short_script": {
+        "en": "(Close on the wire near the top of the tree.)\nThe wire looks tight.\nThe craftsperson says: take it off now.\nDon't unwind it.\nCut it, one turn at a time.\nA faint line will fade.\nIf the branch springs back, wire it again in spring.\nAsk a craftsperson about your own tree.",
+        "es": "(Primer plano del alambre en la parte alta del árbol.)\nEl alambre se ve apretado.\nEl maestro dice: quítalo ahora.\nNo lo desenrolles.\nCórtalo, vuelta a vuelta.\nUna marca leve desaparecerá.\nSi la rama vuelve, alámbrala otra vez en primavera.\nPregunta a un maestro por tu árbol.",
+        "zh": "（镜头对准树上方的铁丝。）\n铁丝看起来很紧。\n匠人说：现在就拆。\n不要绕着解开。\n一圈一圈剪断。\n浅浅的痕迹会淡去。\n如果枝条弹回，春天再缠一次。\n关于你自己的树，也来问问匠人。"
+      }
+    },
+    "culture_note": {
+      "ja": "盆栽の針金は、木の形を導くための一時的なものです。かけるのと同じくらい、外す時期を見きわめることが大事だとされています。外すときは、ほどかずに1巻きずつ切るのが基本です。",
+      "en": "Wire on a bonsai is a temporary guide. Knowing when to take it off is said to matter as much as putting it on, and the basic rule is to cut it off one turn at a time rather than unwind it.",
+      "es": "En el bonsái, el alambre es una guía pasajera. Se dice que saber cuándo quitarlo importa tanto como ponerlo, y la regla básica es cortarlo vuelta a vuelta en lugar de desenrollarlo.",
+      "zh": "盆栽上的铁丝只是暂时的引导。人们常说，知道什么时候拆和怎样缠一样重要；拆的时候，基本做法是一圈一圈剪断，而不是绕着解开。"
+    },
+    "confirm_ja": {
+      "x": "針金がきつく見えるという読者の相談と、匠人の答え（今外す、ほどかずに1巻きずつ切る）を短く書いています。",
+      "instagram": "相談の流れ、匠人の答え（今外す、ほどかずに切る、跡は薄れる、戻ったら春にかけ直す）、質問の呼びかけを書いています。",
+      "facebook": "読者の相談と匠人の答えを短い話にし、「針金は一時的な導き」という文化の一言と、質問の呼びかけで結んでいます。",
+      "short_script": "上のほうの針金を映してから、匠人の答えを短い言葉で順に並べる語りです。"
+    },
+    "please_check_ja": [
+      "木の種類は書いていません。写真からは確かめられないためです。",
+      "質問した人の名前や町は書いていません。「読者」とだけ書いています。",
+      "「跡は幹が太るうちに薄れる」「戻ったら春にかけ直せる」は、匠人の言葉をもとにしています。この木に合っているか確認してください。"
+    ],
+    "photo_problem_ja": null
+  },
+  "matchTeachers": {
+    "understood": "You wired your tree a few months ago, the wire near the top now looks tight, and you want someone who can look at the actual tree and tell you when and how to take it off.",
+    "matches": [
+      {
+        "teacher_id": "s1",
+        "reason": "Teaches wiring and prefers drawing on your photo, so this craftsperson can mark exactly which turns of wire to cut first.",
+        "offer_id": "one_question",
+        "first_question": "Hello. I wired this tree a few months ago, and near the top the wire now looks tight against the branch. When should I take it off, and how? I've attached a photo."
+      },
+      {
+        "teacher_id": "s3",
+        "reason": "Works mostly with junipers. Your tree's species isn't confirmed from the photo, but if it is a juniper, this craftsperson knows how its bark and branches behave. Wiring is not on this profile, so the first craftsperson is the closer match.",
+        "offer_id": "one_question",
+        "first_question": "Hello. I wired this tree a few months ago and the wire near the top looks tight. Could you look at the photo and tell me whether it's time to remove it?"
+      }
+    ],
+    "no_match_reason": null
+  },
+  "teacherProfile": {
+    "title_ja": "松の職人",
+    "specialty_ja": [
+      "松",
+      "針金掛け",
+      "水やり"
+    ],
+    "can_teach_ja": [
+      "針金のかけ方",
+      "水やり",
+      "木を見る目",
+      "写真に線を引いて伝える"
+    ],
+    "bio": {
+      "ja": "松を四十年やってきた職人です。針金のかけ方と水やりを教えられます。若い人に、木を見る目を伝えたいと考えています。英語は話せませんが、写真に線を引いて伝えます。",
+      "en": "This craftsperson has worked with pines for forty years and can teach wiring and watering. The wish is to pass the eye for reading a tree on to younger people. No English is spoken, but lines drawn on your photo do the explaining.",
+      "es": "Este artesano lleva cuarenta años trabajando con pinos y puede enseñar el alambrado y el riego. Su deseo es transmitir a los jóvenes la mirada para leer un árbol. No habla inglés, pero explica trazando líneas sobre tu foto.",
+      "zh": "这位匠人与松树打了四十年交道，可以教缠铁丝和浇水。心愿是把看懂一棵树的眼力传给年轻人。虽然不会英语，但会在你的照片上画线来讲解。"
+    },
+    "first_words": {
+      "ja": "若い人に、木を見る目を伝えたい。",
+      "en": "I want to pass on the eye for seeing a tree to young people.",
+      "es": "Quiero transmitir a los jóvenes la mirada para ver un árbol.",
+      "zh": "我想把看懂一棵树的眼力，传给年轻人。"
+    },
+    "please_check_ja": [
+      "松の種類（黒松など）は話に出ていないので書いていません。",
+      "「若い人に」は、教える相手を若い人だけに限る意味ではなく、伝えたい相手として書いています。合っているか確認してください。"
+    ]
+  },
+  "treeIntake": {
+    "title_ja": "幹が大きく曲がった針金掛けの木",
+    "what_i_saw_ja": "茶色の丸い鉢に植わった小ぶりの針葉の木で、幹が根元から立ち上がって左へ大きく曲がり、枝に黒い針金が掛かっています。樹種は写真からは確かに言えません（見た目からの推定では、ヒノキ科の針葉樹かもしれません）。",
+    "record_ja": "写真を記録。職人より「海外の人に見せたい。売ってもよいと思っている」との話あり。",
+    "wants": [
+      "post",
+      "listing"
+    ],
+    "reply_ja": "この木を海外の方に見せたいこと、売ってもよいお考えであることを承りました。まだ投稿も出品もしておりませんので、まず紹介文の案を作り、確かめていただきたい点とあわせてお持ちします。",
+    "next_post_ideas_ja": [
+      "幹が大きく左へ曲がる形を、正面の写真で見せる",
+      "枝に掛かった針金を近くから写し、針金掛けの途中の姿として紹介する",
+      "幹肌と根元を近くから写して見てもらう"
+    ],
+    "please_check_ja": [
+      "この木の樹種を教えてください（写真からは確かに言えません）",
+      "売る場合の値段と、海外へ送るかどうかをお聞かせください",
+      "針金を掛けたままの姿で見せてよいか、ご判断ください"
+    ],
+    "photo_problem_ja": null
+  },
+  "listingDraft": {
+    "title": {
+      "en": "Small wired conifer with a strongly curved trunk",
+      "es": "Pequeña conífera alambrada de tronco muy curvado",
+      "zh": "树干大幅弯曲的小型蟠扎针叶树"
+    },
+    "description": {
+      "en": "A small needle-leaved tree in a round brown pot. The trunk rises from the base and curves sharply to the left, and black wire is visible on the branches. The species has not been confirmed. Offered by bid.",
+      "es": "Un árbol pequeño de hojas aciculares, plantado en una maceta redonda de color marrón. El tronco se eleva desde la base y se curva marcadamente hacia la izquierda, y en las ramas se aprecia alambre negro. La especie no está confirmada. Se vende por subasta.",
+      "zh": "这是一棵种在棕色圆盆中的小型针叶树。树干从根部向上生长，随后向左大幅弯曲，枝条上可以看到黑色的蟠扎金属丝。树种尚未确认。本品以竞价方式出售。"
+    },
+    "confirm_ja": "茶色の丸い鉢に植わった小ぶりの針葉の木で、幹が左へ大きく曲がり、枝に黒い針金が掛かっていること、樹種は未確認であること、入札で売ることを書いた下書きです。",
+    "wanted_matches": [
+      {
+        "wanted_id": "w1",
+        "reason_ja": "小ぶりの木で、枝に掛けた黒い針金が写真ではっきり見えるからです。"
+      },
+      {
+        "wanted_id": "w2",
+        "reason_ja": "小ぶりの木で、幹が根元から立ち上がって左へ大きく曲がっているからです。"
+      }
+    ],
+    "please_check_ja": [
+      "樹種",
+      "樹齢",
+      "木の高さと幅",
+      "鉢の大きさ",
+      "針金を掛けた時期と、外す時期の目安",
+      "鉢の下の金属の受け皿も売るものに含まれるか"
+    ]
+  }
+}

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>12 SNS投稿の下書き｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .h1 { font-size: 1.75rem; }
+  .sns { margin: var(--s6) 0 0; }
+  .sns__name { display: flex; align-items: baseline; gap: var(--s3); margin: 0 0 var(--s2); }
+  .sns__name b { font-family: var(--mincho); font-size: 1.5rem; }
+  .sns__name span { font-size: 1rem; color: var(--sumi-3); }
+  .post { border: 1px solid var(--sen); border-radius: var(--r); background: var(--kami-3); padding: var(--s4); font-family: system-ui, sans-serif; font-size: 0.9375rem; line-height: 1.6; color: var(--sumi); }
+  .post__head { display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s2); }
+  .post__icon { width: 36px; height: 36px; border-radius: 50%; background: var(--sumi); color: var(--kami); display: grid; place-items: center; font-family: var(--mincho); flex: none; }
+  .post__who { font-weight: 700; font-size: 0.875rem; line-height: 1.3; }
+  .post__who small { display: block; font-weight: 400; color: var(--sumi-3); font-size: 0.875rem; }
+  .post__text { margin: 0; white-space: pre-line; word-break: break-word; }
+  .post .zu { margin-top: var(--s3); }
+  .post__tags { color: var(--koke); }
+  .post__bar { display: flex; gap: var(--s5); margin-top: var(--s3); color: var(--sumi-3); font-size: 0.875rem; }
+  .post--ig .post__text { margin-top: var(--s3); }
+  .jp { margin: var(--s3) 0 0; border-left: 3px solid var(--kin); padding-left: var(--s3); }
+  .jp__label { font-size: 1rem; font-weight: 700; color: var(--sumi-3); margin: 0 0 var(--s1); }
+  .jp p { margin: 0; line-height: 1.7; }
+  .actions { margin-top: var(--s7); padding-top: var(--s5); border-top: 1px solid var(--sen); }
+  .actions__lead { margin: 0 0 var(--s4); }
+  .sub { margin-top: var(--s3); }
+  .sub .btn { min-height: 48px; }
+  .done { margin-top: var(--s4); border-radius: var(--r); background: var(--koke); color: #fff; padding: var(--s5) var(--s4); text-align: center; }
+  .done__title { font-family: var(--mincho); font-size: 1.5rem; font-weight: 700; margin: 0 0 var(--s2); line-height: 1.5; }
+  .done p { margin: 0; font-size: 1rem; }
+  .fix { margin-top: var(--s3); border: 2px solid var(--shu); border-radius: var(--r); background: var(--shu-usu); padding: var(--s4); }
+  .fix p { margin: 0; font-weight: 700; color: var(--shu); }
+  .fix small { display: block; font-weight: 400; color: var(--sumi-2); margin-top: var(--s1); font-size: 0.9375rem; }
+</style>
+</head>
+<body data-screen="12" class="role-shokunin">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <p class="eyebrow">相談 q-0142 と、Q&amp;Aから作りました</p>
+    <h1 class="h1">海外に向けた投稿の下書きができました。</h1>
+    <p class="lead">針金が食い込みそう、というポートランドの方の相談と、あなたの答えをもとにしています。見て、よければ「OK」を押してください。</p>
+
+    <section class="sns" id="sec-x">
+      <p class="sns__name"><b>X</b><span>短い一言</span></p>
+      <div class="post">
+        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">盆栽の間（サンプル）<small>@bonsai_hall_sample</small></div></div>
+        <p class="post__text" id="p-x"></p>
+        <div class="post__bar"><span>返信</span><span>リポスト</span><span>いいね</span></div>
+      </div>
+      <div class="jp">
+        <p class="jp__label">この投稿の中身（日本語で確認用）</p>
+        <p>針金がきつく見えたら、跡が残る前に外す。ほどかずに、1巻きずつ切る。職人の助言として紹介します。</p>
+      </div>
+    </section>
+
+    <section class="sns" id="sec-fb">
+      <p class="sns__name"><b>Facebook</b><span>少し長めの紹介</span></p>
+      <div class="post">
+        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">盆栽の間（サンプル）<small>公開・たった今</small></div></div>
+        <p class="post__text" id="p-fb"></p>
+        <div class="post__bar"><span>いいね</span><span>コメント</span><span>シェア</span></div>
+      </div>
+      <div class="jp">
+        <p class="jp__label">この投稿の中身（日本語で確認用）</p>
+        <p>ポートランドの方から、針金をいつ、どう外すかを聞かれた話。答えは「今のうちに外す。ほどかずに1巻きずつ切る。枝が戻るなら春にかけ直す」。「針金は一時的な導き」という一言も添えます。</p>
+      </div>
+    </section>
+
+    <section class="sns" id="sec-ig">
+      <p class="sns__name"><b>Instagram</b><span>写真が主役</span></p>
+      <div class="post post--ig">
+        <div class="post__head"><div class="post__icon" aria-hidden="true">盆</div><div class="post__who">bonsai_hall_sample</div></div>
+        <figure class="zu" data-zu="soudan" data-cap="none"></figure>
+        <p class="post__text" id="p-ig"></p>
+      </div>
+      <div class="jp">
+        <p class="jp__label">この投稿の中身（日本語で確認用）</p>
+        <p>相談の写真に、あなたが書き込んだ印を添えます。「上の針金が食い込みかけている。ほどかずに切って外す」と短く伝え、盆栽の合言葉をタグにします。</p>
+      </div>
+    </section>
+
+    <div id="check" hidden style="margin:var(--s5) 0 0;border:2px solid var(--shu);border-radius:10px;background:var(--shu-usu);padding:var(--s4);font-size:1.125rem"><b style="color:var(--shu)">ここだけ確かめてください</b><ul id="check-list" style="margin:var(--s2) 0 0;padding-left:1.2em"></ul></div>
+    <section class="actions" id="actions">
+      <p class="actions__lead">3つの投稿を、まとめて確認します。</p>
+      <div class="big-actions">
+        <button type="button" class="big-btn big-btn--main" id="btn-ok">OK</button>
+      </div>
+      <div class="sub">
+        <button type="button" class="btn btn--quiet btn--wide" id="btn-fix">直してほしい（話す）</button>
+      </div>
+      <div class="fix" id="fix" hidden><p>録音しています。直してほしいところを話してください。<small>（試作では、ここで止まります。声で書き直すのは画面17で試せます）</small></p></div>
+      <div class="done" id="done" hidden role="status">
+        <p class="done__title">発信の準備ができました。</p>
+        <p>実際の投稿はしていません。</p><p style="margin-top:var(--s2)"><a href="20_職人に入るお金_職人.html" style="color:#fff">次へ：入るお金を見る</a></p>
+      </div>
+    </section>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var sns = window.SAMPLE.sns, $ = function (id) { return document.getElementById(id); };
+  /* 投稿本文はサンプルの英文。#タグだけ色を変える */
+  function withTags(s) { return esc(s).replace(/(^|\s)(#[A-Za-z]\w*)/g, '$1<span class="post__tags">$2</span>'); }
+  $("p-x").innerHTML = withTags(sns.x);
+  $("p-fb").innerHTML = withTags(sns.facebook);
+  $("p-ig").innerHTML = withTags(sns.instagram);
+  $("p-x").lang = $("p-fb").lang = $("p-ig").lang = "en";
+
+  /* 本物の相談から作るとき */
+  var draft = null, photo = null, urlId = new URLSearchParams(location.search).get("id");
+  function loadReal(id) {
+    $("btn-ok").disabled = true;
+    document.querySelector(".h1").textContent = "投稿の下書きを作っています。";
+    API.get("/api/consultations").then(function (r) {
+      var c = r.consultations.find(function (x) { return x.id === id; });
+      if (!c) throw new Error("相談が見つかりませんでした");
+      photo = c.image;
+      return API.post("/api/consultations/" + id + "/posts", {});
+    }).then(function (d) {
+      draft = d;
+      document.querySelector(".h1").textContent = "海外に向けた投稿の下書きができました。";
+      document.querySelector(".eyebrow").textContent = "さきほどの相談から作りました";
+      document.querySelector(".lead").textContent = "相談した方の名前や住む場所は出していません。見て、よければ「OK」を押してください。";
+      $("p-x").innerHTML = withTags(d.posts.x.en);
+      $("p-fb").innerHTML = withTags(d.posts.facebook.en);
+      $("p-ig").innerHTML = withTags(d.posts.instagram.en);
+      var conf = { "sec-x": d.confirm_ja.x, "sec-fb": d.confirm_ja.facebook, "sec-ig": d.confirm_ja.instagram };
+      Object.keys(conf).forEach(function (k) { document.querySelector("#" + k + " .jp p:last-child").textContent = conf[k]; });
+      $("check").hidden = !d.please_check_ja.length;
+      $("check-list").innerHTML = d.please_check_ja.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("");
+      if (photo) document.querySelector("#sec-ig .zu__frame").innerHTML = API.photoHtml(photo, "");
+      $("btn-ok").disabled = false;
+    }).catch(function (e) {
+      document.querySelector(".h1").textContent = "下書きを作れませんでした。";
+      toast(e.message);
+    });
+  }
+  if (API.online && urlId) loadReal(urlId);
+  else if (API.online) API.status().then(function (st) {
+    /* 見本のときは、直接開いても直近の相談から作る（AIを動かすときは、開くだけで使わないようにする） */
+    if (st.mode !== "sample") return;
+    return API.get("/api/consultations").then(function (r) {
+      var c = r.consultations.find(function (x) { return x.answer; });
+      if (c) loadReal(c.id);
+    });
+  }, function () {});
+
+  var okd = false;
+  $("btn-ok").addEventListener("click", function () {
+    if (okd) return;
+    okd = true;
+    if (draft) API.post("/api/posts/ok", { draft: draft, images: photo ? [photo] : [] }).catch(function (e) { toast(e.message); });
+    $("btn-ok").classList.add("is-on");
+    $("btn-ok").textContent = "OKしました";
+    $("fix").hidden = true;
+    $("done").hidden = false;
+    $("done").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  $("btn-fix").addEventListener("click", function () {
+    if (okd) { toast("OK済みです。直すときは開き直してください"); return; }
+    $("fix").hidden = !$("fix").hidden;
+  });
+});
+</script>
+</body>
+</html>

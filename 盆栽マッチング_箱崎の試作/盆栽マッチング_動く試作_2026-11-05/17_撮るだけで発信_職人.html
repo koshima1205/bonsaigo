@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>17 撮るだけで発信（職人）｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .h1 { font-size: 1.75rem; }
+  .pick input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .pick:focus-within { outline: 3px solid var(--koke); outline-offset: 2px; }
+  .sample-link { display: block; margin: var(--s4) auto 0; min-height: 44px; background: none; border: 0; color: var(--koke); text-decoration: underline; font-size: 1rem; cursor: pointer; }
+  .thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--s2); margin: var(--s4) 0 0; grid-auto-flow: column; }
+  .thumbs img { width: 100%; border-radius: var(--r); display: block; }
+  .saw { margin: var(--s5) 0 0; border-left: 3px solid var(--kin); padding-left: var(--s3); font-size: 1.125rem; line-height: 1.7; }
+  .saw b { display: block; font-size: 1rem; color: var(--sumi-3); }
+  .sns { margin: var(--s6) 0 0; }
+  .sns__name { font-family: var(--mincho); font-size: 1.5rem; font-weight: 700; margin: 0 0 var(--s1); }
+  .sns__ja { font-size: 1.125rem; line-height: 1.7; margin: 0 0 var(--s2); }
+  .sns details { border: 1px solid var(--sen); border-radius: var(--r); background: var(--kami-3); padding: 0 var(--s3); }
+  .sns summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; color: var(--sumi-2); font-size: 1rem; }
+  .sns__text { margin: 0 0 var(--s3); white-space: pre-wrap; word-break: break-word; line-height: 1.6; font-size: 0.9375rem; }
+  .sns__text small { display: block; color: var(--sumi-3); font-size: var(--fs-s); margin-bottom: 2px; }
+  .culture { margin: var(--s6) 0 0; background: var(--sumi); color: var(--kami); border-radius: var(--r); padding: var(--s4); }
+  .culture b { display: block; font-size: 1rem; opacity: .75; font-weight: 500; }
+  .culture p { margin: var(--s2) 0 0; font-family: var(--mincho); font-size: 1.25rem; line-height: 1.7; }
+  .check { margin: var(--s5) 0 0; border: 2px solid var(--shu); border-radius: var(--r); background: var(--shu-usu); padding: var(--s4); font-size: 1.125rem; }
+  .check b { color: var(--shu); }
+  .check ul { margin: var(--s2) 0 0; padding-left: 1.2em; }
+  .actions { margin-top: var(--s6); }
+  .ok-bar { position: sticky; top: calc(var(--appbar-h) + var(--s1)); z-index: 10; margin-top: var(--s3); background: var(--kami); padding: var(--s1) 0; }
+  .ok-bar .big-btn { width: 100%; min-height: 56px; }
+  .wait { margin: var(--s6) 0; text-align: center; font-size: 1.25rem; font-weight: 700; color: var(--koke); }
+  .done { margin-top: var(--s5); border-radius: var(--r); background: var(--koke); color: #fff; padding: var(--s5) var(--s4); text-align: center; }
+  .done__title { font-family: var(--mincho); font-size: 1.5rem; font-weight: 700; margin: 0 0 var(--s2); line-height: 1.5; }
+  .done p { margin: 0; font-size: 1rem; }
+  .out { list-style: none; margin: var(--s4) 0 0; padding: 0; display: grid; gap: var(--s2); }
+  .err { margin-top: var(--s4); border: 2px solid var(--shu); border-radius: var(--r); padding: var(--s4); background: var(--shu-usu); font-size: 1.125rem; }
+</style>
+</head>
+<body data-screen="17" class="role-shokunin">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <h1 class="h1">撮るだけで、世界に届けます。</h1>
+    <p class="lead">文章はAIが書きます。あなたは中身を見て「OK」を押すだけです。</p>
+
+    <div class="big-actions" id="pickers">
+      <label class="big-btn big-btn--main pick">
+        <input type="file" id="in-photo" accept="image/*" capture="environment">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <span>写真を撮る</span>
+      </label>
+      <label class="big-btn pick">
+        <input type="file" id="in-video" accept="video/*" capture="environment">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 11l5-3v8l-5-3z"/></svg>
+        <span>動画を撮る</span>
+      </label>
+    </div>
+    <button type="button" class="sample-link" id="btn-sample">カメラがないときは、見本の写真で試す</button>
+
+    <div class="thumbs" id="thumbs" hidden></div>
+    <p class="wait" id="wait" role="status" hidden>投稿を書いています。少しお待ちください。</p>
+    <div class="err" id="err" role="alert" hidden></div>
+
+    <div id="result" hidden>
+      <h2 class="h2" style="margin-top:var(--s5)">世界に向けた投稿ができました。</h2>
+      <p class="note" id="sample-note" hidden>この写真は試作の見本です。このあと届く海外の方の相談でも、同じ写真を使っています。</p>
+      <div class="ok-bar"><button type="button" class="big-btn big-btn--main" id="btn-ok">OK</button></div>
+      <div class="check" id="problem" hidden><b>写真を確かめてください</b><p id="problem-text" style="margin:var(--s2) 0 0"></p></div>
+      <div id="sns"></div>
+      <p class="saw"><b>AIが見たこと</b><span id="saw"></span></p>
+      <div class="culture"><b>一緒に伝える、盆栽の考え方</b><p id="culture"></p></div>
+      <div class="check" id="check" hidden><b>ここだけ確かめてください</b><ul id="check-list"></ul></div>
+
+      <div class="actions">
+        <div class="big-actions">
+          <button type="button" class="big-btn" id="btn-voice"><span id="voice-label">ひとこと足して、書き直す</span></button>
+        </div>
+        <label class="field" id="note-box" style="margin-top:var(--s3)" hidden>
+          <span class="field__label" style="font-size:1rem">足したいこと（話すか、書いてください）</span>
+          <textarea class="textarea" id="note" rows="3" style="font-size:1.125rem" placeholder="例：樹齢はおよそ六十年です"></textarea>
+          <span class="note" id="voice-msg" style="display:block" hidden></span>
+          <button type="button" class="btn btn--main btn--wide" id="btn-redo" style="margin-top:var(--s2);min-height:56px;font-size:1.125rem">書き直す</button>
+        </label>
+      </div>
+      <div class="done" id="done" role="status" hidden>
+        <p class="done__title">発信の準備ができました。</p>
+        <p>投稿はまだしていません。下の押しボタンで開いて、最後に投稿を押してください。</p>
+      </div>
+      <div class="big-actions" id="next" style="margin-top:var(--s4)" hidden><a class="big-btn big-btn--main" id="next-link" href="19_話して先生に登録_職人.html">次へ：先生に登録する</a></div>
+      <ul class="out" id="out" hidden></ul>
+    </div>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var NAMES = { x: ["X", "短い一言"], instagram: ["Instagram", "写真が主役"], facebook: ["Facebook", "少し長めの話"], short_script: ["ショート動画", "YouTube と TikTok の語り"] };
+  var LANGS = { en: "英語", es: "スペイン語", zh: "中国語" };
+  var OPEN = {
+    x: function (t) { return "https://x.com/intent/tweet?text=" + encodeURIComponent(t); },
+    instagram: function () { return "https://www.instagram.com/"; },
+    facebook: function () { return "https://www.facebook.com/"; },
+    short_script: function () { return "https://www.youtube.com/upload"; }
+  };
+  var images = [], kind = "photo", draft = null, busy = false;
+  var params = new URLSearchParams(location.search), treeId = params.get("tree");
+
+  function showErr(msg) { $("err").textContent = msg; $("err").hidden = false; }
+
+  function make() {
+    if (busy || !images.length) return;
+    busy = true;
+    $("err").hidden = true; $("result").hidden = true; $("wait").hidden = false;
+    $("wait").scrollIntoView({ behavior: "smooth", block: "center" });
+    var body = { kind: kind, note: $("note").value, images: images.map(function (i) { return { media_type: i.media_type, data: i.data }; }) };
+    (API.online ? API.post("/api/posts/draft", body) : Promise.reject(new Error("サーバーなしで開いています。試作の使い方に沿って、サーバーを動かしてください")))
+      .then(render)
+      .catch(function (e) { showErr(e.message); })
+      .then(function () { busy = false; $("wait").hidden = true; });
+  }
+
+  function render(d) {
+    draft = d;
+    $("saw").textContent = d.what_i_saw_ja;
+    $("problem").hidden = !d.photo_problem_ja;
+    $("problem-text").textContent = d.photo_problem_ja || "";
+    $("sns").innerHTML = Object.keys(NAMES).map(function (k) {
+      var post = d.posts[k];
+      return '<section class="sns"><p class="sns__name">' + NAMES[k][0] + '</p><p class="sns__ja">' + esc(d.confirm_ja[k]) + "</p>" +
+        "<details" + (k === "x" ? " open" : "") + "><summary>海外に出る文を見る</summary>" + Object.keys(LANGS).map(function (l) {
+          var over = k === "x" && post[l].length > 280;
+          return '<p class="sns__text" lang="' + (l === "zh" ? "zh-Hans" : l) + '"><small lang="ja">' + LANGS[l] + (k === "x" ? "（" + post[l].length + "文字" + (over ? "。長すぎます" : "") + "）" : "") + "</small>" + esc(post[l]) + "</p>";
+        }).join("") + "</details></section>";
+    }).join("");
+    $("culture").textContent = d.culture_note.ja;
+    $("check").hidden = !d.please_check_ja.length;
+    $("check-list").innerHTML = d.please_check_ja.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("");
+    ["done", "out", "next", "note-box"].forEach(function (id) { $(id).hidden = true; });
+    $("btn-ok").textContent = "OK"; $("btn-ok").classList.remove("is-on"); $("btn-ok").disabled = false;
+    $("result").hidden = false;
+    $("result").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function take(list, k) {
+    images = list; kind = k; $("note").value = "";
+    $("thumbs").innerHTML = list.map(function (i) { return '<img alt="撮ったもの" src="' + i.url + '">'; }).join("");
+    $("thumbs").hidden = false;
+    make();
+  }
+
+  $("in-photo").addEventListener("change", function (e) {
+    var f = e.target.files[0]; e.target.value = "";
+    if (f) API.photoFromFile(f).then(function (i) { take([i], "photo"); }, function (er) { showErr(er.message); });
+  });
+  $("in-video").addEventListener("change", function (e) {
+    var f = e.target.files[0]; e.target.value = "";
+    if (f) API.framesFromVideo(f, 4).then(function (l) { take(l, "video"); }, function (er) { showErr(er.message); });
+  });
+  $("btn-sample").addEventListener("click", function () {
+    $("sample-note").hidden = false;
+    API.samplePhoto().then(function (i) { take([i], "photo"); });
+  });
+
+  /* 1鉢の記録から来たときは、その木の写真と言葉ですぐ作る */
+  if (treeId && API.online) API.get("/api/trees").then(function (r) {
+    var t = r.trees.find(function (x) { return x.id === treeId; });
+    if (!t) return;
+    $("next-link").href = "21_話すか撮るだけ_1鉢の記録と出品_職人.html#tree-" + t.id;
+    $("next-link").textContent = "この木の記録に戻る";
+    if (!t.image) { showErr("この木の写真がありません。写真を撮ってください"); return; }
+    images = [{ media_type: t.image.media_type, data: t.image.data, url: "data:" + t.image.media_type + ";base64," + t.image.data }];
+    $("thumbs").innerHTML = '<img alt="この木の写真" src="' + images[0].url + '">'; $("thumbs").hidden = false;
+    $("note").value = params.get("idea") || t.voice_ja || "";
+    make();
+  }, function (e) { showErr(e.message); });
+
+  /* ひとこと足す：話せるブラウザなら話す。話せなくても書ける */
+  var talking = false;
+  var rec = API.makeRecognizer({
+    onText: function (t) { $("note").value = t; },
+    onEnd: function () { talking = false; $("voice-label").textContent = "ひとこと足して、書き直す"; $("btn-voice").classList.remove("is-on"); },
+    onError: function () { $("voice-msg").textContent = "声を聞き取れませんでした。書いて足せます。"; $("voice-msg").hidden = false; }
+  });
+  $("btn-voice").addEventListener("click", function () {
+    $("note-box").hidden = false;
+    if (!rec) { $("note").focus(); return; }
+    if (talking) { rec.stop(); return; }
+    talking = true; $("voice-label").textContent = "聞いています（もう一度押すと終わり）"; $("btn-voice").classList.add("is-on");
+    rec.start($("note").value);
+  });
+  $("btn-redo").addEventListener("click", function () { if (talking && rec) rec.stop(); make(); });
+
+  /* OK：一覧に残し、各SNSを開くボタンを出す。投稿そのものは本人が押す */
+  $("btn-ok").addEventListener("click", function () {
+    if (!draft || $("btn-ok").disabled) return;
+    $("btn-ok").disabled = true;
+    API.post("/api/posts/ok", { draft: draft, tree_id: treeId, images: images.slice(0, 1).map(function (i) { return { media_type: i.media_type, data: i.data }; }) }).then(function () {
+      $("btn-ok").textContent = "OKしました"; $("btn-ok").classList.add("is-on");
+      $("done").hidden = false; $("next").hidden = false;
+      $("out").innerHTML = Object.keys(NAMES).map(function (k) {
+        return '<li><button type="button" class="btn btn--wide" style="min-height:56px;font-size:1.125rem" data-open="' + k + '">' + NAMES[k][0] + " を開く（英語の文をコピー）</button></li>";
+      }).join("");
+      $("out").hidden = false;
+      $("done").scrollIntoView({ behavior: "smooth", block: "center" });
+    }, function (e) { $("btn-ok").disabled = false; showErr(e.message); });
+  });
+  $("out").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-open]"); if (!b) return;
+    var k = b.getAttribute("data-open"), t = draft.posts[k].en;
+    window.open(OPEN[k](t), "_blank", "noopener");
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { toast("文をコピーしました"); }, function () {});
+  });
+});
+</script>
+</body>
+</html>

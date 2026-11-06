@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#FBFAF7;--ink:#1A1714;--ink2:#5E574C;--line:#E3DED4;--urushi:#26201B;--kin:#F1E3BF;--shu:#A5341F;
+  --mincho:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;--gothic:"Hiragino Sans","Noto Sans JP",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--gothic);font-size:16px;line-height:1.7;letter-spacing:.02em}
+.app{max-width:390px;margin:0 auto;padding:0 24px 104px}
+a{color:inherit;text-decoration:none}
+
+/* 上：名前と役割 */
+.top{display:flex;align-items:flex-end;justify-content:space-between;padding:20px 0 14px;border-bottom:1px solid var(--ink)}
+.brand{font-family:var(--mincho);font-weight:600;font-size:18px;letter-spacing:.2em}
+.role{display:flex;gap:18px;font-size:14px}
+.role a{padding:10px 0 4px;color:var(--ink2);min-height:44px;display:flex;align-items:flex-end}
+.role a[aria-current]{color:var(--ink);font-weight:700;box-shadow:inset 0 -2px 0 var(--ink)}
+
+/* 今日 */
+.date{margin:28px 0 0;font-size:13px;color:var(--ink2);letter-spacing:.12em}
+h1{font-family:var(--mincho);font-weight:600;font-size:30px;line-height:1.45;margin:6px 0 0;letter-spacing:.06em}
+
+/* 相談（主役） */
+.soudan{margin:22px 0 0;padding:20px 0 24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.from{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink2)}
+.hanko{width:34px;height:34px;flex:none;border:2px solid var(--shu);color:var(--shu);font-family:var(--mincho);font-weight:700;font-size:12px;line-height:1.1;display:grid;place-items:center;text-align:center;transform:rotate(-4deg);border-radius:3px}
+blockquote{margin:14px 0 18px;font-family:var(--mincho);font-size:20px;line-height:1.7;letter-spacing:.03em}
+blockquote small{display:block;font-family:var(--gothic);font-size:13px;color:var(--ink2);margin-top:6px;letter-spacing:.02em}
+.btn-main{display:flex;align-items:center;justify-content:center;gap:10px;min-height:58px;border-radius:6px;background:var(--urushi);color:var(--kin);font-weight:700;font-size:18px;letter-spacing:.12em}
+
+/* あなたの木 */
+h2{font-family:var(--mincho);font-weight:600;font-size:19px;margin:34px 0 12px;letter-spacing:.08em}
+.tree{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:stretch}
+.tree img{width:132px;height:164px;object-fit:cover;object-position:center 45%;border-radius:3px;display:block}
+.tree .acts{display:flex;flex-direction:column;gap:10px}
+.tree .acts a{flex:1;display:flex;flex-direction:column;justify-content:center;padding:10px 14px;border:1px solid var(--ink);border-radius:6px;min-height:72px}
+.tree .acts b{font-size:18px;letter-spacing:.1em}.tree .acts small{font-size:13px;color:var(--ink2);line-height:1.4}
+.tree-note{font-size:13px;color:var(--ink2);margin:8px 0 0}
+
+/* ほかのこと */
+.list{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.list a{display:flex;align-items:center;gap:12px;padding:14px 0;min-height:64px;border-bottom:1px solid var(--line)}
+.list b{display:block;font-size:16px}.list small{font-size:13px;color:var(--ink2)}
+.list .go{margin-left:auto;font-size:15px;color:var(--ink2)}
+
+/* 下のメニュー（文字だけ） */
+.tab{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:390px;background:var(--bg);border-top:1px solid var(--ink);display:grid;grid-template-columns:repeat(4,1fr);padding:0 0 env(safe-area-inset-bottom,12px)}
+.tab a{min-height:60px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--ink2);position:relative}
+.tab a[aria-current]{color:var(--ink);font-weight:700}
+.tab a[aria-current]::before{content:"";position:absolute;top:-1px;left:30%;right:30%;height:3px;background:var(--shu)}
+</style></head><body><div class="app">
+
+<div class="top"><div class="brand">盆栽の間</div>
+<nav class="role" aria-label="使う人"><a href="#" aria-current="page">職人</a><a href="#">海外の愛好家</a></nav></div>
+
+<p class="date">十一月六日　金曜日</p>
+<h1>相談が一件、<br>届いています。</h1>
+
+<section class="soudan" aria-label="届いた相談">
+  <div class="from"><span class="hanko">新着</span>ドイツの方より</div>
+  <blockquote>「黒松の葉が黄色くなってきました。毎日水をやっています。」<small>ドイツ語から訳しました。写真が2枚ついています</small></blockquote>
+  <a class="btn-main" href="#">答える</a>
+</section>
+
+<h2>あなたの木を、世界へ</h2>
+<div class="tree">
+  <img src="photo.jpg" alt="あなたの木の写真">
+  <div class="acts">
+    <a href="#"><b>撮る</b><small>写真から3か国語の投稿</small></a>
+    <a href="#"><b>話す</b><small>言うだけでAIが動く</small></a>
+  </div>
+</div>
+<p class="tree-note">1鉢目　最後の記録 十一月五日</p>
+
+<h2>ほかのこと</h2>
+<ul class="list">
+  <li><a href="#"><span><b>私の木</b><small>木ごとの記録と、出品の下書き</small></span><span class="go">→</span></a></li>
+  <li><a href="#"><span><b>先生として登録</b><small>話すだけで紹介文ができます</small></span><span class="go">→</span></a></li>
+  <li><a href="#"><span><b>入ってくるお金</b><small>今月の見込み</small></span><span class="go">→</span></a></li>
+</ul>
+</div>
+<nav class="tab" aria-label="メニュー"><a href="#" aria-current="page">ホーム</a><a href="#">相談</a><a href="#">私の木</a><a href="#">お金</a></nav>
+</body></html>

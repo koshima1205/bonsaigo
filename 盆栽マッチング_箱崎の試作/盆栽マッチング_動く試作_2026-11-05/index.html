@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>盆栽マッチング 試作の画面一覧（2026-11-05）</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .app { max-width: 720px; }
+  .cover { padding: var(--s7) var(--s4) var(--s5); border-bottom: 1px solid var(--sen); }
+  .cover .h1 { font-size: 1.75rem; }
+  .screens { counter-reset: none; }
+  .screens li { align-items: center; }
+  .no { font-family: var(--mincho); font-size: 1.375rem; color: var(--sumi-3); width: 2.2em; flex: none; }
+  .who { font-size: 14px; padding: 2px 7px; border-radius: 99px; border: 1px solid var(--sen); color: var(--sumi-2); white-space: nowrap; }
+  .who--s { background: var(--sumi); color: var(--kami); border-color: var(--sumi); }
+  .st { font-size: 14px; color: var(--sumi-3); }
+  .go { flex: none; color: var(--koke); font-size: var(--fs-s); font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; font-size: var(--fs-s); }
+  th, td { text-align: left; vertical-align: top; padding: var(--s3) var(--s2); border-bottom: 1px solid var(--sen); }
+  th { color: var(--sumi-3); font-weight: 700; white-space: nowrap; }
+  .scroll { overflow-x: auto; }
+  .yosou { color: var(--koke); font-weight: 700; }
+  .flow { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; font-size: var(--fs-s); }
+  .flow a { text-decoration: none; }
+  .flow span.arrow { color: var(--sumi-3); }
+  ul.plain { margin: 0; padding-left: 1.2em; }
+  ul.plain li { margin: 0 0 var(--s1); }
+  .steps { list-style: none; counter-reset: step; margin: 0; padding: 0; border-top: 2px solid var(--sumi); }
+  .steps li { counter-increment: step; border-bottom: 1px solid var(--sen); }
+  .steps a { display: block; position: relative; padding: var(--s3) 0 var(--s3) 2.75rem; color: inherit; text-decoration: none; }
+  .steps a::before { content: counter(step); position: absolute; left: 0; top: var(--s2); font-family: var(--mincho); font-size: 1.625rem; color: var(--kin); }
+  .steps b { display: block; line-height: 1.5; }
+  .steps small { display: block; color: var(--sumi-2); font-size: var(--fs-s); line-height: 1.5; }
+  .steps .who { display: inline-block; margin-bottom: 4px; }
+  .story { list-style: none; margin: var(--s5) 0; padding: 0; display: grid; gap: var(--s3); }
+  .story li { display: grid; grid-template-columns: 112px 1fr; gap: var(--s3); align-items: center; }
+  .story figure { margin: 0; }
+  .story .story__hero { grid-template-columns: 1fr; }
+  .story__hero img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: center 45%; border-radius: var(--r); display: block; }
+  .story .zu__frame { position: relative; border-radius: var(--r); overflow: hidden; }
+  .story svg.marks { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .story b { display: block; font-family: var(--mincho); font-size: 1.25rem; line-height: 1.4; }
+  .story q { display: block; quotes: none; font-family: var(--mincho); font-size: 1.0625rem; line-height: 1.5; margin: 2px 0; }
+  .story small { display: block; color: var(--sumi-2); font-size: var(--fs-s); line-height: 1.5; }
+  .story__money { background: var(--sumi); color: var(--kami); border-radius: var(--r); aspect-ratio: 4 / 3; display: grid; place-items: center; font-family: var(--mincho); font-size: 2.25rem; }
+</style>
+</head>
+<body class="no-tabbar">
+<div class="app">
+  <div class="cover">
+    <p class="eyebrow">盆栽ハッカソン ・ 2026-11-05 ・ 動く試作</p>
+    <h1 class="h1">撮るだけで、盆栽が世界に届く。</h1>
+    <p class="lead">英語も、SNSも、職人には要りません。「日本の伝統文化といえば盆栽」と世界が答える日へ。</p>
+    <ol class="story" aria-label="使い方の3段">
+      <li class="story__hero"><img src="共通/見本の写真_盆栽.jpg" alt="針金をかけた小さな盆栽の写真"><div><b>撮る</b><q lang="en">That turn, not far above the soil, is what stops you.</q><small>この写真からAIが書いた Instagram の1行目です。樹種も樹齢も、勝手には書きません</small></div></li>
+      <li><figure class="zu" data-zu="soudan" data-cap="none" id="story-mark"></figure><div><b>話す、線を引く</b><small>海外の相談が日本語で届きます。話すか写真に線を引くと、相手の言葉で返ります</small></div></li>
+      <li><div class="story__money">$20</div><div><b>稼ぐ</b><small>$25 の相談に1件答えると、職人に $20。料金はサンプルです</small></div></li>
+    </ol>
+    <p>翻訳だけなら、どのアプリでもできます。ここでは、海外に知られるところから、教えて収入になるところまでが1本でつながります。</p>
+    <a class="btn btn--main btn--wide" href="00_ホーム_職人と愛好家.html?role=shokunin" style="min-height:56px;font-size:1.125rem">アプリのホームを開く</a>
+    <a class="btn btn--wide" href="17_撮るだけで発信_職人.html?demo=1" style="min-height:52px;margin-top:var(--s3)">発表の流れのとおりに、7つの画面を順に見る</a>
+    <p class="note" id="mode" style="margin-top:var(--s3)"></p>
+  </div>
+  <main class="page">
+
+    <h2 class="h2" style="margin-top:var(--s5)">職人が海外から稼ぐまでの流れ</h2>
+    <ol class="steps">
+      <li><a href="17_撮るだけで発信_職人.html"><span class="who who--s">職人</span><b>撮るだけで発信する</b><small>写真か動画から、各SNSの下書きと文化の一言が3言語でそろう</small></a></li>
+      <li><a href="19_話して先生に登録_職人.html"><span class="who who--s">職人</span><b>話して先生に登録する</b><small>教えられることを話すと、紹介ページが3言語でできる</small></a></li>
+      <li><a href="18_知りたいことから職人を探す.html"><span class="who">海外の人</span><b>海外の人が、知りたいことから職人を見つける</b><small>母語で書くと、合う職人が理由つきで出る</small></a></li>
+      <li><a href="03_職人への相談_愛好家.html"><span class="who">海外の人</span><b>写真と母語で相談する</b><small>職人が読む盆栽の日本語に直して届ける</small></a></li>
+      <li><a href="04_職人の画面_相談を受ける.html"><span class="who who--s">職人</span><b>職人は話すか、写真に書き込むだけ</b><small>字は大きく、ボタンは3つ</small></a></li>
+      <li><a href="05_答えが届く_愛好家.html"><span class="who">海外の人</span><b>用語集を使った意訳で答えが届く</b><small>用語に触ると、直訳・意味・なぜそうするかが開く</small></a></li>
+      <li><a href="20_職人に入るお金_職人.html"><span class="who who--s">職人</span><b>職人に入るお金が見える</b><small>料金と取り分はサンプル。実際のお金は動かない</small></a></li>
+    </ol>
+
+    <h2 class="h2" style="margin-top:var(--s6)">この先の形：画面を覚えなくていい</h2>
+    <p>話すか撮るだけで、AIが発信・出品・先生の登録を聞き分けて、木ごとの記録に残します。売るところは下書きまでです。</p>
+    <a class="btn btn--wide" href="21_話すか撮るだけ_1鉢の記録と出品_職人.html" style="min-height:52px">話すか撮るだけの入口を試す</a>
+
+    <details style="margin-top:var(--s6)"><summary class="h3" style="cursor:pointer;min-height:44px">全部の画面を見る（ホームと21画面）</summary>
+    <p class="note">本物につないだのは 03・04・05・12・13・17・18・19・20・21 です。そのほかは前の試作のままで、見た目と流れの確認用です。</p>
+    <ul class="rows screens" id="screens"></ul></details>
+
+    <h2 class="h2">まだ入っていないもの</h2>
+    <ul class="plain">
+      <li>SNSへの自動投稿。OKのあと、Xは下書きを開くところまで、ほかはサイトを開いて文をコピーするところまで</li>
+      <li>決済とログイン。だれでも全部の画面を開けます。公開する前に作る必要があります</li>
+      <li>木の公開・入札・販売と、輸出の手続き（出品は下書きまで）</li>
+    </ul>
+    <p class="note">名前・図・料金はすべてサンプルで、実在の職人・盆栽園とは関係ありません。</p>
+  </main>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var markFrame = document.querySelector("#story-mark .zu__frame");
+  if (markFrame) markFrame.insertAdjacentHTML("beforeend", '<svg class="marks" viewBox="0 0 320 240" aria-hidden="true"><circle cx="163" cy="86" r="24" fill="none" stroke="#A5341F" stroke-width="5"/></svg>');
+  var ROLE = { both: "職人と海外の愛好家の入口", aikouka: "海外の愛好家の画面", shokunin: "職人の画面", kurabe: "2つを並べる" };
+  API.status().then(function (st) {
+    document.getElementById("mode").textContent = { "claude-api": "Claude API につないで動いています。使った分の料金がかかります。", "claude-code": "この端末の Claude Code につないで動いています。", sample: "いまはAIにつないでいません。記録しておいた見本の答えを出します。", offline: "サーバーなしで開いています。動きの確認には、サーバーを動かしてください。" }[st.mode];
+  });
+  document.getElementById("screens").innerHTML = window.SCREENS.map(function (s) {
+    var st = s.status === "仮" ? '<span class="kari">仮</span>' : "";
+    return '<li><a class="row-link" href="' + s.file + '">' +
+      '<span class="no">' + s.no + "</span>" +
+      '<span class="row__body"><span class="row__title" style="display:block">' + esc(s.name) + " " + st + "</span>" +
+      '<span class="row__meta" style="display:block">' + esc(s.desc) + "</span>" +
+      '<span style="display:inline-block;margin-top:6px" class="who' + (s.role === "shokunin" ? " who--s" : "") + '">' + ROLE[s.role] + "</span></span>" +
+      '<span class="go">開く</span></a></li>';
+  }).join("");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>18 知りたいことから職人を探す｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .understood { font-family: var(--mincho); font-size: var(--fs-l); line-height: 1.7; border-left: 3px solid var(--kin); padding-left: var(--s3); margin: var(--s5) 0; }
+  .match { padding: var(--s5) 0; border-top: 1px solid var(--sen); }
+  .match:first-of-type { border-top: 2px solid var(--sumi); }
+  .match__head { display: flex; gap: var(--s3); align-items: center; }
+  .seal { width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.125rem; }
+  .match__why { margin: var(--s3) 0; }
+  .match__offer { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); font-size: var(--fs-s); color: var(--sumi-2); margin: 0 0 var(--s3); }
+  .match__offer b { font-family: var(--mincho); font-size: var(--fs-l); color: var(--sumi); white-space: nowrap; }
+  .first { font-size: var(--fs-s); color: var(--sumi-2); background: var(--kami-2); padding: var(--s3); border-radius: var(--r); margin: 0 0 var(--s3); }
+  .first b { display: block; color: var(--sumi-3); font-weight: 700; }
+  .teach { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--sen); font-size: var(--fs-s); color: var(--sumi-2); }
+</style>
+</head>
+<body data-screen="18">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    <h1 class="h1" id="ttl"></h1>
+    <p class="lead" id="lead"></p>
+    <form id="form" novalidate>
+      <label class="field">
+        <span class="field__label" id="lb"></span>
+        <textarea class="textarea" id="want" rows="4"></textarea>
+      </label>
+      <button type="submit" class="btn btn--main btn--wide" id="send" style="min-height:52px"></button>
+      <button type="button" class="btn btn--wide" id="fill" style="min-height:48px;margin-top:var(--s2)"></button>
+    </form>
+    <p class="note" id="wait" role="status" hidden></p>
+    <p class="note" id="err" role="alert" style="color:var(--shu);font-weight:700" hidden></p>
+    <div id="result" aria-live="polite"></div>
+    <p class="teach" id="teach"></p>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI, S = window.SAMPLE, $ = function (id) { return document.getElementById(id); };
+  var TX = {
+    ttl: { ja: "何を知りたいですか。合う職人を探します。", en: "What do you want to learn? We'll find the craftsperson for it.", es: "¿Qué quieres aprender? Buscamos al maestro adecuado.", zh: "你想学什么？我们为你找到合适的匠人。" },
+    lead: { ja: "あなたの言葉で、そのまま書いてください。日本語はいりません。", en: "Write it your own way. No Japanese needed.", es: "Escríbelo a tu manera. No hace falta japonés.", zh: "用你自己的话写就好，不需要日语。" },
+    lb: { ja: "知りたいこと", en: "What you want to learn", es: "Lo que quieres aprender", zh: "想学的内容" },
+    send: { ja: "合う職人を探す", en: "Find my craftsperson", es: "Buscar a mi maestro", zh: "寻找匠人" },
+    wait: { ja: "職人のできることと照らしています。", en: "Comparing with what each craftsperson teaches…", es: "Comparando con lo que enseña cada maestro…", zh: "正在对照每位匠人的教学内容…" },
+    ph: { ja: "例：針金をかけた木の、外す時期が分からない。木を見てくれる人に習いたい。", en: "e.g. I don't know when to take the wire off my tree. I want to learn from someone who can see my tree.", es: "Ej.: No sé cuándo quitar el alambre de mi árbol. Quiero aprender de alguien que vea mi árbol.", zh: "例如：不知道什么时候拆树上的铁丝，想向能看我树的人学习。" },
+    ask: { ja: "この職人に相談する", en: "Ask this craftsperson", es: "Consultar a este maestro", zh: "向这位匠人咨询" },
+    first: { ja: "最初の一言の例", en: "A first message you could send", es: "Un primer mensaje posible", zh: "可以这样开始" },
+    price: { ja: "料金はサンプルです", en: "Sample price", es: "Precio de ejemplo", zh: "示例价格" },
+    none: { ja: "いま合う職人が見つかりませんでした。", en: "No good match right now.", es: "Ahora no hay un maestro adecuado.", zh: "暂时没有合适的匠人。" },
+    empty: { ja: "知りたいことを書いてください。", en: "Please write what you want to learn.", es: "Escribe lo que quieres aprender.", zh: "请写下想学的内容。" },
+    fill: { ja: "見本の質問で試す", en: "Try a sample question", es: "Probar con una pregunta de ejemplo", zh: "用示例问题试试" },
+    sample: { ja: "数か月前に針金をかけました。上のほうの針金がきつく見えます。いつ、どう外せばいいか、木を見てくれる人に習いたいです。", en: "I wired my tree a few months ago, and the wire near the top looks tight. I want to learn from someone who can look at my tree and tell me when and how to take it off.", es: "Alambré mi árbol hace unos meses y el alambre de arriba se ve apretado. Quiero aprender de alguien que vea mi árbol y me diga cuándo y cómo quitarlo.", zh: "几个月前我给树缠了铁丝，上面的铁丝看起来很紧。想向能看我树的人学习，什么时候、怎样拆。" },
+    teach: { ja: "教える側の方はこちら：", en: "Are you a craftsperson? ", es: "¿Eres maestro? ", zh: "你是匠人吗？" },
+    teachLink: { ja: "話すだけで登録する", en: "Register by speaking", es: "Regístrate hablando", zh: "只需说话即可登记" }
+  };
+  var SEAL = { s1: "松", s2: "楓", s3: "岩" };
+  var last = null, offers = [], added = [];
+
+  function paintStatic() {
+    $("ttl").textContent = B.T(TX.ttl); $("lead").textContent = B.T(TX.lead); $("lb").textContent = B.T(TX.lb);
+    $("send").textContent = B.T(TX.send); $("fill").textContent = B.T(TX.fill); $("wait").textContent = B.T(TX.wait); $("want").placeholder = B.T(TX.ph);
+    $("teach").innerHTML = esc(B.T(TX.teach)) + '<a href="19_話して先生に登録_職人.html" style="display:inline-flex;align-items:center;min-height:44px">' + esc(B.T(TX.teachLink)) + "</a>";
+  }
+  function teacher(id) {
+    var s = S.shokunin.find(function (x) { return x.id === id; });
+    if (s) return { name: B.getLang() === "ja" ? s.name : s.en_name, meta: B.getLang() === "ja" ? s.title : s.en_title, seal: SEAL[id] };
+    var t = added.find(function (x) { return x.id === id; });
+    return t ? { name: B.getLang() === "ja" ? t.name_ja : t.name_en, meta: (t.specialty_ja || []).join("・"), seal: (t.name_ja || "職").charAt(0) } : { name: id, meta: "", seal: "職" };
+  }
+  function offerName(o) { return o[B.getLang()] || o.en; }
+  function paintResult() {
+    var d = last;
+    if (!d) { $("result").innerHTML = ""; return; }
+    var html = d.understood ? '<p class="understood">' + esc(d.understood) + "</p>" : "";
+    if (!d.matches.length) html += "<p>" + esc(d.no_match_reason || B.T(TX.none)) + "</p>";
+    html += d.matches.map(function (m) {
+      var t = teacher(m.teacher_id), o = offers.find(function (x) { return x.id === m.offer_id; }) || { en: "", usd: 0 };
+      var q = encodeURIComponent(m.first_question);
+      return '<article class="match"><div class="match__head"><div class="seal" aria-hidden="true">' + esc(t.seal) + '</div><div><p class="row__title">' + esc(t.name) + '</p><p class="row__meta">' + esc(t.meta) + "</p></div></div>" +
+        '<p class="match__why">' + esc(m.reason) + "</p>" +
+        '<p class="match__offer"><span>' + esc(offerName(o)) + " · " + esc(B.T(TX.price)) + "</span><b>$" + o.usd + "</b></p>" +
+        '<p class="first"><b>' + esc(B.T(TX.first)) + "</b>" + esc(m.first_question) + "</p>" +
+        '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(m.teacher_id) + "&offer=" + encodeURIComponent(m.offer_id) + "&q=" + q + '">' + esc(B.T(TX.ask)) + "</a></article>";
+    }).join("");
+    $("result").innerHTML = html;
+  }
+  API.status().then(function (st) { offers = st.offers || []; });
+  if (API.online) API.get("/api/teachers").then(function (r) { added = r.teachers; }, function () {});
+
+  $("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var want = $("want").value.trim();
+    $("err").hidden = true;
+    if (!want) { $("err").textContent = B.T(TX.empty); $("err").hidden = false; $("want").focus(); return; }
+    if (!API.online) { $("err").textContent = "サーバーなしで開いています。Please start the server to try this."; $("err").hidden = false; return; }
+    $("send").disabled = true; $("wait").hidden = false; $("result").innerHTML = "";
+    API.post("/api/match", { want: want, lang: B.getLang() }).then(function (d) {
+      last = d; paintResult();
+      $("result").scrollIntoView({ behavior: "smooth", block: "start" });
+    }, function (er) { $("err").textContent = er.message; $("err").hidden = false; }).then(function () {
+      $("send").disabled = false; $("wait").hidden = true;
+    });
+  });
+  $("fill").addEventListener("click", function () { $("want").value = B.T(TX.sample); $("form").requestSubmit(); });
+  paintStatic();
+  document.addEventListener("langchange", function () { paintStatic(); paintResult(); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>08 AIの相談窓口｜盆栽マッチング 試作</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<style>
+  .chat { display: flex; flex-direction: column; gap: var(--s4); margin: var(--s5) 0 var(--s4); }
+  .msg { max-width: 92%; }
+  .msg--me { align-self: flex-end; background: var(--sumi); color: var(--kami); padding: var(--s3) var(--s4); border-radius: 14px 14px 2px 14px; }
+  .msg--ai { align-self: flex-start; }
+  .msg--ai .bubble { background: var(--kami-3); border: 1px solid var(--sen); padding: var(--s3) var(--s4); border-radius: 14px 14px 14px 2px; }
+  .msg--ai .bubble p:last-child { margin-bottom: 0; }
+  .who { font-size: 14px; color: var(--sumi-3); margin: 0 0 var(--s1); letter-spacing: 0.04em; }
+  .basis { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; line-height: 1; padding: 3px 7px; border-radius: 99px; background: var(--koke-usu); color: var(--koke); margin-top: var(--s2); }
+  .handoff { margin-top: var(--s3); padding-top: var(--s3); border-top: 1px dashed var(--sen); }
+  .asks { margin: var(--s4) 0; }
+  .asks__label { font-size: var(--fs-s); color: var(--sumi-3); margin: 0 0 var(--s2); }
+  .asks .chip { min-height: 44px; display: inline-flex; align-items: center; text-align: left; }
+  .composer { display: flex; gap: var(--s2); margin-top: var(--s4); }
+  .composer .input { flex: 1; min-width: 0; min-height: 44px; }
+  .composer .btn { padding: 0 var(--s4); flex: none; }
+  .scope { margin-top: var(--s5); font-size: var(--fs-s); color: var(--sumi-2); }
+</style>
+</head>
+<body data-screen="08">
+<div class="app">
+  <header id="appbar"></header>
+  <main class="page">
+    
+    <h1 class="h1"><span class="t"><span data-l="ja">まずAIに聞いて、決められないことだけ職人へ</span><span data-l="en">Ask the AI first. A craftsperson decides the rest.</span><span data-l="es">Pregunta primero a la IA. Un maestro decide lo demás.</span><span data-l="zh">先问AI。AI无法判断的，由匠人决定。</span></span></h1>
+
+    <div class="chat" id="chat" aria-live="polite"></div>
+
+    <div class="asks">
+      <p class="asks__label"><span class="t"><span data-l="ja">よくある質問から選ぶ</span><span data-l="en">Pick a common question</span><span data-l="es">Elige una pregunta frecuente</span><span data-l="zh">选择常见问题</span></span></p>
+      <div class="chips" id="asks"></div>
+    </div>
+
+    <form class="composer" id="form">
+      <input class="input" id="free" aria-label="message" data-ph-ja="自由に質問を書く" data-ph-en="Type your own question" data-ph-es="Escribe tu pregunta" data-ph-zh="输入你的问题" autocomplete="off">
+      <button type="submit" class="btn btn--main"><span class="t"><span data-l="ja">送る</span><span data-l="en">Send</span><span data-l="es">Enviar</span><span data-l="zh">发送</span></span></button>
+    </form>
+
+    <p class="scope"><span class="t"><span data-l="ja">AIは用語集の内容をもとに、一般的なことだけを答えます。あなたの木のことは、職人が見て答えます。</span><span data-l="en">The AI answers only general questions, based on our glossary. For your own tree, a craftsperson looks and answers.</span><span data-l="es">La IA responde solo cuestiones generales, según el glosario. Para tu árbol, responde un maestro.</span><span data-l="zh">AI只依据术语表回答一般问题。关于你自己的树，由匠人查看后回答。</span></span></p>
+  </main>
+  <nav id="tabbar"></nav>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/サンプルのデータ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var B = window.BONSAI, T = B.T;
+  var log = [{ r: "ai", k: "hello" }];
+
+  var Q = {
+    water: { ja: "水やりはどのくらいの頻度ですか", en: "How often should I water?", es: "¿Con qué frecuencia debo regalar?", zh: "多久浇一次水？" },
+    yellow: { ja: "黒松の葉が黄色くなってきました", en: "My pine's needles are turning yellow", es: "Las agujas de mi pino se ponen amarillas", zh: "我的松树针叶变黄了" },
+    repot: { ja: "植え替えはいつがよいですか", en: "When should I repot?", es: "¿Cuándo debo trasplantar?", zh: "什么时候换盆？" }
+  };
+  var A = {
+    hello: {
+      ja: ["こんにちは。盆栽のAI相談窓口です。", "水やりや植え替えなど、一般的なことにお答えします。木の写真を見ないと決められないことは、職人におつなぎします。"],
+      en: ["Hello. I'm the bonsai AI helper.", "I can answer general questions about watering, repotting and more. If something can't be decided without seeing your tree, I'll connect you to a craftsperson."],
+      es: ["Hola. Soy el asistente de IA de bonsái.", "Respondo preguntas generales. Si hace falta ver tu árbol, te conecto con un maestro."],
+      zh: ["你好，我是盆栽AI助手。", "我可以回答浇水、换盆等一般问题；需要看照片才能判断的，我会帮你联系匠人。"]
+    },
+    water: {
+      ja: ["決まった日数ではなく、土の様子を見て決めます。表面の土が乾いてきたら、鉢の底から水が流れ出るまでたっぷりやるのが一般的です（<b class=\"term\" data-term=\"乾湿のメリハリ\">乾湿のメリハリ</b>）。", "季節や置き場所、鉢の大きさで乾き方は変わります。盆栽には「<b class=\"term\" data-term=\"水やり三年\">水やり三年</b>」という言葉があるほど、むずかしいものです。"],
+      en: ["There's no fixed schedule — you judge by the soil. A common approach is to water thoroughly, until water runs out of the bottom, once the surface soil starts to dry (<b class=\"term\" data-term=\"乾湿のメリハリ\">let it dry and wet in turns</b>).", "How fast it dries depends on season, <b class=\"term\" data-term=\"置き場所\">placement</b> and pot size. Japanese bonsai people say <b class=\"term\" data-term=\"水やり三年\">it takes three years to learn watering</b>."],
+      es: ["No hay un calendario fijo: se decide mirando la tierra. Se suele regar a fondo cuando la superficie empieza a secarse."],
+      zh: ["没有固定的天数，要看土的状态。一般是表层土变干后，浇透到盆底流出水。"]
+    },
+    yellow: {
+      ja: ["一般的に考えられる原因は、次のようなものです。", "・<b class=\"term\" data-term=\"水のやりすぎ\">水のやりすぎ</b>や、<b class=\"term\" data-term=\"根腐れ\">根腐れ</b>\n・<b class=\"term\" data-term=\"西日\">西日</b>などの強い日ざし（<b class=\"term\" data-term=\"葉焼け\">葉焼け</b>）\n・古い葉が自然に入れ替わる時期", "どれかは、あなたの木の写真を見ないと決められません。職人に聞きましょう。"],
+      en: ["Generally, the usual suspects are:", "• <b class=\"term\" data-term=\"水のやりすぎ\">overwatering</b> or <b class=\"term\" data-term=\"根腐れ\">root rot</b>\n• strong sun such as <b class=\"term\" data-term=\"西日\">late-afternoon sun</b> (<b class=\"term\" data-term=\"葉焼け\">leaf scorch</b>)\n• older needles naturally being replaced", "Which one it is can't be decided without seeing a photo of your tree. Let's ask a craftsperson."],
+      es: ["Causas habituales: exceso de riego, sol fuerte o renovación natural de las hojas viejas.", "No puedo decidir cuál sin ver la foto de tu árbol. Preguntemos a un maestro."],
+      zh: ["常见原因：浇水过多、强光直晒，或老叶自然更替。", "不看你的树的照片，我无法判断是哪一种。请问问匠人吧。"]
+    },
+    repot: {
+      ja: ["多くの木では、春に芽が動き出す前が<b class=\"term\" data-term=\"植え替え\">植え替え</b>の目安です。若い木は毎年〜数年ごと、育った木は数年に一度が一般的です。", "鉢の底から根が出る、水がしみこみにくい、といった様子は<b class=\"term\" data-term=\"根詰まり\">根詰まり</b>のしるしです。木の種類によって時期は変わります。"],
+      en: ["For many trees, the weeks before buds start moving in spring are a good time to <b class=\"term\" data-term=\"植え替え\">repot</b>. Young trees are commonly repotted every year or few years; mature trees less often.", "Roots coming out of the bottom or water that won't soak in are signs of being <b class=\"term\" data-term=\"根詰まり\">root-bound</b>. Timing varies by species."],
+      es: ["En muchos árboles, el momento es la primavera, antes de que broten las yemas."],
+      zh: ["多数树种在春天发芽前换盆较合适。"]
+    },
+    free: {
+      ja: ["これはモックなので、決まった答えだけ返します。", "上の質問のチップを押してみてください。本物のアプリでは、用語集をもとに自由な質問にも答えます。"],
+      en: ["This is a mock-up, so I only reply with fixed answers.", "Please try the question chips above. In the real app, I would answer free-form questions based on the glossary."],
+      es: ["Esto es una maqueta: solo respondo con respuestas fijas.", "Prueba las preguntas de arriba."],
+      zh: ["这是模拟画面，只会返回固定的回答。", "请点上面的常见问题试试。"]
+    }
+  };
+
+  function paras(list) {
+    return list.map(function (p) { return "<p>" + p.replace(/\n/g, "<br>") + "</p>"; }).join("");
+  }
+  function render() {
+    var lang = B.getLang();
+    document.getElementById("chat").innerHTML = log.map(function (m) {
+      if (m.r === "me") return '<div class="msg msg--me">' + esc(m.text) + "</div>";
+      var a = A[m.k], body = a[lang] || a.en;
+      var h = '<div class="msg msg--ai"><p class="who">' + esc(T({ ja: "AIの相談窓口", en: "AI Helper", es: "Asistente IA", zh: "AI助手" })) + '</p><div class="bubble">' + paras(body);
+      if (m.k !== "hello" && m.k !== "free")
+        h += '<span class="basis">' + esc(T({ ja: "用語集にもとづく答え", en: "Based on our glossary", es: "Basado en el glosario", zh: "依据术语表的回答" })) + "</span>";
+      if (m.k === "yellow")
+        h += '<div class="handoff"><a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html">' + esc(T({ ja: "職人に聞く", en: "Ask a craftsperson", es: "Preguntar a un maestro", zh: "请教匠人" })) + "</a></div>";
+      return h + "</div></div>";
+    }).join("");
+    document.getElementById("asks").innerHTML = Object.keys(Q).map(function (k) {
+      return '<button type="button" class="chip" data-k="' + k + '">' + esc(T(Q[k])) + "</button>";
+    }).join("");
+    document.querySelectorAll("#asks .chip").forEach(function (b) {
+      b.addEventListener("click", function () { ask(b.getAttribute("data-k")); });
+    });
+  }
+  function ask(k) {
+    log.push({ r: "me", text: T(Q[k]), k: k });
+    log.push({ r: "ai", k: k });
+    render();
+    var last = document.querySelector(".msg--ai:last-child"); if (last) last.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+  document.getElementById("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var f = document.getElementById("free"), v = f.value.trim();
+    if (!v) { toast(T({ ja: "質問を入力してください", en: "Please type a question", es: "Escribe una pregunta", zh: "请输入问题" })); return; }
+    log.push({ r: "me", text: v }); log.push({ r: "ai", k: "free" });
+    f.value = ""; render();
+  });
+  /* 言語を変えたら、押した質問の文も今の言語で描き直す */
+  var origRender = render;
+  render = function () {
+    log.forEach(function (m) { if (m.r === "me" && m.k) m.text = T(Q[m.k]); });
+    origRender();
+  };
+  render();
+  document.addEventListener("langchange", render);
+});
+</script>
+</body>
+</html>

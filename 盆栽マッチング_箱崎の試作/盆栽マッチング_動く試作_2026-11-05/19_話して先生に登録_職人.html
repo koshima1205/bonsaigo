@@ -70,7 +70,8 @@
       <div class="big-actions"><button type="button" class="big-btn big-btn--main" id="btn-ok">OK</button></div>
       <div class="done" id="done" role="status" hidden>
         <p class="done__title">登録しました。</p>
-        <div class="big-actions"><a class="big-btn" id="go-home" href="00_ホーム_職人と愛好家.html?role=shokunin">ホームに戻る</a></div>
+        <p style="margin:0 0 var(--s3);font-size:1.125rem">これからは、このお名前で入っています。海外からの相談は「届いた相談」に届きます。</p>
+        <div class="big-actions"><a class="big-btn big-btn--main" id="go-inbox" href="22_届いた相談の一覧_職人.html" style="background:#fff;color:var(--koke)">届いた相談を見る</a><a class="big-btn" id="go-home" href="00_ホーム_職人と愛好家.html?role=shokunin">ホームに戻る</a></div>
         <a class="demo-only" style="display:block;margin-top:var(--s3)" href="18_知りたいことから職人を探す.html?lang=en">次へ：海外の人の画面で見る</a>
       </div>
     </div>
@@ -133,6 +134,8 @@ document.addEventListener("DOMContentLoaded", function () {
     API.post("/api/teachers", { name: n, profile: profile }).then(function () {
       $("btn-ok").textContent = "OKしました"; $("btn-ok").classList.add("is-on"); $("done").hidden = false;
       $("done").scrollIntoView({ behavior: "smooth", block: "center" });
+      /* 登録した職人として入り直したので、右上とタブをすぐ合わせる */
+      if (API.me && window.BONSAI && window.BONSAI.refreshChrome) API.me(true).then(window.BONSAI.refreshChrome, function () {});
     }, function (e) { $("btn-ok").disabled = false; showErr(e.message); });
   });
 });

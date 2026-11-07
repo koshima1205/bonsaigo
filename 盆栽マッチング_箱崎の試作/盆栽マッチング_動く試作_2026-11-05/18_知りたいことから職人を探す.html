@@ -19,8 +19,6 @@
   .match__head { display: flex; gap: var(--s3); align-items: center; }
   .seal { width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.125rem; }
   .match__why { margin: var(--s3) 0; }
-  .match__offer { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); font-size: var(--fs-s); color: var(--sumi-2); margin: 0 0 var(--s3); }
-  .match__offer b { font-family: var(--mincho); font-size: var(--fs-l); color: var(--sumi); white-space: nowrap; }
   .first { font-size: var(--fs-s); color: var(--sumi-2); background: var(--kami-2); padding: var(--s3); border-radius: var(--r); margin: 0 0 var(--s3); }
   .first b { display: block; color: var(--sumi-3); font-weight: 700; }
   .teach { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--sen); font-size: var(--fs-s); color: var(--sumi-2); }
@@ -43,7 +41,7 @@
     <p class="note" id="wait" role="status" hidden></p>
     <p class="note" id="err" role="alert" style="color:var(--shu);font-weight:700" hidden></p>
     <div id="result" aria-live="polite"></div>
-    <p class="teach" id="teach"></p>
+    <p class="teach demo-only" id="teach"></p>
   </main>
   <nav id="tabbar"></nav>
 </div>
@@ -63,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ph: { ja: "例：針金をかけた木の、外す時期が分からない。木を見てくれる人に習いたい。", en: "e.g. I don't know when to take the wire off my tree. I want to learn from someone who can see my tree.", es: "Ej.: No sé cuándo quitar el alambre de mi árbol. Quiero aprender de alguien que vea mi árbol.", zh: "例如：不知道什么时候拆树上的铁丝，想向能看我树的人学习。" },
     ask: { ja: "この職人に相談する", en: "Ask this craftsperson", es: "Consultar a este maestro", zh: "向这位匠人咨询" },
     first: { ja: "最初の一言の例", en: "A first message you could send", es: "Un primer mensaje posible", zh: "可以这样开始" },
-    price: { ja: "料金はまだ決まっていません", en: "Price not final yet", es: "Precio aún sin definir", zh: "价格尚未确定" },
+    limit: { ja: "本日のAIの上限に達しました。明日もう一度お試しください。", en: "Today's AI limit has been reached. Please try again tomorrow.", es: "Se alcanzó el límite de IA de hoy. Inténtalo mañana.", zh: "今天的 AI 使用次数已达上限，请明天再试。" },
     offline: { ja: "いまはつながっていません。つながる状態にしてから、もう一度お試しください。", en: "Not connected right now. Please connect and try again.", es: "Sin conexión ahora. Conéctate e inténtalo de nuevo.", zh: "目前未连接，请连接后再试。" },
     retryHint: { ja: "言い方を変えて、もう一度書いてみてください。", en: "Try describing it another way.", es: "Prueba a describirlo de otra forma.", zh: "请换一种说法再试一次。" },
     none: { ja: "いま合う職人が見つかりませんでした。", en: "No good match right now.", es: "Ahora no hay un maestro adecuado.", zh: "暂时没有合适的匠人。" },
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
     teachLink: { ja: "話すだけで登録する", en: "Register by speaking", es: "Regístrate hablando", zh: "只需说话即可登记" }
   };
   var SEAL = { s1: "松", s2: "楓", s3: "岩" };
-  var last = null, offers = [], added = [];
+  var last = null, added = [];
 
   function paintStatic() {
     $("ttl").textContent = B.T(TX.ttl); $("lead").textContent = B.T(TX.lead); $("lb").textContent = B.T(TX.lb);
@@ -91,25 +89,22 @@ document.addEventListener("DOMContentLoaded", function () {
     var t = added.find(function (x) { return x.id === id; });
     return t ? { name: B.getLang() === "ja" ? t.name_ja : t.name_en, meta: B.getLang() === "ja" ? (t.specialty_ja || []).join("・") : specEn(t), seal: (t.name_ja || "職").charAt(0) } : { name: id, meta: "", seal: "職" };
   }
-  function offerName(o) { return o[B.getLang()] || o.en; }
   function paintResult() {
     var d = last;
     if (!d) { $("result").innerHTML = ""; return; }
     var html = d.understood ? '<p class="understood">' + esc(d.understood) + "</p>" : "";
     if (!d.matches.length) html += '<div id="no-match"></div>';
     html += d.matches.map(function (m) {
-      var t = teacher(m.teacher_id), o = offers.find(function (x) { return x.id === m.offer_id; }) || { en: "", usd: 0 };
+      var t = teacher(m.teacher_id);
       var q = encodeURIComponent(m.first_question);
       return '<article class="match"><div class="match__head"><div class="seal" aria-hidden="true">' + esc(t.seal) + '</div><div><p class="row__title">' + esc(t.name) + '</p><p class="row__meta">' + esc(t.meta) + "</p></div></div>" +
         '<p class="match__why">' + esc(m.reason) + "</p>" +
-        (o.usd ? '<p class="match__offer"><span>' + esc(offerName(o)) + " · " + esc(B.T(TX.price)) + "</span><b>$" + o.usd + "</b></p>" : "") +
         '<p class="first"><b>' + esc(B.T(TX.first)) + "</b>" + esc(m.first_question) + "</p>" +
-        '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(m.teacher_id) + "&offer=" + encodeURIComponent(m.offer_id) + "&q=" + q + '">' + esc(B.T(TX.ask)) + "</a></article>";
+        '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(m.teacher_id) + (m.offer_id ? "&offer=" + encodeURIComponent(m.offer_id) : "") + "&q=" + q + '">' + esc(B.T(TX.ask)) + "</a></article>";
     }).join("");
     $("result").innerHTML = html;
     if (!d.matches.length) UI.state($("no-match"), "empty", (d.no_match_reason || B.T(TX.none)) + " " + B.T(TX.retryHint));
   }
-  API.status().then(function (st) { offers = st.offers || []; });
   function loadTeachers() { return API.get("/api/teachers").then(function (r) { added = r.teachers; }, function () {}); }
   if (API.online) loadTeachers();
 
@@ -127,7 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
       last = d; paintResult();
       $("result").scrollIntoView({ behavior: "smooth", block: "start" });
     }, function (er) {
-      UI.state($("result"), "error", null, { retry: function () { $("form").requestSubmit(); } });
+      if (/上限/.test(er && er.message || "")) UI.state($("result"), "error", TX.limit);
+      else UI.state($("result"), "error", null, { retry: function () { $("form").requestSubmit(); } });
     }).then(function () {
       $("send").disabled = false; $("wait").hidden = true;
     });

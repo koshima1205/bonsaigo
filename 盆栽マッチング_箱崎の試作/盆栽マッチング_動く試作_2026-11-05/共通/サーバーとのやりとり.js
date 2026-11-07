@@ -23,9 +23,44 @@
 
   var statusPromise = null;
   function status() {
-    if (!online) return Promise.resolve({ mode: "offline", offers: [], share: 0.8 });
-    if (!statusPromise) statusPromise = request("GET", "/api/status").catch(function () { return { mode: "offline", offers: [], share: 0.8 }; });
+    /* offers は、まだ読む画面があるので空の一覧だけ残す（金額は出さない） */
+    if (!online) return Promise.resolve({ mode: "offline", offers: [] });
+    if (!statusPromise) statusPromise = request("GET", "/api/status").catch(function () { return { mode: "offline", offers: [] }; });
     return statusPromise;
+  }
+
+  /* ---------- ログインしている人 ----------
+     GET /api/me → { user: null | { id, role, name, lang, teacher_id }, teachers: [...] }
+     画面を開いたすぐ後に役割で下のタブを出せるよう、最後に見た人をこのタブの間だけ覚えておく */
+  var ME_KEY = "bonsai-me";
+  function cachedMe() {
+    try { var u = JSON.parse(sessionStorage.getItem(ME_KEY) || "null"); return u && u.role ? u : null; } catch (e) { return null; }
+  }
+  function rememberMe(user) {
+    try { if (user) sessionStorage.setItem(ME_KEY, JSON.stringify(user)); else sessionStorage.removeItem(ME_KEY); } catch (e) {}
+  }
+  var mePromise = null;
+  function me(fresh) {
+    if (!online) return Promise.resolve({ user: null, teachers: [] });
+    if (!mePromise || fresh) {
+      mePromise = request("GET", "/api/me").then(function (r) {
+        rememberMe(r.user || null);
+        return { user: r.user || null, teachers: r.teachers || [] };
+      }, function () { return { user: cachedMe(), teachers: [], failed: true }; });
+    }
+    return mePromise;
+  }
+  function login(body) {
+    return request("POST", "/api/login", body).then(function (r) {
+      rememberMe(r.user || null);
+      mePromise = null;
+      return r;
+    });
+  }
+  function logout() {
+    rememberMe(null);
+    mePromise = null;
+    return request("POST", "/api/logout", {}).catch(function () { return { ok: false }; });
   }
 
   function loadImage(src) {
@@ -148,7 +183,7 @@
     status().then(function (st) {
       var page = document.querySelector(".page");
       var no = document.body.getAttribute("data-screen");
-      if (!page || !no || no === "20" || document.querySelector(".mode-note")) return;
+      if (!page || !no || document.querySelector(".mode-note")) return;
       if (st.mode !== "sample" && st.mode !== "offline") return;
       var n = document.createElement("p");
       n.className = "mode-note demo-only";
@@ -165,7 +200,7 @@
   /* 体験の流れの、いまの場所を出す。立場が変わる画面では、そのことも言う */
   var FLOW = [
     { no: "17", who: "s" }, { no: "19", who: "s" }, { no: "18", who: "a" }, { no: "03", who: "a" },
-    { no: "04", who: "s" }, { no: "05", who: "a" }, { no: "20", who: "s" }
+    { no: "04", who: "s" }, { no: "05", who: "a" }
   ];
   function showFlow() {
     var no = document.body.getAttribute("data-screen");
@@ -193,6 +228,10 @@
     get: function (u) { return request("GET", u); },
     post: function (u, b) { return request("POST", u, b || {}); },
     status: status,
+    me: me,
+    cachedMe: cachedMe,
+    login: login,
+    logout: logout,
     photoFromFile: photoFromFile,
     framesFromVideo: framesFromVideo,
     sampleImage: sampleImage,

@@ -7,15 +7,16 @@
 (function () {
   "use strict";
 
-  /* ---------- 画面の一覧（一覧ページとナビの元） ---------- */
+  /* ---------- 画面の一覧（一覧ページとナビの元） ----------
+     hidden: true の画面は、2026-11-07 から一覧・ホーム・下のタブに出さない（ファイルは残す） */
   var SCREENS = [
     { no: "00", file: "00_ホーム_職人と愛好家.html", role: "both", status: "新規",
       t: { ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" },
-      name: "ホーム（職人と海外の愛好家）", desc: "使う人を選ぶと、その人がいまやることと、全部の機能への入口が出る。どの画面からもここに戻れる" },
-    { no: "01", file: "01_ホーム_博物館の入口.html", role: "aikouka", status: "決定",
+      name: "ホーム（職人と海外の愛好家）", desc: "ログインした役割で、その人がいまやることと、使える機能への入口が出る。どの画面からもここに戻れる" },
+    { no: "01", hidden: true, file: "01_ホーム_博物館の入口.html", role: "aikouka", status: "決定",
       t: { ja: "読みもの", en: "Reading Room", es: "Lecturas", zh: "阅读" },
       name: "ホーム（博物館の入口）", desc: "新着の相談・Q&A・職人の日記・記事を1か所に並べる入口。言語を切り替えられる" },
-    { no: "02", file: "02_1鉢のページ.html", role: "aikouka", status: "決定",
+    { no: "02", hidden: true, file: "02_1鉢のページ.html", role: "aikouka", status: "決定",
       t: { ja: "一鉢のページ", en: "One Tree", es: "Un árbol", zh: "一盆详情" },
       name: "1鉢のページ", desc: "1鉢を商品ページのように説明。正面・見上げ・石を崖に見立てる見方、不等辺三角形と幹の腰" },
     { no: "03", file: "03_職人への相談_愛好家.html", role: "aikouka", status: "決定",
@@ -27,16 +28,16 @@
     { no: "05", file: "05_答えが届く_愛好家.html", role: "aikouka", status: "決定",
       t: { ja: "職人からの答え", en: "Your Answer", es: "Tu respuesta", zh: "匠人的回答" },
       name: "答えが届く（愛好家側）", desc: "書き込み入りの写真と、意訳した答え。用語に触ると「直訳／意味／なぜそうするか」" },
-    { no: "06", file: "06_質問と答え_QandA.html", role: "aikouka", status: "決定",
+    { no: "06", hidden: true, file: "06_質問と答え_QandA.html", role: "aikouka", status: "決定",
       t: { ja: "質問と答え", en: "Q&A", es: "Preguntas", zh: "问答" },
       name: "Q&A", desc: "1つの質問に複数の職人が答え、知見がたまる。育て方などの軸で整理" },
-    { no: "07", file: "07_掲示板.html", role: "aikouka", status: "決定",
+    { no: "07", hidden: true, file: "07_掲示板.html", role: "aikouka", status: "決定",
       t: { ja: "掲示板", en: "Community", es: "Comunidad", zh: "交流区" },
       name: "掲示板", desc: "自由に交流する場。地域・木の種類で分ける" },
-    { no: "08", file: "08_AIの相談窓口.html", role: "aikouka", status: "会議で出た案",
+    { no: "08", hidden: true, file: "08_AIの相談窓口.html", role: "aikouka", status: "会議で出た案",
       t: { ja: "AIの相談窓口", en: "AI Helper", es: "Asistente IA", zh: "AI 助手" },
       name: "AIの相談窓口（サポートボット）", desc: "職人に聞く前にAIが答える。答えきれないときは「職人に聞く」へつなぐ" },
-    { no: "09", file: "09_職人の日記.html", role: "aikouka", status: "会議で出た案",
+    { no: "09", hidden: true, file: "09_職人の日記.html", role: "aikouka", status: "会議で出た案",
       t: { ja: "職人の日記", en: "Craftsperson's Journal", es: "Diario del maestro", zh: "匠人日记" },
       name: "職人の日記", desc: "職人が話すだけで、AIが日記にまとめる。引退とともに消える知恵を残す" },
     { no: "10", file: "10_学ぶ_歴史と育て方.html", role: "aikouka", status: "決定",
@@ -45,40 +46,40 @@
     { no: "11", file: "11_用語集.html", role: "aikouka", status: "決定",
       t: { ja: "用語集", en: "Glossary", es: "Glosario", zh: "术语表" },
       name: "用語集", desc: "122語。用語ごとに「直訳／意味／なぜそうするか」と、確かめた／未確認の印" },
-    { no: "12", file: "12_SNS投稿の下書き.html", role: "shokunin", status: "決定",
+    { no: "12", hidden: true, file: "12_SNS投稿の下書き.html", role: "shokunin", status: "決定",
       t: { ja: "投稿の下書き", en: "投稿の下書き", es: "投稿の下書き", zh: "投稿の下書き" },
       name: "SNS投稿の下書き", desc: "相談とQ&Aから、X・Facebook・Instagramの下書き。職人は「OK」を押すだけ" },
     { no: "13", file: "13_職人を探す.html", role: "aikouka", status: "会議で出た案",
       t: { ja: "職人を探す", en: "Find a Craftsperson", es: "Buscar maestro", zh: "寻找匠人" },
       name: "職人を探す・連絡する", desc: "職人の紹介ページ（架空）から相談できる" },
-    { no: "14", file: "14_欲しい盆栽を伝える_仮.html", role: "aikouka", status: "仮",
+    { no: "14", hidden: true, file: "14_欲しい盆栽を伝える_仮.html", role: "aikouka", status: "仮",
       t: { ja: "買いたい", en: "Buy a Tree", es: "Comprar un árbol", zh: "购买" },
       name: "欲しい盆栽を伝える（マーケットプレイスの入口）", desc: "買い手が欲しい盆栽の写真・条件を先に出し、合う職人とつなぐ" },
-    { no: "15", file: "15_職人の手直しを図で_仮.html", role: "aikouka", status: "仮",
+    { no: "15", hidden: true, file: "15_職人の手直しを図で_仮.html", role: "aikouka", status: "仮",
       t: { ja: "手直しを図で見る", en: "See the Correction", es: "Ver la corrección", zh: "查看修整示意" },
       name: "職人の手直しを図で見せる", desc: "写真（3Dの代わりの図）に職人が直す線を引き、言葉なしで伝える" },
-    { no: "16", file: "16_使う人で変わる画面の比べ.html", role: "kurabe", status: "決定",
+    { no: "16", hidden: true, file: "16_使う人で変わる画面の比べ.html", role: "kurabe", status: "決定",
       t: { ja: "使う人で変わる画面", en: "One Exchange, Two Screens", es: "Dos pantallas", zh: "同一对话，两种界面" },
       name: "使う人で変わる画面の比べ", desc: "同じやり取りを、職人の画面と愛好家の画面で左右に並べる" },
     { no: "17", file: "17_撮るだけで発信_職人.html", role: "shokunin", status: "新規",
-      t: { ja: "撮って発信", en: "撮って発信", es: "撮って発信", zh: "撮って発信" },
-      name: "撮るだけで発信", desc: "写真か動画を撮るだけで、X・Instagram・Facebook・ショート動画の下書きが3言語でそろう。文化の一言つき" },
+      t: { ja: "撮るだけで投稿", en: "撮るだけで投稿", es: "撮るだけで投稿", zh: "撮るだけで投稿" },
+      name: "撮るだけで投稿", desc: "写真か動画を撮るだけで、X・Instagram・Facebook・ショート動画の下書きが3言語でそろう。文化の一言つき" },
     { no: "18", file: "18_知りたいことから職人を探す.html", role: "aikouka", status: "新規",
       t: { ja: "職人を見つける", en: "Find Your Craftsperson", es: "Encuentra a tu maestro", zh: "找到你的匠人" },
       name: "知りたいことから職人を探す", desc: "知りたいことを母語で書くと、合う職人が理由つきで出る" },
     { no: "19", file: "19_話して先生に登録_職人.html", role: "shokunin", status: "新規",
-      t: { ja: "先生に登録", en: "先生に登録", es: "先生に登録", zh: "先生に登録" },
-      name: "話して先生に登録", desc: "教えられることを話すだけで、紹介ページが3言語でできる" },
-    { no: "20", file: "20_職人に入るお金_職人.html", role: "shokunin", status: "新規",
+      t: { ja: "私の紹介", en: "私の紹介", es: "私の紹介", zh: "私の紹介" },
+      name: "話して先生に登録（私の紹介ページ）", desc: "教えられることを話すだけで、紹介ページが3言語でできる。登録すると、その職人で入れる" },
+    { no: "20", hidden: true, file: "20_職人に入るお金_職人.html", role: "shokunin", status: "新規",
       t: { ja: "入るお金", en: "入るお金", es: "入るお金", zh: "入るお金" },
       name: "職人に入るお金", desc: "答えた相談から、職人にいくら入るかを見せる。料金はサンプル" },
-    { no: "21", file: "21_話すか撮るだけ_1鉢の記録と出品_職人.html", role: "shokunin", status: "新規",
+    { no: "21", hidden: true, file: "21_話すか撮るだけ_1鉢の記録と出品_職人.html", role: "shokunin", status: "新規",
       t: { ja: "私の木", en: "私の木", es: "私の木", zh: "私の木" },
       name: "話すか撮るだけ・1鉢の記録と出品の下書き", desc: "話すか撮ると、AIが発信・出品・先生の登録を聞き分けて、木ごとの記録に残す。出品は下書きまで" }
   ];
   SCREENS.push({ no: "22", file: "22_届いた相談の一覧_職人.html", role: "shokunin", status: "新規",
-    t: { ja: "相談", en: "相談", es: "相談", zh: "相談" },
-    name: "届いた相談の一覧（職人）", desc: "海外から届いた相談を、まだ答えていないもの・答えたものに分けて並べる。下のタブ「相談」から開く" });
+    t: { ja: "届いた相談", en: "届いた相談", es: "届いた相談", zh: "届いた相談" },
+    name: "届いた相談の一覧（職人）", desc: "自分宛てに届いた相談を、まだ答えていないもの・答えたものに分けて並べる。下のタブ「届いた相談」から開く" });
   window.SCREENS = SCREENS;
 
   /* ---------- 言語 ---------- */
@@ -93,7 +94,11 @@
     try {
       var q = new URLSearchParams(location.search).get("lang");
       if (q) return q;
-      return localStorage.getItem(KEY) || "en";
+      var saved = localStorage.getItem(KEY);
+      if (saved) return saved;
+      /* まだ選んでいなければ、ログインのときに選んだ言語にする */
+      var u = window.API && window.API.cachedMe ? window.API.cachedMe() : JSON.parse(sessionStorage.getItem("bonsai-me") || "null");
+      return (u && u.role === "aikouka" && u.lang) || "en";
     } catch (e) { return "en"; }
   }
   var current = readLang();
@@ -164,33 +169,48 @@
     qa: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7"/><path d="M12 17h.01"/></svg>',
     board: '<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>',
     buy: '<svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>',
-    tree: '<svg viewBox="0 0 24 24"><path d="M12 4c-4 0-6 2-6 4s2 3 4 3h4c2 0 4-1 4-3s-2-4-6-4z"/><path d="M12 11v4"/><path d="M6 15h12l-2 5H8z"/></svg>'
+    tree: '<svg viewBox="0 0 24 24"><path d="M12 4c-4 0-6 2-6 4s2 3 4 3h4c2 0 4-1 4-3s-2-4-6-4z"/><path d="M12 11v4"/><path d="M6 15h12l-2 5H8z"/></svg>',
+    find: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>',
+    words: '<svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M9 8h6"/></svg>',
+    camera: '<svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+    person: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>'
   };
-  /* 下のメニュー：2026-11-06 の打ち合わせで決めた形。どちらも先頭はホーム
-     海外の愛好家：相談する／学ぶ／掲示板／買いたい　職人：相談／私の木（お金は右上のアカウントから） */
+  /* 下のメニュー：2026-11-07 から役割ごとに絞った形。どちらも先頭はホーム
+     海外の人：探す／相談／学ぶ／用語集　職人：届いた相談／撮るだけで投稿／私の紹介
+     （右上はお金ではなく、ログインしている人の名前とログアウト） */
   var TABS = [
     { no: "00", icon: "home", t: { ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" } },
-    { no: "03", icon: "ask", t: { ja: "相談する", en: "Ask", es: "Consultar", zh: "咨询" } },
+    { no: "18", icon: "find", t: { ja: "探す", en: "Find", es: "Buscar", zh: "寻找" } },
+    { no: "03", icon: "ask", t: { ja: "相談", en: "Ask", es: "Consultar", zh: "咨询" } },
     { no: "10", icon: "learn", t: { ja: "学ぶ", en: "Learn", es: "Aprender", zh: "学习" } },
-    { no: "07", icon: "board", t: { ja: "掲示板", en: "Community", es: "Comunidad", zh: "交流" } },
-    { no: "14", icon: "buy", t: { ja: "買いたい", en: "Buy", es: "Comprar", zh: "购买" } }
+    { no: "11", icon: "words", t: { ja: "用語集", en: "Glossary", es: "Glosario", zh: "术语表" } }
   ];
   var TABS_S = [
     { no: "00", icon: "home", t: { ja: "ホーム" } },
-    { no: "22", icon: "ask", t: { ja: "相談" } },
-    { no: "21", icon: "tree", t: { ja: "私の木" } }
+    { no: "22", icon: "ask", t: { ja: "届いた相談" } },
+    { no: "17", icon: "camera", t: { ja: "撮って投稿" } },
+    { no: "19", icon: "person", t: { ja: "私の紹介" } }
   ];
-  /* 下のタブで、そのタブの仲間とみなす画面（お金の20番はタブではなく右上） */
-  var TAB_GROUP = { "00": "00", "01": "00", "09": "00",
-    "03": "03", "05": "03", "08": "03", "13": "03", "15": "03", "18": "03",
-    "10": "10", "11": "10", "06": "10", "07": "07", "14": "14", "02": "14" };
-  var TAB_GROUP_S = { "00": "00", "12": "00", "17": "00", "19": "00", "04": "22", "22": "22", "21": "21" };
+  /* 下のタブで、そのタブの仲間とみなす画面 */
+  var TAB_GROUP = { "00": "00", "18": "18", "13": "18", "03": "03", "05": "03", "10": "10", "11": "11" };
+  var TAB_GROUP_S = { "00": "00", "22": "22", "04": "22", "17": "17", "19": "19" };
 
   function fileOf(no) { var s = SCREENS.find(function (x) { return x.no === no; }); return s ? s.file : "index.html"; }
   window.fileOf = fileOf;
   /* ホームへのリンク。職人の画面からは職人のホームへ */
   function homeHref(shokunin) { return fileOf("00") + "?role=" + (shokunin ? "shokunin" : "aikouka"); }
   window.homeHref = homeHref;
+
+  /* ログインの画面。ログインしていないと、サーバーがここへ飛ばす */
+  var LOGIN_FILE = "ログイン_職人か海外の人かを選ぶ.html";
+  window.LOGIN_FILE = LOGIN_FILE;
+  function meNow() { return window.API && window.API.cachedMe ? window.API.cachedMe() : null; }
+  /* 下のタブと「ホーム」の行き先は、ログインした人の役割で決める。わからないときは画面の役割 */
+  function isShokuninNow() {
+    var u = meNow();
+    if (u && u.role) return u.role === "shokunin";
+    return document.body.classList.contains("role-shokunin");
+  }
 
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   window.esc = esc;
@@ -211,9 +231,102 @@
   }
   window.isDemo = isDemo;
 
+  /* 右上の名前とログアウトの見た目（見た目の決まり.css に足すまでの間、ここで入れる） */
+  function addAccountStyle() {
+    if (document.getElementById("account-style")) return;
+    var st = document.createElement("style");
+    st.id = "account-style";
+    st.textContent =
+      ".account{display:inline-flex;align-items:center;flex:none}" +
+      ".account__btn{cursor:pointer;max-width:9.5em;padding:0 10px}" +
+      ".account__name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}" +
+      "body:not(.role-shokunin) .appbar .account__name{display:none}" +
+      "body:not(.role-shokunin) .appbar .account__btn{min-width:48px;justify-content:center;padding:0}" +
+      ".account__role{font-size:var(--fs-s);color:var(--sumi-2);margin:0 0 var(--s4)}" +
+      ".app-foot{margin:var(--s7) 0 0;padding:var(--s4) 0 0;border-top:1px dashed var(--sen);font-size:14px;color:var(--sumi-3)}";
+    document.head.appendChild(st);
+  }
+
+  /* 右上：ログインしている人の名前。押すと、名前とログアウトのシートが開く */
+  function accountHtml(u) {
+    if (!u) return "";
+    return '<button type="button" class="appbar__account account__btn" data-account-open aria-haspopup="dialog" aria-label="' +
+      esc(u.name || "") + '">' + ICON.person.replace("<svg ", '<svg aria-hidden="true" ') +
+      '<span class="account__name">' + esc(u.name || "") + "</span></button>";
+  }
+  function fillAccounts() {
+    var u = meNow();
+    document.querySelectorAll("[data-account]").forEach(function (box) {
+      box.className = "account";
+      box.innerHTML = accountHtml(u);
+      var b = box.querySelector("[data-account-open]");
+      if (b) b.addEventListener("click", openAccount);
+    });
+  }
+  function openAccount() {
+    var u = meNow();
+    if (!u) return;
+    var shok = u.role === "shokunin";
+    var w = function (o) { return shok ? esc(o.ja) : tSpan(o); };
+    closeSheet();
+    var back = document.createElement("div");
+    back.className = "sheet-backdrop";
+    var sh = document.createElement("div");
+    sh.className = "sheet";
+    sh.setAttribute("role", "dialog");
+    sh.setAttribute("aria-modal", "true");
+    sh.setAttribute("aria-label", shok ? "ログインしている人" : "Account");
+    sh.innerHTML = '<div class="sheet__grip"></div>' +
+      '<p class="sheet__term">' + esc(u.name || "") + "</p>" +
+      '<p class="account__role">' + (shok
+        ? "職人として入っています"
+        : tSpan({ ja: "海外の人として入っています", en: "Signed in as a learner", es: "Has entrado como aprendiz", zh: "以学习者身份登录" })) + "</p>" +
+      '<button type="button" class="btn btn--wide" data-logout>' + w({ ja: "ログアウト", en: "Log out", es: "Cerrar sesión", zh: "退出登录" }) + "</button>" +
+      '<button type="button" class="btn btn--quiet btn--wide sheet__close">' + w(L.close) + "</button>";
+    document.body.appendChild(back);
+    document.body.appendChild(sh);
+    applyT(sh);
+    back.addEventListener("click", closeSheet);
+    sh.querySelector(".sheet__close").addEventListener("click", closeSheet);
+    sh.querySelector("[data-logout]").addEventListener("click", function () {
+      this.disabled = true;
+      (window.API ? window.API.logout() : Promise.resolve()).then(function () { location.href = LOGIN_FILE; });
+    });
+    sh.querySelector("[data-logout]").focus();
+  }
+
+  function buildTabs() {
+    var tab = document.getElementById("tabbar");
+    var body = document.body;
+    if (!tab) return;
+    if (body.classList.contains("no-tabbar")) { tab.remove(); return; }
+    var no = body.getAttribute("data-screen");
+    var shokunin = isShokuninNow();
+    var tabs = shokunin ? TABS_S : TABS, group = shokunin ? TAB_GROUP_S : TAB_GROUP;
+    tab.className = "tabbar";
+    tab.style.gridTemplateColumns = "repeat(" + tabs.length + ", 1fr)";
+    tab.setAttribute("aria-label", shokunin ? "職人のメニュー" : "main");
+    tab.innerHTML = tabs.map(function (x) {
+      var cur = group[no] === x.no ? ' aria-current="page"' : "";
+      var href = x.no === "00" ? homeHref(shokunin) : fileOf(x.no);
+      return '<a href="' + href + '"' + cur + ' data-tab="' + x.no + '">' + ICON[x.icon] + tSpan(x.t) + "</a>";
+    }).join("");
+    applyT(tab);
+    /* 職人：答えていない相談の数を「届いた相談」のタブに出す */
+    if (shokunin && window.API && window.API.online) {
+      window.API.get("/api/consultations").then(function (r) {
+        var n = (r.consultations || []).filter(function (c) { return !c.answer; }).length;
+        var a = tab.querySelector('[data-tab="22"]');
+        if (a && n && !a.querySelector(".tab-badge")) a.insertAdjacentHTML("beforeend", '<span class="tab-badge" aria-label="答えていない相談 ' + n + '件">' + (n > 99 ? "99+" : n) + "</span>");
+      }, function () {});
+    }
+  }
+
   function buildChrome() {
     var body = document.body;
-    body.classList.toggle("is-demo", isDemo());
+    var demo = isDemo();
+    body.classList.toggle("is-demo", demo);
+    addAccountStyle();
     var no = body.getAttribute("data-screen");
     var me = SCREENS.find(function (s) { return s.no === no; });
     var shokunin = body.classList.contains("role-shokunin");
@@ -230,52 +343,63 @@
             return '<button type="button" data-code="' + l.code + '" title="' + l.label + '">' + l.short + "</button>";
           }).join("") + "</div>";
       bar.innerHTML =
-        '<a class="appbar__back" href="' + homeHref(shokunin) + '" title="ホームへ" aria-label="ホームへ">' + (shokunin ? "ホーム" : tSpan({ ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" })) + '</a>' +
+        '<a class="appbar__back" href="' + homeHref(isShokuninNow()) + '" title="ホームへ" aria-label="ホームへ">' + (shokunin ? "ホーム" : tSpan({ ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" })) + '</a>' +
         '<div class="appbar__title">' + (me ? esc(T(me.t)) : "") + "</div>" + langHtml +
-        /* 職人は右上のアカウントから、いつ・いくら入ったかを見る */
-        (shokunin ? '<a class="appbar__account" href="' + fileOf("20") + '"' + (no === "20" ? ' aria-current="page"' : "") + ' aria-label="アカウント（入ったお金）">' +
-          '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>お金</span></a>' : "");
+        /* 右上：ログインしている人の名前（押すとログアウト） */
+        "<div data-account></div>";
       bar.querySelectorAll(".lang button").forEach(function (b) {
         b.addEventListener("click", function () { setLang(b.getAttribute("data-code")); });
       });
     }
-    var tab = document.getElementById("tabbar");
-    if (tab) {
-      if (body.classList.contains("no-tabbar")) { tab.remove(); }
-      else {
-        var tabs = shokunin ? TABS_S : TABS, group = shokunin ? TAB_GROUP_S : TAB_GROUP;
-        tab.className = "tabbar";
-        tab.style.gridTemplateColumns = "repeat(" + tabs.length + ", 1fr)";
-        tab.setAttribute("aria-label", shokunin ? "職人のメニュー" : "main");
-        tab.innerHTML = tabs.map(function (x) {
-          var cur = group[no] === x.no ? ' aria-current="page"' : "";
-          var href = x.no === "00" ? homeHref(shokunin) : fileOf(x.no);
-          return '<a href="' + href + '"' + cur + ' data-tab="' + x.no + '">' + ICON[x.icon] + tSpan(x.t) + "</a>";
-        }).join("");
-        /* 職人：答えていない相談の数を「相談」のタブに出す */
-        if (shokunin && window.API && window.API.online) {
-          window.API.get("/api/consultations").then(function (r) {
-            var n = (r.consultations || []).filter(function (c) { return !c.answer; }).length;
-            var a = tab.querySelector('[data-tab="22"]');
-            if (a && n) a.insertAdjacentHTML("beforeend", '<span class="tab-badge" aria-label="答えていない相談 ' + n + '件">' + (n > 99 ? "99+" : n) + "</span>");
-          }, function () {});
-        }
-      }
-    }
-    /* 画面の下の注記 */
+    fillAccounts();
+    buildTabs();
+    /* 画面の下の注記。ふだんは短く、発表の流れ（?demo=1）のときだけ試作の注記 */
     var page = document.querySelector(".page");
-    if (page && !document.querySelector(".mock-foot")) {
+    if (page && !document.querySelector(".mock-foot, .app-foot")) {
       var f = document.createElement("p");
-      f.className = "mock-foot";
       var kari = me && me.status === "仮";
-      f.innerHTML = tSpan({
-        ja: "試作です。名前・図・数字はすべてサンプルで、実在の職人・盆栽園とは関係ありません。" + (kari ? " この画面は会議で決まっていない「仮」の案です。" : ""),
-        en: "This is a prototype. All names, pictures and numbers are samples and do not refer to real craftspeople or gardens." + (kari ? " This screen is a tentative idea that has not been decided." : ""),
-        es: "Prototipo. Nombres, imágenes y cifras son de ejemplo." + (kari ? " Pantalla provisional, aún no decidida." : ""),
-        zh: "这是试作版。姓名、图片和数字均为示例。" + (kari ? " 此页面为暂定方案，尚未决定。" : "")
-      });
+      if (demo) {
+        f.className = "mock-foot";
+        f.innerHTML = tSpan({
+          ja: "試作です。名前・図・数字はすべてサンプルで、実在の職人・盆栽園とは関係ありません。" + (kari ? " この画面は会議で決まっていない「仮」の案です。" : ""),
+          en: "This is a prototype. All names, pictures and numbers are samples and do not refer to real craftspeople or gardens." + (kari ? " This screen is a tentative idea that has not been decided." : ""),
+          es: "Prototipo. Nombres, imágenes y cifras son de ejemplo." + (kari ? " Pantalla provisional, aún no decidida." : ""),
+          zh: "这是试作版。姓名、图片和数字均为示例。" + (kari ? " 此页面为暂定方案，尚未决定。" : "")
+        });
+      } else {
+        f.className = "app-foot";
+        f.innerHTML = tSpan({
+          ja: "見本の職人は架空です。",
+          en: "The sample craftspeople are fictional.",
+          es: "Los maestros de ejemplo son ficticios.",
+          zh: "示例匠人均为虚构。"
+        });
+      }
       page.appendChild(f);
     }
+  }
+
+  /* サーバーにログインしている人を聞き直し、覚えていた人と違えば、上の帯と下のタブを描き直す */
+  function refreshMe() {
+    if (!window.API || !window.API.me) return;
+    var before = JSON.stringify(meNow());
+    window.API.me().then(function (r) {
+      var u = r.user;
+      if (u && u.role === "aikouka" && u.lang) {
+        var saved = null;
+        try { saved = localStorage.getItem(KEY); } catch (e) {}
+        if (!saved && !new URLSearchParams(location.search).get("lang") && u.lang !== current) setLang(u.lang);
+      }
+      if (JSON.stringify(u || null) !== before) refreshChrome();
+    });
+  }
+  function refreshChrome() {
+    var bar = document.getElementById("appbar");
+    var back = bar && bar.querySelector(".appbar__back");
+    if (back) back.setAttribute("href", homeHref(isShokuninNow()));
+    fillAccounts();
+    buildTabs();
+    applyLang();
   }
 
   /* ---------- 用語の説明（下から開くシート） ---------- */
@@ -535,9 +659,11 @@
   window.drawZu = function (root) { (root || document).querySelectorAll("figure.zu[data-zu]").forEach(drawZu); };
 
   /* ---------- はじめに動かす ---------- */
-  window.BONSAI = { T: T, getLang: getLang, setLang: setLang, applyLang: applyLang, LANGS: LANGS };
+  window.BONSAI = { T: T, getLang: getLang, setLang: setLang, applyLang: applyLang, LANGS: LANGS,
+    refreshChrome: refreshChrome, fillAccounts: fillAccounts, isShokuninNow: isShokuninNow };
   document.addEventListener("DOMContentLoaded", function () {
     buildChrome();
+    refreshMe();
     window.drawZu();
     applyLang();
     watchT();

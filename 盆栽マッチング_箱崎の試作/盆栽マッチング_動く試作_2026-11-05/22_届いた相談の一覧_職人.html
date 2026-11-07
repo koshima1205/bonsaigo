@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (c.answer) chips.push('<span class="chip">答えました</span>');
     return '<li><a href="04_職人の画面_相談を受ける.html?id=' + encodeURIComponent(c.id) + '">' + img +
       '<div><p class="inbox__title">' + esc(API.dropTermMarks(f.title_ja || "相談")) + "</p>" +
-      '<p class="inbox__meta">' + (LANG[c.lang] || "海外") + "で届いた ・ " + when(c.at) + "</p>" +
+      '<p class="inbox__meta">' + (c.asker_name ? esc(c.asker_name) + "さんから ・ " : "") + (LANG[c.lang] || "海外") + "で届いた ・ " + when(c.at) + "</p>" +
       '<div class="inbox__chips">' + chips.join("") + "</div></div>" +
       '<span class="go" aria-hidden="true">›</span></a></li>';
   }
@@ -80,7 +80,9 @@ document.addEventListener("DOMContentLoaded", function () {
     $("head").textContent = open.length ? "相談が" + open.length + "件、届いています" : "届いた相談";
     var list = showDone ? all.filter(function (c) { return c.answer; }) : open;
     if (!list.length) {
-      UI.state($("list"), "empty", showDone ? "まだ答えた相談はありません。" : "いま答えていない相談はありません。届いたら、ここと下の「相談」に数が出ます。",
+      var msg = !all.length ? "まだ相談は届いていません。海外の方が相談を送ると、ここと下の「相談」に数が出ます。"
+        : showDone ? "まだ答えた相談はありません。" : "いま答えていない相談はありません。新しく届いたら、ここに出ます。";
+      UI.state($("list"), "empty", msg,
         showDone ? null : { action: { href: "17_撮るだけで発信_職人.html", t: { ja: "そのあいだに、木を撮って発信する" } } });
       return;
     }
@@ -98,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     UI.state($("list"), "loading");
-    API.get("/api/consultations").then(function (r) { all = r.consultations || []; render(); },
+    API.get("/api/consultations").then(function (r) { all = (r.consultations || []).slice().sort(function (a, b) { return String(b.at).localeCompare(String(a.at)); }); render(); },
       function () { UI.state($("list"), "error", null, { retry: load }); });
   }
   load();

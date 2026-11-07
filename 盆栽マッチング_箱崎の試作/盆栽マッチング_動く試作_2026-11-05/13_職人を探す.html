@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!s || !shown.length) { box.innerHTML = ""; return; }
     box.innerHTML =
       '<div class="profile__head"><div class="seal" aria-hidden="true">' + SEAL[s.id] + '</div><div><p class="row__title" style="font-size:var(--fs-l)">' + esc(nm(s)) + '</p><p class="row__meta">' + esc([gd(s), area(s)].filter(Boolean).join(" · ")) + "</p></div></div>" +
-      '<div class="facts">' + (s.years === "-" ? "" : "<div><b>" + s.years + "</b><small>" + esc(B.T({ ja: "年の経験", en: "years", es: "años", zh: "年经验" })) + "</small></div>") +
+      '<div class="facts demo-only">' + (s.years === "-" ? "" : "<div><b>" + s.years + "</b><small>" + esc(B.T({ ja: "年の経験", en: "years", es: "años", zh: "年经验" })) + "</small></div>") +
       "<div><b>" + s.answers + "</b><small>" + esc(B.T({ ja: "答えた数", en: "answers given", es: "respuestas", zh: "回答数" })) + "</small></div>" +
       "<div><b>" + s.specialty.length + "</b><small>" + esc(B.T({ ja: "得意な木", en: "specialties", es: "especialidades", zh: "擅长树种" })) + "</small></div></div>" +
       '<p class="note demo-only">' + esc(B.T({ ja: "年数・答えた数はサンプルです。", en: "Years and answer counts are sample data.", es: "Cifras de muestra.", zh: "数字为样例。" })) + "</p>" +

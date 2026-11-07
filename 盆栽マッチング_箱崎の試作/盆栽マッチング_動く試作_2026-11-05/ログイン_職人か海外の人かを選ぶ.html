@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ログイン · Sign in｜盆栽マッチング</title>
+<link rel="stylesheet" href="共通/見た目の決まり.css">
+<link rel="manifest" href="共通/アプリの設定.webmanifest">
+<link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
+<meta name="theme-color" content="#FBFAF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="盆栽">
+<style>
+  /* ログインの画面だけの見た目。区切りは線と余白。影なし */
+  .page { padding-left: var(--s5); padding-right: var(--s5); }
+  .login-top { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s3); padding: var(--s5) var(--s5) var(--s3); border-bottom: 1px solid var(--sumi); }
+  .login-brand { display: inline-flex; align-items: center; min-height: 48px; font-family: var(--mincho); font-weight: 600; font-size: 1.125rem; letter-spacing: 0.2em; color: var(--sumi); }
+  .login-brand small { font-family: var(--gothic); font-weight: 400; font-size: 14px; letter-spacing: 0.04em; color: var(--sumi-2); margin-left: var(--s3); }
+  .login-h1 { font-family: var(--mincho); font-weight: 600; font-size: 1.625rem; line-height: 1.45; margin: var(--s6) 0 var(--s1); letter-spacing: 0.03em; }
+  .login-h1 span { display: block; font-size: 1.125rem; color: var(--sumi-2); margin-top: var(--s1); }
+  .who { list-style: none; margin: var(--s5) 0 0; padding: 0; display: grid; gap: var(--s3); }
+  .who button { width: 100%; text-align: left; display: block; padding: var(--s4); min-height: 88px; border: 1px solid var(--sumi); border-radius: var(--r); background: var(--kami-3); color: var(--sumi); cursor: pointer; }
+  .who button[aria-pressed="true"] { background: var(--koke); border-color: var(--koke); color: var(--kin-moji); }
+  .who b { display: block; font-size: 1.25rem; line-height: 1.4; }
+  .who small { display: block; font-size: 15px; line-height: 1.5; color: inherit; opacity: 0.85; margin-top: 2px; }
+  .step { margin: var(--s6) 0 0; padding: var(--s5) 0 0; border-top: 1px solid var(--sen); }
+  .step__h { font-family: var(--mincho); font-weight: 600; font-size: 1.1875rem; margin: 0 0 var(--s4); }
+  .langs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); margin: 0 0 var(--s5); }
+  .langs .chip { min-height: 48px; font-size: 1rem; }
+  .teachers { list-style: none; margin: 0 0 var(--s4); padding: 0; border-top: 1px solid var(--sen); }
+  .teachers button { width: 100%; text-align: left; display: flex; align-items: center; gap: var(--s3); min-height: 72px; padding: var(--s3) var(--s2); border: 0; border-bottom: 1px solid var(--sen); background: none; cursor: pointer; color: var(--sumi); }
+  .teachers button[aria-pressed="true"] { background: var(--koke-usu); box-shadow: inset 3px 0 0 var(--koke); }
+  .teachers .seal { width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.125rem; }
+  .teachers b { display: block; font-size: 1.25rem; }
+  .teachers small { display: block; font-size: 1rem; color: var(--sumi-2); }
+  .new-teacher { display: flex; align-items: center; min-height: 52px; font-size: 1.125rem; margin: 0 0 var(--s5); }
+  .err { margin: var(--s4) 0 0; color: var(--shu); font-weight: 700; }
+  .now { margin: var(--s5) 0 0; padding: var(--s4); border: 1px solid var(--sen); border-radius: var(--r); background: var(--kami-3); }
+  .now p { margin: 0 0 var(--s3); }
+  .now .btn + .btn { margin-top: var(--s2); }
+  html:not([lang="ja"]) .login-h1, html:not([lang="ja"]) .step__h { letter-spacing: 0.01em; }
+</style>
+</head>
+<body data-screen="login" class="no-tabbar">
+<div class="app">
+  <header class="login-top">
+    <span class="login-brand">盆栽の間<small lang="en">Bonsai Matching</small></span>
+  </header>
+  <main class="page">
+    <h1 class="login-h1" lang="en">Who are you?<span lang="ja">どちらとして使いますか</span></h1>
+
+    <!-- もう入っているとき -->
+    <div class="now" id="now" hidden></div>
+
+    <ul class="who" aria-label="役割 / Role">
+      <li><button type="button" id="pick-a" aria-pressed="false" aria-controls="form-a">
+        <b lang="en">As a learner (outside Japan)</b>
+        <small lang="ja">海外の人として。職人を探して、母語で相談します</small>
+      </button></li>
+      <li><button type="button" id="pick-s" aria-pressed="false" aria-controls="form-s">
+        <b lang="ja">職人として</b>
+        <small><span lang="ja">届いた相談に日本語で答えます</span> · <span lang="en">As a craftsperson</span></small>
+      </button></li>
+    </ul>
+
+    <!-- 海外の人：名前と言語 -->
+    <form class="step" id="form-a" novalidate hidden>
+      <p class="step__h"><span class="t"><span data-l="en">Your name and language</span><span data-l="es">Tu nombre e idioma</span><span data-l="zh">你的名字和语言</span><span data-l="ja">お名前と言語</span></span></p>
+      <label class="field">
+        <span class="field__label"><span class="t"><span data-l="en">Name (shown to the craftsperson)</span><span data-l="es">Nombre (lo verá el maestro)</span><span data-l="zh">名字（匠人会看到）</span><span data-l="ja">お名前（職人に見えます）</span></span></span>
+        <input class="input" id="name" type="text" maxlength="40" autocomplete="nickname" required
+          data-ph-en="e.g. Alex" data-ph-es="p. ej. Lucía" data-ph-zh="例如：小林" data-ph-ja="例：Alex">
+      </label>
+      <p class="field__label" id="lang-label"><span class="t"><span data-l="en">Language</span><span data-l="es">Idioma</span><span data-l="zh">语言</span><span data-l="ja">言語</span></span></p>
+      <div class="langs" role="group" aria-labelledby="lang-label">
+        <button type="button" class="chip" data-lang="en" aria-pressed="false" lang="en">English</button>
+        <button type="button" class="chip" data-lang="es" aria-pressed="false" lang="es">Español</button>
+        <button type="button" class="chip" data-lang="zh" aria-pressed="false" lang="zh-Hans">中文</button>
+      </div>
+      <button type="submit" class="btn btn--main btn--wide" id="go-a" style="min-height:56px;font-size:1.125rem"><span class="t"><span data-l="en">Start</span><span data-l="es">Empezar</span><span data-l="zh">开始</span><span data-l="ja">はじめる</span></span></button>
+      <p class="err" id="err-a" role="alert" hidden></p>
+    </form>
+
+    <!-- 職人：自分を選ぶ -->
+    <form class="step" id="form-s" novalidate hidden lang="ja">
+      <p class="step__h">あなたはどなたですか</p>
+      <ul class="teachers" id="teachers" aria-label="職人の一覧"></ul>
+      <a class="new-teacher" href="19_話して先生に登録_職人.html">一覧にいなければ、新しく登録する　→</a>
+      <button type="submit" class="btn btn--main btn--wide" id="go-s" style="min-height:60px;font-size:1.25rem">この名前で入る</button>
+      <p class="err" id="err-s" role="alert" hidden></p>
+    </form>
+  </main>
+</div>
+<script src="共通/用語集データ.js"></script>
+<script src="共通/画面の共通の動き.js"></script>
+<script src="共通/サーバーとのやりとり.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var B = window.BONSAI;
+  var LEARNER_LANGS = ["en", "es", "zh"];
+  var role = null, lang = LEARNER_LANGS.indexOf(B.getLang()) >= 0 ? B.getLang() : "en", teacherId = null;
+  var teachers = [];
+
+  /* ログインのあとに行く所。同じサイトの中の道だけを使う（よそのサイトへは飛ばさない） */
+  function nextPath() {
+    var n = new URLSearchParams(location.search).get("next") || "";
+    if (n.charAt(0) !== "/" || n.charAt(1) === "/" || n.charAt(1) === "\\") return null;
+    if (/^\/(%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3|ログイン)_/i.test(n)) return null;
+    /* 入口（/ と index.html）から来たときは、役割のホームへ */
+    if (/^\/(index\.html)?(\?|#|$)/i.test(n)) return null;
+    return n;
+  }
+  function homeOf(r) { return window.homeHref(r === "shokunin"); }
+  function goNext(user) { location.href = nextPath() || homeOf(user.role); }
+
+  function pick(r) {
+    role = r;
+    $("pick-a").setAttribute("aria-pressed", String(r === "aikouka"));
+    $("pick-s").setAttribute("aria-pressed", String(r === "shokunin"));
+    $("form-a").hidden = r !== "aikouka";
+    $("form-s").hidden = r !== "shokunin";
+    /* 職人を選んだら日本語・大きな字、海外の人なら選んだ言語 */
+    document.body.classList.toggle("role-shokunin", r === "shokunin");
+    if (r === "aikouka") { B.setLang(lang); setTimeout(function () { $("name").focus(); }, 0); }
+    else B.applyLang();
+  }
+  function pickLang(code) {
+    lang = code;
+    document.querySelectorAll(".langs .chip").forEach(function (c) { c.setAttribute("aria-pressed", String(c.getAttribute("data-lang") === code)); });
+    B.setLang(code);
+  }
+  $("pick-a").addEventListener("click", function () { pick("aikouka"); });
+  $("pick-s").addEventListener("click", function () { pick("shokunin"); });
+  document.querySelectorAll(".langs .chip").forEach(function (c) {
+    c.addEventListener("click", function () { pickLang(c.getAttribute("data-lang")); });
+  });
+  pickLang(lang);
+  /* 言語を変えると全体が切り替わるが、選んだ役割の見た目はそのまま */
+  B.applyLang();
+
+  function showErr(id, msg) { var e = $(id); e.textContent = msg; e.hidden = !msg; }
+
+  function drawTeachers() {
+    var ul = $("teachers");
+    if (!teachers.length) {
+      ul.innerHTML = '<li><p class="note" style="margin:var(--s3) 0">まだ職人が登録されていません。下の「新しく登録する」から始めてください。</p></li>';
+      return;
+    }
+    ul.innerHTML = teachers.map(function (t) {
+      var ja = String(t.name_ja || "");
+      return '<li><button type="button" data-id="' + esc(t.id) + '" aria-pressed="' + String(t.id === teacherId) + '">' +
+        '<span class="seal" aria-hidden="true">' + esc(ja.charAt(0) || "職") + "</span>" +
+        "<span><b>" + esc(ja) + "</b>" + (t.name_en && t.name_en !== ja ? '<small lang="en">' + esc(t.name_en) + "</small>" : "") + "</span></button></li>";
+    }).join("");
+    ul.querySelectorAll("button[data-id]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        teacherId = b.getAttribute("data-id");
+        ul.querySelectorAll("button[data-id]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        showErr("err-s", "");
+      });
+    });
+  }
+
+  /* もう入っている人には、続けるかログアウトかを出す */
+  function drawNow(user) {
+    var box = $("now");
+    if (!user) { box.hidden = true; return; }
+    var s = user.role === "shokunin";
+    box.innerHTML = "<p>" + (s
+      ? esc(user.name) + " さん（職人）として入っています。"
+      : tSpan({ en: "You are signed in as " + user.name + " (learner).", es: "Has entrado como " + user.name + " (aprendiz).", zh: "你已以 " + user.name + "（学习者）登录。", ja: user.name + " さん（海外の人）として入っています。" })) + "</p>" +
+      '<a class="btn btn--main btn--wide" href="' + esc(nextPath() || homeOf(user.role)) + '">' + (s ? "このまま続ける" : tSpan({ en: "Continue", es: "Continuar", zh: "继续", ja: "このまま続ける" })) + "</a>" +
+      '<button type="button" class="btn btn--quiet btn--wide" id="out">' + (s ? "ログアウトして選び直す" : tSpan({ en: "Log out and choose again", es: "Cerrar sesión y elegir de nuevo", zh: "退出并重新选择", ja: "ログアウトして選び直す" })) + "</button>";
+    box.hidden = false;
+    $("out").addEventListener("click", function () {
+      this.disabled = true;
+      API.logout().then(function () { box.hidden = true; B.fillAccounts(); });
+    });
+    B.applyLang();
+  }
+
+  if (!API.online) {
+    showErr("err-a", "Open this page through the server to sign in. / サーバーから開くとログインできます。");
+    showErr("err-s", "サーバーから開くとログインできます。");
+  }
+  API.me(true).then(function (m) {
+    teachers = m.teachers || [];
+    drawTeachers();
+    drawNow(m.user);
+    if (m.failed) showErr("err-s", "職人の一覧を読めませんでした。少し待って、開き直してください。");
+  });
+
+  $("form-a").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = $("name").value.trim();
+    if (!name) {
+      showErr("err-a", B.T({ en: "Please enter your name.", es: "Escribe tu nombre.", zh: "请输入你的名字。", ja: "お名前を入れてください。" }));
+      $("name").focus();
+      return;
+    }
+    showErr("err-a", "");
+    $("go-a").disabled = true;
+    API.login({ role: "aikouka", name: name.slice(0, 40), lang: lang, teacher_id: null }).then(function (r) {
+      try { localStorage.setItem("bonsai-mock-lang", (r.user && r.user.lang) || lang); } catch (e2) {}
+      goNext(r.user || { role: "aikouka" });
+    }, function (err) {
+      $("go-a").disabled = false;
+      showErr("err-a", err.message);
+    });
+  });
+
+  $("form-s").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var t = teachers.filter(function (x) { return x.id === teacherId; })[0];
+    if (!t) { showErr("err-s", "一覧から、ご自分の名前を押してください。"); return; }
+    showErr("err-s", "");
+    $("go-s").disabled = true;
+    API.login({ role: "shokunin", name: t.name_ja, lang: "ja", teacher_id: t.id }).then(function (r) {
+      goNext(r.user || { role: "shokunin" });
+    }, function (err) {
+      $("go-s").disabled = false;
+      showErr("err-s", err.message);
+    });
+  });
+});
+</script>
+</body>
+</html>

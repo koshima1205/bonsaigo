@@ -51,8 +51,6 @@
   .home-photo-main { display: flex; align-items: center; justify-content: center; gap: var(--s3); }
   .about a { color: var(--sumi-2); }
   .loading { color: var(--sumi-2); font-size: 14px; }
-  /* 右上の「お金」は職人のときだけ */
-  body:not(.role-shokunin) .home-top .appbar__account { display: none; }
   .home-top-right { display: flex; align-items: flex-end; gap: var(--s4); }
   /* 職人の画面は字を大きく（70歳の目でも読める） */
   body.role-shokunin .menu b { font-size: 1.25rem; }
@@ -73,14 +71,24 @@
   .my-cons .menu .stat { margin-left: auto; flex: none; max-width: 40%; text-align: right; font-size: 1.0625rem; color: var(--sumi-2); }
   .my-cons .menu .stat.is-new { color: var(--shu); font-weight: 700; }
   .my-cons .menu .q { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  /* 海外の人のホーム：探す → 相談 → 答えが届く の3段 */
+  .how { list-style: none; counter-reset: how; margin: var(--s5) 0 0; padding: 0; border-top: 1px solid var(--sen); }
+  .how li { counter-increment: how; border-bottom: 1px solid var(--sen); }
+  .how a, .how div { display: block; position: relative; padding: var(--s3) var(--s6) var(--s3) 2.75rem; min-height: 64px; color: var(--sumi); text-decoration: none; }
+  .how a::after { content: "→"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: var(--sumi-2); }
+  .how a::before, .how div::before { content: counter(how); position: absolute; left: 0; top: var(--s2); font-family: var(--mincho); font-size: 1.625rem; color: var(--kin); }
+  .how b { display: block; font-size: 1.0625rem; line-height: 1.5; }
+  .how small { display: block; color: var(--sumi-2); font-size: 15px; line-height: 1.5; }
 </style>
 </head>
 <body data-screen="00">
 <script>
-  /* 使う人（職人／海外の愛好家）を先に決める。URL の ?role= を優先し、なければ前回のまま */
+  /* 使う人（職人／海外の愛好家）を先に決める。ログインしている人の役割を一番に使う
+     （このタブで最後に確かめた人。あとで /api/me で確かめ直す）。なければ URL の ?role=、その次に前回のまま */
   (function () {
-    var KEY = "bonsai-home-role", q = new URLSearchParams(location.search).get("role"), r = null;
-    try { r = q || localStorage.getItem(KEY); if (q) localStorage.setItem(KEY, q); } catch (e) { r = q; }
+    var KEY = "bonsai-home-role", q = new URLSearchParams(location.search).get("role"), r = null, u = null;
+    try { u = JSON.parse(sessionStorage.getItem("bonsai-me") || "null"); } catch (e) { u = null; }
+    try { r = (u && u.role) || q || localStorage.getItem(KEY); if (r) localStorage.setItem(KEY, r); } catch (e) { r = (u && u.role) || q; }
     /* まだ役割が決まっていないとき、日本語以外の言語のブラウザなら海外の愛好家の入口にする */
     if (!r && !/^ja/i.test(navigator.language || "ja")) r = "aikouka";
     if (r !== "aikouka") document.body.classList.add("role-shokunin");
@@ -90,11 +98,8 @@
   <header class="home-top">
     <a class="home-brand" href="00_ホーム_職人と愛好家.html" title="ホーム">盆栽の間</a>
     <div class="home-top-right">
-    <nav class="who-pick demo-only" aria-label="使う人">
-      <a href="00_ホーム_職人と愛好家.html?role=shokunin" id="pick-s"><span class="t"><span data-l="ja">職人</span><span data-l="en">Craftsperson</span><span data-l="es">Maestro</span><span data-l="zh">匠人</span></span></a>
-      <a href="00_ホーム_職人と愛好家.html?role=aikouka" id="pick-a"><span class="t"><span data-l="ja">海外の愛好家</span><span data-l="en">Learner</span><span data-l="es">Aprendiz</span><span data-l="zh">学习者</span></span></a>
-    </nav>
-    <a class="appbar__account" href="20_職人に入るお金_職人.html" aria-label="アカウント（入ったお金）"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span>お金</span></a>
+    <!-- ログインしている人の名前（押すとログアウト）。画面の共通の動き.js が入れる -->
+    <div data-account></div>
     </div>
   </header>
   <div class="home-lang" id="lang-row" hidden></div>
@@ -108,9 +113,9 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var shokunin = document.body.classList.contains("role-shokunin");
+  var user = null;
   var $ = function (id) { return document.getElementById(id); };
   var home = $("home");
-  $(shokunin ? "pick-s" : "pick-a").setAttribute("aria-current", "page");
   var go = function (no) { return window.fileOf(no); };
   var LANG_JA = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" };
 
@@ -124,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var t = new Date(), w = "日月火水木金土".charAt(t.getDay());
     return kansuji(t.getMonth() + 1) + "月" + kansuji(t.getDate()) + "日　" + w + "曜日";
   }
+  /* title・note は、呼ぶ側で esc か tSpan を済ませた HTML を渡す */
   function li(href, title, note, right) {
     return '<li><a href="' + href + '"><span><b>' + title + "</b><small>" + note + "</small></span>" + (right || '<span class="go" aria-hidden="true">→</span>') + "</a></li>";
   }
@@ -133,12 +139,12 @@ document.addEventListener("DOMContentLoaded", function () {
     return API.get(url).then(function (r) { return r[key] || []; }).catch(function () { failed = true; return []; });
   }
 
-  /* ---------- 職人のホーム ---------- */
+  /* ---------- 職人のホーム：届いた相談／撮るだけで投稿／紹介ページ ---------- */
   function drawShokunin(cons, trees) {
     var open = cons.filter(function (c) { return !c.answer; });
     var c = open[0];
     var tree = trees[0];
-    var h = '<p class="home-date">' + today() + "</p>";
+    var h = '<p class="home-date">' + today() + (user && user.name ? "　" + esc(user.name) + " さん" : "") + "</p>";
     if (c) {
       var fc = c.for_craftsperson || {};
       h += '<h1 class="home-h1">相談が' + kansuji(Math.min(open.length, 99)) + "件、<br>届いています。</h1>" +
@@ -154,21 +160,19 @@ document.addEventListener("DOMContentLoaded", function () {
         '<a class="btn-urushi" href="' + go("17") + '">写真を撮る</a>' +
         (tree ? '<a class="home-follow" href="' + go("17") + "?tree=" + encodeURIComponent(tree.id) + '">この木で投稿を作る　→</a>' : "") + "</section>";
     }
-    var photo = tree && tree.image ? "data:" + tree.image.media_type + ";base64," + tree.image.data : "共通/見本の写真_盆栽.jpg";
-    h += '<h2 class="home-h2">あなたの木を、世界へ</h2>' +
+    var photo = tree && tree.image ? "data:" + esc(tree.image.media_type) + ";base64," + esc(tree.image.data) : "共通/見本の写真_盆栽.jpg";
+    h += '<h2 class="home-h2">あなたの木と技を、世界へ</h2>' +
       '<div class="tree"><img src="' + photo + '" alt="' + (tree ? "あなたの木の写真" : "盆栽の写真") + '">' +
-      '<div class="tree-acts">' + (c ? '<a href="' + go("17") + '"><b>撮る</b><small>写真から3か国語の投稿</small></a>' : "") +
-      '<a href="' + go("21") + '"><b>話す</b><small>売りたい・教えたいも、言うだけ</small></a>' +
-      (c ? "" : '<a href="' + go("21") + '#trees"><b>私の木</b><small>木ごとの記録' + (trees.length ? "（" + trees.length + "鉢）" : "") + '</small></a>') + "</div></div>" +
-      '<p class="tree-note">' + (tree ? esc(tree.title_ja || "あなたの木") + "　記録 " + ((tree.log || []).length) + "件" : "まだ木の記録がありません。撮ると、あなたの木がここに出ます") + "</p>";
-    h += '<h2 class="home-h2">ほかのこと</h2><ul class="menu">' +
-      (c ? li(go("21") + "#trees", "私の木", "木ごとの記録と、出品の下書き", trees.length ? '<span class="go">' + trees.length + "鉢 →</span>" : "") : "") +
+      '<div class="tree-acts">' +
+      '<a href="' + go("17") + '"><b>撮る</b><small>写真から3か国語の投稿</small></a>' +
+      '<a href="' + go("19") + '"><b>紹介ページ</b><small>話すだけで、3か国語の紹介</small></a>' +
+      "</div></div>";
+    h += '<h2 class="home-h2">できること</h2><ul class="menu">' +
       li(go("22"), "届いた相談", c ? "海外の人の質問が、日本語で届きます" : "海外の人からの質問が、ここに並びます", open.length > 1 ? '<span class="count" aria-label="答えていない相談">' + open.length + "</span>" : "") +
-      li(go("19"), "先生として登録", "話すだけで、紹介文が3か国語でできます") +
-      li(go("12"), "投稿の下書き", "答えた相談から、海外向けの投稿の文を作ります") +
-      li(go("20"), "入ってくるお金", "答えた相談から、いくら入るか") +
+      li(go("17"), "撮るだけで投稿", "写真か動画から、海外向けの投稿の下書き。確かめて、ご自分で投稿します") +
+      li(go("19"), "私の紹介ページ", "教えられることを話すだけで、紹介文が3か国語でできます") +
       "</ul>" +
-      '<p class="about demo-only"><a href="index.html">この試作の紹介と、すべての画面の一覧</a></p>';
+      '<p class="about demo-only"><a href="index.html">この試作の紹介と、画面の一覧</a></p>';
     home.innerHTML = h;
   }
 
@@ -204,11 +208,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }).join("") + "</ul></section>";
   }
 
-  /* ---------- 海外の愛好家のホーム（4か国語） ---------- */
+  /* ---------- 海外の人のホーム（4か国語）：探す → 相談 → 答えが届く、学ぶ・用語集 ---------- */
   function drawAikouka(cons) {
     var t = window.tSpan;
     var done = cons.filter(function (c) { return c.answer; })[0];
-    var h = '<h1 class="home-h1">' + t({ ja: "日本の盆栽職人に、母語のまま聞けます。", en: "Ask a Japanese bonsai craftsperson, in your own language.", es: "Pregunta a un maestro de bonsái japonés, en tu idioma.", zh: "用你的母语，向日本盆栽匠人请教。" }) + "</h1>" ;
+    var hi = user && user.name ? '<p class="home-date">' + t({ ja: "こんにちは、", en: "Hello, ", es: "Hola, ", zh: "你好，" }) + esc(user.name) + "</p>" : "";
+    var h = hi + '<h1 class="home-h1">' + t({ ja: "日本の盆栽職人に、母語のまま聞けます。", en: "Ask a Japanese bonsai craftsperson, in your own language.", es: "Pregunta a un maestro de bonsái japonés, en tu idioma.", zh: "用你的母语，向日本盆栽匠人请教。" }) + "</h1>";
     if (done) {
       h += '<section class="main-block" aria-label="answer">' +
         '<p class="from"><span class="hanko">' + t({ ja: "回答", en: "New", es: "Nuevo", zh: "新" }) + "</span>" + t({ ja: "職人から答えが届きました", en: "A craftsperson answered you", es: "Un maestro te respondió", zh: "匠人回复了你" }) + "</p>" +
@@ -220,20 +225,24 @@ document.addEventListener("DOMContentLoaded", function () {
         '<p class="quote-note" style="margin-top:0">' + t({ ja: "知りたいことを書くと、合う職人が見つかります。職人は日本語で答え、あなたの言葉に訳して届きます。", en: "Write what you want to learn and we will find the right craftsperson. They answer in Japanese, and it reaches you in your language.", es: "Escribe lo que quieres aprender y encontraremos al maestro adecuado. Responde en japonés y te llega en tu idioma.", zh: "写下你想了解的内容，就能找到合适的匠人。匠人用日语回答，再翻译成你的语言。" }) + "</p>" +
         '<a class="btn-urushi" href="' + go("18") + '">' + t({ ja: "職人を見つける", en: "Find your craftsperson", es: "Encuentra a tu maestro", zh: "找到你的匠人" }) + "</a></section>";
     }
-    h +=
-      '<figure class="hero-photo"><img src="共通/見本の写真_盆栽.jpg" alt=""><figcaption>' + t({ ja: "写真を送れば、職人があなたの木を見て答えます", en: "Send a photo, and a craftsperson looks at your own tree", es: "Envía una foto y un maestro mira tu propio árbol", zh: "发送照片，匠人会看着你的树回答" }) + "</figcaption></figure>";
+    /* 使い方の3段：探す → 相談 → 答えが届く */
+    h += '<h2 class="home-h2">' + t({ ja: "使い方", en: "How it works", es: "Cómo funciona", zh: "使用方法" }) + '</h2><ol class="how">' +
+      '<li><a href="' + go("18") + '"><b>' + t({ ja: "職人を探す", en: "Find a craftsperson", es: "Encuentra a un maestro", zh: "寻找匠人" }) + "</b><small>" +
+        t({ ja: "知りたいことを書くと、合う職人が理由つきで出ます", en: "Tell us what you want to learn; we show who fits, and why", es: "Di qué quieres aprender; te mostramos quién encaja y por qué", zh: "写下想学的内容，显示合适的匠人及理由" }) + "</small></a></li>" +
+      '<li><a href="' + go("03") + '"><b>' + t({ ja: "写真をつけて相談する", en: "Ask with a photo", es: "Consulta con una foto", zh: "附照片咨询" }) + "</b><small>" +
+        t({ ja: "自分の言葉で。職人には日本語で届きます", en: "In your own words. It reaches them in Japanese", es: "Con tus palabras. Le llega en japonés", zh: "用你自己的话，匠人收到的是日语" }) + "</small></a></li>" +
+      "<li><div><b>" + t({ ja: "答えが、あなたの言葉で届く", en: "The answer arrives in your language", es: "La respuesta llega en tu idioma", zh: "回答以你的语言送达" }) + "</b><small>" +
+        t({ ja: "盆栽の言葉に触ると、意味と理由が開きます。届いた答えは下の「あなたの相談」に出ます", en: "Tap a bonsai term to see what it means and why. Answers appear under “Your questions”", es: "Toca un término para ver qué significa y por qué. Las respuestas aparecen en “Tus consultas”", zh: "点击盆栽术语可查看含义与原因。回答会显示在“你的咨询”中" }) + "</small></div></li></ol>";
     h += myConsultations(cons);
-    h += '<h2 class="home-h2">' + t({ ja: "できること", en: "What you can do", es: "Qué puedes hacer", zh: "你可以做的事" }) + '</h2><ul class="menu">' +
-      li(go("03"), t({ ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" }), t({ ja: "木の写真をつけて、自分の言葉で", en: "Add a photo of your tree and ask in your words", es: "Con una foto de tu árbol, en tus palabras", zh: "附上树的照片，用自己的话提问" })) +
-      li(go("13"), t({ ja: "職人の紹介", en: "Meet the craftspeople", es: "Conoce a los maestros", zh: "匠人介绍" }), t({ ja: "得意な木と、教えられること", en: "What they know and what they can teach", es: "Qué saben y qué enseñan", zh: "擅长的树种与可教内容" })) +
+    h += '<h2 class="home-h2">' + t({ ja: "学ぶ・用語集", en: "Learn and glossary", es: "Aprender y glosario", zh: "学习与术语表" }) + '</h2><ul class="menu">' +
       li(go("10"), t({ ja: "学ぶ", en: "Learn", es: "Aprender", zh: "学习" }), t({ ja: "盆栽の歴史と育て方", en: "History and care of bonsai", es: "Historia y cuidados", zh: "盆栽的历史与养护" })) +
       li(go("11"), t({ ja: "用語集", en: "Glossary", es: "Glosario", zh: "术语表" }), t({ ja: "直訳ではなく、意味と理由で", en: "Meaning and reason, not word for word", es: "Significado y motivo, no traducción literal", zh: "不是直译，而是含义与原因" })) +
-      li(go("06"), t({ ja: "質問と答え", en: "Q&A", es: "Preguntas", zh: "问答" }), t({ ja: "ほかの人の質問への、職人の答え", en: "Craftspeople's answers to others' questions", es: "Respuestas de maestros a otras preguntas", zh: "匠人对他人问题的回答" })) +
-      li(go("01"), t({ ja: "盆栽の間（読みもの）", en: "The Bonsai Hall (stories)", es: "Sala del Bonsái (lecturas)", zh: "盆栽之馆（读物）" }), t({ ja: "職人の日記と、1鉢の見方", en: "Journals and how to look at a tree", es: "Diarios y cómo mirar un árbol", zh: "匠人日记与赏树方法" })) +
+      li(go("13"), t({ ja: "職人の紹介", en: "Meet the craftspeople", es: "Conoce a los maestros", zh: "匠人介绍" }), t({ ja: "得意な木と、教えられること", en: "What they know and what they can teach", es: "Qué saben y qué enseñan", zh: "擅长的树种与可教内容" })) +
       "</ul>" +
-      '<p class="about demo-only"><a href="index.html">' + t({ ja: "この試作の紹介と、すべての画面の一覧", en: "About this prototype and all screens", es: "Sobre este prototipo y todas las pantallas", zh: "关于本试作与全部页面" }) + "</a></p>";
+      '<figure class="hero-photo"><img src="共通/見本の写真_盆栽.jpg" alt=""><figcaption>' + t({ ja: "写真を送れば、職人があなたの木を見て答えます", en: "Send a photo, and a craftsperson looks at your own tree", es: "Envía una foto y un maestro mira tu propio árbol", zh: "发送照片，匠人会看着你的树回答" }) + "</figcaption></figure>" +
+      '<p class="about demo-only"><a href="index.html">' + t({ ja: "この試作の紹介と、画面の一覧", en: "About this prototype and its screens", es: "Sobre este prototipo y sus pantallas", zh: "关于本试作与页面一览" }) + "</a></p>";
     home.innerHTML = h;
-    /* 言葉の切り替え */
+    /* 言葉の切り替え（はじめはログインのときに選んだ言語） */
     var row = $("lang-row");
     row.hidden = false;
     row.innerHTML = '<div class="lang" role="group" aria-label="Language">' + BONSAI.LANGS.map(function (l) {
@@ -243,11 +252,24 @@ document.addEventListener("DOMContentLoaded", function () {
     BONSAI.applyLang();
   }
 
+  /* ログインしている人の役割でホームを決める（?role= より優先） */
+  function setRole(isS) {
+    shokunin = isS;
+    document.body.classList.toggle("role-shokunin", isS);
+    try { localStorage.setItem("bonsai-home-role", isS ? "shokunin" : "aikouka"); } catch (e) {}
+    $("lang-row").hidden = true;
+    BONSAI.refreshChrome();
+  }
+
   function load() {
     failed = false;
     UI.state(home, "loading", shokunin ? { ja: "届いている相談を確かめています" } : { ja: "届いている答えを確かめています", en: "Checking for new answers…", es: "Buscando respuestas nuevas…", zh: "正在查看新的回答…" });
-    Promise.all([getList("/api/consultations", "consultations"), getList("/api/trees", "trees")]).then(function (r) {
-      /* 2つとも取れなかったときだけ、つながらなかったことを知らせる（一部だけなら出せる分を出す） */
+    API.me().then(function (m) {
+      user = m.user;
+      if (user && (user.role === "shokunin") !== shokunin) setRole(user.role === "shokunin");
+      return Promise.all([getList("/api/consultations", "consultations"), shokunin ? getList("/api/trees", "trees") : Promise.resolve([])]);
+    }).then(function (r) {
+      /* つながらなかったときだけ知らせる（一部だけなら出せる分を出す） */
       if (failed && !r[0].length && !r[1].length) { UI.state(home, "error", null, { retry: load }); return; }
       if (shokunin) drawShokunin(r[0], r[1]); else drawAikouka(r[0]);
     });

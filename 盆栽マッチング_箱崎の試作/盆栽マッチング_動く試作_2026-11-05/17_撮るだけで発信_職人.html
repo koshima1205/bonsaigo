@@ -42,6 +42,10 @@
   .done__title { font-family: var(--mincho); font-size: 1.5rem; font-weight: 700; margin: 0 0 var(--s2); line-height: 1.5; }
   .done p { margin: 0; font-size: 1rem; }
   .out { list-style: none; margin: var(--s4) 0 0; padding: 0; display: grid; gap: var(--s2); }
+  .post-btns { display: grid; gap: var(--s2); margin: var(--s2) 0 var(--s4); }
+  .post-btns .big-btn { width: 100%; min-height: 60px; font-size: 1.1875rem; }
+  .post-btns .btn { min-height: 52px; font-size: 1.0625rem; }
+  .post-msg { margin: 0; padding: var(--s3); border-radius: var(--r); background: var(--koke-usu); color: var(--sumi); font-size: 1.125rem; line-height: 1.6; font-weight: 700; }
   .err { margin-top: var(--s4); border: 2px solid var(--shu); border-radius: var(--r); padding: var(--s4); background: var(--shu-usu); font-size: 1.125rem; }
 </style>
 </head>
@@ -50,7 +54,7 @@
   <header id="appbar"></header>
   <main class="page">
     <h1 class="h1">撮るだけで、世界に届けます。</h1>
-    <p class="lead">文章はAIが書きます。あなたは中身を見て「OK」を押すだけです。</p>
+    <p class="lead">文章はAIが書きます。中身を見て「この写真と文で投稿する」を押すと、Instagram・X・YouTube のアプリを選んで投稿できます。</p>
 
     <div class="big-actions" id="pickers">
       <label class="big-btn big-btn--main pick">
@@ -94,7 +98,7 @@
       </div>
       <div class="done" id="done" role="status" hidden>
         <p class="done__title">発信の準備ができました。</p>
-        <p>投稿はまだしていません。下の押しボタンで開いて、最後に投稿を押してください。</p>
+        <p>投稿はまだしていません。「この写真と文で投稿する」を押して、送り先のアプリで最後に投稿を押してください。</p>
       </div>
       <div class="big-actions" id="next" style="margin-top:var(--s4)" hidden><a class="big-btn big-btn--main demo-only" id="next-link" href="19_話して先生に登録_職人.html">次へ：先生に登録する</a><a class="big-btn" id="home-link" href="00_ホーム_職人と愛好家.html?role=shokunin">ホームに戻る</a></div>
       <ul class="out" id="out" hidden></ul>
@@ -112,12 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
   var NAMES = { x: ["X", "短い一言"], instagram: ["Instagram", "写真が主役"], facebook: ["Facebook", "少し長めの話"], short_script: ["ショート動画", "YouTube と TikTok の語り"] };
   var LANGS = { en: "英語", es: "スペイン語", zh: "中国語" };
   var OPEN = {
-    x: function (t) { return "https://x.com/intent/tweet?text=" + encodeURIComponent(t); },
+    x: function (t) { return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(t); },
     instagram: function () { return "https://www.instagram.com/"; },
     facebook: function () { return "https://www.facebook.com/"; },
     short_script: function () { return "https://www.youtube.com/upload"; }
   };
-  var images = [], kind = "photo", draft = null, busy = false;
+  var images = [], kind = "photo", draft = null, busy = false, videoFile = null;
   var params = new URLSearchParams(location.search), treeId = params.get("tree");
 
   /* 失敗の文。サーバーの言葉のまま出さず、押した場所から見える位置まで動かす */
@@ -147,9 +151,10 @@ document.addEventListener("DOMContentLoaded", function () {
     $("sns").innerHTML = Object.keys(NAMES).map(function (k) {
       var post = d.posts[k];
       return '<section class="sns"><p class="sns__name">' + NAMES[k][0] + '</p><p class="sns__ja">' + esc(d.confirm_ja[k]) + "</p>" +
-        "<details" + (k === "x" ? " open" : "") + "><summary>海外に出る文を見る</summary>" + Object.keys(LANGS).map(function (l) {
+        "<details open><summary>海外に出る文を見る</summary>" + Object.keys(LANGS).map(function (l) {
           var over = k === "x" && post[l].length > 280;
-          return '<p class="sns__text" lang="' + (l === "zh" ? "zh-Hans" : l) + '"><small lang="ja">' + LANGS[l] + (k === "x" ? "（" + post[l].length + "文字" + (over ? "。長すぎます" : "") + "）" : "") + "</small>" + esc(post[l]) + "</p>";
+          return '<p class="sns__text" lang="' + (l === "zh" ? "zh-Hans" : l) + '"><small lang="ja">' + LANGS[l] + (k === "x" ? "（" + post[l].length + "文字" + (over ? "。長すぎます" : "") + "）" : "") + "</small>" + esc(post[l]) + "</p>" +
+            postButtons(k, l);
         }).join("") + "</details></section>";
     }).join("");
     $("culture").textContent = d.culture_note.ja;
@@ -161,6 +166,77 @@ document.addEventListener("DOMContentLoaded", function () {
     $("result").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  /* 投稿する：スマホの共有の画面を、写真と文が入った状態で開く。
+     開けない端末では、X は投稿の画面を開き、ほかは文をコピーして写真を保存する */
+  var POST_LABEL = { x: "X", instagram: "Instagram", facebook: "Facebook", short_script: "YouTube などの動画" };
+  function postButtons(k, l) {
+    return '<div class="post-btns"><button type="button" class="big-btn big-btn--main" data-share data-k="' + k + '" data-l="' + l + '">この写真と文で投稿する（' + LANGS[l] + "）</button>" +
+      '<button type="button" class="btn btn--wide" data-copy data-k="' + k + '" data-l="' + l + '">文だけコピーする</button>' +
+      '<p class="post-msg" role="status" hidden></p></div>';
+  }
+  function say(b, msg) {
+    var m = b.closest(".post-btns") ? b.closest(".post-btns").querySelector(".post-msg") : null;
+    if (m) { m.textContent = msg; m.hidden = false; }
+    toast(msg);
+  }
+  function copyText(t, b) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { say(b, "文をコピーしました。投稿の画面で、文を入れる所を長く押して「ペースト」を選んでください。"); },
+        function () { say(b, "文をコピーできませんでした。上の文を長く押して選び、コピーしてください。"); });
+      return;
+    }
+    say(b, "文をコピーできませんでした。上の文を長く押して選び、コピーしてください。");
+  }
+  function imageFile() {
+    var im = images[0]; if (!im) return null;
+    try {
+      var bin = atob(im.data), arr = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return new File([arr], "盆栽_投稿の写真.jpg", { type: im.media_type || "image/jpeg" });
+    } catch (er) { return null; }
+  }
+  function canShareFiles(files) {
+    try { return !!(navigator.share && navigator.canShare && navigator.canShare({ files: files })); } catch (er) { return false; }
+  }
+  function savePhoto() {
+    var im = images[0]; if (!im) return false;
+    var a = document.createElement("a");
+    a.href = im.url || ("data:" + im.media_type + ";base64," + im.data);
+    a.download = "盆栽_投稿の写真.jpg";
+    document.body.appendChild(a); a.click(); a.remove();
+    return true;
+  }
+  function fallback(k, l, b) {
+    var t = draft.posts[k][l];
+    if (k === "x") {
+      window.open(OPEN.x(t), "_blank", "noopener");
+      say(b, "X の投稿の画面を開きました。写真を足すときは、写真の印を押して選んでください。最後に「ポストする」を押すと投稿されます。");
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).catch(function () {});
+    var saved = savePhoto();
+    say(b, (saved ? "写真を保存し、" : "") + "文をコピーしました。" + POST_LABEL[k] + " のアプリを開いて、写真を選び、文を貼りつけて投稿してください。");
+  }
+  function sharePost(k, l, b) {
+    var t = draft.posts[k][l];
+    /* 動画の台本は、撮った動画があれば動画を、なければ写真を一緒に渡す */
+    var f = (k === "short_script" && videoFile) ? videoFile : imageFile();
+    var files = f ? [f] : [];
+    if (files.length && canShareFiles(files)) {
+      /* Instagram などは文を受け取らないので、先に文もコピーしておく（共有の画面はこのあとすぐ開く） */
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).catch(function () {});
+      navigator.share({ files: files, text: t }).then(function () {
+        say(b, "送り先のアプリを選びました。アプリの画面で中身を確かめて、投稿を押してください。文はコピーしてあるので、入っていなければ貼りつけてください。");
+      }, function (er) {
+        if (er && er.name === "AbortError") { say(b, "投稿をやめました。もう一度押すと、送り先を選べます。"); return; }
+        fallback(k, l, b);
+      });
+      say(b, "送り先のアプリ（Instagram・X・YouTube など）を選んでください。文はコピーしてあります。");
+      return;
+    }
+    fallback(k, l, b);
+  }
+
   function take(list, k) {
     images = list; kind = k; $("note").value = "";
     $("thumbs").innerHTML = list.map(function (i) { return '<img alt="撮ったもの" src="' + i.url + '">'; }).join("");
@@ -170,15 +246,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   $("in-photo").addEventListener("change", function (e) {
     var f = e.target.files[0]; e.target.value = "";
-    if (f) API.photoFromFile(f).then(function (i) { take([i], "photo"); }, function (er) { showErr(er.message); });
+    if (f) API.photoFromFile(f).then(function (i) { videoFile = null; take([i], "photo"); }, function (er) { showErr(er.message); });
   });
   $("in-video").addEventListener("change", function (e) {
     var f = e.target.files[0]; e.target.value = "";
-    if (f) API.framesFromVideo(f, 4).then(function (l) { take(l, "video"); }, function (er) { showErr(er.message); });
+    if (f) API.framesFromVideo(f, 4).then(function (l) { videoFile = f; take(l, "video"); }, function (er) { showErr(er.message); });
   });
   $("btn-sample").addEventListener("click", function () {
     $("sample-note").hidden = false;
-    API.samplePhoto().then(function (i) { take([i], "photo"); }, function (er) { showErr("見本の写真を読み込めませんでした。もう一度お試しください"); });
+    API.samplePhoto().then(function (i) { videoFile = null; take([i], "photo"); }, function (er) { showErr("見本の写真を読み込めませんでした。もう一度お試しください"); });
   });
 
   /* 1鉢の記録から来たときは、その木の写真と言葉ですぐ作る */
@@ -188,9 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
     UI.clear($("tree-state"));
     var t = r.trees.find(function (x) { return x.id === treeId; });
     if (!t) return;
-    $("next-link").classList.remove("demo-only");
-    $("next-link").href = "21_話すか撮るだけ_1鉢の記録と出品_職人.html#tree-" + t.id;
-    $("next-link").textContent = "この木の記録に戻る";
     if (!t.image) { showErr("この木の写真がありません。写真を撮ってください"); return; }
     images = [{ media_type: t.image.media_type, data: t.image.data, url: "data:" + t.image.media_type + ";base64," + t.image.data }];
     $("thumbs").innerHTML = '<img alt="この木の写真" src="' + images[0].url + '">'; $("thumbs").hidden = false;
@@ -224,17 +297,17 @@ document.addEventListener("DOMContentLoaded", function () {
       $("btn-ok").textContent = "OKしました"; $("btn-ok").classList.add("is-on");
       $("done").hidden = false; $("next").hidden = false;
       $("out").innerHTML = Object.keys(NAMES).map(function (k) {
-        return '<li><button type="button" class="btn btn--wide" style="min-height:56px;font-size:1.125rem" data-open="' + k + '">' + NAMES[k][0] + " を開く（英語の文をコピー）</button></li>";
+        return "<li>" + postButtons(k, "en") + "</li>";
       }).join("");
       $("out").hidden = false;
       $("done").scrollIntoView({ behavior: "smooth", block: "center" });
     }, function (e) { $("btn-ok").disabled = false; showErr(e.message); });
   });
-  $("out").addEventListener("click", function (e) {
-    var b = e.target.closest("[data-open]"); if (!b) return;
-    var k = b.getAttribute("data-open"), t = draft.posts[k].en;
-    window.open(OPEN[k](t), "_blank", "noopener");
-    if (navigator.clipboard) navigator.clipboard.writeText(t).then(function () { toast("文をコピーしました"); }, function () {});
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-share],[data-copy]"); if (!b || !draft) return;
+    var k = b.getAttribute("data-k"), l = b.getAttribute("data-l");
+    if (b.hasAttribute("data-copy")) { copyText(draft.posts[k][l], b); return; }
+    sharePost(k, l, b);
   });
 });
 </script>

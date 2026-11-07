@@ -36,8 +36,6 @@
   .result__box p { margin: 0 0 var(--s2); font-size: var(--fs-s); }
   .result__box ul { margin: var(--s2) 0 0; padding-left: 1.2em; font-size: var(--fs-s); }
   .result__label { font-weight: 700; color: var(--koke); }
-  .ai-entry { display: flex; gap: var(--s3); align-items: center; justify-content: space-between; margin-top: var(--s6); padding-top: var(--s4); border-top: 1px solid var(--sen); font-size: var(--fs-s); color: var(--sumi-2); }
-  .ai-entry a { white-space: nowrap; }
 </style>
 </head>
 <body data-screen="03">
@@ -104,7 +102,6 @@
         <a class="btn btn--quiet" href="13_職人を探す.html" style="padding:0 var(--s3)"><span class="t"><span data-l="ja">変える</span><span data-l="en">Change</span><span data-l="es">Cambiar</span><span data-l="zh">更换</span></span></a>
       </div>
 
-      <p class="note" id="c-offer" style="margin-top:var(--s3)"></p>
       <div id="c-state"></div>
       <div style="margin-top:var(--s6)">
         <button type="submit" class="btn btn--main btn--wide" id="send" style="min-height:52px"><span class="t"><span data-l="ja">職人に送る</span><span data-l="en">Send to the craftsperson</span><span data-l="es">Enviar al maestro</span><span data-l="zh">发送给匠人</span></span></button>
@@ -137,10 +134,6 @@
       </div>
     </div>
 
-    <div class="ai-entry">
-      <span><span class="t"><span data-l="ja">職人に聞く前に、AIに聞いてみる？</span><span data-l="en">Want to ask the AI helper first?</span><span data-l="es">¿Prefieres preguntar primero a la IA?</span><span data-l="zh">先问问 AI 助手？</span></span></span>
-      <a href="08_AIの相談窓口.html" style="display:inline-flex;align-items:center;min-height:44px"><span class="t"><span data-l="ja">AIに聞く</span><span data-l="en">Ask the AI</span><span data-l="es">Preguntar a la IA</span><span data-l="zh">问 AI</span></span></a>
-    </div>
   </main>
   <nav id="tabbar"></nav>
 </div>
@@ -154,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var P = new URLSearchParams(location.search);
   var toId = P.get("to") || q.to, offerId = P.get("offer") || "one_question";
   var s1 = S.shokunin.find(function (x) { return x.id === toId; }) || S.shokunin[0];
-  var registered = null, offers = [];
+  var registered = null;
   var ta = document.getElementById("question");
   var edited = false, sending = false, photo = null;
   if (P.get("q")) { ta.value = P.get("q"); edited = true; }
@@ -176,8 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var ja = B.getLang() === "ja";
     document.getElementById("c-name").textContent = registered ? (ja ? registered.name_ja : registered.name_en) : (ja ? s1.name : s1.en_name);
     document.getElementById("c-meta").textContent = registered ? (ja ? (registered.specialty_ja || []).join(" · ") : specEn(registered)) : (ja ? s1.garden + "・" + s1.title : s1.en_garden + " · " + s1.en_title);
-    var o = offers.find(function (x) { return x.id === offerId; });
-    document.getElementById("c-offer").textContent = o ? (o[B.getLang()] || o.en) + " · $" + o.usd + " · " + B.T({ ja: "料金はまだ決まっていません。お金はかかりません。", en: "Pricing isn't final yet. You will not be charged.", es: "El precio aún no es definitivo. No se cobra nada.", zh: "价格尚未确定，不会收费。" }) : "";
+    document.querySelector(".craftsperson__seal").textContent = ((registered ? registered.name_ja : s1.name) || "職").charAt(0);
     renderProgress();
   }
   function specEn(t) {
@@ -210,7 +202,8 @@ document.addEventListener("DOMContentLoaded", function () {
       state = 3; renderProgress(); showAfter(c);
       document.getElementById("after").scrollIntoView({ behavior: "smooth", block: "nearest" });
     }, function (e) {
-      toast(B.T({ ja: "送れませんでした。少し待って、もう一度「職人に送る」を押してください", en: "Couldn't send it. Please wait a moment and press Send again.", es: "No se pudo enviar. Espera un momento y vuelve a pulsar Enviar.", zh: "发送失败。请稍等片刻，再按一次发送。" })); sending = false; state = -1; renderProgress();
+      toast(/上限/.test(e && e.message || "") ? B.T({ ja: e.message, en: "Today's AI limit has been reached. Please try again tomorrow.", es: "Se alcanzó el límite de IA de hoy. Inténtalo mañana.", zh: "今天的 AI 使用次数已达上限，请明天再试。" })
+        : B.T({ ja: "送れませんでした。少し待って、もう一度「職人に送る」を押してください", en: "Couldn't send it. Please wait a moment and press Send again.", es: "No se pudo enviar. Espera un momento y vuelve a pulsar Enviar.", zh: "发送失败。请稍等片刻，再按一次发送。" })); sending = false; state = -1; renderProgress();
       document.getElementById("send").disabled = false;
       document.getElementById("result").hidden = true;
     });
@@ -262,7 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (want && seen[want]) document.getElementById("tree-select").value = want;
   }, function () {});
   document.addEventListener("langchange", renderTrees);
-  API.status().then(function (st) { offers = st.offers || []; render(); });
   function loadTeacher() {
     var box = document.getElementById("c-state");
     UI.state(box, "loading", { ja: "職人の情報を読み込んでいます", en: "Loading the craftsperson…", es: "Cargando al maestro…", zh: "正在加载匠人信息…" });

@@ -78,7 +78,7 @@
     <div id="body">
     <p class="eyebrow">相談が届きました ・ 針金外し</p>
     <h1 class="h1">針金が食い込みそう、との相談です。</h1>
-    <p class="who">アメリカ・ポートランドの方<span class="demo-only">（サンプル）</span>より</p>
+    <p class="who">アメリカ・ポートランドの方より</p>
 
     <div class="draw-wrap" id="drawWrap">
       <figure class="zu" data-zu="soudan" data-cap="none" id="photo"></figure>
@@ -155,8 +155,7 @@
       <p class="sent__title" id="sent-title">送りました。<br>英語に直して届けます。</p>
       <p class="demo-only"><a id="go-learner" href="05_答えが届く_愛好家.html?lang=en" style="color:#fff">次へ：相手の画面で見る</a></p>
       <div class="big-actions">
-        <a class="big-btn big-btn--main" id="go-others" href="22_届いた相談の一覧_職人.html" style="background:#fff;color:var(--koke)">ほかの相談を見る</a>
-        <a class="big-btn" id="go-posts" href="12_SNS投稿の下書き.html" hidden>この話を海外へ発信する</a>
+        <a class="big-btn big-btn--main" id="go-others" href="22_届いた相談の一覧_職人.html" style="background:#fff;color:var(--koke)">届いた相談の一覧に戻る</a>
       </div>
     </div>
 
@@ -201,9 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var $ = function (id) { return document.getElementById(id); };
   var talking = false, drawing = false, sent = false, real = null, usedDraft = false, draftText = "";
-  /* 円に直す相場。仮の値（1ドル=150円）。ここ1か所だけ直せばよい */
-  var YEN_PER_USD = 150;
-  function yen(usd) { return "約" + (Math.round(usd * YEN_PER_USD / 100) * 100).toLocaleString("ja-JP") + "円"; }
   /* つながっているとき（埋め込みの比べ画面は除く）は、本物の相談が届くまで見本を出さない */
   var live = API.online && new URLSearchParams(location.search).get("embed") !== "1";
   if (live) $("body").hidden = true;
@@ -330,7 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
       real = c;
       showSent(c);
     }, function (e) {
-      sent = false; $("btn-send").classList.remove("is-on"); sendErr("つながりませんでした。少し待って、もう一度「送る」を押してください");
+      sent = false; $("btn-send").classList.remove("is-on"); sendErr(/上限/.test(e && e.message || "") ? e.message : "つながりませんでした。少し待って、もう一度「送る」を押してください");
     }).then(function () { $("sending").hidden = true; });
   });
 
@@ -338,7 +334,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var names = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" };
     $("sent-title").innerHTML = "送りました。<br>" + names[c.lang] + "に直して届けました。";
     $("go-learner").href = "05_答えが届く_愛好家.html?id=" + c.id + "&lang=" + c.lang;
-    $("go-posts").href = "12_SNS投稿の下書き.html?id=" + c.id; $("go-posts").hidden = false;
     $("back-text").textContent = c.answer.back_translation_ja;
     var sampleMsg = !c.answer.review.checked;
     $("back-review").classList.toggle("demo-only", sampleMsg);
@@ -370,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var f = c.for_craftsperson, langName = { en: "英語", es: "スペイン語", zh: "中国語", ja: "日本語" }[c.lang];
       document.querySelector(".eyebrow").textContent = "相談が届きました ・ もとは" + langName + "の質問";
       document.querySelector(".h1").textContent = f.title_ja;
-      document.querySelector(".who").textContent = "海外の方より（料金 " + yen(c.usd) + "）";
+      document.querySelector(".who").textContent = (c.asker_name ? c.asker_name + "さん（海外の方）" : "海外の方") + "より";
       $("summary").textContent = f.summary_ja;
       $("points").innerHTML = f.points_ja.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("");
       $("mitate").textContent = f.ai_mitate_ja + (f.photo_problem_ja ? "（" + f.photo_problem_ja + "）" : "");

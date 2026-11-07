@@ -27,6 +27,10 @@
   .voice { border-left: 2px solid var(--sen); padding-left: var(--s3); color: var(--sumi-2); font-size: var(--fs-s); }
   .checked { display: flex; gap: var(--s2); align-items: flex-start; margin: var(--s3) 0 var(--s5); padding: var(--s3); border-radius: var(--r); background: var(--koke-usu); font-size: var(--fs-s); line-height: 1.6; }
   .checked svg { flex: none; margin-top: 2px; }
+  .mine { list-style: none; margin: var(--s3) 0 0; padding: 0; border-top: 1px solid var(--sen); }
+  .mine a { display: block; padding: var(--s3) 0; border-bottom: 1px solid var(--sen); color: var(--sumi); text-decoration: none; min-height: 44px; }
+  .mine a[aria-current="true"] { font-weight: 700; color: var(--koke); }
+  .mine small { display: block; color: var(--sumi-3); font-size: var(--fs-s); }
   .hint { display: flex; gap: var(--s2); align-items: center; font-size: var(--fs-s); color: var(--koke); margin: 0 0 var(--s4); }
 </style>
 </head>
@@ -65,12 +69,10 @@
 
     <hr class="rule">
     <div style="display:grid;gap:var(--s3)">
-      <a class="btn btn--main btn--wide demo-only" href="20_職人に入るお金_職人.html"><span class="t"><span data-l="ja">次へ：この答えで職人に入るお金を見る</span><span data-l="en">Next: see what the craftsperson earns</span><span data-l="es">Siguiente: lo que gana el maestro</span><span data-l="zh">下一步：查看匠人的收入</span></span></a>
       <a class="btn btn--main btn--wide no-demo" id="follow-1" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">もう一度、職人に相談する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续向匠人提问</span></span></a>
-      <a class="btn btn--wide" href="06_質問と答え_QandA.html"><span class="t"><span data-l="ja">ほかの職人の答えも見る</span><span data-l="en">See other craftspeople's answers</span><span data-l="es">Ver otras respuestas</span><span data-l="zh">查看其他匠人的回答</span></span></a>
-      <a class="btn btn--wide" id="go-fig" href="15_職人の手直しを図で_仮.html"><span class="t"><span data-l="ja">手直しを図で見る</span><span data-l="en">See the correction drawn on the tree</span><span data-l="es">Ver la corrección dibujada</span><span data-l="zh">查看修整示意图</span></span> <span class="kari"><span class="t"><span data-l="ja">仮</span><span data-l="en">Idea</span><span data-l="es">Idea</span><span data-l="zh">暂定</span></span></span></a>
       <a class="btn btn--quiet btn--wide demo-only" id="follow-2" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">続けて質問する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续提问</span></span></a>
     </div>
+    <section id="mine" hidden style="margin-top:var(--s6)"></section>
   </main>
   <nav id="tabbar"></nav>
 </div>
@@ -107,10 +109,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("voice").textContent = "「" + q.answer_ja_voice + "」";
   }
   render();
-  document.addEventListener("langchange", function () { if (!real && !(API.online && id)) render(); });
+  document.addEventListener("langchange", function () { if (!live) render(); });
 
   /* 本物の相談の答えを出す */
   var real = null, params = new URLSearchParams(location.search), id = params.get("id"), waitTimer = null;
+  /* つながっているときは、自分の相談を出す。?demo=1 で id がないときだけ見本を出す */
+  var live = API.online && params.get("embed") !== "1" && (!!id || !isDemo());
   var TITLE = { ja: "職人からの答え", en: "The craftsperson's answer", es: "La respuesta del maestro", zh: "匠人的回答" };
   function extras(show) { ["hint", "voice-h", "voice-note"].forEach(function (x) { document.getElementById(x).hidden = !show; }); }
   function specEn(t) {
@@ -118,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return s && s.length <= 80 ? s : "Craftsperson";
   }
   function showProblem(kind, msg, opt) {
-    extras(false); document.getElementById("from").hidden = true; document.getElementById("go-fig").hidden = true;
+    extras(false); document.getElementById("from").hidden = true;
     document.querySelector(".h1").innerHTML = tSpan({ ja: "職人からの答え", en: "The craftsperson's answer", es: "La respuesta del maestro", zh: "匠人的回答" });
     document.getElementById("legend").innerHTML = "";
     fig.hidden = true;
@@ -133,14 +137,22 @@ document.addEventListener("DOMContentLoaded", function () {
       document.querySelector(".h1").innerHTML = tSpan(TITLE);
       document.querySelector(".eyebrow").innerHTML = tSpan(TITLE);
       document.getElementById("legend").innerHTML = "";
-      fig.hidden = true; document.getElementById("from").hidden = true; document.getElementById("go-fig").hidden = true;
+      fig.hidden = true; document.getElementById("from").hidden = true;
       extras(false);
       document.getElementById("checked").hidden = true;
       document.getElementById("voice").textContent = "";
       UI.state(document.getElementById("answer"), "loading", { ja: "答えを読み込んでいます", en: "Loading the answer…", es: "Cargando la respuesta…", zh: "正在加载回答…" });
     }
     API.get("/api/consultations").then(function (r) {
-      var c = r.consultations.find(function (x) { return x.id === id; });
+      var list = (r.consultations || []).slice().sort(function (a, b) { return String(b.at).localeCompare(String(a.at)); });
+      if (!id && list.length) id = list[0].id;
+      renderMine(list);
+      var c = list.find(function (x) { return x.id === id; });
+      if (!c && !list.length) {
+        showProblem("empty", { ja: "まだ職人に相談していません。木の写真と質問を送ると、職人の答えがここに届きます", en: "You haven't asked a craftsperson yet. Send a photo of your tree and your question, and the answer will arrive here.", es: "Aún no has consultado a un maestro. Envía una foto de tu árbol y tu pregunta; la respuesta llegará aquí.", zh: "你还没有咨询过匠人。发送树的照片和问题后，匠人的回答会出现在这里。" },
+          { action: { href: "03_職人への相談_愛好家.html", t: { ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" } } });
+        return;
+      }
       if (!c) {
         showProblem("empty", { ja: "この相談は見つかりませんでした。もう一度、職人に相談してみてください", en: "We couldn't find this question. Try asking the craftsperson again.", es: "No encontramos esta consulta. Vuelve a consultar al maestro.", zh: "没有找到这条咨询。请再向匠人咨询一次。" },
           { action: { href: "03_職人への相談_愛好家.html", t: { ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" } } });
@@ -183,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }).join("") + "</svg>");
       document.getElementById("answer").innerHTML = a.paragraphs.map(function (p) { return "<p>" + API.markTerms(p) + "</p>"; }).join("");
       document.getElementById("voice").textContent = a.voice_ja ? "「" + a.voice_ja + "」" : "";
-      var follow = "03_職人への相談_愛好家.html" + (c.tree_id ? "?tree=" + encodeURIComponent(c.tree_id) : "");
+      var follow = "03_職人への相談_愛好家.html?to=" + encodeURIComponent(c.teacher_id || "") + (c.tree_id ? "&tree=" + encodeURIComponent(c.tree_id) : "");
       document.getElementById("follow-1").href = follow; document.getElementById("follow-2").href = follow;
       if (!a.voice_ja) document.getElementById("checked").hidden = true;
       else if (!a.review.checked) document.getElementById("checked-text").innerHTML = tSpan({ ja: "職人が確かめて送った答えです。", en: "The craftsperson checked and sent this answer.", es: "El maestro revisó y envió esta respuesta.", zh: "这是匠人确认后发送的回答。" });
@@ -192,7 +204,20 @@ document.addEventListener("DOMContentLoaded", function () {
       showProblem("error", null, { retry: function () { loadReal(); } });
     });
   }
-  if (API.online && id && params.get("embed") !== "1") loadReal();
+  /* 自分の相談の一覧（2件以上のときだけ出す） */
+  function renderMine(list) {
+    var box = document.getElementById("mine");
+    box.hidden = list.length < 2;
+    if (box.hidden) return;
+    box.innerHTML = '<h2 class="h3">' + tSpan({ ja: "あなたの相談", en: "Your questions", es: "Tus consultas", zh: "你的咨询" }) + '</h2><ul class="mine">' + list.map(function (x) {
+      var d = new Date(x.at), q = String(x.question || ""), st = x.answer
+        ? { ja: "答えが届いています", en: "Answered", es: "Respondida", zh: "已回答" }
+        : { ja: "答えを待っています", en: "Waiting for an answer", es: "Esperando respuesta", zh: "等待回答" };
+      return '<li><a href="05_答えが届く_愛好家.html?id=' + encodeURIComponent(x.id) + '"' + (x.id === id ? ' aria-current="true"' : "") + ">" +
+        esc(q.length > 60 ? q.slice(0, 60) + "…" : q) + "<small>" + (d.getMonth() + 1) + "/" + d.getDate() + " · " + tSpan(st) + "</small></a></li>";
+    }).join("") + "</ul>";
+  }
+  if (live) loadReal();
 });
 </script>
 </body>

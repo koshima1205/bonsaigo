@@ -150,12 +150,18 @@ function callClaudeCode(task, text, images) {
 const AI_DAILY_LIMIT = Number(process.env.AI_DAILY_LIMIT || 300);
 const AI_USER_LIMIT = Number(process.env.AI_USER_LIMIT || 60);
 class LimitReached extends Error {}
+// 相手の住所（IP）。公開の道具を通ると見出しに入る
+function clientIp(req) {
+  if (!req) return "unknown";
+  return String(req.headers["cf-connecting-ip"] || String(req.headers["x-forwarded-for"] || "").split(",")[0] || req.socket?.remoteAddress || "unknown").trim();
+}
 const requestContext = new AsyncLocalStorage();
 function countAiCall() {
   const day = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
   const u = store.ai_usage;
   if (u.day !== day) { u.day = day; u.total = 0; u.by_user = {}; }
-  const who = requestContext.getStore()?.user?.id || "（ログインなし）";
+  const ctx = requestContext.getStore();
+  const who = ctx?.user?.id || `ip:${clientIp(ctx?.req)}`;
   if (u.total >= AI_DAILY_LIMIT) throw new LimitReached("本日のAIの上限に達しました。明日またお試しください");
   if ((u.by_user[who] || 0) >= AI_USER_LIMIT) throw new LimitReached("あなたの本日のAIの上限に達しました。明日またお試しください");
   u.total += 1;
@@ -385,8 +391,9 @@ const routes = {
       user = { id: `u-${t.id}`, role, name: t.name_ja, lang: "ja", teacher_id: t.id };
     } else {
       const name = text(b.name, 40, "お名前（Name）");
-      // 同じ名前で入り直せば、前に出した相談がまた見える（合言葉の内側だけで使う前提の簡単な形）
-      const id = `u-a-${createHash("sha256").update(name.toLowerCase()).digest("hex").slice(0, 16)}`;
+      // 人の印はサーバーが作る（名前からは作らない。同じ名前の別の人に相談が見えないように）
+      const prev = currentUser();
+      const id = prev && prev.role === "aikouka" ? prev.id : `u-a-${randomUUID()}`;
       user = { id, role, name, lang: lang(b.lang === "ja" ? "en" : b.lang), teacher_id: null };
     }
     setUserCookie(requestContext.getStore().res, requestContext.getStore().req, user);
@@ -413,15 +420,15 @@ const routes = {
     const me = needUser("shokunin");
     const item = { id: randomUUID(), at: new Date().toISOString(), teacher_id: me.teacher_id, posts: b.draft.posts, culture_note: b.draft.culture_note, image: images[0] || null };
     store.feed.unshift(item);
-    const tree = store.trees.find((t) => t.id === b.tree_id);
+    const tree = store.trees.find((t) => t.id === b.tree_id && t.teacher_id === me.teacher_id);
     if (tree) tree.log.push({ at: item.at, text: "投稿の下書きをOKしました（まだ投稿はしていません）" });
     await save();
     return { id: item.id };
   },
-  "GET /api/feed": async () => { needUser("shokunin"); return { feed: store.feed.slice(0, 20) }; },
+  "GET /api/feed": async () => { const me = needUser("shokunin"); return { feed: store.feed.filter((f) => f.teacher_id === me.teacher_id).slice(0, 20) }; },
 
   /* 話したこと・撮った写真 → 聞き分けて、木の記録を作る */
-  "GET /api/trees": async () => { needUser("shokunin"); return { trees: store.trees.slice(0, 30) }; },
+  "GET /api/trees": async () => { const me = needUser("shokunin"); return { trees: store.trees.filter((t) => t.teacher_id === me.teacher_id).slice(0, 30) }; },
   "POST /api/trees": async (b) => {
     needUser("shokunin");
     const voice = typeof b.voice === "string" ? b.voice.trim().slice(0, 3000) : "";
@@ -430,6 +437,7 @@ const routes = {
     const res = await ask("treeIntake", `What the craftsperson said (may be empty):\n${input(voice)}\nPhoto attached: ${images.length ? "yes" : "no"}`, images);
     const at = new Date().toISOString();
     const tree = { ...res, id: randomUUID(), at, voice_ja: voice, image: images[0] || null, wants: (res.wants || []).filter((w) => ["post", "listing", "teach"].includes(w)), log: [{ at, text: res.record_ja }], listing: null };
+    tree.teacher_id = currentUser().teacher_id;
     store.trees.unshift(tree);
     await save();
     return tree;
@@ -437,9 +445,9 @@ const routes = {
 
   /* 木の記録 → 出品の下書き。公開も販売もしない */
   "POST /api/trees/:id/listing": async (b, id) => {
-    needUser("shokunin");
+    const me = needUser("shokunin");
     const tree = store.trees.find((t) => t.id === id);
-    if (!tree) throw new NotFound();
+    if (!tree || tree.teacher_id !== me.teacher_id) throw new NotFound();
     const format = b.format === "auction" ? "auction" : "fixed";
     const price_note = typeof b.price_note === "string" ? b.price_note.trim().slice(0, 200) : "";
     const material = `Tree record: ${input(`${tree.title_ja}\n${tree.what_i_saw_ja}`)}\nWhat the craftsperson said: ${input(tree.voice_ja)}\nSale format: ${format === "auction" ? "bids" : "fixed price"}\nCraftsperson's price wish (may be empty): ${input(price_note)}\n<wanted>\n${JSON.stringify(SAMPLE_WANTED.map(({ id, detail }) => ({ id, detail })))}\n</wanted>`;
@@ -454,6 +462,7 @@ const routes = {
 
   /* 知りたいこと → 合う職人 */
   "POST /api/match": async (b) => {
+    needUser("aikouka");
     const l = lang(b.lang);
     const want = text(b.want, 2000, "知りたいこと");
     const teachers = allTeachers().map(({ id, specialty_ja, can_teach_ja, bio_en, offers }) => ({ id, specialty_ja, can_teach_ja, bio_en, offers }));

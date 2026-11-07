@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ' <span class="sample">' + esc(T({ ja: "職人が確認してから公開", en: "Published after the craftsperson's OK", es: "Se publica tras el OK del maestro", zh: "匠人确认后发布" })) + '</span></p><div class="diary">' +
       body.map(function (p) { return "<p>" + p + "</p>"; }).join("") + "</div></section>" +
       '<p class="note">' + esc(T({ ja: "内容は季節の作業として一般的なことです。木や地域によって時期ややり方は変わります。", en: "This describes a common seasonal task; timing and method vary by tree and region.", es: "Describe una labor estacional habitual; varía según el árbol y la zona.", zh: "内容为常见的季节性作业，时期和做法因树种和地区而异。" })) + "</p>" +
-      '<div style="display:grid;gap:var(--s3);margin-top:var(--s5)"><a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html">' + esc(T({ ja: "この職人に自分の木のことを聞く", en: "Ask this craftsperson about your tree", es: "Consultar a este maestro", zh: "就我的树请教这位匠人" })) + "</a>" +
+      '<div style="display:grid;gap:var(--s3);margin-top:var(--s5)"><a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(d.s || "s1") + '">' + esc(T({ ja: "この職人に自分の木のことを聞く", en: "Ask this craftsperson about your tree", es: "Consultar a este maestro", zh: "就我的树请教这位匠人" })) + "</a>" +
       '<a class="btn btn--quiet btn--wide" href="06_質問と答え_QandA.html">' + esc(T({ ja: "関連する質問と答えを見る", en: "See related questions", es: "Ver preguntas relacionadas", zh: "查看相关问答" })) + "</a></div>";
     document.getElementById("detail").innerHTML = h;
     window.drawZu(document.getElementById("detail"));

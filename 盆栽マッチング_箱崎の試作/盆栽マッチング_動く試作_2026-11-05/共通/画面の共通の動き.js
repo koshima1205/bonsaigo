@@ -152,7 +152,7 @@
     var me = SCREENS.find(function (s) { return s.no === document.body.getAttribute("data-screen"); });
     var titleEl = document.querySelector(".appbar__title");
     if (me && titleEl) titleEl.textContent = T(me.t);
-    if (me) document.title = T(me.t) + (lang === "ja" ? "｜盆栽マッチング" : " · Bonsai Matching");
+    if (me) document.title = T(me.t) + (lang === "ja" ? "｜BonsaiGO" : " · BonsaiGO");
     document.dispatchEvent(new CustomEvent("langchange", { detail: { lang: lang } }));
   }
   function setLang(code) {
@@ -181,7 +181,7 @@
   var TABS = [
     { no: "00", icon: "home", t: { ja: "ホーム", en: "Home", es: "Inicio", zh: "首页" } },
     { no: "18", icon: "find", t: { ja: "探す", en: "Find", es: "Buscar", zh: "寻找" } },
-    { no: "03", icon: "ask", t: { ja: "相談", en: "Ask", es: "Consultar", zh: "咨询" } },
+    { no: "13", icon: "ask", t: { ja: "相談", en: "Ask", es: "Consultar", zh: "咨询" } },  /* 相談は、園（職人）を選んでから。だから13を開く */
     { no: "10", icon: "learn", t: { ja: "学ぶ", en: "Learn", es: "Aprender", zh: "学习" } },
     { no: "11", icon: "words", t: { ja: "用語集", en: "Glossary", es: "Glosario", zh: "术语表" } }
   ];
@@ -192,7 +192,7 @@
     { no: "19", icon: "person", t: { ja: "私の紹介" } }
   ];
   /* 下のタブで、そのタブの仲間とみなす画面 */
-  var TAB_GROUP = { "00": "00", "18": "18", "13": "18", "03": "03", "05": "03", "10": "10", "11": "11" };
+  var TAB_GROUP = { "00": "00", "18": "18", "13": "13", "03": "13", "05": "13", "10": "10", "11": "11" };
   var TAB_GROUP_S = { "00": "00", "22": "22", "04": "22", "17": "17", "19": "19" };
 
   function fileOf(no) { var s = SCREENS.find(function (x) { return x.no === no; }); return s ? s.file : "index.html"; }
@@ -230,6 +230,36 @@
     } catch (e) { return false; }
   }
   window.isDemo = isDemo;
+
+  /* 本物の盆栽の写真（大宮盆栽美術館で撮影）。美術館の木なので、職人のそばでは必ず「見本の写真」と添える */
+  var PHOTO_DIR = "共通/写真/";
+  var PHOTOS = {
+    kuromatsu: { src: "B_確認待ち_黒松_竹林の前_縦.jpg", alt: { ja: "竹林の前の黒松の盆栽", en: "A black pine bonsai in front of a bamboo grove", es: "Un bonsái de pino negro frente a un bambú", zh: "竹林前的黑松盆栽" } },
+    momiji: { src: "B_確認待ち_池のある庭と紅葉の盆栽_横.jpg", alt: { ja: "池のある庭と、紅葉したもみじの盆栽", en: "A garden with a pond and a maple bonsai in autumn color", es: "Un jardín con estanque y un bonsái de arce otoñal", zh: "有池塘的庭园与红叶枫树盆栽" }, cls: "photo--s2" },
+    shimpaku: { src: "B_確認待ち_真柏_青空の下_縦.jpg", alt: { ja: "青空の下の真柏の盆栽", en: "A shimpaku juniper bonsai under a blue sky", es: "Un bonsái de enebro shimpaku bajo el cielo azul", zh: "蓝天下的真柏盆栽" } },
+    komichi: { src: "A_使える_美術館の入口の小道_縦.jpg", alt: { ja: "盆栽美術館の入口へ続く小道", en: "The path to the entrance of a bonsai museum", es: "El camino a la entrada de un museo de bonsái", zh: "通往盆栽美术馆入口的小路" } },
+    teien: { src: "A_使える_2階から見た盆栽庭園の全景_横.jpg", alt: { ja: "2階から見た盆栽庭園の全景", en: "The bonsai garden seen from the second floor", es: "El jardín de bonsáis visto desde el segundo piso", zh: "从二楼俯瞰的盆栽庭园" } }
+  };
+  var PHOTO_OF_TEACHER = { s1: "kuromatsu", s2: "momiji", s3: "shimpaku" };
+  var CAPTION = {
+    sample: { ja: "見本の写真", en: "Sample photo", es: "Foto de muestra", zh: "示例照片" },
+    museum: { ja: "大宮盆栽美術館（さいたま市）", en: "Omiya Bonsai Art Museum, Saitama", es: "Museo de Arte del Bonsái de Omiya (Saitama)", zh: "大宫盆栽美术馆（埼玉市）" }
+  };
+  /* 写真1枚の HTML。key は PHOTOS の名前、cap は "sample" か "museum"、small は 4:3 にそろえる小さな写真 */
+  function photoFigure(key, cap, small) {
+    var p = PHOTOS[key];
+    if (!p) return "";
+    return '<figure class="photo' + (small ? " photo--small" : "") + (p.cls ? " " + p.cls : "") + '">' +
+      '<img class="photo-in" src="' + PHOTO_DIR + encodeURIComponent(p.src) + '" alt="' + esc(T(p.alt)) + '" loading="lazy" onload="this.classList.add(\'is-loaded\')">' +
+      "<figcaption>" + tSpan(CAPTION[cap] || CAPTION.sample) + "</figcaption></figure>";
+  }
+  window.photoFigure = photoFigure;
+  window.teacherPhoto = function (teacherId) { var k = PHOTO_OF_TEACHER[teacherId]; return k ? photoFigure(k, "sample", true) : ""; };
+  /* 読み込み済みの写真は、最初から見せる */
+  function markLoadedPhotos() {
+    document.querySelectorAll("img.photo-in:not(.is-loaded)").forEach(function (i) { if (i.complete && i.naturalWidth) i.classList.add("is-loaded"); });
+  }
+  window.markLoadedPhotos = markLoadedPhotos;
 
   /* 右上の名前とログアウトの見た目（見た目の決まり.css に足すまでの間、ここで入れる） */
   function addAccountStyle() {
@@ -669,5 +699,6 @@
     watchT();
     /* 画面ごとの初めの描画が終わったあとに、もう一度そろえる */
     setTimeout(applyLang, 0);
+    setTimeout(markLoadedPhotos, 0);
   });
 })();

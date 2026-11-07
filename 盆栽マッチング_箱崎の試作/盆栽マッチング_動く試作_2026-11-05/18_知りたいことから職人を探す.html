@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>知りたいことから職人を探す｜盆栽の間</title>
+<title>知りたいことから職人を探す｜BonsaiGO</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var t = teacher(m.teacher_id);
       var q = encodeURIComponent(m.first_question);
       return '<article class="match"><div class="match__head"><div class="seal" aria-hidden="true"><img src="共通/仮の顔写真_職人_本物の写真が入るまでの代わり.svg" alt=""></div><div><p class="row__title">' + esc(t.name) + '</p><p class="row__meta">' + esc(t.meta) + "</p></div></div>" +
+        window.teacherPhoto(m.teacher_id) +
         '<p class="match__why">' + esc(m.reason) + "</p>" +
         '<p class="first"><b>' + esc(B.T(TX.first)) + "</b>" + esc(m.first_question) + "</p>" +
         '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(m.teacher_id) + (m.offer_id ? "&offer=" + encodeURIComponent(m.offer_id) : "") + "&q=" + q + '">' + esc(B.T(TX.ask)) + "</a></article>";

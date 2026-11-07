@@ -44,6 +44,7 @@
   <main class="page">
     <!-- 一覧 -->
     <section id="view-list">
+      <figure class="photo"><img class="photo-in" src="共通/写真/A_使える_美術館の入口の小道_縦.jpg" alt="盆栽美術館の入口へ続く小道" onload="this.classList.add('is-loaded')"><figcaption><span class="t"><span data-l="ja">大宮盆栽美術館（さいたま市）</span><span data-l="en">Omiya Bonsai Art Museum, Saitama</span><span data-l="es">Museo de Arte del Bonsái de Omiya (Saitama)</span><span data-l="zh">大宫盆栽美术馆（埼玉市）</span></span></figcaption></figure>
       <p class="eyebrow"><span class="t"><span data-l="ja">学ぶ</span><span data-l="en">Learn</span><span data-l="es">Aprender</span><span data-l="zh">学习</span></span></p>
       <h1 class="h1"><span class="t">
         <span data-l="ja">盆栽の歴史と育て方を、順番に読めます</span>
@@ -55,7 +56,7 @@
       <hr class="rule">
       <div style="display:grid;gap:var(--s3)">
         <a class="btn btn--main btn--wide" href="11_用語集.html"><span class="t"><span data-l="ja">用語集で言葉を調べる（全122語）</span><span data-l="en">Look up terms in the glossary (122)</span><span data-l="es">Buscar en el glosario (122)</span><span data-l="zh">在术语表中查词（122 个）</span></span></a>
-        <a class="btn btn--quiet btn--wide" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">読んでも分からないことは職人に聞く</span><span data-l="en">Still unsure? Ask a craftsperson</span><span data-l="es">¿Dudas? Pregunta a un maestro</span><span data-l="zh">仍有疑问？请教匠人</span></span></a>
+        <a class="btn btn--quiet btn--wide" href="13_職人を探す.html"><span class="t"><span data-l="ja">読んでも分からないことは職人に聞く</span><span data-l="en">Still unsure? Ask a craftsperson</span><span data-l="es">¿Dudas? Pregunta a un maestro</span><span data-l="zh">仍有疑问？请教匠人</span></span></a>
       </div>
     </section>
 
@@ -165,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var items = ARTICLES.filter(function (a) { return a.g === g.id; });
       var ready = items.filter(function (a) { return !a.soon; }).length;
       return '<div class="group-head"><h2 class="h2">' + esc(pick(g.t)) + '</h2><span class="n">' + (ready ? ready + " " : "") + esc(pick({ ja: "本", en: ready === 1 ? "article" : "articles", es: "art.", zh: "篇" })) + "</span></div>" +
+        (g.id === "rekishi" ? window.photoFigure("teien", "museum") : "") +
         '<p class="group-lead">' + esc(pick(g.lead)) + "</p>" +
         '<ul class="rows">' + items.map(function (a) {
           var thumb = '<span class="thumb-blank" aria-hidden="true">' + esc(a.mark) + "</span>";

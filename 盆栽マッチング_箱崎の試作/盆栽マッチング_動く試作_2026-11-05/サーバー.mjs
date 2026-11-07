@@ -78,7 +78,11 @@ function save() {
 /* ---------- AIを呼ぶ ---------- */
 class AiUnavailable extends Error {}
 
-const client = MODE === "claude-api" ? new Anthropic() : null;
+// 鍵が「ワークスペース」に属していないときは、使うワークスペースの番号（ANTHROPIC_WORKSPACE_ID）を一緒に送る
+const WORKSPACE_ID = (process.env.ANTHROPIC_WORKSPACE_ID || "").trim();
+const client = MODE === "claude-api"
+  ? new Anthropic(WORKSPACE_ID ? { defaultHeaders: { "anthropic-workspace-id": WORKSPACE_ID } } : {})
+  : null;
 
 async function callClaudeApi(task, text, images) {
   const content = [...images.map((im) => ({ type: "image", source: { type: "base64", media_type: im.media_type, data: im.data } })), { type: "text", text }];
@@ -100,6 +104,7 @@ async function callClaudeApi(task, text, images) {
     // うまくいかなかった理由をターミナルに出す（鍵や相談の中身は出さない）
     console.error(`[AIの失敗] ${e?.constructor?.name || "Error"} ${e?.status ?? ""} ${String(e?.error?.error?.message || e?.message || "").slice(0, 300)}`);
     if (e instanceof Anthropic.AuthenticationError) throw new AiUnavailable("AIの鍵が正しくありません");
+    if (e?.status === 400 && /workspace/i.test(String(e?.message || ""))) throw new AiUnavailable("AIの鍵の設定が足りません（ワークスペースの指定）");
     if (e instanceof Anthropic.RateLimitError) throw new AiUnavailable("AIが混み合っています。少し待ってください");
     if (e instanceof Anthropic.APIConnectionError) throw new AiUnavailable("AIにつながりませんでした");
     if (e instanceof Anthropic.APIError) throw new AiUnavailable(`AIの呼び出しに失敗しました（${e.status ?? "不明"}）`);
@@ -323,7 +328,7 @@ class Forbidden extends Error {}
 function gatePage(wrong) {
   return `<!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow">
-<title>盆栽マッチング</title>
+<title>BonsaiGO</title>
 <style>
   * { box-sizing: border-box; }
   body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: #fbfaf6; color: #1c1815; font-family: "Hiragino Sans", "Yu Gothic", sans-serif; }
@@ -337,8 +342,8 @@ function gatePage(wrong) {
   .wrong { margin: 0 0 16px; color: #b23a24; }
 </style></head>
 <body><main>
-  <h1>盆栽マッチング</h1>
-  <p>Bonsai Matching — passphrase required / 合言葉を入れてください</p>
+  <h1>BonsaiGO</h1>
+  <p>BonsaiGO — passphrase required / 合言葉を入れてください</p>
   ${wrong ? '<p class="wrong" role="alert">合言葉が違います / Wrong passphrase</p>' : ""}
   <form method="post"><label for="password">合言葉 / Passphrase</label>
     <input id="password" name="password" type="password" autocomplete="current-password" autofocus required>
@@ -395,16 +400,33 @@ const routes = {
     const role = b.role === "shokunin" ? "shokunin" : b.role === "aikouka" ? "aikouka" : null;
     if (!role) throw new BadRequest("職人か海外の人かを選んでください");
     let user;
-    if (role === "shokunin") {
+    if (role === "shokunin" && b.teacher_id) {
+      // 見本の職人（または前に登録した職人）を選んで入る
       const t = teacherById(b.teacher_id);
       if (!t) throw new BadRequest("職人を選んでください");
       user = { id: `u-${t.id}`, role, name: t.name_ja, lang: "ja", teacher_id: t.id };
+    } else if (role === "shokunin") {
+      // 新しく職人として登録する（デモ用。名前・言語・得意な木・園名と地域だけ）
+      const name = text(b.name, 40, "お名前");
+      const specialties = (Array.isArray(b.specialties) ? b.specialties : []).filter((x) => typeof x === "string" && x.trim()).map((x) => x.trim().slice(0, 20)).slice(0, 8);
+      if (!specialties.length) throw new BadRequest("得意な木を1つ以上選んでください");
+      const place = typeof b.place === "string" ? b.place.trim().slice(0, 60) : "";
+      const t = { id: `t-${randomUUID().slice(0, 8)}`, name_ja: name, name_en: name, title_ja: place, specialty_ja: specialties, can_teach_ja: [], bio_en: "", lang: lang(b.lang || "ja"), offers: OFFERS.map((o) => o.id) };
+      store.teachers.unshift(t);
+      await save();
+      user = { id: `u-${t.id}`, role, name, lang: t.lang, teacher_id: t.id };
     } else {
+      if (b.demo === "learner") {
+        // デモ用：見本の学び手（架空の Emma）。見本の相談と答えが入っている
+        user = { id: "u-a-demo-emma", role, name: "Emma", lang: "en", teacher_id: null };
+        setUserCookie(requestContext.getStore().res, requestContext.getStore().req, user);
+        return { user };
+      }
       const name = text(b.name, 40, "お名前（Name）");
       // 人の印はサーバーが作る（名前からは作らない。同じ名前の別の人に相談が見えないように）
       const prev = currentUser();
       const id = prev && prev.role === "aikouka" ? prev.id : `u-a-${randomUUID()}`;
-      user = { id, role, name, lang: lang(b.lang === "ja" ? "en" : b.lang), teacher_id: null };
+      user = { id, role, name, lang: lang(b.lang), teacher_id: null };
     }
     setUserCookie(requestContext.getStore().res, requestContext.getStore().req, user);
     return { user };
@@ -673,7 +695,7 @@ async function handle(req, res) {
 
 server.listen(PORT, HOST, () => {
   const label = { "claude-api": "Claude API（使った分の料金がかかります）", "claude-code": "この端末の Claude Code", sample: "見本の答え（AIは動きません）" }[MODE];
-  console.log(`盆栽マッチングの試作: http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}/index.html`);
+  console.log(`BonsaiGO（盆栽マッチングの試作）: http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}/index.html`);
   console.log(`AIのつなぎ方: ${label}`);
   console.log(`合言葉の門: ${ACCESS_PASSWORD ? "あり" : "なし（公開しないでください）"} ／ AIの上限: 1日 ${AI_DAILY_LIMIT} 回・1人 ${AI_USER_LIMIT} 回・同じ回線 ${AI_IP_LIMIT} 回`);
 });

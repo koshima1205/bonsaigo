@@ -289,7 +289,7 @@ body.embed .appbar__back, body.embed .tabbar, body.embed .lang, body.embed .appb
 body.embed .app { box-shadow: none; padding-bottom: var(--s6); }
 
 @media (prefers-reduced-motion: no-preference) {
-  .sheet { animation: sheetUp 0.22s ease-out; }
+  .sheet { animation: sheetUp 400ms var(--ma-curve); }
   @keyframes sheetUp { from { transform: translate(-50%, 24px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 }
 
@@ -349,3 +349,57 @@ body.role-shokunin { --tabbar-h: 68px; }
 /* 日本語の文が「し／ます」のように言葉の途中で折れないようにする（対応するブラウザだけ効く） */
 html[lang="ja"] .h1, html[lang="ja"] .lead, html[lang="ja"] p { word-break: auto-phrase; }
 .h1, .h2 { text-wrap: balance; }
+
+/* ===== 2026-11-07 見た目の追加の直し（写真・動き・すりガラス・英語の小見出し）。必ずファイルの最後に置く ===== */
+
+/* 本物の盆栽の写真（共通/写真/）。縦横の比は写真のまま。写真の上に文字は重ねない */
+.photo { margin: var(--s4) 0; }
+.photo img { display: block; width: 100%; height: auto; border-radius: var(--r-s); background: var(--kami-2); }
+.photo figcaption { font-size: 14px; color: var(--sumi-2); margin-top: var(--s2); }
+/* 職人のそばの小さな写真（13・18）は 4:3 にそろえる */
+.photo--small img { aspect-ratio: 4 / 3; object-fit: cover; }
+.photo--s2 img { object-position: 65% 80%; }
+/* 写真は読み込めたら 0.4 秒かけて出す */
+.photo-in { opacity: 0; transition: opacity 400ms var(--ma-curve); }
+.photo-in.is-loaded { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .photo-in { opacity: 1; transition: none; } }
+
+/* 画面の切り替えに「間」を入れる（どれも 0.5 秒未満・跳ねない） */
+:root {
+  --ma: 400ms;                          /* 画面の切り替えの長さ */
+  --ma-curve: cubic-bezier(.2,.8,.2,1); /* はじめ速く、ゆっくり止まる */
+}
+::view-transition-old(root), ::view-transition-new(root) {
+  animation-duration: var(--ma);
+  animation-timing-function: var(--ma-curve);
+}
+/* 画面を開いたとき、中身が少し下から浮かぶ。遅れ60ms＋360ms＝最大0.42秒 */
+@media (prefers-reduced-motion: no-preference) {
+  .page > * { animation: rise 360ms var(--ma-curve) backwards; }
+  .page > *:nth-child(2) { animation-delay: 30ms; }
+  .page > *:nth-child(n+3) { animation-delay: 60ms; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+}
+/* 画面に固定で置く知らせ（.toast）は、浮かぶ動きから外す（横の位置がずれるため） */
+.page > .toast { animation: none; }
+
+/* 上の帯と下のメニューをすりガラスに（白は 90% より薄くしない） */
+:root { --kami-glass: rgba(255,255,255,.9); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .appbar, .tabbar {
+    background: var(--kami-glass);
+    -webkit-backdrop-filter: saturate(160%) blur(16px);
+    backdrop-filter: saturate(160%) blur(16px);
+  }
+}
+/* 端末で「透明度を下げる」をオンにしている人には、今の白のまま */
+@media (prefers-reduced-transparency: reduce) {
+  .appbar, .tabbar { background: var(--kami); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* 小さな英字の見出しは、英語の画面だけ大文字（2026-11-07 箱崎さんが決めた例外。大きさは 14px のまま） */
+html[lang="en"] .eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 600;
+}

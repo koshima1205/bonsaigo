@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>AIの相談窓口｜盆栽の間</title>
+<title>AIの相談窓口｜BonsaiGO</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (m.k !== "hello" && m.k !== "free")
         h += '<span class="basis">' + esc(T({ ja: "用語集にもとづく答え", en: "Based on our glossary", es: "Basado en el glosario", zh: "依据术语表的回答" })) + "</span>";
       if (m.k === "yellow" || m.k === "free")
-        h += '<div class="handoff"><a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html">' + esc(T({ ja: "職人に聞く", en: "Ask a craftsperson", es: "Preguntar a un maestro", zh: "请教匠人" })) + "</a>" +
+        h += '<div class="handoff"><a class="btn btn--main btn--wide" href="13_職人を探す.html">' + esc(T({ ja: "職人に聞く", en: "Ask a craftsperson", es: "Preguntar a un maestro", zh: "请教匠人" })) + "</a>" +
           (m.k === "free" ? '<a class="btn btn--wide" style="margin-top:var(--s2)" href="18_知りたいことから職人を探す.html">' + esc(T({ ja: "知りたいことから職人を探す", en: "Find a craftsperson for what I want to learn", es: "Buscar un maestro según lo que quiero aprender", zh: "按想学的内容找匠人" })) + "</a>" : "") + "</div>";
       return h + "</div></div>";
     }).join("");

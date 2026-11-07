@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>職人からの答え｜盆栽の間</title>
+<title>職人からの答え｜BonsaiGO</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
@@ -69,8 +69,8 @@
 
     <hr class="rule">
     <div style="display:grid;gap:var(--s3)">
-      <a class="btn btn--main btn--wide no-demo" id="follow-1" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">もう一度、職人に相談する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续向匠人提问</span></span></a>
-      <a class="btn btn--quiet btn--wide demo-only" id="follow-2" href="03_職人への相談_愛好家.html"><span class="t"><span data-l="ja">続けて質問する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续提问</span></span></a>
+      <a class="btn btn--main btn--wide no-demo" id="follow-1" href="03_職人への相談_愛好家.html?to=s1"><span class="t"><span data-l="ja">もう一度、職人に相談する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续向匠人提问</span></span></a>
+      <a class="btn btn--quiet btn--wide demo-only" id="follow-2" href="03_職人への相談_愛好家.html?to=s1"><span class="t"><span data-l="ja">続けて質問する</span><span data-l="en">Ask a follow-up question</span><span data-l="es">Hacer otra pregunta</span><span data-l="zh">继续提问</span></span></a>
     </div>
     <section id="mine" hidden style="margin-top:var(--s6)"></section>
   </main>
@@ -150,12 +150,12 @@ document.addEventListener("DOMContentLoaded", function () {
       var c = list.find(function (x) { return x.id === id; });
       if (!c && !list.length) {
         showProblem("empty", { ja: "まだ職人に相談していません。木の写真と質問を送ると、職人の答えがここに届きます", en: "You haven't asked a craftsperson yet. Send a photo of your tree and your question, and the answer will arrive here.", es: "Aún no has consultado a un maestro. Envía una foto de tu árbol y tu pregunta; la respuesta llegará aquí.", zh: "你还没有咨询过匠人。发送树的照片和问题后，匠人的回答会出现在这里。" },
-          { action: { href: "03_職人への相談_愛好家.html", t: { ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" } } });
+          { action: { href: "13_職人を探す.html", t: { ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" } } });
         return;
       }
       if (!c) {
         showProblem("empty", { ja: "この相談は見つかりませんでした。もう一度、職人に相談してみてください", en: "We couldn't find this question. Try asking the craftsperson again.", es: "No encontramos esta consulta. Vuelve a consultar al maestro.", zh: "没有找到这条咨询。请再向匠人咨询一次。" },
-          { action: { href: "03_職人への相談_愛好家.html", t: { ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" } } });
+          { action: { href: "13_職人を探す.html", t: { ja: "職人に相談する", en: "Ask a craftsperson", es: "Consultar a un maestro", zh: "咨询匠人" } } });
         return;
       }
       real = c;

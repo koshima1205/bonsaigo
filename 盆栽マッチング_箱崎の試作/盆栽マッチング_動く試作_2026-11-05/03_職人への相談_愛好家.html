@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>職人に相談する｜盆栽の間</title>
+<title>職人に相談する｜BonsaiGO</title>
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
@@ -36,6 +36,9 @@
   .result__box p { margin: 0 0 var(--s2); font-size: var(--fs-s); }
   .result__box ul { margin: var(--s2) 0 0; padding-left: 1.2em; font-size: var(--fs-s); }
   .result__label { font-weight: 700; color: var(--koke); }
+  .to-head { display: flex; gap: var(--s3); align-items: center; margin: var(--s2) 0 var(--s4); }
+  .to-head .seal { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; flex: none; background: var(--kami-2); }
+  .to-head .seal img { width: 100%; height: 100%; display: block; object-fit: cover; }
 </style>
 </head>
 <body data-screen="03">
@@ -43,6 +46,11 @@
   <header id="appbar"></header>
   <main class="page">
     <p class="eyebrow"><span class="t"><span data-l="ja">職人に相談する</span><span data-l="en">Ask a craftsperson</span><span data-l="es">Consultar a un maestro</span><span data-l="zh">咨询匠人</span></span></p>
+    <!-- だれに送るかを、書く前に見せる（13 の紹介の頭と同じ形を小さく） -->
+    <div class="to-head" id="to-head">
+      <div class="seal" aria-hidden="true"><img src="共通/仮の顔写真_職人_本物の写真が入るまでの代わり.svg" alt=""></div>
+      <div><p class="row__title" id="c-top-name" style="margin:0"></p><p class="row__meta" id="c-top-meta" style="margin:0"></p></div>
+    </div>
     <h1 class="h1"><span class="t">
       <span data-l="ja">木の写真を送って、あなたの言葉で聞く。</span>
       <span data-l="en">Send a photo of your tree. Ask in your own language.</span>
@@ -145,6 +153,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   var S = window.SAMPLE, q = S.soudan, B = window.BONSAI;
   var P = new URLSearchParams(location.search);
+  /* 相談は「園（職人）を選んでから」。相手が決まっていなくて、発表の流れでもないときは、職人を選ぶ画面へ */
+  if (!P.get("to") && !isDemo()) {
+    location.replace("13_職人を探す.html" + (P.get("lang") ? "?lang=" + encodeURIComponent(P.get("lang")) : ""));
+    return;
+  }
   var toId = P.get("to") || q.to, offerId = P.get("offer") || "one_question";
   var s1 = S.shokunin.find(function (x) { return x.id === toId; }) || S.shokunin[0];
   var registered = null;
@@ -170,6 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("c-name").textContent = registered ? (ja ? registered.name_ja : registered.name_en) : (ja ? s1.name : s1.en_name);
     document.getElementById("c-meta").textContent = registered ? (ja ? (registered.specialty_ja || []).join(" · ") : specEn(registered)) : (ja ? s1.garden + "・" + s1.title : s1.en_garden + " · " + s1.en_title);
     document.querySelector(".craftsperson__seal").textContent = ((registered ? registered.name_ja : s1.name) || "職").charAt(0);
+    document.getElementById("c-top-name").textContent = document.getElementById("c-name").textContent;
+    document.getElementById("c-top-meta").textContent = document.getElementById("c-meta").textContent;
     renderProgress();
   }
   function specEn(t) {

@@ -380,7 +380,7 @@
   };
   $("#b-reply").addEventListener("click", async () => {
     try {
-      await api("POST", `/consultations/${curConsult.id}/answer`, { confirm: true });
+      await api("POST", `/consultations/${curConsult.id}/answer`, { confirm: true, at: pending && pending.at });
       toast(t("a.x.sent").replace(/\{G\}/g, I18N[AL].names[curConsult.lang] || curConsult.lang));
       pending = null; fromDraft = false; hist.length = 0; show("inbox", { push: false });
     } catch (e) { showErr("#cErr", errText(e, "a")); }
@@ -432,7 +432,7 @@
     $("#pAllBody").innerHTML = LANGS.map((l) => `<div class="l" lang="${l}"><i>${l.toUpperCase()}</i><span>${esc(tr.draft.x[l])}</span></div>`).join("");
     $("#textResult").innerHTML = "";
   };
-  const NG_TEXT = "人間国宝が育てた、絶対に枯れない黒松。いまなら ¥300,000。";
+  const NG_TEXT = "絶対に枯れない黒松。いまなら ¥300,000。ご連絡は info@example.com へ。";
   $("#b-tryNg").addEventListener("click", () => { $("#pX").value = NG_TEXT; $("#pX").focus(); });
   $("#b-postOk").addEventListener("click", async () => {
     const tr = curTree; if (!tr) return;

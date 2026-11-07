@@ -196,6 +196,7 @@ async function ask(taskName, text, images = [], recordedKey = taskName) {
       // 失敗したときだけ、ひとつ上のモデルで1回やり直す（確かめの段はやり直さず、人の確かめに倒す）
       if (tier !== "main" || !(e instanceof AiUnavailable) || /鍵|上限|混み合/.test(e.message)) throw e;
       console.error(`[AI] ${taskName} を ${used} で作れなかったので ${MODELS.fallback} でやり直します`);
+      guard.count(ctx?.user?.id || null, `ip:${clientIp(ctx?.req)}`); // やり直しも1回に数える
       used = MODELS.fallback;
       result = await call(used);
     }
@@ -455,7 +456,8 @@ const routes = {
   },
   "POST /api/logout": async () => {
     const { res, req } = requestContext.getStore();
-    res.setHeader("Set-Cookie", cookieLine(USER_COOKIE, "", 0, req));
+    // ログアウトしたら、相談する人の印も消す（同じ端末の次の人に前の相談が見えないように）
+    res.setHeader("Set-Cookie", [cookieLine(USER_COOKIE, "", 0, req), cookieLine(GROWER_COOKIE, "", 0, req)]);
     return { ok: true };
   },
 
@@ -583,6 +585,8 @@ const routes = {
     // 盆栽ゴー：「届く形を見る」で作った答えを、職人が確かめてから送る
     if (b.confirm) {
       if (!c.pending_answer) throw new BadRequest("送る前の答えがありません");
+      // 確かめた版と違う（別の画面で作り直した）ときは送らない
+      if (b.at && b.at !== c.pending_answer.at) throw new BadRequest("別の画面で答えが作り直されました。もう一度「届く形を見る」から確かめてください");
       c.answer = { ...c.pending_answer, at: new Date().toISOString() };
       delete c.pending_answer;
       await save();
@@ -637,7 +641,7 @@ const routes = {
   "GET /api/bonsaigo/qa": async (_b, _id, url) => {
     const l = lang(url.searchParams.get("lang"));
     const q = String(url.searchParams.get("q") || "").normalize("NFKC").toLowerCase().trim().slice(0, 80);
-    return { items: searchQa(q, l) };
+    return { items: searchQa(q, l, currentUser()) };
   },
 
   "GET /api/bonsaigo/trees": async () => { const me = needUser("shokunin"); return { trees: (store.bonsaigo_trees || []).filter((t) => t.teacher_id === me.teacher_id).slice(0, 20).map(publicTree) }; },
@@ -652,22 +656,26 @@ const routes = {
     const note = typeof b.note === "string" ? b.note.trim().slice(0, 1000) : "";
     const sampleKey = ["pine", "ng"].includes(b.sample) ? b.sample : "own";
     const tree = { id: randomUUID(), at: new Date().toISOString(), teacher_id: me.teacher_id, species, age, note, sample: sampleKey, image: images[0], status: "checking" };
-    if (!store.bonsaigo_trees) store.bonsaigo_trees = [];
-    store.bonsaigo_trees.unshift(tree);
-    store.bonsaigo_trees.length = Math.min(store.bonsaigo_trees.length, 50);
+    // 記録に入れるのは確かめが終わってから（上限で止まった登録が、ほかの木を押し出さないように）
+    const keep = async () => {
+      if (!store.bonsaigo_trees) store.bonsaigo_trees = [];
+      store.bonsaigo_trees.unshift(tree);
+      const mine = store.bonsaigo_trees.filter((t) => t.teacher_id === me.teacher_id);
+      if (mine.length > 20) { const drop = new Set(mine.slice(20)); store.bonsaigo_trees = store.bonsaigo_trees.filter((t) => !drop.has(t)); }
+      await save();
+      return publicTree(tree);
+    };
     // 見本モードでは写真を見られない。自分の写真は「AIが迷った」見本にして、人の確かめに倒す
     const imgKey = MODE === "sample" ? `checkImage_${sampleKey === "pine" ? "ok" : sampleKey === "ng" ? "ng" : "unsure"}` : "checkImage";
     tree.image_check = guard.judge(await ask("checkImage", `Species given by the craftsperson: ${input(species)}`, images, imgKey));
     if (!tree.image_check.ok) {
       tree.status = tree.image_check.needs_person ? "image_held" : "image_failed";
-      await save();
-      return publicTree(tree);
+      return keep();
     }
     const brief = `Species: ${input(species || "not given")}\nAge in years: ${input(age ?? "not given")}\nThe craftsperson's words (may be empty):\n${input(note)}`;
     tree.draft = await ask("treePosts", brief, images);
     tree.status = "drafted";
-    await save();
-    return publicTree(tree);
+    return keep();
   },
 
   // 文の確かめ：①決まりの確かめ（AIなし）→ ②Haiku の確かめ。通ったら「送ったら、こう出る」を出す
@@ -677,15 +685,20 @@ const routes = {
     if (!tree || !tree.draft) throw new NotFound();
     const pick = (o) => Object.fromEntries(LANGS8.map((l) => [l, String(o?.[l] ?? "").slice(0, 2000)]));
     const x = pick(b.x || tree.draft.x), instagram = pick(b.instagram || tree.draft.instagram);
-    tree.final = { x, instagram };
+    let check;
     const rule = ruleCheck([...Object.values(x), ...Object.values(instagram)]);
     if (!rule.ok) {
-      tree.text_check = { ...rule, confidence: 1, sure: true, needs_person: false, by: "rules" };
+      check = { ...rule, confidence: 1, sure: true, needs_person: false, by: "rules" };
     } else {
+      // 8つの言葉を全部見せる（1つの言葉ずつ、全文を印で囲む）
       const textKey = MODE === "sample" ? "checkPostText_ok" : "checkPostText";
-      tree.text_check = { ...guard.judge(await ask("checkPostText", `The craftsperson's note:\n${input(tree.note)}\nPost text (Japanese and English):\n${input(`${x.ja}\n${instagram.ja}\n${x.en}\n${instagram.en}`)}`, [], textKey)), by: "ai" };
+      const all = LANGS8.map((l) => `[${l}] X:\n${x[l]}\n[${l}] Instagram:\n${instagram[l]}`).join("\n\n");
+      check = { ...guard.judge(await ask("checkPostText", `The craftsperson's note:\n${input(tree.note)}\nPost text in 8 languages:\n<user_input>\n${all}\n</user_input>`, [], textKey)), by: "ai" };
     }
-    tree.status = tree.text_check.ok ? "ready" : tree.text_check.needs_person ? "text_held" : "text_failed";
+    // 確かめが終わってから置きかえる（途中で止まっても、前の「合格」に新しい文が混ざらない）
+    tree.final = { x, instagram };
+    tree.text_check = check;
+    tree.status = check.ok ? "ready" : check.needs_person ? "text_held" : "text_failed";
     await save();
     return publicTree(tree);
   },
@@ -695,8 +708,10 @@ const routes = {
 function publicTree(t) { const { image, ...rest } = t; return rest; }
 
 // Q&A の探し方：言葉ごとの言いかえ表で問いを広げ、8つの言葉のどれかに当たれば出す
-function searchQa(q, l) {
-  const done = store.consultations.filter((c) => c.answer && c.answer.headline).slice(0, 40).map((c) => ({
+function searchQa(q, l, me) {
+  // 載せるのは見本と、自分の相談（職人なら自分あての相談）だけ。ほかの人の相談は出さない
+  const isMine = (c) => me && (me.role === "shokunin" ? c.teacher_id === me.teacher_id : c.asker_id === me.id);
+  const done = store.consultations.filter((c) => c.answer && c.answer.headline && isMine(c)).slice(0, 40).map((c) => ({
     id: c.id, tree: null, own: true, lang: c.lang,
     q: { [c.lang]: c.question, ja: c.for_craftsperson?.summary_ja || "" },
     a: { [c.lang]: [c.answer.headline, ...(c.answer.paragraphs || [])].join(" "), ja: c.answer.back_translation_ja || "" },

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#121410">
+<title>盆栽ゴー BONSAIGO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&family=Noto+Sans+Khmer:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-qa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M9.5 9.2a2.5 2.5 0 1 1 3.6 2.3c-.7.3-1.1.8-1.1 1.5M12 14.6h.01"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5Z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9h8M8 12h5"/></symbol>
+  <symbol id="i-tree" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20v-6m0 0c-3.5 0-6-1.6-6-4 2.6 0 5 1 6 4Zm0 0c3.5 0 6-1.6 6-4-2.6 0-5 1-6 4ZM12 10c-2.2 0-4-1.3-4-3 1.8 0 3.4.7 4 3Zm0 0c2.2 0 4-1.3 4-3-1.8 0-3.4.7-4 3ZM6 20h12"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-hold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.6 3.8-5.5 7-5.5s5.8 1.9 7 5.5"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12 20 4l-6 16-3-7-7-1Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 7h12l-3-3M17 17H5l3 3"/></symbol>
+  <symbol id="i-lang" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h9M8.5 3v2M6 5c1 4 4 7 7 8M11 5c-1 4-4 7-7 8"/><path d="m13 21 4-9 4 9M14.5 18h5"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m4 18 5-5 4 4 3-3 4 4"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></symbol>
+</svg>
+
+<div class="desk">
+  <div class="phone-wrap" id="pw">
+    <div class="phone"><div class="screen" id="screen">
+      <div class="island"></div>
+      <div class="status light" id="status"><span>9:41</span><i><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/><rect x="10" y="2.5" width="3" height="9.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg><svg viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="24.5" y="4" width="1.6" height="4" rx=".8" fill="currentColor" opacity=".5"/></svg></i></div>
+      <div class="banner" id="banner"><span class="mono"><svg><use href="#i-tree"/></svg></span><div><b data-i18n="g.banner.b"></b><span id="bannerT"></span></div></div>
+
+      <!-- はじまり -->
+      <section class="scr on" id="s-welcome" data-light>
+        <div class="film"><video src="img/grow.mp4" autoplay muted loop playsinline poster="img/grow.jpg"></video></div>
+        <div class="veil"></div>
+        <div class="wordmark"><b>BONSAIGO</b><span>盆栽ゴー</span><div class="tag" data-i18n="g.wel.tag"></div></div>
+        <button class="lang-pill dk" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button>
+        <div class="in">
+          <h1 data-i18n="g.welcome.h1"></h1>
+          <p class="jp">日本の職人に、写真とあなたの言葉で。</p>
+          <button class="cta" data-go="gstart" data-i18n="g.welcome.cta"></button>
+          <button class="cta ghost" data-go="mstart" data-i18n="a.welcome.master"></button>
+          <div style="display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap">
+            <span class="mode-pill dk" data-mode></span>
+            <button class="credit" data-cost style="text-decoration:underline;text-underline-offset:3px" data-i18n="c.cost.h"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 相談する人：名前 -->
+      <section class="scr" id="s-gstart">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
+        <div class="pad">
+          <div class="eyebrow c">BONSAIGO</div>
+          <h2 class="h-en" data-i18n="g.home.h"></h2>
+          <p class="lead" data-i18n="g.home.lead"></p>
+          <label class="field"><span data-i18n="g.x.name"></span><input id="gName" autocomplete="nickname" maxlength="40"></label>
+          <p class="err" id="gErr" hidden></p>
+        </div>
+        <div class="dock"><button class="cta" id="b-gstart" data-i18n="g.x.start"></button></div>
+      </section>
+
+      <!-- 職人：入る -->
+      <section class="scr k" id="s-mstart">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="r"><button class="lang-pill" data-pick="a"><svg><use href="#i-globe"/></svg><b class="lp-name">日本語</b></button></div></div>
+        <div class="pad">
+          <div class="eyebrow c">BONSAIGO · 盆栽ゴー</div>
+          <h2 class="h-jp" data-i18n="a.x.who"></h2>
+          <div class="who" id="whoList"></div>
+          <div class="sec-h jp"><h3 data-i18n="a.x.new"></h3></div>
+          <label class="field"><span data-i18n="a.x.nameF"></span><input id="mName" maxlength="40" autocomplete="name"></label>
+          <label class="field"><span data-i18n="a.x.placeF"></span><input id="mPlace" maxlength="60"></label>
+          <div class="field"><span data-i18n="a.x.spF"></span><div class="spl" id="mSp"></div></div>
+          <p class="err" id="mErr" hidden></p>
+          <button class="cta moss" id="b-mreg" style="margin-top:16px" data-i18n="a.x.reg"></button>
+        </div>
+      </section>
+
+      <!-- 相談する人：ホーム -->
+      <section class="scr" id="s-home">
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b><span>盆栽ゴー</span></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
+        <div class="pad">
+          <div class="eyebrow c" id="gHello"></div>
+          <h2 class="h-en" data-i18n="g.home.h"></h2>
+          <button class="ask-card" data-go="ask"><span class="ic"><svg><use href="#i-cam"/></svg></span><div><b data-i18n="g.home.askB"></b><span data-i18n="g.home.askT"></span></div><span class="go">›</span></button>
+          <div class="sec-h"><h3 data-i18n="g.x.mine"></h3></div>
+          <div id="mineList"></div>
+          <div class="sec-h"><h3 data-i18n="g.home.newQa"></h3><button data-go="qa" data-i18n="g.home.seeAll"></button></div>
+          <div id="homeQa"></div>
+          <div class="sec-h"><h3 data-i18n="g.home.from"></h3></div>
+          <p class="lead" style="margin:-6px 0 12px;font-size:12.5px" data-i18n="g.home.fromT"></p>
+          <div class="strip" id="posts"></div>
+        </div>
+        <nav class="tabs" data-tabs="g" data-on="home"></nav>
+      </section>
+
+      <!-- 相談する：写真と質問 -->
+      <section class="scr" id="s-ask">
+        <div class="topbar"><div class="eyebrow" data-i18n="g.ask.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <h2 class="h-en" data-i18n="g.ask.h2"></h2>
+          <div class="pick-photo" id="askPhoto"><img src="img/ask.jpg" alt=""><span class="ai"><svg><use href="#i-spark"/></svg><span data-i18n="g.ask.chip"></span></span></div>
+          <div class="photo-btns">
+            <label class="chip"><svg><use href="#i-cam"/></svg><span data-i18n="g.x.photoChange"></span><input type="file" accept="image/jpeg,image/png,image/webp" id="askFile"></label>
+            <button class="chip" id="askSample"><svg><use href="#i-img"/></svg><span data-i18n="g.x.photoSample"></span></button>
+          </div>
+          <div class="field" style="margin-top:16px"><span data-i18n="g.x.to"></span></div>
+          <div class="to-pick" id="toPick"></div>
+          <textarea class="compose" id="askText" rows="5" maxlength="3000"></textarea>
+          <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span data-i18n="g.ask.hint"></span></div>
+          <p class="err" id="askErr" hidden></p>
+        </div>
+        <div class="dock"><button class="cta" id="b-send"><svg><use href="#i-send"/></svg><span data-i18n="g.ask.send"></span></button></div>
+        <div class="busy" id="askBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small>Claude · Sonnet</small><b data-i18n="g.x.sending"></b></div></div>
+        <nav class="tabs" data-tabs="g" data-on="ask"></nav>
+      </section>
+
+      <!-- 届いていく -->
+      <section class="scr fade" id="s-sent" data-light>
+        <div class="journey">
+          <div class="row-eye"><span class="eyebrow" data-i18n="g.sent.eye"></span><span class="mode-pill dk" data-mode></span></div>
+          <div class="bubble en" id="j1"><span class="lbl" data-i18n="g.sent.lbl"></span><span id="j1t"></span></div>
+          <div class="flow" id="jf"><span class="line"></span><span data-i18n="g.sent.flow"></span><span class="line"></span></div>
+          <div class="bubble jp" id="j2"><span class="lbl" id="j2l"></span><span id="j2t"></span></div>
+          <div class="delivered" id="jd"><span class="mono"><svg><use href="#i-tree"/></svg></span><div><b data-i18n="g.sent.delB"></b><span data-i18n="g.sent.delT"></span></div></div>
+          <button class="cta" id="b-sentHome" style="background:#fff;color:var(--ink);margin-top:8px" data-i18n="g.tab.home"></button>
+        </div>
+      </section>
+
+      <!-- 答えが届く -->
+      <section class="scr" id="s-answer">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="g.ans.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <div class="ans-head"><span class="mono"><svg><use href="#i-tree"/></svg></span><div><b id="ansWho"></b><span id="ansBy"></span></div></div>
+          <div id="ansCheck"></div>
+          <div class="answer" id="ansBody"></div>
+          <p class="tnote" data-i18n="g.ans.tnote"></p>
+          <button class="jp-toggle" id="jpBtn"><span data-i18n="g.x.backTr"></span> <span>›</span></button>
+          <div class="jp-orig" id="jpOrig" hidden></div>
+          <div class="saved"><svg><use href="#i-bookmark"/></svg><span data-i18n="g.ans.saved"></span></div>
+          <div class="mini-q"><img id="ansImg" src="img/ask.jpg" alt=""><div id="ansQ"></div></div>
+        </div>
+        <nav class="tabs" data-tabs="g" data-on="home"></nav>
+      </section>
+
+      <!-- Q&A -->
+      <section class="scr" id="s-qa">
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
+        <div class="pad">
+          <div class="eyebrow c" data-i18n="g.qa.eye"></div>
+          <h2 class="h-en" data-i18n="g.qa.h"></h2>
+          <label class="search"><svg><use href="#i-search"/></svg><input id="qaQ" type="search" enterkeyhint="search"><button class="x" id="qaClear" aria-label="Clear" hidden><svg width="14" height="14"><use href="#i-x"/></svg></button></label>
+          <div class="chips" id="qaChips"></div>
+          <div class="qa-count" id="qaCount"></div>
+          <div id="qaList"></div>
+        </div>
+        <nav class="tabs" data-tabs="g" data-on="qa"></nav>
+      </section>
+
+      <!-- 学ぶ -->
+      <section class="scr" id="s-learn">
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
+        <div class="pad">
+          <div class="eyebrow c" data-i18n="g.learn.eye"></div>
+          <h2 class="h-en" data-i18n="g.learn.h"></h2>
+          <div class="seg" id="learnSeg"><button class="on" data-seg="art" data-i18n="g.x.art"></button><button data-seg="gl" data-i18n="g.x.gloss"></button></div>
+          <div id="artList"></div>
+          <div id="glWrap" hidden><p class="lead" data-i18n="g.learn.lead"></p><div id="glList" style="margin-top:6px"></div></div>
+        </div>
+        <nav class="tabs" data-tabs="g" data-on="learn"></nav>
+      </section>
+
+      <!-- 職人：ホーム -->
+      <section class="scr k" id="s-mhome">
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b><span>盆栽ゴー</span></div><div class="r"><span class="mode-pill" data-mode></span><button class="icon-btn" data-role aria-label="役割を切りかえる"><svg><use href="#i-swap"/></svg></button></div></div>
+        <div class="pad">
+          <div class="hello" data-i18n="a.mh.hi"></div>
+          <h2 class="h-jp" id="mHello"></h2>
+          <button class="lang-pill" data-pick="a" style="margin-top:12px"><svg><use href="#i-globe"/></svg><span data-i18n="a.pickLbl"></span><b class="lp-name">日本語</b></button>
+          <button class="tile" data-go="inbox"><span class="ic c"><svg><use href="#i-reply"/></svg></span><div><b data-i18n="a.mh.q"></b><span data-i18n="a.mh.qT"></span></div><span class="n" id="mN">0</span></button>
+          <button class="tile" data-go="reg"><span class="ic"><svg><use href="#i-cam"/></svg></span><div><b data-i18n="a.mh.reg"></b><span data-i18n="a.mh.regT"></span></div><span class="n" style="color:var(--moss)">›</span></button>
+          <div class="sec-h jp"><h3 data-i18n="a.mh.out"></h3></div>
+          <div class="stats">
+            <div><b id="mPosts">0</b><span data-i18n="a.mh.posts"></span><div class="sns"><i>X</i><i>Instagram</i></div></div>
+            <div><b id="mAns">0</b><span data-i18n="a.mh.qa"></span></div>
+          </div>
+          <button class="cost-card" data-cost><div class="hd"><svg><use href="#i-coin"/></svg><span data-i18n="a.x.cost"></span><span style="margin-left:auto;opacity:.6">›</span></div><div class="meter" id="mMeter"></div></button>
+        </div>
+        <nav class="tabs" data-tabs="a" data-on="mhome"></nav>
+      </section>
+
+      <!-- 職人：回答する（届いた相談） -->
+      <section class="scr k" id="s-inbox">
+        <div class="topbar"><div class="eyebrow" data-i18n="a.inbox.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <h2 class="h-jp" data-i18n="a.tab.answer"></h2>
+          <div id="inboxList"></div>
+          <div class="steps"><h4 data-i18n="a.steps.h"></h4>
+            <div><i>1</i><span data-i18n="a.steps.1"></span></div>
+            <div><i>2</i><span data-i18n="a.steps.2"></span></div>
+            <div><i>3</i><span data-i18n="a.steps.3"></span></div></div>
+        </div>
+        <nav class="tabs" data-tabs="a" data-on="inbox"></nav>
+      </section>
+
+      <!-- 職人：相談を読んで、答える -->
+      <section class="scr k" id="s-detail">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <div class="eyebrow" id="dEye"></div>
+          <h2 class="h-jp" id="dTitle"></h2>
+          <div class="photo-ai"><img id="dImg" src="img/ask.jpg" alt=""><div class="cap" id="dMitate"></div></div>
+          <div class="points"><h4><span data-i18n="a.det.pts"></span><span style="color:var(--ink-2);font-weight:500" data-i18n="a.det.by"></span></h4>
+            <ul id="dPoints"></ul>
+            <div class="terms" id="dTerms"></div>
+            <button class="orig" id="origBtn"></button>
+            <div class="orig-body" id="origBody" hidden></div>
+          </div>
+          <div class="draft" id="dDraft"></div>
+          <div class="ans-area">
+            <textarea id="ansText" maxlength="3000"></textarea>
+            <div class="ans-tools">
+              <button class="chip" id="b-mic"><svg width="16" height="16"><use href="#i-mic"/></svg><span data-i18n="a.x.voice"></span></button>
+              <button class="chip" id="b-useDraft"><svg width="16" height="16"><use href="#i-spark"/></svg><span data-i18n="a.x.useDraft"></span></button>
+            </div>
+          </div>
+          <p class="err" id="dErr" hidden></p>
+        </div>
+        <div class="dock"><button class="cta copper" id="b-preview" data-i18n="a.x.preview"></button></div>
+        <div class="busy" id="dBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small>Sonnet → Haiku</small><b data-i18n="a.x.translating"></b></div></div>
+      </section>
+
+      <!-- 職人：届く形を確かめて送る -->
+      <section class="scr k" id="s-confirm">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <div class="eyebrow" data-i18n="a.conf.eye"></div>
+          <h2 class="h-jp" data-i18n="a.conf.h2"></h2>
+          <div id="confCheck"></div>
+          <div class="preview"><div class="bar"><span id="confLang">ENGLISH</span><span data-i18n="a.conf.bar"></span></div><div class="en-body" id="confBody"></div></div>
+          <div class="back-tr"><b id="confBackB"></b><span id="confBack"></span></div>
+          <div class="after"><svg><use href="#i-qa"/></svg><span data-i18n="a.conf.after"></span></div>
+          <p class="err" id="cErr" hidden></p>
+        </div>
+        <div class="dock"><div class="answer-actions"><button class="cta ghost" data-back data-i18n="a.x.fix"></button><button class="cta copper" id="b-reply"><svg><use href="#i-send"/></svg><span id="replyLbl" data-i18n="a.x.send"></span></button></div></div>
+      </section>
+
+      <!-- 職人：木を登録する 1（写真・樹種・樹齢） -->
+      <section class="scr k" id="s-reg">
+        <div class="topbar"><div class="eyebrow" data-i18n="a.reg.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <h2 class="h-jp" data-i18n="a.reg.h"></h2>
+          <div class="stepper"><i class="on"></i><i></i><i></i></div>
+          <div class="pick-photo" id="regPhoto"><img src="img/reg.jpg" alt=""><div class="scan" id="scan"></div></div>
+          <div class="photo-btns">
+            <label class="chip"><svg><use href="#i-cam"/></svg><span data-i18n="a.x.photo"></span><input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" id="regFile"></label>
+            <button class="chip on" id="regSample" data-s="pine"><svg><use href="#i-img"/></svg><span data-i18n="a.x.sample"></span></button>
+            <button class="chip" id="regNg" data-s="ng"><svg><use href="#i-x"/></svg><span data-i18n="a.x.sampleNg"></span></button>
+          </div>
+          <div class="row2">
+            <label class="field"><span data-i18n="a.x.sp"></span><select id="regSp"></select></label>
+            <label class="field"><span data-i18n="a.x.age"></span><input id="regAge" type="number" inputmode="numeric" min="1" max="1000" value="45"></label>
+          </div>
+          <label class="field"><span data-i18n="a.x.note"></span><textarea id="regNote" rows="3" maxlength="1000"></textarea></label>
+          <button class="chip" id="b-regMic" style="margin-top:8px"><svg width="16" height="16"><use href="#i-mic"/></svg><span data-i18n="a.x.voice"></span></button>
+          <div id="regResult"></div>
+          <p class="err" id="rErr" hidden></p>
+        </div>
+        <div class="dock"><button class="cta copper" id="b-regGo"><svg><use href="#i-spark"/></svg><span data-i18n="a.x.next"></span></button></div>
+        <div class="busy" id="rBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small id="rBusyM">Haiku</small><b id="rBusyT"></b></div></div>
+        <nav class="tabs" data-tabs="a" data-on="reg"></nav>
+      </section>
+
+      <!-- 職人：木を登録する 2（投稿の下書きを直して OK） -->
+      <section class="scr k" id="s-posts">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="a.talk.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <h2 class="h-jp" data-i18n="a.x.posts"></h2>
+          <div class="stepper"><i class="on"></i><i class="on"></i><i></i></div>
+          <div class="check done" id="pcImg"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c1"></b><span id="pcImgT"></span></div><span class="cf" id="pcImgC"></span></div>
+          <p class="lead" style="font-size:13.5px" data-i18n="a.x.postsS"></p>
+          <div class="post-edit"><div class="hd"><b>X</b><span data-i18n="a.talk.drS"></span></div><textarea id="pX" rows="4"></textarea></div>
+          <div class="post-edit"><div class="hd"><b>Instagram</b><span>日本語</span></div><textarea id="pIg" rows="4"></textarea></div>
+          <details class="langs8" id="pAll"><summary><span>8 languages</span><span>›</span></summary><div id="pAllBody"></div></details>
+          <button class="linkish" id="b-tryNg" style="margin-top:14px" data-i18n="a.x.tryNg"></button>
+          <div id="textResult"></div>
+        </div>
+        <div class="dock"><button class="cta moss" id="b-postOk"><svg><use href="#i-check"/></svg><span data-i18n="a.x.ok"></span></button></div>
+        <div class="busy" id="pBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small>rules → Haiku</small><b data-i18n="a.x.chkText"></b></div></div>
+      </section>
+
+      <!-- 職人：木を登録する 3（送ったら、こう出る） -->
+      <section class="scr k" id="s-pub">
+        <div class="topbar"><div class="eyebrow" data-i18n="a.pub.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <h2 class="h-jp" data-i18n="a.x.preview2"></h2>
+          <div class="stepper"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+          <div class="check" id="pc1"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c1"></b><span id="pc1T"></span></div><span class="cf" id="pc1C"></span></div>
+          <div class="check" id="pc2"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c2"></b><span data-i18n="a.pub.c2T"></span></div><span class="cf" id="pc2C"></span></div>
+          <div class="preview-langs" id="pubLangs"></div>
+          <div class="sns-post" id="sp1"><div class="hd"><span class="av">BG</span><div><b>BONSAIGO</b><span>@bonsaigo</span></div><span class="pf">X</span></div><div class="txt" id="pubX"></div><img id="pubImg1" src="img/reg.jpg" alt=""></div>
+          <div class="sns-post ig" id="sp2"><div class="hd"><span class="av">BG</span><div><b>bonsaigo</b><span>Instagram</span></div><span class="pf ig">IG</span></div><img id="pubImg2" src="img/reg.jpg" alt=""><div class="txt" style="padding-top:12px" id="pubIg"></div></div>
+          <div class="never"><svg><use href="#i-hold"/></svg><span data-i18n="a.x.never"></span></div>
+        </div>
+        <div class="dock"><div class="answer-actions"><button class="cta ghost" id="b-again" data-i18n="a.x.again"></button><button class="cta" data-go="mhome" data-i18n="a.pub.home"></button></div></div>
+      </section>
+
+      <!-- 職人：学ぶ -->
+      <section class="scr k" id="s-mlearn">
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="pad">
+          <div class="eyebrow c" data-i18n="a.ml.eye"></div>
+          <h2 class="h-jp" data-i18n="a.ml.h"></h2>
+          <p class="lead" data-i18n="a.ml.lead"></p>
+          <div id="mlList"></div>
+        </div>
+        <nav class="tabs" data-tabs="a" data-on="mlearn"></nav>
+      </section>
+
+      <div class="sheet-veil" id="veil"></div>
+      <div class="sheet" id="sheet"><div class="grab"></div><div class="kanji" id="gK"></div><div class="romaji" id="gR"></div><div class="mean" id="gM"></div><p id="gP"></p><p id="gW" style="margin-top:10px"></p><div class="src" data-i18n="g.gloss.src"></div></div>
+      <div class="lang-veil" id="lveil"></div>
+      <div class="lang-sheet" id="lsheet"><div class="grab"></div><h4 id="lTitle"></h4><div class="lang-list" id="lList"></div></div>
+      <div class="cost-sheet" id="costSheet"><div class="grab"></div><h4 id="cH"></h4><ol id="cList"></ol><div class="meter" id="cMeter"></div><div class="models" id="cModels"></div><div class="last" id="cLast"></div></div>
+      <div class="toast" id="toast"></div>
+    </div></div>
+  </div>
+
+  <aside class="side">
+    <h1>BONSAIGO<small>盆栽ゴー</small></h1>
+    <p>海外で盆栽を育てる人と、日本の職人を、言葉の壁なしでつなぐアプリです。</p>
+    <div class="tip"><b>試し方</b>「Ask a master」で写真つきの相談を送る → 右上の ⇄ で「職人」に切りかえ → 回答する → もう一度右上の ⇄ で相談した人に戻ると、答えが自分の言葉で届いています。</div>
+    <div class="tip"><b>見本モード</b>AI の鍵がないときは、見本の答えで最後まで動きます（料金はかかりません）。確かめ・料金の守りの流れは、本物のときと同じ道を通ります。</div>
+    <div class="tip"><b>写真について</b>木の絵と動画はチームが 3D で作ったもの、相談の見本写真はチームメンバーの木です。職人・相談はすべて架空の見本です。</div>
+  </aside>
+</div>
+
+<script src="i18n.js" charset="utf-8"></script>
+<script src="app.js"></script>
+</body>
+</html>

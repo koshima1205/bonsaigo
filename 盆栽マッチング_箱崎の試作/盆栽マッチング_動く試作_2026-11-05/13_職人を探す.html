@@ -157,9 +157,9 @@ document.addEventListener("DOMContentLoaded", function () {
       UI.clear(box);
       r.teachers.slice().reverse().forEach(function (t) {
         if (S.shokunin.some(function (x) { return x.id === t.id; })) return;
-        S.shokunin.unshift({ id: t.id, name: t.name_ja, en_name: t.name_en, garden: t.title_ja || "新しく登録した職人", en_garden: t.title_ja || "Newly joined", area: "", en_area: "", years: "-", answers: 0, specialty: t.specialty_ja, title: t.title_ja, en_title: "Craftsperson", bio: t.bio.ja, en_bio: t.bio.en });
+        S.shokunin.unshift({ id: t.id, name: t.name_ja, en_name: t.name_en, garden: t.title_ja || "新しく登録した職人", en_garden: t.title_ja || "Newly joined", area: "", en_area: "", years: "-", answers: 0, specialty: t.specialty_ja, title: t.title_ja, en_title: "Craftsperson", bio: (t.bio && t.bio.ja) || "", en_bio: (t.bio && t.bio.en) || t.bio_en || "" });
         SEAL[t.id] = t.name_ja.charAt(0);
-        HITO[t.id] = t.first_words;
+        HITO[t.id] = t.first_words || { ja: "", en: "" };  /* ログイン画面から登録した職人には、まだ紹介文がない（11/8 直した） */
       });
       if (r.teachers.length) { openId = r.teachers[0].id; render(); }
     }, function () {

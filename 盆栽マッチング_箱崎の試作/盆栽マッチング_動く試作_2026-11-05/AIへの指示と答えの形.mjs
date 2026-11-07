@@ -1,7 +1,7 @@
 // 盆栽マッチング AIへの指示と、答えの形（2026-11-05）
 // 役割ごとに、指示（instruction）と答えの形（schema）を1組にしている。
 
-const LANGS = { en: "English", es: "Spanish", zh: "Simplified Chinese", ja: "Japanese" };
+const LANGS = { en: "English", es: "Spanish", zh: "Simplified Chinese", ja: "Japanese", fr: "French", it: "Italian", th: "Thai", km: "Khmer" };
 export const langName = (code) => LANGS[code] || LANGS.en;
 
 const str = { type: "string" };

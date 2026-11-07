@@ -112,6 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
     try { u = new URL(raw, location.origin); } catch (e) { return null; }
     if (u.origin !== location.origin) return null;
     var n = u.pathname + u.search + u.hash;
+    /* 読み直したあとも「//」で始まると、よそのサイトとして読まれるので使わない */
+    if (n.charAt(0) !== "/" || n.charAt(1) === "/" || n.charAt(1) === "\\") return null;
     if (/^\/(%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3|ログイン)_/i.test(n)) return null;
     /* 入口（/ と index.html）から来たときは、役割のホームへ */
     if (/^\/(index\.html)?(\?|#|$)/i.test(n)) return null;

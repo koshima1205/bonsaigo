@@ -150,22 +150,30 @@ function callClaudeCode(task, text, images) {
 const AI_DAILY_LIMIT = Number(process.env.AI_DAILY_LIMIT || 300);
 const AI_USER_LIMIT = Number(process.env.AI_USER_LIMIT || 60);
 class LimitReached extends Error {}
-// 相手の住所（IP）。公開の道具を通ると見出しに入る
+// 相手の住所（IP）。Cloudflare の公開の道具（cloudflared）はこの端末の中から届くので、
+// そのときだけ Cloudflare が付ける CF-Connecting-IP を信じる。X-Forwarded-For は相手が書き換えられるので使わない
+const AI_IP_LIMIT = Number(process.env.AI_IP_LIMIT || 120);
 function clientIp(req) {
   if (!req) return "unknown";
-  return String(req.headers["cf-connecting-ip"] || String(req.headers["x-forwarded-for"] || "").split(",")[0] || req.socket?.remoteAddress || "unknown").trim();
+  const remote = String(req.socket?.remoteAddress || "unknown");
+  const fromThisMac = remote === "127.0.0.1" || remote === "::1" || remote === "::ffff:127.0.0.1";
+  const cf = req.headers["cf-connecting-ip"];
+  return (fromThisMac && typeof cf === "string" && cf.trim()) ? cf.trim() : remote;
 }
 const requestContext = new AsyncLocalStorage();
 function countAiCall() {
   const day = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
   const u = store.ai_usage;
-  if (u.day !== day) { u.day = day; u.total = 0; u.by_user = {}; }
+  if (u.day !== day) { u.day = day; u.total = 0; u.by_user = {}; u.by_ip = {}; }
   const ctx = requestContext.getStore();
-  const who = ctx?.user?.id || `ip:${clientIp(ctx?.req)}`;
+  const who = ctx?.user?.id || "（ログインなし）";
+  const ip = `ip:${clientIp(ctx?.req)}`;
+  if (!u.by_ip) u.by_ip = {};
   if (u.total >= AI_DAILY_LIMIT) throw new LimitReached("本日のAIの上限に達しました。明日またお試しください");
-  if ((u.by_user[who] || 0) >= AI_USER_LIMIT) throw new LimitReached("あなたの本日のAIの上限に達しました。明日またお試しください");
+  if ((ctx?.user && (u.by_user[who] || 0) >= AI_USER_LIMIT) || (u.by_ip[ip] || 0) >= AI_IP_LIMIT) throw new LimitReached("あなたの本日のAIの上限に達しました。明日またお試しください");
   u.total += 1;
   u.by_user[who] = (u.by_user[who] || 0) + 1;
+  u.by_ip[ip] = (u.by_ip[ip] || 0) + 1;
   save();
 }
 
@@ -664,5 +672,5 @@ server.listen(PORT, HOST, () => {
   const label = { "claude-api": "Claude API（使った分の料金がかかります）", "claude-code": "この端末の Claude Code", sample: "見本の答え（AIは動きません）" }[MODE];
   console.log(`盆栽マッチングの試作: http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}/index.html`);
   console.log(`AIのつなぎ方: ${label}`);
-  console.log(`合言葉の門: ${ACCESS_PASSWORD ? "あり" : "なし（公開しないでください）"} ／ AIの上限: 1日 ${AI_DAILY_LIMIT} 回・1人 ${AI_USER_LIMIT} 回`);
+  console.log(`合言葉の門: ${ACCESS_PASSWORD ? "あり" : "なし（公開しないでください）"} ／ AIの上限: 1日 ${AI_DAILY_LIMIT} 回・1人 ${AI_USER_LIMIT} 回・同じ回線 ${AI_IP_LIMIT} 回`);
 });

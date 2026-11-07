@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
-<meta name="theme-color" content="#FBFAF7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -123,6 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
       $("check-list").innerHTML = p.please_check_ja.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("");
       $("done").hidden = true; $("btn-ok").disabled = false; $("btn-ok").textContent = "OK"; $("btn-ok").classList.remove("is-on");
       $("result").hidden = false;
+      /* 主役のボタンは1画面に1つ：下書きが出たら「OK」を主役にする */
+      $("btn-talk").classList.remove("big-btn--main");
       $("result").scrollIntoView({ behavior: "smooth", block: "start" });
     }, function (e) { showErr(e.message); }).then(function () { $("btn-make").disabled = false; $("wait").hidden = true; });
   });

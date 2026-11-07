@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
-<meta name="theme-color" content="#FBFAF7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -15,28 +15,29 @@
 <style>
   /* ホームだけの見た目。区切りは線と余白。影なし */
   .page { padding-left: var(--s5); padding-right: var(--s5); }
-  .home-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s3); padding: var(--s5) var(--s5) var(--s3); border-bottom: 1px solid var(--sumi); }
+  .home-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s3); padding: var(--s5) var(--s5) var(--s3); border-bottom: 1px solid var(--sen); }
   .home-brand { display: inline-flex; align-items: center; min-height: 48px; font-family: var(--mincho); font-weight: 600; font-size: 1.125rem; letter-spacing: 0.2em; color: var(--sumi); text-decoration: none; white-space: nowrap; }
   .who-pick { display: flex; flex-wrap: wrap; gap: var(--s4); font-size: 15px; }
   .who-pick a { min-height: 48px; min-width: 48px; justify-content: center; display: flex; align-items: flex-end; padding-bottom: 4px; color: var(--sumi-2); text-decoration: none; white-space: nowrap; }
   .who-pick a[aria-current] { color: var(--sumi); font-weight: 700; box-shadow: inset 0 -2px 0 var(--sumi); }
   .home-lang { display: flex; justify-content: flex-end; padding: var(--s2) var(--s5) 0; }
   .home-date { margin: var(--s5) 0 0; font-size: 14px; color: var(--sumi-2); letter-spacing: 0.12em; }
-  .home-h1 { font-family: var(--mincho); font-weight: 600; font-size: 1.875rem; line-height: 1.45; margin: var(--s1) 0 0; letter-spacing: 0.06em; }
-  body:not(.role-shokunin) .home-h1 { font-size: 1.625rem; letter-spacing: 0.03em; }
+  .home-h1 { font-family: var(--mincho); font-weight: 700; font-size: 1.875rem; line-height: 1.45; margin: var(--s1) 0 0; letter-spacing: 0; }
+  body:not(.role-shokunin) .home-h1 { font-size: 1.625rem; letter-spacing: 0; }
   .main-block { margin: var(--s5) 0 0; padding: var(--s5) 0 var(--s5); border-top: 1px solid var(--sen); border-bottom: 1px solid var(--sen); }
   .from { display: flex; align-items: center; gap: var(--s3); font-size: 15px; color: var(--sumi-2); margin: 0; }
-  .hanko { min-width: 40px; height: 40px; padding: 0 4px; flex: none; border: 2px solid var(--shu); color: var(--shu); font-family: var(--mincho); font-weight: 700; font-size: 14px; line-height: 1.1; display: grid; place-items: center; text-align: center; transform: rotate(-4deg); border-radius: 3px; }
+  .hanko { min-width: 40px; height: 32px; padding: 0 10px; flex: none; border: 1.5px solid var(--shu); border-radius: var(--r-pill); color: var(--shu); font-family: var(--mincho); font-weight: 700; font-size: 14px; line-height: 1.1; display: grid; place-items: center; text-align: center; }
   .hanko--sumi { border-color: var(--sumi-2); color: var(--sumi-2); }
   .quote { margin: var(--s4) 0 var(--s2); font-family: var(--mincho); font-size: 1.25rem; line-height: 1.7; letter-spacing: 0.03em; }
   .quote-note { margin: 0 0 var(--s4); font-size: 15px; color: var(--sumi-2); }
-  .btn-urushi { display: flex; align-items: center; justify-content: center; min-height: 58px; border-radius: var(--r); background: var(--koke); color: var(--kin-moji); font-weight: 700; font-size: 1.125rem; letter-spacing: 0.12em; text-decoration: none; }
-  .btn-line { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: var(--r); border: 1px solid var(--sumi); color: var(--sumi); font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
-  .home-h2 { font-family: var(--mincho); font-weight: 600; font-size: 1.1875rem; margin: var(--s6) 0 var(--s3); letter-spacing: 0.08em; }
+  .btn-urushi:hover { background: var(--ruri-2); }
+  .btn-urushi { display: flex; align-items: center; justify-content: center; min-height: 58px; border-radius: var(--r-pill); background: var(--ruri); color: var(--kin-moji); font-weight: 700; font-size: 1.125rem; letter-spacing: 0; text-decoration: none; }
+  .btn-line { display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: var(--r-pill); border: 1px solid var(--waku); color: var(--sumi); font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
+  .home-h2 { font-family: var(--mincho); font-weight: 700; font-size: 1.1875rem; margin: var(--s6) 0 var(--s3); letter-spacing: 0; }
   .tree { display: grid; grid-template-columns: 132px 1fr; gap: var(--s4); }
   .tree img { width: 132px; height: 164px; object-fit: cover; object-position: center 45%; border-radius: var(--r-s); display: block; background: var(--kami-2); }
   .tree-acts { display: flex; flex-direction: column; gap: var(--s3); }
-  .tree-acts a { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: var(--s2) var(--s4); border: 1px solid var(--sumi); border-radius: var(--r); min-height: 72px; color: var(--sumi); text-decoration: none; }
+  .tree-acts a { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: var(--s2) var(--s4); border: 1px solid var(--waku); border-radius: var(--r); min-height: 72px; color: var(--sumi); text-decoration: none; }
   .tree-acts b { font-size: 1.125rem; letter-spacing: 0.1em; }
   .tree-acts small { font-size: 14px; color: var(--sumi-2); line-height: 1.4; }
   .tree-note { font-size: 14px; color: var(--sumi-2); margin: var(--s2) 0 0; }
@@ -55,20 +56,20 @@
   /* 職人の画面は字を大きく（70歳の目でも読める） */
   body.role-shokunin .menu b { font-size: 1.25rem; }
   body.role-shokunin .menu small, body.role-shokunin .from, body.role-shokunin .quote-note, body.role-shokunin .tree-acts small, body.role-shokunin .tree-note, body.role-shokunin .home-date, body.role-shokunin .about { font-size: 1.0625rem; }
-  body.role-shokunin .hanko { font-size: 1rem; min-width: 48px; height: 48px; }
+  body.role-shokunin .hanko { font-size: 1rem; min-width: 48px; height: 36px; }
   body.role-shokunin .menu .count { font-size: 1rem; min-width: 32px; height: 32px; }
   body.role-shokunin .tree-acts b { font-size: 1.25rem; }
   .home-follow { display: flex; align-items: center; min-height: 48px; margin-top: var(--s3); color: var(--sumi); font-size: 1.0625rem; }
   .hero-photo { margin: var(--s5) 0 0; }
-  .hero-photo img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 45%; border-radius: var(--r-s); display: block; background: var(--kami-2); }
+  .hero-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 60%; border-radius: var(--r-s); display: block; background: var(--kami-2); }
   .hero-photo figcaption { font-size: 14px; color: var(--sumi-2); margin-top: var(--s2); }
   /* 字間を広げるのは日本語のときだけ（英語などは詰める） */
-  html:not([lang="ja"]) .home-h1, html:not([lang="ja"]) .home-h2, html:not([lang="ja"]) .quote, html:not([lang="ja"]) .btn-urushi { letter-spacing: 0.01em; }
+  html:not([lang="ja"]) .home-h1, html:not([lang="ja"]) .home-h2, html:not([lang="ja"]) .quote, html:not([lang="ja"]) .btn-urushi { letter-spacing: 0; }
   /* 海外の人の「あなたの相談」一覧。字は職人側と同じ大きさ、押せる行は48px以上 */
   .my-cons .menu a { min-height: 72px; }
   .my-cons .menu b { font-size: 1.25rem; font-weight: 700; }
   .my-cons .menu small { font-size: 1.0625rem; }
-  .my-cons .menu .stat { margin-left: auto; flex: none; max-width: 40%; text-align: right; font-size: 1.0625rem; color: var(--sumi-2); }
+  .my-cons .menu .stat { margin-left: auto; flex: none; max-width: 48%; text-align: right; font-size: 14px; line-height: 1.45; color: var(--sumi-2); }
   .my-cons .menu .stat.is-new { color: var(--shu); font-weight: 700; }
   .my-cons .menu .q { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   /* 海外の人のホーム：探す → 相談 → 答えが届く の3段 */
@@ -166,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       '<div class="tree-acts">' +
       '<a href="' + go("17") + '"><b>撮る</b><small>写真から3か国語の投稿</small></a>' +
       '<a href="' + go("19") + '"><b>紹介ページ</b><small>話すだけで、3か国語の紹介</small></a>' +
-      "</div></div>";
+      "</div></div>" + (tree && tree.image ? "" : '<p class="tree-note">見本の写真：真柏（しんぱく）</p>');
     h += '<h2 class="home-h2">できること</h2><ul class="menu">' +
       li(go("22"), "届いた相談", c ? "海外の人の質問が、日本語で届きます" : "海外の人からの質問が、ここに並びます", open.length > 1 ? '<span class="count" aria-label="答えていない相談">' + open.length + "</span>" : "") +
       li(go("17"), "撮るだけで投稿", "写真か動画から、海外向けの投稿の下書き。確かめて、ご自分で投稿します") +
@@ -225,6 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
         '<p class="quote-note" style="margin-top:0">' + t({ ja: "知りたいことを書くと、合う職人が見つかります。職人は日本語で答え、あなたの言葉に訳して届きます。", en: "Write what you want to learn and we will find the right craftsperson. They answer in Japanese, and it reaches you in your language.", es: "Escribe lo que quieres aprender y encontraremos al maestro adecuado. Responde en japonés y te llega en tu idioma.", zh: "写下你想了解的内容，就能找到合适的匠人。匠人用日语回答，再翻译成你的语言。" }) + "</p>" +
         '<a class="btn-urushi" href="' + go("18") + '">' + t({ ja: "職人を見つける", en: "Find your craftsperson", es: "Encuentra a tu maestro", zh: "找到你的匠人" }) + "</a></section>";
     }
+    h += '<figure class="hero-photo"><p class="tree-name t"><span data-l="ja">真柏</span><span data-l="en" class="latin">SHIMPAKU</span><span data-l="es" class="latin">SHIMPAKU</span><span data-l="zh">真柏</span></p><p class="tree-name-sub t"><span data-l="ja">SHIMPAKU（見本の写真）</span><span data-l="en">真柏 · sample photo</span><span data-l="es">真柏 · foto de muestra</span><span data-l="zh">SHIMPAKU · 示例照片</span></p><img src="共通/見本の写真_盆栽.jpg" alt=""><figcaption>' + t({ ja: "写真を送れば、職人があなたの木を見て答えます", en: "Send a photo, and a craftsperson looks at your own tree", es: "Envía una foto y un maestro mira tu propio árbol", zh: "发送照片，匠人会看着你的树回答" }) + "</figcaption></figure>";
     /* 使い方の3段：探す → 相談 → 答えが届く */
     h += '<h2 class="home-h2">' + t({ ja: "使い方", en: "How it works", es: "Cómo funciona", zh: "使用方法" }) + '</h2><ol class="how">' +
       '<li><a href="' + go("18") + '"><b>' + t({ ja: "職人を探す", en: "Find a craftsperson", es: "Encuentra a un maestro", zh: "寻找匠人" }) + "</b><small>" +
@@ -239,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
       li(go("11"), t({ ja: "用語集", en: "Glossary", es: "Glosario", zh: "术语表" }), t({ ja: "直訳ではなく、意味と理由で", en: "Meaning and reason, not word for word", es: "Significado y motivo, no traducción literal", zh: "不是直译，而是含义与原因" })) +
       li(go("13"), t({ ja: "職人の紹介", en: "Meet the craftspeople", es: "Conoce a los maestros", zh: "匠人介绍" }), t({ ja: "得意な木と、教えられること", en: "What they know and what they can teach", es: "Qué saben y qué enseñan", zh: "擅长的树种与可教内容" })) +
       "</ul>" +
-      '<figure class="hero-photo"><img src="共通/見本の写真_盆栽.jpg" alt=""><figcaption>' + t({ ja: "写真を送れば、職人があなたの木を見て答えます", en: "Send a photo, and a craftsperson looks at your own tree", es: "Envía una foto y un maestro mira tu propio árbol", zh: "发送照片，匠人会看着你的树回答" }) + "</figcaption></figure>" +
       '<p class="about demo-only"><a href="index.html">' + t({ ja: "この試作の紹介と、画面の一覧", en: "About this prototype and its screens", es: "Sobre este prototipo y sus pantallas", zh: "关于本试作与页面一览" }) + "</a></p>";
     home.innerHTML = h;
     /* 言葉の切り替え（はじめはログインのときに選んだ言語） */

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
-<meta name="theme-color" content="#FBFAF7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -15,13 +15,15 @@
 <style>
   .understood { font-family: var(--mincho); font-size: var(--fs-l); line-height: 1.7; border-left: 3px solid var(--kin); padding-left: var(--s3); margin: var(--s5) 0; }
   .match { padding: var(--s5) 0; border-top: 1px solid var(--sen); }
-  .match:first-of-type { border-top: 2px solid var(--sumi); }
+  .match:first-of-type { border-top: 1px solid var(--sen); }
   .match__head { display: flex; gap: var(--s3); align-items: center; }
-  .seal { width: 44px; height: 44px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.125rem; }
+  .seal { width: 56px; height: 56px; overflow: hidden; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.125rem; }
   .match__why { margin: var(--s3) 0; }
   .first { font-size: var(--fs-s); color: var(--sumi-2); background: var(--kami-2); padding: var(--s3); border-radius: var(--r); margin: 0 0 var(--s3); }
   .first b { display: block; color: var(--sumi-3); font-weight: 700; }
   .teach { margin-top: var(--s7); padding-top: var(--s4); border-top: 1px solid var(--sen); font-size: var(--fs-s); color: var(--sumi-2); }
+  .seal img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .seal { background: var(--kami-2) !important; }
 </style>
 </head>
 <body data-screen="18">
@@ -97,12 +99,15 @@ document.addEventListener("DOMContentLoaded", function () {
     html += d.matches.map(function (m) {
       var t = teacher(m.teacher_id);
       var q = encodeURIComponent(m.first_question);
-      return '<article class="match"><div class="match__head"><div class="seal" aria-hidden="true">' + esc(t.seal) + '</div><div><p class="row__title">' + esc(t.name) + '</p><p class="row__meta">' + esc(t.meta) + "</p></div></div>" +
+      return '<article class="match"><div class="match__head"><div class="seal" aria-hidden="true"><img src="共通/仮の顔写真_職人_本物の写真が入るまでの代わり.svg" alt=""></div><div><p class="row__title">' + esc(t.name) + '</p><p class="row__meta">' + esc(t.meta) + "</p></div></div>" +
         '<p class="match__why">' + esc(m.reason) + "</p>" +
         '<p class="first"><b>' + esc(B.T(TX.first)) + "</b>" + esc(m.first_question) + "</p>" +
         '<a class="btn btn--main btn--wide" href="03_職人への相談_愛好家.html?to=' + encodeURIComponent(m.teacher_id) + (m.offer_id ? "&offer=" + encodeURIComponent(m.offer_id) : "") + "&q=" + q + '">' + esc(B.T(TX.ask)) + "</a></article>";
     }).join("");
     $("result").innerHTML = html;
+    /* 主役のボタンは1画面に1つ：結果が出たら1人目の「相談する」だけを主役にする */
+    $("send").classList.toggle("btn--main", !d.matches.length);
+    Array.prototype.forEach.call($("result").querySelectorAll(".match .btn"), function (b, i) { b.classList.toggle("btn--main", i === 0); });
     if (!d.matches.length) UI.state($("no-match"), "empty", (d.no_match_reason || B.T(TX.none)) + " " + B.T(TX.retryHint));
   }
   function loadTeachers() { return API.get("/api/teachers").then(function (r) { added = r.teachers; }, function () {}); }

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
-<meta name="theme-color" content="#FBFAF7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -18,14 +18,14 @@
   .list { margin-top: var(--s4); }
   .list .row-link { position: relative; display: flex; gap: var(--s3); width: 100%; align-items: center; min-height: 72px; text-align: left; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; }
   .list li { padding: var(--s3) 0; }
-  .seal { width: 48px; height: 48px; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.25rem; }
+  .seal { width: 56px; height: 56px; overflow: hidden; border-radius: 50%; flex: none; display: grid; place-items: center; background: var(--sumi); color: var(--kami); font-family: var(--mincho); font-size: 1.25rem; }
   .spec-tags { display: flex; flex-wrap: wrap; gap: var(--s1); margin-top: var(--s1); }
   .spec-tags span { font-size: 14px; color: var(--koke); background: var(--koke-usu); padding: 1px 8px; border-radius: 99px; }
   .list .row-link.is-open { background: var(--koke-usu); border-radius: var(--r); padding: var(--s2) var(--s3); }
   .list .row-link { padding: var(--s2) var(--s3); }
   .row-link.is-open .row__title { color: var(--koke); }
   .sel { position: absolute; top: var(--s2); right: var(--s3); font-size: 14px; font-weight: 700; color: var(--koke); white-space: nowrap; }
-  .profile { border-top: 2px solid var(--sumi); padding-top: var(--s5); margin-top: var(--s6); }
+  .profile { border-top: 1px solid var(--sen); padding-top: var(--s5); margin-top: var(--s6); }
   .profile__head { display: flex; gap: var(--s4); align-items: center; margin-bottom: var(--s4); }
   .profile__head .seal { width: 64px; height: 64px; font-size: 1.75rem; }
   .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: var(--s4) 0; border-top: 1px solid var(--sen); border-bottom: 1px solid var(--sen); }
@@ -35,6 +35,8 @@
   .facts small { color: var(--sumi-3); font-size: 14px; }
   .words { font-family: var(--mincho); font-size: var(--fs-l); line-height: 1.85; border-left: 3px solid var(--kin); padding-left: var(--s4); margin: var(--s4) 0; }
   .empty { padding: var(--s5) 0; color: var(--sumi-3); }
+  .seal img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .seal { background: var(--kami-2) !important; }
 </style>
 </head>
 <body data-screen="13">
@@ -102,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (shown.length && !shown.some(function (s) { return s.id === openId; })) openId = shown[0].id;
     document.getElementById("list").innerHTML = shown.length ? shown.map(function (s) {
       return '<li><button type="button" class="row-link' + (s.id === openId ? " is-open" : "") + '" data-id="' + s.id + '" aria-expanded="' + (s.id === openId) + '">' +
-        '<span class="seal" aria-hidden="true">' + SEAL[s.id] + "</span>" +
+        '<span class="seal" aria-hidden="true"><img src="共通/仮の顔写真_職人_本物の写真が入るまでの代わり.svg" alt=""></span>' +
         '<span class="row__body"><span class="row__title" style="display:block">' + esc(nm(s)) + "</span>" +
         '<span class="row__meta" style="display:block">' + esc(ttl(s)) + "</span>" +
         '<span class="spec-tags">' + spTags(s) + "</span></span>" +
@@ -113,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var box = document.getElementById("profile");
     if (!s || !shown.length) { box.innerHTML = ""; return; }
     box.innerHTML =
-      '<div class="profile__head"><div class="seal" aria-hidden="true">' + SEAL[s.id] + '</div><div><p class="row__title" style="font-size:var(--fs-l)">' + esc(nm(s)) + '</p><p class="row__meta">' + esc([gd(s), area(s)].filter(Boolean).join(" · ")) + "</p></div></div>" +
+      '<div class="profile__head"><div class="seal" aria-hidden="true"><img src="共通/仮の顔写真_職人_本物の写真が入るまでの代わり.svg" alt=""></div><div><p class="row__title" style="font-size:var(--fs-l)">' + esc(nm(s)) + '</p><p class="row__meta">' + esc([gd(s), area(s)].filter(Boolean).join(" · ")) + "</p></div></div>" +
       '<div class="facts demo-only">' + (s.years === "-" ? "" : "<div><b>" + s.years + "</b><small>" + esc(B.T({ ja: "年の経験", en: "years", es: "años", zh: "年经验" })) + "</small></div>") +
       "<div><b>" + s.answers + "</b><small>" + esc(B.T({ ja: "答えた数", en: "answers given", es: "respuestas", zh: "回答数" })) + "</small></div>" +
       "<div><b>" + s.specialty.length + "</b><small>" + esc(B.T({ ja: "得意な木", en: "specialties", es: "especialidades", zh: "擅长树种" })) + "</small></div></div>" +

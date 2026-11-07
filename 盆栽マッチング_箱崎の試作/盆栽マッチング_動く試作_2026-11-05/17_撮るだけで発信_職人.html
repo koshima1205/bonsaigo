@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
-<meta name="theme-color" content="#FBFAF7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -53,7 +53,7 @@
 <div class="app">
   <header id="appbar"></header>
   <main class="page">
-    <h1 class="h1">撮るだけで、世界に届けます。</h1>
+    <h1 class="h1">撮るだけで、<br>世界に届けます。</h1>
     <p class="lead">文章はAIが書きます。中身を見て「この写真と文で投稿する」を押すと、Instagram・X・YouTube のアプリを選んで投稿できます。</p>
 
     <div class="big-actions" id="pickers">
@@ -93,7 +93,7 @@
           <span class="field__label" style="font-size:1rem">足したいこと（話すか、書いてください）</span>
           <textarea class="textarea" id="note" rows="3" style="font-size:1.125rem" placeholder="例：樹齢はおよそ六十年です"></textarea>
           <span class="note" id="voice-msg" style="display:block" hidden></span>
-          <button type="button" class="btn btn--main btn--wide" id="btn-redo" style="margin-top:var(--s2);min-height:56px;font-size:1.125rem">書き直す</button>
+          <button type="button" class="btn btn--wide" id="btn-redo" style="margin-top:var(--s2);min-height:56px;font-size:1.125rem">書き直す</button>
         </label>
       </div>
       <div class="done" id="done" role="status" hidden>
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
      開けない端末では、X は投稿の画面を開き、ほかは文をコピーして写真を保存する */
   var POST_LABEL = { x: "X", instagram: "Instagram", facebook: "Facebook", short_script: "YouTube などの動画" };
   function postButtons(k, l) {
-    return '<div class="post-btns"><button type="button" class="big-btn big-btn--main" data-share data-k="' + k + '" data-l="' + l + '">この写真と文で投稿する（' + LANGS[l] + "）</button>" +
+    return '<div class="post-btns"><button type="button" class="big-btn" data-share data-k="' + k + '" data-l="' + l + '">この写真と文で投稿する（' + LANGS[l] + "）</button>" +
       '<button type="button" class="btn btn--wide" data-copy data-k="' + k + '" data-l="' + l + '">文だけコピーする</button>' +
       '<p class="post-msg" role="status" hidden></p></div>';
   }

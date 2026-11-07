@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="共通/見た目の決まり.css">
 <link rel="manifest" href="共通/アプリの設定.webmanifest">
 <link rel="apple-touch-icon" href="共通/アプリのアイコン_iPhone用_180.png">
-<meta name="theme-color" content="#FBFAF7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -67,7 +67,7 @@
   .mini__page { border: 1px solid var(--sen); border-radius: 6px; padding: 6px; background: var(--kami); }
   .mini__page b { display: block; font-family: var(--mincho); font-size: 14px; margin-bottom: 4px; }
   .mini__btns { display: grid; gap: 3px; margin-top: 6px; }
-  .mini__btns i { display: block; font-style: normal; border: 1.5px solid var(--sumi); border-radius: 5px; text-align: center; padding: 2px 0; font-weight: 700; }
+  .mini__btns i { display: block; font-style: normal; border: 1.5px solid var(--waku); border-radius: 5px; text-align: center; padding: 2px 0; font-weight: 700; }
 </style>
 </head>
 <body data-screen="04" class="role-shokunin">
@@ -87,7 +87,7 @@
     <div id="drawHint" hidden>
       <p class="draw-hint">写真の上を、指でなぞってください。</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);margin-top:var(--s2)">
-        <button type="button" class="btn btn--main" id="btn-draw-end" style="min-height:52px;font-size:1.125rem">線を引き終わる</button>
+        <button type="button" class="btn" id="btn-draw-end" style="min-height:52px;font-size:1.125rem">線を引き終わる</button>
         <button type="button" class="btn" id="btn-undo" style="min-height:52px;font-size:1.125rem">1本消す</button>
       </div>
     </div>
@@ -119,7 +119,7 @@
         <p class="draft__sub">使う前に確かめてほしいこと</p>
         <ul id="draft-check"></ul>
       </div>
-      <button type="button" class="btn btn--main btn--wide" id="btn-use-draft" style="min-height:52px;font-size:1.125rem;margin-top:var(--s3)">この案で答える（直してから送れます）</button>
+      <button type="button" class="btn btn--wide" id="btn-use-draft" style="min-height:52px;font-size:1.125rem;margin-top:var(--s3)">この案で答える（直してから送れます）</button>
     </div>
 
     <div class="big-actions">

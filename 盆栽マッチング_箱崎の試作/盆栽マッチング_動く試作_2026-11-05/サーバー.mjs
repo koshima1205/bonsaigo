@@ -97,6 +97,8 @@ async function callClaudeApi(task, text, images) {
       messages: [{ role: "user", content }],
     });
   } catch (e) {
+    // うまくいかなかった理由をターミナルに出す（鍵や相談の中身は出さない）
+    console.error(`[AIの失敗] ${e?.constructor?.name || "Error"} ${e?.status ?? ""} ${String(e?.error?.error?.message || e?.message || "").slice(0, 300)}`);
     if (e instanceof Anthropic.AuthenticationError) throw new AiUnavailable("AIの鍵が正しくありません");
     if (e instanceof Anthropic.RateLimitError) throw new AiUnavailable("AIが混み合っています。少し待ってください");
     if (e instanceof Anthropic.APIConnectionError) throw new AiUnavailable("AIにつながりませんでした");
@@ -657,6 +659,7 @@ async function handle(req, res) {
     const body = req.method === "POST" ? await readBody(req) : {};
     send(200, await route.fn(body, route.id));
   } catch (e) {
+    if (!(e instanceof Unauthorized)) console.error(`[うまくいかなかった] ${req.method} ${decodeURIComponent(pathname)} → ${e?.constructor?.name}: ${String(e?.message || "").slice(0, 200)}`);
     if (e instanceof BadRequest) return send(400, { error: e.message });
     if (e instanceof NotFound) return send(404, { error: "見つかりません" });
     if (e instanceof AiUnavailable) return send(503, { error: e.message });

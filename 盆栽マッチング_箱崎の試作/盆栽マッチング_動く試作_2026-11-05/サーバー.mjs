@@ -238,10 +238,11 @@ const input = (s) => `<user_input>\n${String(s ?? "").slice(0, 4000)}\n</user_in
 
 /* ---------- 入力の確かめ ---------- */
 class BadRequest extends Error {}
-// ログインの失敗が続いたら、しばらく止める（15分に、同じメールアドレスは5回・同じ回線は20回まで。会場のWi-Fiなどで回線を分け合うため、回線は多めに）
+// ログインの失敗が続いたら、しばらく止める（15分に、同じ回線から同じメールアドレスは5回・同じ回線は合わせて20回まで。会場のWi-Fiなどで回線を分け合うため、回線は多めに）
 const LOGIN_FAILS = new Map();
 const FAIL_WINDOW = 15 * 60 * 1000, FAIL_MAX = (k) => (k.startsWith("ip:") ? 20 : 5);
-function loginKeys(email) { const req = requestContext.getStore()?.req; return [`ip:${req ? clientIp(req) : "?"}`, `mail:${email}`]; }
+// メールアドレスだけで数えると、他人がわざと間違えて止められてしまうので「同じ回線から、同じメールアドレス」で数える
+function loginKeys(email) { const req = requestContext.getStore()?.req, ip = req ? clientIp(req) : "?"; return [`ip:${ip}`, `mail:${ip}:${email}`]; }
 function loginBlocked(email) { const now = Date.now(); return loginKeys(email).some((k) => { const f = LOGIN_FAILS.get(k); return f && now - f.at < FAIL_WINDOW && f.n >= FAIL_MAX(k); }); }
 function loginFailed(email) { const now = Date.now(); for (const k of loginKeys(email)) { const f = LOGIN_FAILS.get(k); LOGIN_FAILS.set(k, f && now - f.at < FAIL_WINDOW ? { n: f.n + 1, at: f.at } : { n: 1, at: now }); } }
 

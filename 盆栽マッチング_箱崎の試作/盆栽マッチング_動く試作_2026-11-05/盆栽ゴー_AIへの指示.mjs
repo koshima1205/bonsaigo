@@ -23,8 +23,9 @@ Fail the photo (ok=false) if any of these is true: it does not show a bonsai or 
 - ok: true only if none of the above.
 - is_bonsai: whether a bonsai or potted tree is the main subject.
 - reason_ja and reason_en: one short sentence each. If ok, say what you see.
+- reasons: the same sentence in each of the 8 languages (ja, en, es, zh, fr, it, th, km), so the app can show it in the user's language.
 ${CONFIDENCE}`,
-    schema: obj({ ok: bool, is_bonsai: bool, confidence: num, reason_ja: str, reason_en: str }),
+    schema: obj({ ok: bool, is_bonsai: bool, confidence: num, reason_ja: str, reason_en: str, reasons: eight }),
   },
 
   // 文の確かめ（投稿の前・2段目）
@@ -33,8 +34,9 @@ ${CONFIDENCE}`,
     instruction: `You check post text before it is posted on BONSAIGO's official accounts. The text is in <user_input>. Judge only; do not rewrite.
 Fail it (ok=false) if it: states an age, price, award, lineage, or famous owner that the craftsperson's note does not support; promises results ("never dies", "guaranteed"); includes contact details, prices, or a person's full name; uses a bonsai term in a way that contradicts the glossary; or says anything that could embarrass the craftsperson.
 - problems_ja and problems_en: one short sentence per problem. Empty if ok.
+- problems_by_lang: all problems as one short paragraph in each of the 8 languages (ja, en, es, zh, fr, it, th, km). Empty strings if ok.
 ${CONFIDENCE}`,
-    schema: obj({ ok: bool, confidence: num, problems_ja: strs, problems_en: strs }),
+    schema: obj({ ok: bool, confidence: num, problems_ja: strs, problems_en: strs, problems_by_lang: eight }),
   },
 
   // 逆翻訳の確かめ（答えを送る前）。元の reviewAnswer に確かさを足したもの
@@ -71,13 +73,13 @@ ${CONFIDENCE}`,
 
 // AI を呼ばない、決まりの確かめ（毎回・料金ゼロ）。AI の確かめの前に通す
 const RULES = [
-  { re: /人間国宝|後継ぎ不足|後継者不足|living national treasure/i, ja: "使わないと決めた言い方が入っています", en: "Uses wording we decided not to use" },
-  { re: /[¥$€£]\s?\d|\d+\s?(円|万円|ドル|dollars?|usd|eur)/i, ja: "値段が入っています", en: "Includes a price" },
-  { re: /[\w.+-]+@[\w-]+\.[\w.]+|https?:\/\/|\b0\d{1,4}-\d{1,4}-\d{3,4}\b/i, ja: "連絡先やリンクが入っています", en: "Includes contact details or a link" },
-  { re: /絶対に枯れない|必ず(育つ|枯れない)|guaranteed|never dies/i, ja: "言い切れないことを約束しています", en: "Promises something no one can promise" },
+  { code: "words", re: /人間国宝|後継ぎ不足|後継者不足|living national treasure/i, ja: "使わないと決めた言い方が入っています", en: "Uses wording we decided not to use" },
+  { code: "price", re: /[¥$€£]\s?\d|\d+\s?(円|万円|ドル|dollars?|usd|eur)/i, ja: "値段が入っています", en: "Includes a price" },
+  { code: "contact", re: /[\w.+-]+@[\w-]+\.[\w.]+|https?:\/\/|\b0\d{1,4}-\d{1,4}-\d{3,4}\b/i, ja: "連絡先やリンクが入っています", en: "Includes contact details or a link" },
+  { code: "promise", re: /絶対に枯れない|ne meurt jamais|non muore mai|nunca muere|永远不会枯|ไม่มีวันตาย|ធានាថាមិនងាប់|必ず(育つ|枯れない)|guaranteed|never dies/i, ja: "言い切れないことを約束しています", en: "Promises something no one can promise" },
 ];
 export function ruleCheck(texts) {
   const all = texts.join("\n");
   const hit = RULES.filter((r) => r.re.test(all));
-  return { ok: hit.length === 0, problems_ja: hit.map((r) => r.ja), problems_en: hit.map((r) => r.en) };
+  return { ok: hit.length === 0, codes: hit.map((r) => r.code), problems_ja: hit.map((r) => r.ja), problems_en: hit.map((r) => r.en) };
 }

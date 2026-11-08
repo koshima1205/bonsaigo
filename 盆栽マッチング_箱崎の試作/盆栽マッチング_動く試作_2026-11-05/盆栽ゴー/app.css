@@ -655,3 +655,7 @@ html,body{font-variant-numeric:lining-nums}
 .qa-also svg{width:14px;height:14px}
 .qa-also span{padding:3px 8px;border-radius:999px;background:var(--moss-soft);color:var(--moss);font-weight:600}
 .pick-photo.own .ai{display:none}
+/* 職人のホーム：まだ答えていない件数（0件なら出さない） */
+.tile .nbox{margin-left:auto;display:flex;flex-direction:column;align-items:center;gap:4px}
+.tile .nbox[hidden]{display:none}
+.tile .nbox small{font-size:11px;font-weight:700;color:var(--copper);white-space:nowrap}

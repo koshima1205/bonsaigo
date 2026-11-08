@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#121410">
-<title>盆栽ゴー BONSAIGO</title>
+<title>BONSAIGO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&family=Noto+Sans+Khmer:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
@@ -46,11 +46,10 @@
       <section class="scr on" id="s-welcome" data-light>
         <div class="film"><video src="img/grow.mp4" autoplay muted loop playsinline poster="img/grow.jpg"></video></div>
         <div class="veil"></div>
-        <div class="wordmark"><b>BONSAIGO</b><span>盆栽ゴー</span><div class="tag" data-i18n="g.wel.tag"></div></div>
+        <div class="wordmark"><b>BONSAIGO</b><div class="tag" data-i18n="g.wel.tag"></div></div>
         <button class="lang-pill dk" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button>
         <div class="in">
           <h1 data-i18n="g.welcome.h1"></h1>
-          <p class="jp">日本の職人に、写真とあなたの言葉で。</p>
           <button class="cta" data-go="gstart" data-i18n="g.welcome.cta"></button>
           <button class="cta ghost" data-go="mstart" data-i18n="a.welcome.master"></button>
           <div style="display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap">
@@ -75,9 +74,9 @@
 
       <!-- 職人：入る -->
       <section class="scr k" id="s-mstart">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="r"><button class="lang-pill" data-pick="a"><svg><use href="#i-globe"/></svg><b class="lp-name">日本語</b></button></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><button class="lang-pill" data-pick="a"><svg><use href="#i-globe"/></svg><b class="lp-name"></b></button></div></div>
         <div class="pad">
-          <div class="eyebrow c">BONSAIGO · 盆栽ゴー</div>
+          <div class="eyebrow c">BONSAIGO</div>
           <h2 class="h-jp" data-i18n="a.x.who"></h2>
           <div class="who" id="whoList"></div>
           <div class="sec-h jp"><h3 data-i18n="a.x.new"></h3></div>
@@ -91,7 +90,7 @@
 
       <!-- 相談する人：ホーム -->
       <section class="scr" id="s-home">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b><span>盆栽ゴー</span></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
         <div class="pad">
           <div class="eyebrow c" id="gHello"></div>
           <h2 class="h-en" data-i18n="g.home.h"></h2>
@@ -148,7 +147,7 @@
           <div class="answer" id="ansBody"></div>
           <div id="ansCheck"></div>
           <p class="tnote" data-i18n="g.ans.tnote"></p>
-          <button class="jp-toggle" id="jpBtn"><span data-i18n="g.x.backTr"></span> <span>›</span></button>
+          <button class="jp-toggle" id="jpBtn" hidden><span data-i18n="g.x.backTr"></span> <span>›</span></button>
           <div class="jp-orig" id="jpOrig" hidden></div>
           <div class="saved"><svg><use href="#i-bookmark"/></svg><span data-i18n="g.ans.saved"></span></div>
           <div class="mini-q"><img id="ansImg" src="img/ask.jpg" alt=""><div id="ansQ"></div></div>
@@ -186,12 +185,12 @@
 
       <!-- 職人：ホーム -->
       <section class="scr k" id="s-mhome">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b><span>盆栽ゴー</span></div><div class="r"><span class="mode-pill" data-mode></span><button class="icon-btn" data-role aria-label="役割を切りかえる"><svg><use href="#i-swap"/></svg></button></div></div>
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><span class="mode-pill" data-mode></span><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
         <div class="pad">
           <div class="hello" data-i18n="a.mh.hi"></div>
           <h2 class="h-jp" id="mHello"></h2>
-          <button class="lang-pill" data-pick="a" style="margin-top:12px"><svg><use href="#i-globe"/></svg><span data-i18n="a.pickLbl"></span><b class="lp-name">日本語</b></button>
-          <button class="tile" data-go="inbox"><span class="ic c"><svg><use href="#i-reply"/></svg></span><div><b data-i18n="a.mh.q"></b><span data-i18n="a.mh.qT"></span></div><span class="n" id="mN">0</span></button>
+          <button class="lang-pill" data-pick="a" style="margin-top:12px"><svg><use href="#i-globe"/></svg><span data-i18n="a.pickLbl"></span><b class="lp-name"></b></button>
+          <button class="tile" data-go="inbox"><span class="ic c"><svg><use href="#i-reply"/></svg></span><div><b data-i18n="a.mh.q"></b><span id="mQT" data-i18n="a.mh.qT0"></span></div><span class="nbox" id="mNbox" hidden><span class="n" id="mN">0</span><small data-i18n="a.mh.nLbl"></small></span></button>
           <button class="tile" data-go="reg"><span class="ic"><svg><use href="#i-cam"/></svg></span><div><b data-i18n="a.mh.reg"></b><span data-i18n="a.mh.regT"></span></div><span class="n" style="color:var(--moss)">›</span></button>
           <div class="sec-h jp"><h3 data-i18n="a.mh.out"></h3></div>
           <div class="stats">
@@ -219,7 +218,7 @@
 
       <!-- 職人：相談を読んで、答える -->
       <section class="scr k" id="s-detail">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
         <div class="pad">
           <div class="eyebrow" id="dEye"></div>
           <h2 class="h-jp" id="dTitle"></h2>
@@ -246,7 +245,7 @@
 
       <!-- 職人：届く形を確かめて送る -->
       <section class="scr k" id="s-confirm">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
         <div class="pad">
           <div class="eyebrow" data-i18n="a.conf.eye"></div>
           <h2 class="h-jp" data-i18n="a.conf.h2"></h2>
@@ -287,15 +286,15 @@
 
       <!-- 職人：木を登録する 2（投稿の下書きを直して OK） -->
       <section class="scr k" id="s-posts">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="もどる"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="a.talk.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="a.talk.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
         <div class="pad">
           <h2 class="h-jp" data-i18n="a.x.posts"></h2>
           <div class="stepper"><i class="on"></i><i class="on"></i><i></i></div>
           <div class="check done" id="pcImg"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c1"></b><span id="pcImgT"></span></div><span class="cf" id="pcImgC"></span></div>
           <p class="lead" style="font-size:13.5px" data-i18n="a.x.postsS"></p>
           <div class="post-edit"><div class="hd"><b>X</b><span data-i18n="a.talk.drS"></span></div><textarea id="pX" rows="4"></textarea></div>
-          <div class="post-edit"><div class="hd"><b>Instagram</b><span>日本語</span></div><textarea id="pIg" rows="4"></textarea></div>
-          <details class="langs8" id="pAll"><summary><span>8 languages</span><span>›</span></summary><div id="pAllBody"></div></details>
+          <div class="post-edit"><div class="hd"><b>Instagram</b><span data-i18n="a.talk.drS"></span></div><textarea id="pIg" rows="4"></textarea></div>
+          <details class="langs8" id="pAll"><summary><span data-i18n="a.x.all8"></span><span>›</span></summary><div id="pAllBody"></div></details>
           <button class="linkish" id="b-tryNg" style="margin-top:14px" data-i18n="a.x.tryNg"></button>
           <div id="textResult"></div>
         </div>

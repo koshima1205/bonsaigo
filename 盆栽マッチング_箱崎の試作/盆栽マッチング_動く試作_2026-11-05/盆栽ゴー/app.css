@@ -834,3 +834,22 @@ html,body{font-variant-numeric:lining-nums}
 .scr:has(> .tabs):has(> .dock) .pad{padding-bottom:240px}
 .scr:not(:has(> .tabs)):has(> .dock) .pad{padding-bottom:150px}
 [data-logout]{margin-left:6px}
+
+/* 11/08 修正の控え No.4・9：写真がまだないときは、見本の絵ではなく空の枠を出す */
+.pick-photo .ph-empty{display:none}
+.pick-photo.empty{background:transparent;border:1.5px dashed #C4BBAC}
+.pick-photo.empty img{display:none}
+.pick-photo.empty .ph-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;color:var(--ink-2);font-size:14px}
+.pick-photo.empty .ph-empty svg{width:30px;height:30px}
+.pick-photo .scan{pointer-events:none}
+/* 11/08 箱崎さん：ロゴをデモ動画のもの（BonsaiGO・GOが緑・鉢の絵）にそろえる。写真の上は白い文字、白い地の上は墨の文字 */
+.wordmark img.logo{display:block;height:44px;width:auto;filter:drop-shadow(0 2px 14px rgba(0,0,0,.35))}
+img.logo-sm{display:block;height:26px;width:auto;margin-bottom:10px}
+.mark img.logo-top{display:block;height:24px;width:auto}
+/* 11/08 通知：デモ動画と同じ白いカード（「盆」の印・上の小さな文・下の太い文）。画面の上から落ちてくる */
+.notif{position:absolute;left:12px;right:12px;top:58px;z-index:90;display:flex;gap:12px;align-items:center;text-align:left;padding:12px 16px;border:0;border-radius:20px;background:rgba(255,253,248,.97);color:var(--ink);box-shadow:0 18px 40px -12px rgba(0,0,0,.45);transform:translateY(-160%) scale(.94);opacity:0;pointer-events:none;transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .3s;cursor:pointer;font:inherit}
+.notif.show{transform:none;opacity:1;pointer-events:auto}
+.notif i{flex:none;width:40px;height:40px;border-radius:11px;background:var(--moss);color:#fff;font:600 20px/40px var(--f-jp-display);text-align:center;font-style:normal}
+.notif .tx{display:block;min-width:0}
+.notif .tx b{display:block;font-size:12px;font-weight:500;color:var(--ink-2)}
+.notif .tx span{display:block;margin-top:2px;font-size:15px;font-weight:700;line-height:1.35}

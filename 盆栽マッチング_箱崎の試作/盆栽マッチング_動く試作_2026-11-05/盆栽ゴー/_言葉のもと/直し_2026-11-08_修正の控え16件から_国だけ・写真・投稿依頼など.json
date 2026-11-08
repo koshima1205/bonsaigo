@@ -1,0 +1,192 @@
+{
+ "a.x.regionF": {
+  "en": "Country (required)",
+  "ja": "国（必須）",
+  "es": "País (obligatorio)",
+  "zh": "国家（必填）",
+  "fr": "Pays (obligatoire)",
+  "it": "Paese (obbligatorio)",
+  "th": "ประเทศ (จำเป็น)",
+  "km": "ប្រទេស (ត្រូវការ)"
+ },
+ "a.x.regionPick": {
+  "en": "Choose a country",
+  "ja": "国を選んでください",
+  "es": "Elige un país",
+  "zh": "请选择国家",
+  "fr": "Choisissez un pays",
+  "it": "Scegli un paese",
+  "th": "เลือกประเทศ",
+  "km": "ជ្រើសប្រទេស"
+ },
+ "a.x.errRegion": {
+  "en": "Choose a country.",
+  "ja": "国を選んでください。",
+  "es": "Elige un país.",
+  "zh": "请选择国家。",
+  "fr": "Choisissez un pays.",
+  "it": "Scegli un paese.",
+  "th": "เลือกประเทศ",
+  "km": "ជ្រើសប្រទេស។"
+ },
+ "g.gp.region": {
+  "en": "1 · Country",
+  "ja": "1 · 国",
+  "es": "1 · País",
+  "zh": "1 · 国家",
+  "fr": "1 · Pays",
+  "it": "1 · Paese",
+  "th": "1 · ประเทศ",
+  "km": "1 · ប្រទេស"
+ },
+ "g.gp.all": {
+  "en": "All countries",
+  "ja": "すべての国",
+  "es": "Todos",
+  "zh": "全部国家",
+  "fr": "Tous",
+  "it": "Tutti",
+  "th": "ทุกประเทศ",
+  "km": "គ្រប់ប្រទេស"
+ },
+ "g.gp.lead": {
+  "en": "What would you like to know? Pick a country and your tree or trouble, and gardens and craftspeople that fit appear below.",
+  "ja": "何を知りたいですか。国と、木の種類か困りごとを選ぶと、合う園や職人が出ます。",
+  "es": "¿Qué quieres saber? Elige un país y tu árbol o problema, y abajo aparecerán los jardines y artesanos adecuados.",
+  "zh": "你想了解什么？选择国家，再选择树种或烦恼，下面会出现合适的园和匠人。",
+  "fr": "Que voulez-vous savoir ? Choisissez un pays, puis votre arbre ou votre souci : les jardins et artisans qui conviennent s'affichent en dessous.",
+  "it": "Cosa vuoi sapere? Scegli un paese e il tuo albero o problema: sotto compaiono i giardini e gli artigiani adatti.",
+  "th": "คุณอยากรู้อะไร? เลือกประเทศ แล้วเลือกชนิดต้นไม้หรือปัญหา สวนและช่างที่เหมาะจะแสดงด้านล่าง",
+  "km": "តើអ្នកចង់ដឹងអ្វី? ជ្រើសប្រទេស និងប្រភេទដើមឈើ ឬបញ្ហា នោះសួន និងជាងដែលសមនឹងបង្ហាញខាងក្រោម។"
+ },
+ "g.gp.none": {
+  "en": "No garden matches. Try another country or tree.",
+  "ja": "合う園がありません。国か木を変えてみてください。",
+  "es": "Ningún jardín coincide. Prueba otro país u otro árbol.",
+  "zh": "没有符合的园子，换个国家或树种试试。",
+  "fr": "Aucun jardin ne correspond. Essayez un autre pays ou un autre arbre.",
+  "it": "Nessun giardino corrisponde. Prova un altro paese o un altro albero.",
+  "th": "ไม่มีสวนที่ตรง ลองเปลี่ยนประเทศหรือชนิดต้นไม้",
+  "km": "គ្មានសួនត្រូវគ្នា។ សាកល្បងប្រទេស ឬដើមឈើផ្សេង។"
+ },
+ "a.x.ok": {
+  "en": "Request posting",
+  "ja": "投稿依頼をする",
+  "es": "Solicitar la publicación",
+  "zh": "申请发布",
+  "fr": "Demander la publication",
+  "it": "Richiedi la pubblicazione",
+  "th": "ขอให้โพสต์",
+  "km": "ស្នើសុំផុស"
+ },
+ "g.x.errPhoto": {
+  "en": "Please add a photo of your tree.",
+  "ja": "木の写真を追加してください。",
+  "es": "Añade una foto de tu árbol.",
+  "zh": "请添加你的树的照片。",
+  "fr": "Ajoutez une photo de votre arbre.",
+  "it": "Aggiungi una foto del tuo albero.",
+  "th": "กรุณาเพิ่มรูปต้นไม้ของคุณ",
+  "km": "សូមបន្ថែមរូបថតដើមឈើរបស់អ្នក។"
+ },
+ "a.x.errPhoto": {
+  "en": "Please take or choose a photo of the tree first.",
+  "ja": "先に木の写真を撮るか、選んでください。",
+  "es": "Primero haz o elige una foto del árbol.",
+  "zh": "请先拍摄或选择树的照片。",
+  "fr": "Prenez ou choisissez d'abord une photo de l'arbre.",
+  "it": "Prima scatta o scegli una foto dell'albero.",
+  "th": "กรุณาถ่ายหรือเลือกรูปต้นไม้ก่อน",
+  "km": "សូមថត ឬជ្រើសរើសរូបថតដើមឈើជាមុនសិន។"
+ },
+ "g.x.photoEmpty": {
+  "en": "No photo yet",
+  "ja": "まだ写真がありません",
+  "es": "Aún no hay foto",
+  "zh": "还没有照片",
+  "fr": "Pas encore de photo",
+  "it": "Ancora nessuna foto",
+  "th": "ยังไม่มีรูปภาพ",
+  "km": "មិនទាន់មានរូបថត"
+ },
+ "g.sent.origLbl": {
+  "en": "What you sent",
+  "ja": "あなたが送った文",
+  "es": "Lo que enviaste",
+  "zh": "你发送的内容",
+  "fr": "Ce que vous avez envoyé",
+  "it": "Quello che hai inviato",
+  "th": "ข้อความที่คุณส่ง",
+  "km": "អ្វីដែលអ្នកបានផ្ញើ"
+ },
+ "c.errNet": {
+  "en": "The connection was cut. Please try again.",
+  "ja": "通信が切れました。もう一度お試しください。",
+  "es": "Se cortó la conexión. Inténtalo de nuevo.",
+  "zh": "连接中断了，请重试。",
+  "fr": "La connexion a été coupée. Réessayez.",
+  "it": "La connessione si è interrotta. Riprova.",
+  "th": "การเชื่อมต่อขาด กรุณาลองอีกครั้ง",
+  "km": "ការតភ្ជាប់ត្រូវបានកាត់។ សូមព្យាយាមម្តងទៀត។"
+ },
+ "a.notif.t": {
+  "en": "BONSAIGO · now",
+  "ja": "BONSAIGO · いま",
+  "es": "BONSAIGO · ahora",
+  "zh": "BONSAIGO · 刚刚",
+  "fr": "BONSAIGO · maintenant",
+  "it": "BONSAIGO · ora",
+  "th": "BONSAIGO · ตอนนี้",
+  "km": "BONSAIGO · ឥឡូវនេះ"
+ },
+ "g.notif.t": {
+  "en": "BONSAIGO · now",
+  "ja": "BONSAIGO · いま",
+  "es": "BONSAIGO · ahora",
+  "zh": "BONSAIGO · 刚刚",
+  "fr": "BONSAIGO · maintenant",
+  "it": "BONSAIGO · ora",
+  "th": "BONSAIGO · ตอนนี้",
+  "km": "BONSAIGO · ឥឡូវនេះ"
+ },
+ "a.notif.new": {
+  "en": "A new question has arrived ({F} → {T})",
+  "ja": "新しい相談が届きました（{F} → {T}）",
+  "es": "Ha llegado una nueva consulta ({F} → {T})",
+  "zh": "收到新的咨询（{F} → {T}）",
+  "fr": "Une nouvelle question est arrivée ({F} → {T})",
+  "it": "È arrivata una nuova domanda ({F} → {T})",
+  "th": "มีคำถามใหม่เข้ามา ({F} → {T})",
+  "km": "មានសំណួរថ្មីមកដល់ ({F} → {T})"
+ },
+ "g.notif.ans": {
+  "en": "{E} answered your question",
+  "ja": "{E}から答えが届きました",
+  "es": "{E} respondió a tu consulta",
+  "zh": "{E} 回答了你的问题",
+  "fr": "{E} a répondu à votre question",
+  "it": "{E} ha risposto alla tua domanda",
+  "th": "{E} ตอบคำถามของคุณแล้ว",
+  "km": "{E} បានឆ្លើយសំណួររបស់អ្នក"
+ },
+ "g.st.demo": {
+  "en": "Sign in as the sample asker",
+  "ja": "見本の相談者でログイン",
+  "es": "Entrar como el usuario de ejemplo",
+  "zh": "以示例咨询者登录",
+  "fr": "Se connecter avec le compte d'exemple",
+  "it": "Accedi con l'utente di esempio",
+  "th": "เข้าสู่ระบบด้วยผู้ถามตัวอย่าง",
+  "km": "ចូលជាអ្នកសួរគំរូ"
+ },
+ "a.x.demoAcc": {
+  "en": "Sign in as the sample craftsperson",
+  "ja": "見本の職人でログイン",
+  "es": "Entrar como el artesano de ejemplo",
+  "zh": "以示例匠人登录",
+  "fr": "Se connecter comme artisan d'exemple",
+  "it": "Accedi come artigiano di esempio",
+  "th": "เข้าสู่ระบบด้วยช่างตัวอย่าง",
+  "km": "ចូលជាជាងគំរូ"
+ }
+}

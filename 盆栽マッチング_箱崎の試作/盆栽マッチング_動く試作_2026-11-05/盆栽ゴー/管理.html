@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>BonsaiGO 管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Shippori+Mincho+B1:wght@700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+Thai:wght@400;700&family=Noto+Sans+Khmer:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap">
+<style>
+/* 管理者ページ：職人が登録した木を一覧で見て、公式の X と Instagram に出す（2026-11-08） */
+:root{
+  --ground:#FBFAF7; --paper:#FFFFFF; --tile:#F1EDE5; --ink:#1A1714; --ink-2:#615B53; --line:#E6E1D7;
+  --moss:#3D5A35; --moss-soft:#E5ECDF; --copper:#A35F2E; --copper-soft:#F5E8DC; --shu:#A5341F;
+  --f-jp:"Shippori Mincho B1","Hiragino Mincho ProN",serif;
+  --f-en:"Cormorant Garamond","Times New Roman",serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic","Noto Sans Thai","Noto Sans Khmer","Noto Sans SC",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--f-body);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;padding:14px 24px;background:rgba(251,250,247,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .mark{font:600 22px/1 var(--f-en);letter-spacing:.14em}
+.top .mark small{font:500 12px/1 var(--f-body);letter-spacing:.08em;color:var(--ink-2);margin-left:10px}
+.top .sp{flex:1}
+.pill{height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);font-size:13px}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 24px 80px}
+h1{font:700 26px/1.35 var(--f-jp);margin:4px 0 6px}
+.lead{color:var(--ink-2);font-size:14px;line-height:1.8;margin:0 0 18px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px}
+.seg{display:inline-grid;grid-auto-flow:column;padding:4px;border-radius:12px;background:var(--tile)}
+.seg button{border:0;background:none;padding:8px 16px;border-radius:9px;font-size:14px;font-weight:700;color:var(--ink-2)}
+.seg button.on{background:var(--paper);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.langs{display:flex;flex-wrap:wrap;gap:6px}
+.langs button{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 12px;font-size:13px}
+.langs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.list{display:grid;gap:18px}
+.card{display:grid;grid-template-columns:260px 1fr;gap:20px;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--paper)}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;background:var(--tile)}
+.card h2{font:700 20px/1.4 var(--f-jp);margin:0}
+.meta{color:var(--ink-2);font-size:13px;margin:4px 0 12px;line-height:1.7}
+.posts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.post{border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.post .hd{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:700}
+.post .txt{white-space:pre-wrap;font-size:14px;line-height:1.75;flex:1}
+.held{font:700 12px/1 var(--f-body);color:var(--copper);background:var(--copper-soft);border-radius:999px;padding:4px 10px;vertical-align:middle}
+.done{font-size:12px;font-weight:700;color:var(--moss);background:var(--moss-soft);border-radius:999px;padding:3px 10px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:0;border-radius:10px;padding:9px 14px;font-size:13.5px;font-weight:700;background:var(--ink);color:#fff;text-decoration:none;display:inline-flex;align-items:center}
+.btn.ghost{background:var(--paper);color:var(--ink);border:1px solid var(--line)}
+.btn.moss{background:var(--moss)}
+.link{border:0;background:none;color:var(--ink-2);font-size:12.5px;text-decoration:underline;padding:0}
+.empty{padding:40px;text-align:center;color:var(--ink-2);border:1px dashed var(--line);border-radius:18px}
+.login{max-width:380px;margin:12vh auto;padding:28px;border:1px solid var(--line);border-radius:18px;background:var(--paper)}
+.login label{display:block;font-size:13px;color:var(--ink-2);margin:16px 0 6px}
+.login input{width:100%;height:46px;border:1px solid var(--line);border-radius:12px;padding:0 14px;background:var(--ground)}
+.login .btn{width:100%;justify-content:center;height:46px;margin-top:16px;font-size:15px}
+.err{color:var(--shu);font-size:13px;margin:10px 0 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13.5px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (max-width:760px){.card{grid-template-columns:1fr}.posts{grid-template-columns:1fr}.wrap{padding:16px 16px 60px}.top{padding:12px 16px}}
+</style>
+</head>
+<body>
+<div id="loginView" class="login" hidden>
+  <div class="mark"><img src="img/logo.svg" alt="BonsaiGO" style="display:block;height:30px;width:auto"></div>
+  <h1 style="margin-top:14px">管理者ログイン</h1>
+  <p class="lead" style="margin:0">職人が登録した木を、公式の X と Instagram に出すためのページです。</p>
+  <label for="pw">管理者のパスワード</label>
+  <input id="pw" type="password" autocomplete="current-password">
+  <p class="err" id="lErr" hidden></p>
+  <button class="btn" id="bLogin">ログイン</button>
+</div>
+
+<div id="mainView" hidden>
+  <header class="top"><div class="mark" style="display:flex;align-items:center"><img src="img/logo.svg" alt="BonsaiGO" style="display:block;height:24px;width:auto"><small>管理</small></div><div class="sp"></div><button class="pill" id="bReload">一覧を読みこみ直す</button><button class="pill" id="bLogout">ログアウト</button></header>
+  <main class="wrap">
+    <h1>職人から届いた木</h1>
+    <p class="lead">職人が「投稿依頼をする」を押した木です。「人の確かめ待ち」の札は、AIが写真か文に迷ったものなので、写真と文を見てから発信してください。X は投稿画面が文の入った状態で開くので、公式アカウントで「ポスト」を押してください。Instagram は写真を保存し、文をコピーしてアプリで貼ってください。発信したら「投稿済みにする」を押します。</p>
+    <div class="bar">
+      <div class="seg" id="tabs"><button class="on" data-t="todo">まだ発信していない</button><button data-t="done">発信済み</button><button data-t="photo">写真の確かめ待ち</button></div>
+      <div class="langs" id="langs"></div>
+    </div>
+    <div class="list" id="list"></div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const LANGS = [["ja", "日本語"], ["en", "English"], ["es", "Español"], ["zh", "中文"], ["fr", "Français"], ["it", "Italiano"], ["th", "ไทย"], ["km", "ខ្មែរ"]];
+  let trees = [], tab = "todo", lang = "ja";
+  const toast = (m) => { const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("show"), 2200); };
+  async function api(method, url, body) {
+    const r = await fetch("/api" + url, { method, headers: { "content-type": "application/json" }, body: method === "POST" ? JSON.stringify(body || {}) : undefined, credentials: "same-origin" });
+    let d = {}; try { d = await r.json(); } catch {}
+    if (!r.ok) { const e = new Error(d.error || "うまくいきませんでした"); e.status = r.status; throw e; }
+    return d;
+  }
+  const isDone = (t) => Boolean(t.posted && t.posted.x && t.posted.instagram);
+  const when = (s) => s ? new Date(s).toLocaleString("ja-JP", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+  function paint() {
+    $("#langs").innerHTML = LANGS.map(([k, n]) => `<button class="${k === lang ? "on" : ""}" data-l="${k}">${esc(n)}</button>`).join("");
+    document.querySelectorAll("#tabs [data-t]").forEach((b) => b.classList.toggle("on", b.dataset.t === tab));
+    // 11/08 箱崎さん：写真でAIが迷って止まった木は、別のタブ「写真の確かめ待ち」に出す
+    const held = trees.filter((t) => t.status === "image_held");
+    const pb = document.querySelector('#tabs [data-t="photo"]'); pb.textContent = held.length ? `写真の確かめ待ち（${held.length}）` : "写真の確かめ待ち";
+    const list = tab === "photo" ? held : trees.filter((t) => t.status !== "image_held" && (tab === "done") === isDone(t));
+    if (!list.length) { $("#list").innerHTML = `<div class="empty">${tab === "todo" ? "まだ発信していない木はありません。職人が登録すると、ここに並びます。" : tab === "photo" ? "写真の確かめ待ちの木はありません。AIが写真に迷った木が、ここに並びます。" : "発信済みの木はまだありません。"}</div>`; return; }
+    $("#list").innerHTML = list.map((t) => {
+      // 11/08 箱崎さん：写真でAIが迷って止まった木。写真を見て、盆栽ならOKを押すと投稿の文を作る
+      if (t.status === "image_held") return `<article class="card" data-id="${esc(t.id)}">
+        <div>${t.image ? `<img src="${esc(t.image)}" alt="">` : ""}</div>
+        <div>
+          <h2>${esc(t.name || t.species || "名前のない木")} <span class="held">写真の確かめ待ち</span></h2>
+          <div class="meta">${esc([t.species, t.age ? `樹齢 ${t.age}年` : ""].filter(Boolean).join("・"))}<br>${esc([t.who, t.garden].filter(Boolean).join("・"))}　登録 ${esc(when(t.at))}</div>
+          <section class="post"><div class="hd"><span>AIが写真に迷った理由</span></div><div class="txt">${esc(t.reason || "AIが、盆栽の写真かどうかを決めきれませんでした。")}</div>
+            <div class="txt" style="flex:0;color:var(--ink-2);font-size:13px">写真を見て、盆栽が主役の写真なら「盆栽の写真としてOK」を押してください。投稿の文をAIが作って、この一覧に出します（1分ほどかかります）。</div>
+            <div class="btns"><button class="btn moss" data-photo="ok">盆栽の写真としてOK（投稿の文を作る）</button><button class="btn ghost" data-photo="ng">盆栽の写真ではない（一覧から外す）</button></div></section>
+        </div></article>`;
+      const x = (t.posts.x || {})[lang] || "", ig = (t.posts.instagram || {})[lang] || "";
+      const px = t.posted.x, pi = t.posted.instagram;
+      return `<article class="card" data-id="${esc(t.id)}">
+        <div>${t.image ? `<img src="${esc(t.image)}" alt="">` : ""}</div>
+        <div>
+          <h2>${esc(t.name || t.species || "名前のない木")}${t.status !== "ready" ? ` <span class="held">人の確かめ待ち</span>` : ""}</h2>
+          <div class="meta">${esc([t.species, t.age ? `樹齢 ${t.age}年` : ""].filter(Boolean).join("・"))}<br>${esc([t.who, t.garden].filter(Boolean).join("・"))}　登録 ${esc(when(t.at))}</div>
+          <div class="posts">
+            <section class="post"><div class="hd"><span>X</span>${px ? `<span class="done">投稿済み ${esc(when(px))}</span>` : ""}</div><div class="txt" lang="${lang}">${esc(x)}</div>
+              <div class="btns"><a class="btn" target="_blank" rel="noopener" href="https://x.com/intent/post?text=${encodeURIComponent(x)}">X の投稿画面を開く</a>${px ? `<button class="link" data-undo="x">投稿済みを取り消す</button>` : `<button class="btn moss" data-done="x">投稿済みにする</button>`}</div></section>
+            <section class="post"><div class="hd"><span>Instagram</span>${pi ? `<span class="done">投稿済み ${esc(when(pi))}</span>` : ""}</div><div class="txt" lang="${lang}">${esc(ig)}</div>
+              <div class="btns">${t.image ? `<a class="btn ghost" download="BonsaiGO_${esc((t.name || t.species || "tree").replace(/[\\/:*?"<>|]/g, ""))}.jpg" href="${esc(t.image)}">写真を保存</a>` : ""}<button class="btn ghost" data-copy="instagram">文をコピー</button><a class="btn ghost" target="_blank" rel="noopener" href="https://www.instagram.com/">Instagram を開く</a>${pi ? `<button class="link" data-undo="instagram">投稿済みを取り消す</button>` : `<button class="btn moss" data-done="instagram">投稿済みにする</button>`}</div></section>
+          </div>
+        </div></article>`;
+    }).join("");
+  }
+  async function load() {
+    try { trees = (await api("GET", "/admin/trees")).trees || []; showMain(); paint(); }
+    catch (e) { if (e.status === 401) showLogin(); else toast(e.message); }
+  }
+  const showLogin = () => { $("#loginView").hidden = false; $("#mainView").hidden = true; $("#pw").focus(); };
+  const showMain = () => { $("#loginView").hidden = true; $("#mainView").hidden = false; };
+  async function login() {
+    const password = $("#pw").value; const err = $("#lErr");
+    if (!password) { err.textContent = "パスワードを入れてください"; err.hidden = false; return; }
+    try { await api("POST", "/admin/login", { password }); $("#pw").value = ""; err.hidden = true; load(); }
+    catch (e) { err.textContent = e.message; err.hidden = false; }
+  }
+  $("#bLogin").addEventListener("click", login);
+  $("#pw").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
+  $("#bLogout").addEventListener("click", async () => { try { await api("POST", "/admin/logout"); } catch {} trees = []; showLogin(); });
+  $("#bReload").addEventListener("click", async () => { await load(); toast("読みこみ直しました"); });
+  $("#tabs").addEventListener("click", (e) => { const b = e.target.closest("[data-t]"); if (b) { tab = b.dataset.t; paint(); } });
+  $("#langs").addEventListener("click", (e) => { const b = e.target.closest("[data-l]"); if (b) { lang = b.dataset.l; paint(); } });
+  $("#list").addEventListener("click", async (e) => {
+    const card = e.target.closest("[data-id]"); if (!card) return;
+    const t = trees.find((x) => x.id === card.dataset.id); if (!t) return;
+    const cp = e.target.closest("[data-copy]");
+    if (cp) { try { await navigator.clipboard.writeText(((t.posts || {}).instagram || {})[lang] || ""); toast("文をコピーしました"); } catch { toast("コピーできませんでした。文を選んでコピーしてください"); } return; }
+    const ph = e.target.closest("[data-photo]");
+    if (ph) {
+      const ok = ph.dataset.photo === "ok";
+      if (!ok && !confirm("この木を一覧から外します。よろしいですか？")) return;
+      card.querySelectorAll("[data-photo]").forEach((b) => (b.disabled = true));
+      if (ok) ph.textContent = "投稿の文を作っています…";
+      try {
+        const r = await api("POST", `/admin/trees/${t.id}/photo`, { ok });
+        if (r.tree) trees = trees.map((x) => (x.id === t.id ? r.tree : x)); else trees = trees.filter((x) => x.id !== t.id);
+        paint(); toast(!ok ? "一覧から外しました" : r.tree ? (r.tree.status === "ready" ? "投稿の文ができました" : "投稿の文ができました（文も人の確かめ待ちです）") : "投稿の文の確かめで止まりました。職人の画面で文を直してもらってください");
+      } catch (err) { if (err.status === 401) showLogin(); else { toast(err.message); paint(); } }
+      return;
+    }
+    const d = e.target.closest("[data-done],[data-undo]"); if (!d) return;
+    const where = d.dataset.done || d.dataset.undo;
+    try { const r = await api("POST", `/admin/trees/${t.id}/posted`, { where, undo: Boolean(d.dataset.undo) }); t.posted = r.posted; paint(); toast(d.dataset.undo ? "投稿済みを取り消しました" : "投稿済みにしました"); }
+    catch (err) { if (err.status === 401) showLogin(); else toast(err.message); }
+  });
+  load();
+})();
+</script>
+</body>
+</html>

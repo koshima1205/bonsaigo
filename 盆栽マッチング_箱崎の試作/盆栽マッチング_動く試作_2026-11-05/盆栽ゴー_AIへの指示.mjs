@@ -18,7 +18,7 @@ export const BONSAIGO_TASKS = {
   // 画像の確かめ（投稿の前・1段目）
   checkImage: {
     effort: "low",
-    instruction: `You check one photo before it is posted on BONSAIGO's official X and Instagram. You only judge; you write no post.
+    instruction: `You check one photo before it is posted on BonsaiGO's official X and Instagram. You only judge; you write no post.
 Fail the photo (ok=false) if any of these is true: it does not show a bonsai or a potted tree; a person's face can be recognised; it shows readable personal information (names, addresses, phone numbers, car plates, screens); it shows anything violent, sexual, or unrelated to bonsai.
 - ok: true only if none of the above.
 - is_bonsai: whether a bonsai or potted tree is the main subject.
@@ -31,7 +31,7 @@ ${CONFIDENCE}`,
   // 文の確かめ（投稿の前・2段目）
   checkPostText: {
     effort: "low",
-    instruction: `You check post text before it is posted on BONSAIGO's official accounts. The text is in <user_input>. Judge only; do not rewrite.
+    instruction: `You check post text before it is posted on BonsaiGO's official accounts. The text is in <user_input>. Judge only; do not rewrite.
 Fail it (ok=false) if it: states an age, price, award, lineage, or famous owner that the craftsperson's note does not support; promises results ("never dies", "guaranteed"); includes contact details, prices, or a person's full name; uses a bonsai term in a way that contradicts the glossary; or says anything that could embarrass the craftsperson.
 - problems_ja and problems_en: one short sentence per problem. Empty if ok.
 - problems_by_lang: all problems as one short paragraph in each of the 8 languages (ja, en, es, zh, fr, it, th, km). Empty strings if ok.
@@ -60,7 +60,7 @@ ${CONFIDENCE}`,
   // 木を登録 → 8つの言葉の投稿
   treePosts: {
     effort: "medium",
-    instruction: `A bonsai craftsperson photographed one tree and gave its species, age, and maybe a few spoken words. Write one short post about this tree for BONSAIGO's official X and Instagram, in 8 languages: ja, en, es, zh, fr, it, th, km.
+    instruction: `A bonsai craftsperson photographed one tree and gave its species, age, and maybe a few spoken words. Write one short post about this tree for BonsaiGO's official X and Instagram, in 8 languages: ja, en, es, zh, fr, it, th, km.
 - Open with what is striking and visible in this tree. Then one line on the craft behind it, using a glossary term if the note supports it, with the Japanese term kept in romaji in the non-Japanese versions.
 - Use only the species, age, and note given. Do not add history, awards, owners, prices, or the craftsperson's name.
 - x: under 240 characters per language, with 2 or 3 hashtags. instagram: 2 to 4 short sentences, then 3 to 5 hashtags.

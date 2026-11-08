@@ -598,5 +598,25 @@
   "it": "Esci",
   "th": "ออกจากระบบ",
   "km": "ចាកចេញ"
+ },
+ "a.pub.done": {
+  "ja": "BONSAIGO に届きました。運営が確かめて、公式の X とインスタに出します",
+  "en": "Sent to BONSAIGO. The team will check it and post it on the official X and Instagram",
+  "es": "Enviado a BONSAIGO. El equipo lo revisará y lo publicará en X e Instagram oficiales",
+  "zh": "已送达 BONSAIGO。运营确认后会发布到官方 X 和 Instagram",
+  "fr": "Envoyé à BONSAIGO. L'équipe vérifie puis publie sur les comptes officiels X et Instagram",
+  "it": "Inviato a BONSAIGO. Il team lo controlla e lo pubblica su X e Instagram ufficiali",
+  "th": "ส่งถึง BONSAIGO แล้ว ทีมงานจะตรวจแล้วโพสต์ใน X และ Instagram ทางการ",
+  "km": "បានផ្ញើទៅ BONSAIGO។ ក្រុមការងារនឹងពិនិត្យ ហើយផុសលើ X និង Instagram ផ្លូវការ"
+ },
+ "a.mh.out": {
+  "ja": "公式 X とインスタ用に送った投稿",
+  "en": "Posts sent for the official X and Instagram",
+  "es": "Publicaciones enviadas para X e Instagram oficiales",
+  "zh": "已提交给官方 X 和 Instagram 的帖子",
+  "fr": "Publications envoyées pour X et Instagram officiels",
+  "it": "Post inviati per X e Instagram ufficiali",
+  "th": "โพสต์ที่ส่งให้ X และ Instagram ทางการ",
+  "km": "ផុសដែលបានផ្ញើសម្រាប់ X និង Instagram ផ្លូវការ"
  }
 }

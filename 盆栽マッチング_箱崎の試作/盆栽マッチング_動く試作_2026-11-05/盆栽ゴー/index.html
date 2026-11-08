@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#121410">
-<title>BONSAIGO</title>
+<title>BonsaiGO</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Sans+Thai:wght@400;500;700&family=Noto+Sans+Khmer:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap">
@@ -46,7 +46,7 @@
       <section class="scr on" id="s-welcome" data-light>
         <div class="film"><img src="img/welcome_kuromatsu.webp" alt=""></div>
         <div class="veil"></div>
-        <div class="wordmark"><b>BONSAIGO</b><h1 data-i18n="g.welcome.h1"></h1></div>
+        <div class="wordmark"><img class="logo" src="img/logo_white.svg" alt="BonsaiGO"><h1 data-i18n="g.welcome.h1"></h1></div>
         <button class="lang-pill dk" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button>
         <div class="in">
           <button class="cta" data-go="gstart" data-i18n="g.welcome.cta"></button>
@@ -61,7 +61,7 @@
       <section class="scr" id="s-gstart">
         <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
         <div class="pad">
-          <div class="eyebrow c">BONSAIGO</div>
+          <img class="logo-sm" src="img/logo.svg" alt="BonsaiGO">
           <h2 class="h-en" data-i18n="g.home.h"></h2>
           <p class="lead" data-i18n="g.home.lead"></p>
           <div class="seg" id="gMode"><button class="on" data-gm="new" data-i18n="g.st.new"></button><button data-gm="have" data-i18n="g.st.have"></button></div>
@@ -71,6 +71,7 @@
           <label class="field gm-have" hidden><span data-i18n="g.st.mail"></span><input id="gMail2" type="email" maxlength="120" autocomplete="username" inputmode="email"></label>
           <label class="field gm-have" hidden><span data-i18n="g.st.pass"></span><input id="gPass2" type="password" maxlength="200" autocomplete="current-password"></label>
           <p class="err" id="gErr" hidden></p>
+          <button class="linkish" id="b-gDemo" style="margin-top:12px" data-i18n="g.st.demo"></button>
           <button class="linkish" data-welcome style="margin-top:16px" data-i18n="g.st.back"></button>
         </div>
         <div class="dock"><button class="cta" id="b-gstart" data-i18n="g.x.start"></button></div>
@@ -80,7 +81,7 @@
       <section class="scr k" id="s-mstart">
         <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><button class="lang-pill" data-pick="a"><svg><use href="#i-globe"/></svg><b class="lp-name"></b></button></div></div>
         <div class="pad">
-          <div class="eyebrow c">BONSAIGO</div>
+          <img class="logo-sm" src="img/logo.svg" alt="BonsaiGO">
           <h2 class="h-jp" data-i18n="a.x.who"></h2>
           <label class="field"><span data-i18n="a.x.email"></span><input id="lMail" type="email" maxlength="120" autocomplete="username" inputmode="email"></label>
           <label class="field"><span data-i18n="a.x.pass"></span><input id="lPass" type="password" maxlength="200" autocomplete="current-password"></label>
@@ -105,7 +106,7 @@
 
       <!-- 相談する人：ホーム -->
       <section class="scr" id="s-home">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button><button class="lang-pill" data-logout data-i18n="g.x.logout"></button></div></div>
+        <div class="topbar"><div class="mark"><img class="logo-top" src="img/logo.svg" alt="BonsaiGO"></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button><button class="lang-pill" data-logout data-i18n="g.x.logout"></button></div></div>
         <div class="pad">
           <div class="eyebrow c" id="gHello"></div>
           <h2 class="h-en" data-i18n="g.home.h"></h2>
@@ -134,10 +135,9 @@
             <button class="cta ghost" id="b-adAgain" style="margin-top:10px" data-i18n="g.sent.again"></button>
           </div>
           <h2 class="h-en" data-i18n="g.ask.h2"></h2>
-          <div class="pick-photo" id="askPhoto"><img src="img/ask.jpg" alt=""><span class="ai"><svg><use href="#i-spark"/></svg><span data-i18n="g.ask.chip"></span></span></div>
+          <div class="pick-photo empty" id="askPhoto"><img alt=""><label class="ph-empty" for="askFile"><svg><use href="#i-cam"/></svg><span data-i18n="g.x.photoEmpty"></span></label></div>
           <div class="photo-btns">
-            <label class="chip"><svg><use href="#i-cam"/></svg><span data-i18n="g.x.photoChange"></span><input type="file" accept="image/jpeg,image/png,image/webp" id="askFile"></label>
-            <button class="chip" id="askSample"><svg><use href="#i-img"/></svg><span data-i18n="g.x.photoSample"></span></button>
+            <label class="chip"><svg><use href="#i-cam"/></svg><span data-i18n="g.x.photoAdd"></span><input type="file" accept="image/jpeg,image/png,image/webp" id="askFile"></label>
           </div>
           <label class="field" style="margin-top:16px"><span data-i18n="g.ask.spF"></span><select id="askSp"></select></label>
           <div class="field" style="margin-top:12px" id="askTreeF" hidden><span data-i18n="g.ask.treeF"></span><div class="chips" id="askTrees"></div><p class="lang-note" data-i18n="g.ask.treeNote"></p></div>
@@ -152,7 +152,7 @@
           <p class="lang-note" data-i18n="g.ask.share"></p>
           <p class="err" id="askErr" hidden></p>
         </div>
-        <div class="dock"><button class="cta" id="b-send"><svg><use href="#i-send"/></svg><span data-i18n="g.ask.send"></span></button></div>
+        <div class="dock" style="display:none"><button class="cta" id="b-send"><svg><use href="#i-send"/></svg><span data-i18n="g.ask.send"></span></button></div>
         <div class="busy" id="askBusy"><div class="in"><div class="leaf"><i></i><i></i></div><b data-i18n="g.x.sending"></b></div></div>
         <nav class="tabs" data-tabs="g" data-on="ask"></nav>
       </section>
@@ -211,7 +211,7 @@
 
       <!-- Q&A -->
       <section class="scr" id="s-qa">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
+        <div class="topbar"><div class="mark"><img class="logo-top" src="img/logo.svg" alt="BonsaiGO"></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
         <div class="pad">
           <div class="eyebrow c" data-i18n="g.qa.eye"></div>
           <h2 class="h-en" data-i18n="g.qa.h"></h2>
@@ -227,7 +227,7 @@
 
       <!-- 学ぶ -->
       <section class="scr" id="s-learn">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
+        <div class="topbar"><div class="mark"><img class="logo-top" src="img/logo.svg" alt="BonsaiGO"></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
         <div class="pad">
           <div class="eyebrow c" data-i18n="g.learn.eye"></div>
           <h2 class="h-en" data-i18n="g.learn.h"></h2>
@@ -321,7 +321,7 @@
           <div class="eyebrow" data-i18n="a.reg.eye"></div>
           <h2 class="h-jp" data-i18n="a.reg.h"></h2>
           <div class="stepper"><i class="on"></i><i></i><i></i></div>
-          <div class="pick-photo" id="regPhoto"><img src="img/reg.jpg" alt=""><div class="scan" id="scan"></div></div>
+          <div class="pick-photo empty" id="regPhoto"><img alt=""><label class="ph-empty" for="regFile"><svg><use href="#i-cam"/></svg><span data-i18n="a.x.photo"></span></label><div class="scan" id="scan"></div></div>
           <div class="photo-btns">
             <label class="chip"><svg><use href="#i-cam"/></svg><span data-i18n="a.x.photo"></span><input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" id="regFile"></label>
             <button class="chip on" id="regSample" hidden data-s="pine"><svg><use href="#i-img"/></svg><span data-i18n="a.x.sample"></span></button>
@@ -373,7 +373,7 @@
           <div class="pubstate" id="pubState"><span class="dot"></span><b id="pubStateT"></b></div>
           <div class="posted-links" id="pubLinks" hidden><a href="https://x.com/bonsaigo_jp" target="_blank" rel="noopener" class="chip"><b>X</b><span data-i18n="a.pub.seeX"></span></a><a href="https://www.instagram.com/bonsaigo_jp/" target="_blank" rel="noopener" class="chip"><b>IG</b><span data-i18n="a.pub.seeIg"></span></a></div>
           <div class="preview-langs" id="pubLangs"></div>
-          <div class="sns-post" id="sp1"><div class="hd"><span class="av">BG</span><div><b>BONSAIGO</b><span>@bonsaigo_jp</span></div><span class="pf">X</span></div><div class="txt" id="pubX"></div><img id="pubImg1" src="img/reg.jpg" alt=""></div>
+          <div class="sns-post" id="sp1"><div class="hd"><span class="av">BG</span><div><b>BonsaiGO</b><span>@bonsaigo_jp</span></div><span class="pf">X</span></div><div class="txt" id="pubX"></div><img id="pubImg1" src="img/reg.jpg" alt=""></div>
           <div class="sns-post ig" id="sp2"><div class="hd"><span class="av">BG</span><div><b>bonsaigo_jp</b><span>Instagram</span></div><span class="pf ig">IG</span></div><img id="pubImg2" src="img/reg.jpg" alt=""><div class="txt" style="padding-top:12px" id="pubIg"></div></div>
           <div class="never"><svg><use href="#i-hold"/></svg><span data-i18n="a.x.never"></span></div>
         </div>

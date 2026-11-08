@@ -900,14 +900,14 @@
   "km": "របៀបគំរូ · ផ្ញើដូចដែលសរសេរ ដោយមិនបកប្រែ"
  },
  "g.welcome.h1": {
-  "en": "Bonsai wisdom, to the world. <em>On to the next hundred years.</em>",
-  "ja": "盆栽の知恵を、世界へ。<em>次の百年へ。</em>",
-  "es": "La sabiduría del bonsái, al mundo. <em>Hacia los próximos cien años.</em>",
-  "zh": "把盆栽的智慧，带向世界。<em>传向下一个百年。</em>",
-  "fr": "La sagesse du bonsaï, vers le monde. <em>Pour les cent prochaines années.</em>",
-  "it": "La saggezza del bonsai, verso il mondo. <em>Verso i prossimi cento anni.</em>",
-  "th": "ภูมิปัญญาบอนไซ สู่โลก <em>สู่ร้อยปีข้างหน้า</em>",
-  "km": "ប្រាជ្ញាបុនសៃ ទៅកាន់ពិភពលោក។ <em>ឆ្ពោះទៅមួយរយឆ្នាំខាងមុខ។</em>"
+  "en": "Bonsai wisdom,<br><em>to the world.</em><br><em>On to the next hundred years.</em>",
+  "ja": "盆栽の知恵を、<br><em>世界へ。</em><br><em>次の百年へ。</em>",
+  "es": "La sabiduría del bonsái,<br><em>al mundo.</em><br><em>Hacia los próximos cien años.</em>",
+  "zh": "把盆栽的智慧，<br><em>带向世界。</em><br><em>传向下一个百年。</em>",
+  "fr": "La sagesse du bonsaï,<br><em>vers le monde.</em><br><em>Pour les cent prochaines années.</em>",
+  "it": "La saggezza del bonsai,<br><em>verso il mondo.</em><br><em>Verso i prossimi cento anni.</em>",
+  "th": "ภูมิปัญญาบอนไซ<br><em>สู่โลก</em><br><em>สู่ร้อยปีข้างหน้า</em>",
+  "km": "ប្រាជ្ញាបុនសៃ<br><em>ទៅកាន់ពិភពលោក។</em><br><em>ឆ្ពោះទៅមួយរយឆ្នាំខាងមុខ។</em>"
  },
  "g.wel.tag": {
   "en": "Ask Japan's bonsai masters, in your own words",

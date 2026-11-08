@@ -1,0 +1,312 @@
+{
+ "g.banner.b": {
+  "en": "A master answered",
+  "ja": "職人から答えが届きました",
+  "es": "Un maestro ha respondido",
+  "zh": "大师回答了",
+  "fr": "Un maître a répondu",
+  "it": "Un maestro ha risposto",
+  "th": "ปรมาจารย์ตอบแล้ว",
+  "km": "គ្រូបានឆ្លើយហើយ"
+ },
+ "a.inbox.eye": {
+  "en": "Questions for you",
+  "ja": "相談の箱",
+  "es": "Consultas para ti",
+  "zh": "给你的提问",
+  "fr": "Questions pour vous",
+  "it": "Domande per te",
+  "th": "คำถามถึงคุณ",
+  "km": "សំណួរសម្រាប់អ្នក"
+ },
+ "a.conf.after": {
+  "en": "It reaches the asker in {G} as your answer, and is saved to Q&A. Terms come with explanations.",
+  "ja": "あなたの答えとして、相談した人に{G}で届き、Q&A にもたまります。用語は札で説明されます",
+  "es": "Le llega a quien preguntó en {G} como tu respuesta, y también se guarda en Q&A. Los términos van con explicaciones.",
+  "zh": "它会作为你的回答，以{G}送到提问者手中，也会存入 Q&A。术语附有说明。",
+  "fr": "Elle parvient à la personne en {G} comme votre réponse, et est enregistrée dans Q&A. Les termes sont accompagnés d'explications.",
+  "it": "Arriva in {G} a chi ha chiesto, come tua risposta, e viene salvata in Q&A. I termini sono accompagnati da spiegazioni.",
+  "th": "จะส่งถึงผู้ถามเป็น{G}ในนามคำตอบของคุณ และบันทึกไว้ใน Q&A ศัพท์จะมีป้ายคำอธิบาย",
+  "km": "វាទៅដល់អ្នកសួរជា{G} ជាចម្លើយរបស់អ្នក ហើយត្រូវបានរក្សាទុកក្នុង Q&A។ ពាក្យបច្ចេកទេសមានការពន្យល់។"
+ },
+ "g.sent.delB": {
+  "en": "Delivered to the master",
+  "ja": "職人に届きました",
+  "es": "Entregado al maestro",
+  "zh": "已送达大师",
+  "fr": "Remis au maître",
+  "it": "Consegnata al maestro",
+  "th": "ส่งถึงปรมาจารย์แล้ว",
+  "km": "បានដល់គ្រូហើយ"
+ },
+ "a.mh.qT": {
+  "en": "{N} not answered yet",
+  "ja": "まだ答えていない相談が{N}件",
+  "es": "{N} sin responder todavía",
+  "zh": "还有{N}条未回答",
+  "fr": "{N} sans réponse pour l'instant",
+  "it": "{N} ancora senza risposta",
+  "th": "ยังไม่ได้ตอบ {N} รายการ",
+  "km": "មិនទាន់ឆ្លើយ {N}"
+ },
+ "g.home.hi": {
+  "en": "Welcome",
+  "ja": "ようこそ",
+  "es": "Te damos la bienvenida",
+  "zh": "欢迎",
+  "fr": "Bienvenue",
+  "it": "Benvenuto",
+  "th": "ยินดีต้อนรับ",
+  "km": "សូមស្វាគមន៍"
+ },
+ "a.x.from": {
+  "en": "Asked in {L}",
+  "ja": "{L}での相談",
+  "es": "Preguntado en {L}",
+  "zh": "用{L}提问",
+  "fr": "Demandé en {L}",
+  "it": "Chiesto in {L}",
+  "th": "ถามเป็น{L}",
+  "km": "សួរជា{L}"
+ },
+ "a.x.pass": {
+  "en": "passes at 0.8 or above",
+  "ja": "0.8 以上で合格",
+  "es": "aprueba con 0,8 o más",
+  "zh": "0.8 及以上为通过",
+  "fr": "validé à partir de 0,8",
+  "it": "superato da 0,8 in su",
+  "th": "ผ่านเมื่อ 0.8 ขึ้นไป",
+  "km": "ជាប់ពី 0.8 ឡើងទៅ"
+ },
+ "a.x.byRules": {
+  "en": "Rule check · no AI, free",
+  "ja": "決まりの確かめ · AI なし・料金ゼロ",
+  "es": "Revisión por reglas · sin IA, gratis",
+  "zh": "规则检查 · 不用 AI，免费",
+  "fr": "Vérification par règles · sans IA, gratuit",
+  "it": "Controllo con regole · senza IA, gratis",
+  "th": "ตรวจตามกฎ · ไม่ใช้ AI ฟรี",
+  "km": "ពិនិត្យតាមច្បាប់ · គ្មាន AI ឥតគិតថ្លៃ"
+ },
+ "a.x.byAi": {
+  "en": "AI check (Haiku)",
+  "ja": "AI の確かめ（Haiku）",
+  "es": "Revisión con IA (Haiku)",
+  "zh": "AI 检查（Haiku）",
+  "fr": "Vérification IA (Haiku)",
+  "it": "Controllo IA (Haiku)",
+  "th": "AI ตรวจ (Haiku)",
+  "km": "AI ពិនិត្យ (Haiku)"
+ },
+ "g.x.alsoSearched": {
+  "en": "Also searched in the other 7 languages",
+  "ja": "ほかの7つの言葉の言い方でも探しました",
+  "es": "También se buscó en los otros 7 idiomas",
+  "zh": "也在另外 7 种语言中搜索了",
+  "fr": "Recherché aussi dans les 7 autres langues",
+  "it": "Cercato anche nelle altre 7 lingue",
+  "th": "ค้นหาในอีก 7 ภาษาด้วย",
+  "km": "ក៏បានស្វែងរកក្នុង 7 ភាសាផ្សេងទៀត"
+ },
+ "a.mh.qT0": {
+  "en": "All answered. Nothing is waiting.",
+  "ja": "すべて答えました。待っている相談はありません",
+  "es": "Todo respondido. No hay nada pendiente.",
+  "zh": "全部已回答，没有待回复的提问。",
+  "fr": "Tout est répondu. Rien en attente.",
+  "it": "Tutto risposto. Niente in attesa.",
+  "th": "ตอบครบแล้ว ไม่มีคำถามค้าง",
+  "km": "បានឆ្លើយទាំងអស់ គ្មានសំណួររង់ចាំ"
+ },
+ "a.mh.nLbl": {
+  "en": "unanswered",
+  "ja": "未回答",
+  "es": "sin responder",
+  "zh": "未回答",
+  "fr": "sans réponse",
+  "it": "senza risposta",
+  "th": "ยังไม่ตอบ",
+  "km": "មិនទាន់ឆ្លើយ"
+ },
+ "a.x.demo": {
+  "en": "Sample",
+  "ja": "見本",
+  "es": "Ejemplo",
+  "zh": "示例",
+  "fr": "Exemple",
+  "it": "Esempio",
+  "th": "ตัวอย่าง",
+  "km": "គំរូ"
+ },
+ "a.x.ngText": {
+  "en": "Guaranteed: this black pine never dies. Only $3,000 now. Write to info@example.com.",
+  "ja": "絶対に枯れない黒松。いまなら ¥300,000。ご連絡は info@example.com へ。",
+  "es": "Garantizado: este pino negro nunca muere. Solo $3,000. Escribe a info@example.com.",
+  "zh": "保证永远不会枯的黑松，现在只要 ¥30,000。联系 info@example.com。",
+  "fr": "Garanti : ce pin noir ne meurt jamais. Seulement €3,000. Écrivez à info@example.com.",
+  "it": "Garantito: questo pino nero non muore mai. Solo €3,000. Scrivi a info@example.com.",
+  "th": "สนดำที่รับประกันว่าไม่มีวันตาย ตอนนี้เพียง $3,000 ติดต่อ info@example.com",
+  "km": "ស្រល់ខ្មៅដែលធានាថាមិនងាប់ ឥឡូវតែ $3,000 ទាក់ទង info@example.com"
+ },
+ "a.rule.words": {
+  "en": "Uses wording we decided not to use",
+  "ja": "使わないと決めた言い方が入っています",
+  "es": "Usa palabras que decidimos no usar",
+  "zh": "含有我们决定不使用的说法",
+  "fr": "Emploie une formulation que nous avons décidé d'éviter",
+  "it": "Usa espressioni che abbiamo deciso di non usare",
+  "th": "มีถ้อยคำที่เราตกลงว่าจะไม่ใช้",
+  "km": "មានពាក្យដែលយើងសម្រេចមិនប្រើ"
+ },
+ "a.rule.price": {
+  "en": "Includes a price",
+  "ja": "値段が入っています",
+  "es": "Incluye un precio",
+  "zh": "含有价格",
+  "fr": "Contient un prix",
+  "it": "Contiene un prezzo",
+  "th": "มีราคาอยู่",
+  "km": "មានតម្លៃ"
+ },
+ "a.rule.contact": {
+  "en": "Includes contact details or a link",
+  "ja": "連絡先やリンクが入っています",
+  "es": "Incluye datos de contacto o un enlace",
+  "zh": "含有联系方式或链接",
+  "fr": "Contient des coordonnées ou un lien",
+  "it": "Contiene contatti o un link",
+  "th": "มีข้อมูลติดต่อหรือลิงก์",
+  "km": "មានព័ត៌មានទំនាក់ទំនង ឬតំណ"
+ },
+ "a.rule.promise": {
+  "en": "Promises something no one can promise",
+  "ja": "言い切れないことを約束しています",
+  "es": "Promete algo que nadie puede prometer",
+  "zh": "承诺了谁也无法保证的事",
+  "fr": "Promet ce que personne ne peut promettre",
+  "it": "Promette qualcosa che nessuno può promettere",
+  "th": "สัญญาในสิ่งที่ไม่มีใครรับประกันได้",
+  "km": "សន្យាអ្វីដែលគ្មាននរណាអាចសន្យាបាន"
+ },
+ "a.x.img.ok": {
+  "en": "A black pine bonsai in a pot fills the middle of the photo.",
+  "ja": "鉢に植わった黒松の盆栽が、写真のまん中に写っています。",
+  "es": "Un bonsái de pino negro en su maceta ocupa el centro de la foto.",
+  "zh": "照片中央是一盆种在盆里的黑松盆景。",
+  "fr": "Un bonsaï de pin noir en pot occupe le centre de la photo.",
+  "it": "Un bonsai di pino nero in vaso occupa il centro della foto.",
+  "th": "บอนไซสนดำในกระถางอยู่กลางภาพ",
+  "km": "បុនសៃស្រល់ខ្មៅក្នុងផើង នៅកណ្ដាលរូបថត។"
+ },
+ "a.x.img.ng": {
+  "en": "This is a photo of a garden path, and no bonsai is in it. Please use a photo where the bonsai is the subject.",
+  "ja": "庭の小道の写真で、盆栽が写っていません。盆栽が主役の写真にしてください。",
+  "es": "Es una foto de un sendero de jardín y no aparece ningún bonsái. Usa una foto donde el bonsái sea el protagonista.",
+  "zh": "这是一张庭院小路的照片，里面没有盆景。请换一张以盆景为主角的照片。",
+  "fr": "C'est la photo d'une allée de jardin, sans bonsaï. Choisissez une photo où le bonsaï est le sujet.",
+  "it": "È la foto di un vialetto di giardino, senza bonsai. Usa una foto in cui il bonsai è il soggetto.",
+  "th": "เป็นภาพทางเดินในสวน ไม่มีบอนไซอยู่ในภาพ โปรดใช้ภาพที่บอนไซเป็นจุดเด่น",
+  "km": "នេះជារូបផ្លូវក្នុងសួន គ្មានបុនសៃទេ។ សូមប្រើរូបដែលបុនសៃជាតួឯក។"
+ },
+ "a.x.img.unsure": {
+  "en": "In sample mode the AI cannot see your own photo, so a person will check it.",
+  "ja": "見本モードでは、手元の写真を AI が見られません。人が確かめます。",
+  "es": "En modo de ejemplo la IA no puede ver tu propia foto, así que la revisará una persona.",
+  "zh": "示例模式下 AI 看不到你自己的照片，会由人来确认。",
+  "fr": "En mode exemple, l'IA ne peut pas voir votre photo : une personne la vérifiera.",
+  "it": "In modalità esempio l'IA non vede la tua foto, quindi la controllerà una persona.",
+  "th": "ในโหมดตัวอย่าง AI มองไม่เห็นรูปของคุณ จึงให้คนตรวจแทน",
+  "km": "ក្នុងរបៀបគំរូ AI មើលរូបរបស់អ្នកមិនឃើញ ដូច្នេះមនុស្សនឹងពិនិត្យ។"
+ },
+ "a.x.img.err": {
+  "en": "The AI could not check this photo, so a person will.",
+  "ja": "AI が写真を確かめられなかったので、人が確かめます",
+  "es": "La IA no pudo revisar esta foto; la revisará una persona.",
+  "zh": "AI 无法确认这张照片，将由人来确认。",
+  "fr": "L'IA n'a pas pu vérifier cette photo ; une personne le fera.",
+  "it": "L'IA non ha potuto controllare la foto: lo farà una persona.",
+  "th": "AI ตรวจรูปนี้ไม่ได้ จึงให้คนตรวจแทน",
+  "km": "AI មិនអាចពិនិត្យរូបនេះបាន មនុស្សនឹងពិនិត្យ។"
+ },
+ "a.x.writing8": {
+  "en": "Sonnet · writing in 8 languages",
+  "ja": "Sonnet · 8つの言葉で書いています",
+  "es": "Sonnet · escribiendo en 8 idiomas",
+  "zh": "Sonnet · 正在用 8 种语言撰写",
+  "fr": "Sonnet · rédaction en 8 langues",
+  "it": "Sonnet · scrive in 8 lingue",
+  "th": "Sonnet · กำลังเขียน 8 ภาษา",
+  "km": "Sonnet · កំពុងសរសេរជា 8 ភាសា"
+ },
+ "c.m.check": {
+  "en": "checks · passes at {P} or above",
+  "ja": "確かめ · {P} 以上で合格",
+  "es": "revisa · aprueba desde {P}",
+  "zh": "检查 · {P} 及以上为通过",
+  "fr": "vérifie · validé dès {P}",
+  "it": "controlla · superato da {P}",
+  "th": "ตรวจ · ผ่านเมื่อ {P} ขึ้นไป",
+  "km": "ពិនិត្យ · ជាប់ពី {P}"
+ },
+ "c.m.main": {
+  "en": "writes",
+  "ja": "書く",
+  "es": "escribe",
+  "zh": "撰写",
+  "fr": "rédige",
+  "it": "scrive",
+  "th": "เขียน",
+  "km": "សរសេរ"
+ },
+ "c.m.fallback": {
+  "en": "only if writing fails",
+  "ja": "書くのに失敗したときだけ",
+  "es": "solo si falla la escritura",
+  "zh": "仅在撰写失败时",
+  "fr": "seulement si la rédaction échoue",
+  "it": "solo se la scrittura fallisce",
+  "th": "เฉพาะเมื่อเขียนไม่สำเร็จ",
+  "km": "តែពេលសរសេរបរាជ័យ"
+ },
+ "c.pick": {
+  "en": "Language",
+  "ja": "言語",
+  "es": "Idioma",
+  "zh": "语言",
+  "fr": "Langue",
+  "it": "Lingua",
+  "th": "ภาษา",
+  "km": "ភាសា"
+ },
+ "g.x.qaHits1": {
+  "en": "1 answer",
+  "ja": "1件の答え",
+  "es": "1 respuesta",
+  "zh": "1 条回答",
+  "fr": "1 réponse",
+  "it": "1 risposta",
+  "th": "1 คำตอบ",
+  "km": "1 ចម្លើយ"
+ },
+ "a.x.all8": {
+  "en": "See all 8 languages",
+  "ja": "8つの言葉を全部見る",
+  "es": "Ver los 8 idiomas",
+  "zh": "查看全部 8 种语言",
+  "fr": "Voir les 8 langues",
+  "it": "Vedi tutte le 8 lingue",
+  "th": "ดูทั้ง 8 ภาษา",
+  "km": "មើលទាំង 8 ភាសា"
+ },
+ "g.x.qaPh": {
+  "en": "Search in any language",
+  "ja": "どの言葉でも探せます",
+  "es": "Busca en cualquier idioma",
+  "zh": "用任何语言搜索",
+  "fr": "Cherchez dans n'importe quelle langue",
+  "it": "Cerca in qualsiasi lingua",
+  "th": "ค้นหาได้ทุกภาษา",
+  "km": "ស្វែងរកជាភាសាណាក៏បាន"
+ }
+}

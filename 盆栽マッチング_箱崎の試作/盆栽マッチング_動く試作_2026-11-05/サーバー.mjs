@@ -706,11 +706,43 @@ const routes = {
     const l = lang(url.searchParams.get("lang"));
     const q = String(url.searchParams.get("q") || "").normalize("NFKC").toLowerCase().trim().slice(0, 80);
     const r = searchQa(q, l, currentUser());
-    return { items: r.hits, also: r.also };
+    return { items: r.hits, also: r.also, pool: store.consultations.filter((c) => c.answer && c.answer.headline).length + BG_SAMPLE.qa.length };
   },
 
   // 職人が「この訳は違う」「こう直して」と知らせる。用語集を直すときに使う（すぐには変えない）
-  "GET /api/bonsaigo/gloss": async () => { const me = needUser("shokunin"); return { items: (store.gloss_fb || []).filter((x) => x.teacher_id === me.teacher_id).slice(0, 50) }; },
+  "GET /api/bonsaigo/gloss": async () => {
+    const me = currentUser(), all = store.gloss_fb || [];
+    // 職人が直した訳は、その用語・その言葉の最新の1つを、相談する人の「学ぶ」にも出す
+    const seen = new Set(), fixes = [];
+    for (const x of all) {
+      if (x.kind !== "fix" || !x.text) continue;
+      const k = x.term + "|" + x.lang; if (seen.has(k)) continue; seen.add(k);
+      fixes.push({ term: x.term, lang: x.lang, text: x.text, at: x.at, by: personCard(teacherById(x.teacher_id)) });
+    }
+    return { fixes, items: me && me.role === "shokunin" ? all.filter((x) => x.teacher_id === me.teacher_id).slice(0, 50) : [] };
+  },
+  // 職人が「学ぶ」の読みものに気づきを足す。相談する人の「学ぶ」にも、同じ読みものの下に出る
+  "GET /api/bonsaigo/notes": async () => ({ notes: (store.learn_notes || []).slice(0, 200).map((n) => ({ ...n, by: personCard(teacherById(n.teacher_id)) })) }),
+  "POST /api/bonsaigo/notes": async (b) => {
+    const me = needUser("shokunin");
+    const art = Number(b.art);
+    if (!Number.isInteger(art) || art < 1 || art > 99) throw new BadRequest("読みものを選んでください");
+    const t = teacherById(me.teacher_id);
+    const item = { id: randomUUID(), at: new Date().toISOString(), teacher_id: me.teacher_id, art, kind: b.kind === "fix" ? "fix" : "note", lang: lang(b.lang || t?.lang), text: text(b.text, 400, "気づき") };
+    if (!store.learn_notes) store.learn_notes = [];
+    store.learn_notes.unshift(item); store.learn_notes = store.learn_notes.slice(0, 500);
+    await save();
+    return { ...item, by: personCard(t) };
+  },
+  // AI 窓口：たまった Q&A（見本＋答えのついた相談）から、近い答えを探して返す。鍵がなくても動く
+  "POST /api/bonsaigo/window": async (b) => {
+    const l = lang(b.lang);
+    const q = String(b.q || "").normalize("NFKC").toLowerCase().trim().slice(0, 200);
+    if (!q) throw new BadRequest("聞きたいことを書いてください");
+    const r = searchQa(q, l, currentUser());
+    const top = r.hits.slice(0, 3);
+    return { found: top.length > 0, answer: top[0] ? top[0].a : "", sources: top.map((h) => ({ id: h.id, q: h.q, garden_id: h.garden_id, person_id: h.person_id, lang: h.lang, tree: h.tree })), pool: store.consultations.filter((c) => c.answer && c.answer.headline).length + BG_SAMPLE.qa.length };
+  },
   "POST /api/bonsaigo/gloss": async (b) => {
     const me = needUser("shokunin");
     const term = typeof b.term === "string" ? b.term.trim().slice(0, 20) : "";
@@ -795,10 +827,11 @@ function publicTree(t) { const { image, ...rest } = t; return rest; }
 
 // Q&A の探し方：言葉ごとの言いかえ表で問いを広げ、8つの言葉のどれかに当たれば出す
 function searchQa(q, l, me) {
-  // 載せるのは見本と、自分の相談（職人なら自分あての相談）だけ。ほかの人の相談は出さない
-  const isMine = (c) => me && (me.role === "shokunin" ? c.teacher_id === me.teacher_id : c.asker_id === me.id);
-  const done = store.consultations.filter((c) => c.answer && c.answer.headline && isMine(c)).slice(0, 40).map((c) => ({
-    id: c.id, tree: null, own: true, lang: c.lang, garden_id: c.garden_id || null, person_id: c.answer.by?.id || null, answer_lang: c.answer.answer_lang || null,
+  // 答えのついた相談は Q&A にたまる（相談した人の名前は出さない・送る画面で知らせている）。自分の相談（職人なら自分の園あて）には own の印
+  const myG = me && me.role === "shokunin" ? myGarden(me) : null;
+  const isMine = (c) => Boolean(me && (me.role === "shokunin" ? (c.garden_id ? c.garden_id === myG : c.teacher_id === me.teacher_id) : c.asker_id === me.id));
+  const done = store.consultations.filter((c) => c.answer && c.answer.headline).slice(0, 60).map((c) => ({
+    id: c.id, tree: null, own: isMine(c), lang: c.lang, garden_id: c.garden_id || null, person_id: c.answer.by?.id || null, answer_lang: c.answer.answer_lang || null,
     q: { [c.lang]: c.question, ja: c.for_craftsperson?.summary_ja || "" },
     a: { [c.lang]: [c.answer.headline, ...(c.answer.paragraphs || [])].join(" "), ja: c.answer.back_translation_ja || "" },
   }));
@@ -838,7 +871,7 @@ class NotFound extends Error {}
 
 /* ---------- 配る ---------- */
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".mp4": "video/mp4", ".webmanifest": "application/manifest+json; charset=utf-8" };
-const PRIVATE = new Set(["データ", "node_modules", "サーバー.mjs", "AIへの指示と答えの形.mjs", "package.json", "package-lock.json"]);
+const PRIVATE = new Set(["データ", "node_modules", "サーバー.mjs", "AIへの指示と答えの形.mjs", "package.json", "package-lock.json", "盆栽ゴー_AIへの指示.mjs", "盆栽ゴー_料金の守り.mjs", "盆栽ゴー_見本の答え.json", "見本の答え.json"]);
 
 async function serveFile(req, res, pathname) {
   let rel;

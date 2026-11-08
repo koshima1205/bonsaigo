@@ -122,6 +122,7 @@
           <p class="lang-note" id="gLangNote"></p>
           <textarea class="compose" id="askText" rows="5" maxlength="3000"></textarea>
           <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span data-i18n="g.ask.hint"></span></div>
+          <p class="lang-note" data-i18n="g.ask.share"></p>
           <p class="err" id="askErr" hidden></p>
         </div>
         <div class="dock"><button class="cta" id="b-send"><svg><use href="#i-send"/></svg><span data-i18n="g.ask.send"></span></button></div>
@@ -187,6 +188,7 @@
         <div class="pad">
           <div class="eyebrow c" data-i18n="g.qa.eye"></div>
           <h2 class="h-en" data-i18n="g.qa.h"></h2>
+          <div class="win" id="win"><b data-i18n="g.win.h"></b><p id="winLead"></p><div class="win-in"><input id="winQ" type="text" maxlength="200" enterkeyhint="send"><button class="cta" id="winGo" data-i18n="g.win.go"></button></div><div id="winOut"></div></div>
           <label class="search"><svg><use href="#i-search"/></svg><input id="qaQ" type="search" enterkeyhint="search"><button class="x" id="qaClear" aria-label="Clear" hidden><svg width="14" height="14"><use href="#i-x"/></svg></button></label>
           <div class="chips" id="qaChips"></div>
           <div class="qa-count" id="qaCount"></div>
@@ -218,6 +220,7 @@
           <button class="lang-pill" data-pick="a" style="margin-top:12px"><svg><use href="#i-globe"/></svg><span data-i18n="a.pickLbl"></span><b class="lp-name"></b></button>
           <button class="tile" data-go="inbox"><span class="ic c"><svg><use href="#i-reply"/></svg></span><div><b data-i18n="a.mh.q"></b><span id="mQT" data-i18n="a.mh.qT0"></span></div><span class="nbox" id="mNbox" hidden><span class="n" id="mN">0</span><small data-i18n="a.mh.nLbl"></small></span></button>
           <button class="tile" data-go="reg"><span class="ic"><svg><use href="#i-cam"/></svg></span><div><b data-i18n="a.mh.reg"></b><span data-i18n="a.mh.regT"></span></div><span class="n" style="color:var(--moss)">›</span></button>
+          <div class="merit"><b data-i18n="a.mh.merit"></b><span data-i18n="a.mh.meritT"></span></div>
           <div class="sec-h jp"><h3 data-i18n="a.mh.out"></h3></div>
           <div class="stats">
             <div><b id="mPosts">0</b><span data-i18n="a.mh.posts"></span><div class="sns"><i>X</i><i>Instagram</i></div></div>

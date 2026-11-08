@@ -178,7 +178,7 @@
     },
     gpick() { renderGpick(); },
     answer() { renderAnswer(); },
-    qa() { searchQa(); },
+    qa() { searchQa(); paintWin(); },
     learn() { renderLearn(); },
     art() { renderArticle($("#artBody"), curArt, GL, "g"); },
     mart() { renderArticle($("#martBody"), curArt, AL, "a"); },
@@ -346,12 +346,33 @@
     $("#qaChips").innerHTML = ["juniper", "pine", "maple", "azalea", "ume"].map((k) => `<button class="chip" data-f="${k}">${esc(nameOf(WORLD.species[k]) || t("g.tree." + k))}</button>`).join("") + ["wire", "repot", "water", "winter", "pests", "indoor"].map((k) => `<button class="chip" data-f="${k}">${esc(nameOf(WORLD.topics[k]))}</button>`).join("");
     loadQa(q, "#qaList");
   }
+  // AI 窓口：たまった答え（見本＋答えのついた相談）から近いものを返す。答えがたまるほど賢くなる
+  async function paintWin() { try { const r = await api("GET", `/bonsaigo/qa?lang=${GL}&q=`); $("#winLead").textContent = t("g.win.lead", { N: String(r.pool ?? (r.items || []).length) }); } catch {} $("#winQ").placeholder = D(GL, "g.win.ph"); }
+  async function askWin() {
+    const q = $("#winQ").value.trim(); if (!q) { $("#winQ").focus({ preventScroll: true }); return; }
+    $("#winOut").innerHTML = `<div class="win-a"><p class="lead">…</p></div>`;
+    try {
+      const r = await api("POST", "/bonsaigo/window", { q, lang: GL });
+      const ask = `<button class="cta ghost" data-winask>${esc(t("g.win.ask"))}</button>`;
+      if (!r.found) { $("#winOut").innerHTML = `<div class="win-a"><p>${esc(t("g.win.none"))}</p>${ask}</div>`; return; }
+      const s = r.sources[0];
+      $("#winOut").innerHTML = `<div class="win-a"><q>${terms(r.answer, "g")}</q><div class="by">${esc(t("g.win.from", { P: qaBy(s, GL) || "BONSAIGO" }))}</div>${r.sources.map((x) => `<div class="about">Q · ${esc(x.q)}</div>`).join("")}${ask}</div>`;
+    } catch (e) { $("#winOut").innerHTML = `<p class="err">${esc(errText(e, "g"))}</p>`; }
+  }
+  $("#winGo").addEventListener("click", askWin);
+  $("#winQ").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); askWin(); } });
+  $("#winOut").addEventListener("click", (e) => { if (!e.target.closest("[data-winask]")) return; $("#askText").value = $("#winQ").value.trim(); go("ask"); });
   $("#qaQ").addEventListener("input", () => { clearTimeout(qaTimer); qaTimer = setTimeout(searchQa, 220); });
   $("#qaClear").addEventListener("click", (e) => { e.preventDefault(); $("#qaQ").value = ""; searchQa(); });
   $("#qaChips").addEventListener("click", (e) => { const b = e.target.closest("[data-f]"); if (!b) return; $("#qaQ").value = b.textContent; searchQa(); });
 
   /* ── 学ぶ：読みもの24本・動画・職人の声・用語（両側で同じ中身を、それぞれの言葉で） ── */
-  let seg = "art", mlSeg = "words", curArt = 1, LEARN = null, FB = [];
+  let seg = "art", mlSeg = "words", curArt = 1, LEARN = null, FB = [], FIXES = [], NOTES = [];
+  // 職人が直した用語の訳（その用語・その言葉の最新）と、読みものに足した気づき。相談する人の「学ぶ」にも出す
+  async function loadFixes() { try { const r = await api("GET", "/bonsaigo/gloss"); FIXES = r.fixes || []; FB = r.items || []; } catch { FIXES = []; } }
+  async function loadNotes() { try { NOTES = (await api("GET", "/bonsaigo/notes")).notes || []; } catch { NOTES = []; } }
+  const fixOf = (term, l) => FIXES.find((f) => f.term === term && f.lang === l);
+  const whoLine = (p, L) => { const pp = p && (TEACHERS.find((x) => x.id === p.id) || p); if (!pp) return ""; const g = gardenOf(pp.garden); return `${nm(pp, L)}${g ? ` · ${gName(g, L)}` : ""}`; };
   async function loadLearn() {
     if (LEARN) return LEARN;
     const part = (u) => fetch(u).then((r) => (r.ok ? r.json() : [])).catch(() => []);
@@ -374,7 +395,10 @@
       let items = []; try { items = (await api("GET", `/bonsaigo/qa?lang=${L}&q=`)).items || []; } catch {}
       return `<p class="lead">${esc(D(L, "g.l.voiceLead"))}</p>` + items.filter((it) => !it.own).map((it) => { const p = TEACHERS.find((x) => x.id === it.person_id), g = gardenOf(it.garden_id); return `<div class="vq"><q>${terms(it.a, side)}</q><div class="by">${p ? `<span class="seal">${esc(initial(p, L))}</span>` : ""}<span>${esc(p ? `${nm(p, L)} · ${roleLbl(p, L, side)}` : "")}${g ? ` · ${esc(gName(g, L))}` : ""}</span></div><div class="about">Q · ${esc(it.q)}</div></div>`; }).join("");
     }
-    if (kind === "gl") return `<p class="lead">${esc(D(L, "g.l.glossLead"))}</p>` + WORLD.glossary.map((w) => `<button class="gl" data-term="${esc(w.ja)}"><span class="kj">${esc(w.ja)}<small>${esc(w.roma)}</small></span><span class="m">${esc(L === "ja" ? w.yomi : w.shown[L])}</span><span class="go">›</span></button>`).join("");
+    if (kind === "gl") {
+      await loadFixes();
+      return `<p class="lead">${esc(D(L, "g.l.glossLead"))}</p>` + WORLD.glossary.map((w) => { const f = L === "ja" ? null : fixOf(w.ja, L); return `<button class="gl" data-term="${esc(w.ja)}"><span class="kj">${esc(w.ja)}<small>${esc(w.roma)}</small></span><span class="m">${esc(f ? f.text : L === "ja" ? w.yomi : w.shown[L])}${f ? `<em class="fixd">${esc(D(L, "g.gl.fixed").replace("{P}", whoLine(f.by, L)))}</em>` : ""}</span><span class="go">›</span></button>`; }).join("");
+    }
     return "";
   }
   async function renderLearn() {
@@ -385,10 +409,16 @@
   $("#learnSeg").addEventListener("click", (e) => { const b = e.target.closest("[data-seg]"); if (!b) return; seg = b.dataset.seg; renderLearn(); });
   $("#learnBox").addEventListener("click", (e) => { const b = e.target.closest("[data-art]"); if (!b) return; curArt = Number(b.dataset.art); show("art"); });
   // 読みもの1本
+  function notesHtml(no, L, side) {
+    const list = NOTES.filter((n) => n.art === no);
+    if (!list.length && side !== "a") return "";
+    return `<div class="notes"><b>${esc(D(L, "g.art.notes"))}</b>${list.map((n) => `<div class="vq"><q lang="${esc(n.lang)}">${esc(n.text)}</q><div class="by">${n.by ? `<span class="seal">${esc(initial(TEACHERS.find((x) => x.id === n.by.id) || n.by, L))}</span>` : ""}<span>${esc(whoLine(n.by, L))}</span></div>${n.lang !== L ? `<div class="about">${esc(D(L, "g.art.noteLang").replace("{L}", I18N[L].names[n.lang] || n.lang))}</div>` : ""}</div>`).join("")}${side === "a" ? `<button class="chip" data-note="${no}">＋ ${esc(D(L, "a.ml.noteBtn"))}</button>` : ""}</div>`;
+  }
   async function renderArticle(box, no, L, side) {
+    await loadNotes();
     const a = (await loadLearn()).find((x) => x.no === no); if (!a) return;
     const body = (a.body && (a.body[L] || a.body.en)) || [];
-    box.innerHTML = `<div class="artv" lang="${L}"><div class="hero"><img src="${artImg(a)}" alt=""></div><div class="eyebrow c" style="margin-top:14px">${esc(D(L, "g.l." + a.group))} · ${esc(D(L, "g.x.min").replace("{N}", a.minutes || 4))}</div><h1>${esc(pick8(a.title, L))}</h1><p class="ld">${esc(pick8(a.lead, L))}</p>${body.map((x) => (x.h ? `<h3>${esc(x.h)}</h3>` : `<p>${esc(x.p)}</p>`)).join("")}${pick8(a.voice, L) ? `<div class="voice"><b>${esc(D(L, "g.l.voiceQ"))}</b><p>${esc(pick8(a.voice, L))}</p>${side === "g" ? `<button class="cta" data-askq="${a.no}">${esc(D(L, "g.l.ask"))}</button>` : ""}</div>` : ""}${(a.sources || []).length ? `<div class="src"><b>${esc(D(L, "g.l.src"))}</b><br>${a.sources.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join("<br>")}</div>` : ""}</div>`;
+    box.innerHTML = `<div class="artv" lang="${L}"><div class="hero"><img src="${artImg(a)}" alt=""></div><div class="eyebrow c" style="margin-top:14px">${esc(D(L, "g.l." + a.group))} · ${esc(D(L, "g.x.min").replace("{N}", a.minutes || 4))}</div><h1>${esc(pick8(a.title, L))}</h1><p class="ld">${esc(pick8(a.lead, L))}</p>${body.map((x) => (x.h ? `<h3>${esc(x.h)}</h3>` : `<p>${esc(x.p)}</p>`)).join("")}${pick8(a.voice, L) ? `<div class="voice"><b>${esc(D(L, "g.l.voiceQ"))}</b><p>${esc(pick8(a.voice, L))}</p>${side === "g" ? `<button class="cta" data-askq="${a.no}">${esc(D(L, "g.l.ask"))}</button>` : ""}</div>` : ""}${notesHtml(a.no, L, side)}${(a.sources || []).length ? `<div class="src"><b>${esc(D(L, "g.l.src"))}</b><br>${a.sources.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join("<br>")}</div>` : ""}</div>`;
     scroller(side === "g" ? "art" : "mart").scrollTop = 0;
   }
   $("#artBody").addEventListener("click", async (e) => { const b = e.target.closest("[data-askq]"); if (!b) return; const a = (await loadLearn()).find((x) => x.no === Number(b.dataset.askq)); $("#askText").value = pick8(a.voice, GL); go("ask"); });
@@ -398,11 +428,13 @@
     $$("#mlSeg button").forEach((b) => b.classList.toggle("on", b.dataset.seg === mlSeg));
     const want = mlSeg; let html;
     if (mlSeg === "words") {
-      try { FB = (await api("GET", "/bonsaigo/gloss")).items || []; } catch { FB = []; }
+      await loadFixes();
       const others = LANGS.filter((l) => l !== "ja");
       html = `<p class="lead">${esc(t("a.ml.lead"))}</p>` + WORLD.glossary.map((w) => {
         const mine = FB.filter((f) => f.term === w.ja);
-        return `<div class="wd"><div class="kj">${esc(w.ja)}<small>${esc(w.roma)}</small></div><div class="pl"><b>${esc(t("a.ml.plain"))}</b>${esc(w.plain_ja)}</div><div class="ar">${esc(t("a.ml.arrive"))}</div><div class="tr">${others.map((l) => `<i>${esc(I18N[l].self)}</i><span class="${l === AL ? "me" : ""}" lang="${l}"><b>${esc(w.shown[l])}</b>${l === AL ? ` — ${esc(w.meaning[l])}` : ""}</span>`).join("")}</div><div class="act"><button class="chip" data-fx="${esc(w.ja)}" data-kind="fix">${esc(t("a.ml.fix"))}</button><button class="chip" data-fx="${esc(w.ja)}" data-kind="wrong">${esc(t("a.ml.wrong"))}</button></div>${mine.map((f) => `<div class="fb">✓ ${esc(f.kind === "wrong" ? t("a.ml.flagged") : t("a.ml.yours"))} · ${esc(f.lang === "plain" ? t("a.ml.plain") : (I18N[f.lang] || {}).self || f.lang)}${f.text ? `：${esc(f.text)}` : ""}</div>`).join("")}</div>`;
+        const fp = fixOf(w.ja, "plain"), shownOf = (l) => fixOf(w.ja, l)?.text || w.shown[l];
+        const fixedBy = [...new Set(FIXES.filter((f) => f.term === w.ja).map((f) => whoLine(f.by, AL)))].filter(Boolean);
+        return `<div class="wd"><div class="kj">${esc(w.ja)}<small>${esc(w.roma)}</small></div><div class="pl"><b>${esc(t("a.ml.plain"))}</b>${esc(fp ? fp.text : w.plain_ja)}</div><div class="ar">${esc(t("a.ml.arrive"))}</div><div class="tr">${others.map((l) => `<i>${esc(I18N[l].self)}</i><span class="${l === AL ? "me" : ""}" lang="${l}"><b>${esc(shownOf(l))}</b>${l === AL ? ` — ${esc(w.meaning[l])}` : ""}</span>`).join("")}</div><div class="act"><button class="chip" data-fx="${esc(w.ja)}" data-kind="fix">${esc(t("a.ml.fix"))}</button><button class="chip" data-fx="${esc(w.ja)}" data-kind="wrong">${esc(t("a.ml.wrong"))}</button></div>${fixedBy.length ? `<div class="fb fixd">${esc(t("g.gl.fixed", { P: fixedBy.join("、") }, AL))}</div>` : ""}${mine.map((f) => `<div class="fb">✓ ${esc(f.kind === "wrong" ? t("a.ml.flagged") : t("a.ml.yours"))} · ${esc(f.lang === "plain" ? t("a.ml.plain") : (I18N[f.lang] || {}).self || f.lang)}${f.text ? `：${esc(f.text)}` : ""}</div>`).join("")}</div>`;
       }).join("");
     } else html = await learnHtml(mlSeg, AL, "a");
     if (want === mlSeg && cur === "mlearn") $("#mlBox").innerHTML = html;
@@ -412,7 +444,7 @@
   $("#mlBox").addEventListener("click", (e) => {
     const a = e.target.closest("[data-art]"); if (a) { curArt = Number(a.dataset.art); show("mart"); return; }
     const b = e.target.closest("[data-fx]"); if (!b) return;
-    fx = { term: b.dataset.fx, kind: b.dataset.kind, lang: "plain" };
+    fx = { term: b.dataset.fx, kind: b.dataset.kind, lang: "plain" }; $("#fxWhich").hidden = false;
     $("#fxH").textContent = `${fx.term} · ${t(fx.kind === "fix" ? "a.ml.fix" : "a.ml.wrong")}`;
     paintFxWhich();
     $("#fxText").hidden = fx.kind !== "fix"; $("#fxText").value = ""; $("#fxText").placeholder = t("a.ml.fixPh"); showErr("#fxErr", "");
@@ -421,9 +453,24 @@
   });
   function paintFxWhich() { $("#fxWhich").innerHTML = [["plain", t("a.ml.plain")], ...LANGS.filter((l) => l !== "ja").map((l) => [l, I18N[l].self])].map(([v, n]) => `<button class="chip ${v === fx.lang ? "on" : ""}" data-fl="${v}">${esc(n)}</button>`).join(""); }
   $("#fxWhich").addEventListener("click", (e) => { const b = e.target.closest("[data-fl]"); if (!b) return; fx.lang = b.dataset.fl; paintFxWhich(); });
+  $("#martBody").addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-note]"); if (!b) return;
+    const a = (await loadLearn()).find((x) => x.no === Number(b.dataset.note));
+    fx = { kind: "note", art: Number(b.dataset.note) };
+    $("#fxH").textContent = `${t("a.ml.noteBtn")} · ${pick8(a && a.title, AL)}`;
+    $("#fxWhich").hidden = true; $("#fxText").hidden = false; $("#fxText").value = ""; $("#fxText").placeholder = t("a.ml.notePh"); showErr("#fxErr", "");
+    const host = $("#s-" + cur); if (!host.contains($("#fixSheet"))) host.append($("#lveil"), $("#fixSheet"));
+    $("#lveil").classList.add("show"); $("#fixSheet").classList.add("show");
+  });
   $("#fxSend").addEventListener("click", async () => {
+    if (fx.kind === "note") {
+      if (!$("#fxText").value.trim()) return showErr("#fxErr", t("a.ml.notePh"));
+      try { await api("POST", "/bonsaigo/notes", { art: fx.art, text: $("#fxText").value, lang: AL }); closeSheets(); toast(t("a.ml.noteThanks")); renderArticle($("#martBody"), curArt, AL, "a"); }
+      catch (er) { showErr("#fxErr", errText(er, "a")); }
+      return;
+    }
     if (fx.kind === "fix" && !$("#fxText").value.trim()) return showErr("#fxErr", t("a.ml.fixPh"));
-    try { await api("POST", "/bonsaigo/gloss", { term: fx.term, lang: fx.lang, kind: fx.kind, text: $("#fxText").value }); closeSheets(); toast(t("a.ml.thanks")); renderMl(); }
+    try { await api("POST", "/bonsaigo/gloss", { term: fx.term, lang: fx.lang, kind: fx.kind, text: $("#fxText").value }); closeSheets(); toast(t(fx.kind === "fix" ? "a.ml.thanks" : "a.ml.flagged")); renderMl(); }
     catch (er) { showErr("#fxErr", errText(er, "a")); }
   });
 
@@ -433,7 +480,9 @@
     if (w) {
       $("#gK").textContent = head; $("#gR").textContent = w.roma;
       const SL = $("#s-" + cur).classList.contains("k") ? AL : GL;
-      $("#gM").textContent = SL === "ja" ? w.yomi : w.shown[SL]; $("#gP").textContent = SL === "ja" ? w.plain_ja : w.meaning[SL]; $("#gW").textContent = "";
+      const fm = SL === "ja" ? null : fixOf(head, SL), fpl = fixOf(head, "plain");
+      $("#gM").textContent = fm ? fm.text : SL === "ja" ? w.yomi : w.shown[SL]; $("#gP").textContent = SL === "ja" ? (fpl ? fpl.text : w.plain_ja) : w.meaning[SL];
+      const fby = fm || (SL === "ja" && fpl); $("#gW").textContent = fby ? D(SL, "g.gl.fixed").replace("{P}", whoLine(fby.by, SL)) : "";
       const host = $("#s-" + cur); if (!host.contains($("#sheet"))) host.append($("#veil"), $("#sheet"));
       $("#veil").classList.add("show"); $("#sheet").classList.add("show"); return;
     }

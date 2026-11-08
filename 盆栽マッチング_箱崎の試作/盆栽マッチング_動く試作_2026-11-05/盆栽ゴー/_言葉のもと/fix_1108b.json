@@ -1,0 +1,1082 @@
+{
+ "g.x.to": {
+  "en": "Choose a garden",
+  "ja": "園を選ぶ",
+  "es": "Elige un jardín",
+  "zh": "选择园子",
+  "fr": "Choisir un jardin",
+  "it": "Scegli un giardino",
+  "th": "เลือกสวน",
+  "km": "ជ្រើសសួន"
+ },
+ "g.gp.h": {
+  "en": "Which garden should answer?",
+  "ja": "どの園に相談しますか",
+  "es": "¿Qué jardín te responde?",
+  "zh": "请哪家园子来回答？",
+  "fr": "Quel jardin doit répondre ?",
+  "it": "Quale giardino deve rispondere?",
+  "th": "ให้สวนไหนตอบดี",
+  "km": "ឱ្យសួនណាឆ្លើយ?"
+ },
+ "g.gp.lead": {
+  "en": "Pick a region, then your tree or trouble. Gardens that can answer it appear below.",
+  "ja": "地域を選び、木の種類か困りごとを選ぶと、答えられる園が出ます。",
+  "es": "Elige una región y luego tu árbol o problema. Abajo aparecen los jardines que pueden responder.",
+  "zh": "先选地区，再选树种或烦恼，下面就会列出能回答的园子。",
+  "fr": "Choisissez une région, puis votre arbre ou votre souci. Les jardins qui peuvent répondre s'affichent dessous.",
+  "it": "Scegli una regione, poi il tuo albero o il problema. Sotto compaiono i giardini che possono rispondere.",
+  "th": "เลือกภูมิภาค แล้วเลือกชนิดต้นไม้หรือปัญหา สวนที่ตอบได้จะแสดงด้านล่าง",
+  "km": "ជ្រើសតំបន់ រួចជ្រើសប្រភេទដើមឈើ ឬបញ្ហា។ សួនដែលអាចឆ្លើយបាននឹងបង្ហាញខាងក្រោម។"
+ },
+ "g.gp.region": {
+  "en": "1 · Region",
+  "ja": "1 · 地域",
+  "es": "1 · Región",
+  "zh": "1 · 地区",
+  "fr": "1 · Région",
+  "it": "1 · Regione",
+  "th": "1 · ภูมิภาค",
+  "km": "1 · តំបន់"
+ },
+ "g.gp.all": {
+  "en": "All regions",
+  "ja": "すべての地域",
+  "es": "Todas",
+  "zh": "全部地区",
+  "fr": "Toutes",
+  "it": "Tutte",
+  "th": "ทุกภูมิภาค",
+  "km": "គ្រប់តំបន់"
+ },
+ "g.gp.tree": {
+  "en": "2 · Your tree",
+  "ja": "2 · 木の種類",
+  "es": "2 · Tu árbol",
+  "zh": "2 · 树种",
+  "fr": "2 · Votre arbre",
+  "it": "2 · Il tuo albero",
+  "th": "2 · ชนิดต้นไม้",
+  "km": "2 · ប្រភេទដើមឈើ"
+ },
+ "g.gp.topic": {
+  "en": "or your trouble",
+  "ja": "または困りごと",
+  "es": "o tu problema",
+  "zh": "或者烦恼",
+  "fr": "ou votre souci",
+  "it": "o il problema",
+  "th": "หรือปัญหา",
+  "km": "ឬបញ្ហា"
+ },
+ "g.gp.any": {
+  "en": "Any",
+  "ja": "どれでも",
+  "es": "Cualquiera",
+  "zh": "不限",
+  "fr": "Tous",
+  "it": "Tutti",
+  "th": "ทั้งหมด",
+  "km": "ទាំងអស់"
+ },
+ "g.gp.list": {
+  "en": "3 · Gardens that can answer",
+  "ja": "3 · 答えられる園",
+  "es": "3 · Jardines que pueden responder",
+  "zh": "3 · 能回答的园子",
+  "fr": "3 · Jardins qui peuvent répondre",
+  "it": "3 · Giardini che possono rispondere",
+  "th": "3 · สวนที่ตอบได้",
+  "km": "3 · សួនដែលអាចឆ្លើយបាន"
+ },
+ "g.gp.n": {
+  "en": "{N} gardens",
+  "ja": "{N}園",
+  "es": "{N} jardines",
+  "zh": "{N} 家园子",
+  "fr": "{N} jardins",
+  "it": "{N} giardini",
+  "th": "{N} สวน",
+  "km": "{N} សួន"
+ },
+ "g.gp.n1": {
+  "en": "1 garden",
+  "ja": "1園",
+  "es": "1 jardín",
+  "zh": "1 家园子",
+  "fr": "1 jardin",
+  "it": "1 giardino",
+  "th": "1 สวน",
+  "km": "1 សួន"
+ },
+ "g.gp.none": {
+  "en": "No garden matches. Try another region or tree.",
+  "ja": "合う園がありません。地域か木を変えてみてください。",
+  "es": "Ningún jardín coincide. Prueba otra región u otro árbol.",
+  "zh": "没有符合的园子，换个地区或树种试试。",
+  "fr": "Aucun jardin ne correspond. Essayez une autre région ou un autre arbre.",
+  "it": "Nessun giardino corrisponde. Prova un'altra regione o un altro albero.",
+  "th": "ไม่มีสวนที่ตรง ลองเปลี่ยนภูมิภาคหรือชนิดต้นไม้",
+  "km": "គ្មានសួនត្រូវគ្នា។ សាកល្បងតំបន់ ឬដើមឈើផ្សេង។"
+ },
+ "g.gp.pick": {
+  "en": "Ask this garden",
+  "ja": "この園に相談する",
+  "es": "Preguntar a este jardín",
+  "zh": "向这家园子咨询",
+  "fr": "Demander à ce jardin",
+  "it": "Chiedi a questo giardino",
+  "th": "ถามสวนนี้",
+  "km": "សួរសួននេះ"
+ },
+ "g.gp.master": {
+  "en": "Master",
+  "ja": "園主",
+  "es": "Maestro",
+  "zh": "园主",
+  "fr": "Maître",
+  "it": "Maestro",
+  "th": "เจ้าของสวน",
+  "km": "ម្ចាស់សួន"
+ },
+ "g.gp.appr": {
+  "en": "Apprentice from {C}",
+  "ja": "{C}から来たお弟子さん",
+  "es": "Aprendiz de {C}",
+  "zh": "来自{C}的弟子",
+  "fr": "Apprenti venu de {C}",
+  "it": "Apprendista da {C}",
+  "th": "ลูกศิษย์จาก{C}",
+  "km": "សិស្សមកពី{C}"
+ },
+ "g.gp.in": {
+  "en": "answers in {L}",
+  "ja": "{L}で答えます",
+  "es": "responde en {L}",
+  "zh": "用{L}回答",
+  "fr": "répond en {L}",
+  "it": "risponde in {L}",
+  "th": "ตอบเป็น{L}",
+  "km": "ឆ្លើយជា{L}"
+ },
+ "g.gp.change": {
+  "en": "Change",
+  "ja": "変える",
+  "es": "Cambiar",
+  "zh": "更换",
+  "fr": "Changer",
+  "it": "Cambia",
+  "th": "เปลี่ยน",
+  "km": "ប្តូរ"
+ },
+ "g.gp.same": {
+  "en": "Same language as you: your words arrive as written, without translation.",
+  "ja": "あなたと同じ言葉なので、訳さずにそのまま届きます。",
+  "es": "Mismo idioma que tú: tus palabras llegan tal cual, sin traducir.",
+  "zh": "和你是同一种语言，不翻译，原样送达。",
+  "fr": "Même langue que vous : vos mots arrivent tels quels, sans traduction.",
+  "it": "Stessa lingua: le tue parole arrivano così come sono, senza traduzione.",
+  "th": "ภาษาเดียวกับคุณ ข้อความจะถึงตามที่เขียน ไม่ต้องแปล",
+  "km": "ភាសាដូចអ្នក ពាក្យរបស់អ្នកទៅដល់ដូចដើម ដោយមិនបកប្រែ។"
+ },
+ "g.gp.diff": {
+  "en": "Your words arrive in {L}, translated for meaning and checked.",
+  "ja": "あなたの言葉は、意味で{L}に訳し、確かめてから届きます。",
+  "es": "Tus palabras llegan en {L}, traducidas por el sentido y revisadas.",
+  "zh": "你的话会按意思译成{L}，确认后送达。",
+  "fr": "Vos mots arrivent en {L}, traduits selon le sens et vérifiés.",
+  "it": "Le tue parole arrivano in {L}, tradotte nel senso e verificate.",
+  "th": "ข้อความของคุณจะถูกแปลตามความหมายเป็น{L} และตรวจก่อนส่งถึง",
+  "km": "ពាក្យរបស់អ្នកនឹងបកប្រែតាមន័យទៅជា{L} ហើយត្រួតពិនិត្យមុនទៅដល់។"
+ },
+ "g.ans.by2": {
+  "en": "{P} · answered in {L}",
+  "ja": "{P} · {L}で回答",
+  "es": "{P} · respondió en {L}",
+  "zh": "{P} · 用{L}回答",
+  "fr": "{P} · a répondu en {L}",
+  "it": "{P} · ha risposto in {L}",
+  "th": "{P} · ตอบเป็น{L}",
+  "km": "{P} · ឆ្លើយជា{L}"
+ },
+ "g.x.sameAns": {
+  "en": "Same language as you, so this answer arrived exactly as written.",
+  "ja": "あなたと同じ言葉なので、この答えは訳さずに、そのまま届いています。",
+  "es": "Mismo idioma que tú: esta respuesta llegó tal cual se escribió.",
+  "zh": "和你是同一种语言，这个回答没有翻译，原样送达。",
+  "fr": "Même langue que vous : cette réponse est arrivée telle quelle.",
+  "it": "Stessa lingua: questa risposta è arrivata così come è stata scritta.",
+  "th": "ภาษาเดียวกับคุณ คำตอบนี้จึงถึงตามที่เขียน ไม่ได้แปล",
+  "km": "ភាសាដូចអ្នក ចម្លើយនេះមកដល់ដូចដើម មិនបានបកប្រែ។"
+ },
+ "g.x.untr": {
+  "en": "Sample mode can't translate, so this answer is shown in the words it was written in.",
+  "ja": "見本モードでは訳せないため、書かれた言葉のまま出しています。",
+  "es": "El modo de ejemplo no puede traducir; la respuesta se muestra en su idioma original.",
+  "zh": "示例模式无法翻译，这里按原文显示。",
+  "fr": "Le mode exemple ne peut pas traduire : la réponse s'affiche dans sa langue d'origine.",
+  "it": "La modalità esempio non traduce: la risposta è mostrata nella lingua originale.",
+  "th": "โหมดตัวอย่างแปลไม่ได้ จึงแสดงตามภาษาที่เขียน",
+  "km": "របៀបគំរូមិនអាចបកប្រែបាន ដូច្នេះបង្ហាញតាមភាសាដើម។"
+ },
+ "g.qa.by": {
+  "en": "{P} · {G}",
+  "ja": "{G}の{P}",
+  "es": "{P} · {G}",
+  "zh": "{G} · {P}",
+  "fr": "{P} · {G}",
+  "it": "{P} · {G}",
+  "th": "{P} · {G}",
+  "km": "{P} · {G}"
+ },
+ "g.learn.h": {
+  "en": "Learn bonsai",
+  "ja": "盆栽を学ぶ",
+  "es": "Aprende bonsái",
+  "zh": "学习盆栽",
+  "fr": "Apprendre le bonsaï",
+  "it": "Impara il bonsai",
+  "th": "เรียนรู้บอนไซ",
+  "km": "រៀនបុនសៃ"
+ },
+ "g.learn.eye": {
+  "en": "Learn · 24 articles, films, voices, words",
+  "ja": "学ぶ · 読みもの24本・動画・職人の声・用語",
+  "es": "Aprende · 24 artículos, vídeos, voces, términos",
+  "zh": "学习 · 24 篇文章、视频、匠人之声、术语",
+  "fr": "Apprendre · 24 articles, films, voix, termes",
+  "it": "Impara · 24 articoli, video, voci, termini",
+  "th": "เรียนรู้ · บทความ 24 เรื่อง วิดีโอ เสียงช่าง คำศัพท์",
+  "km": "រៀន · អត្ថបទ 24 វីដេអូ សំឡេងជាង ពាក្យ"
+ },
+ "g.l.art": {
+  "en": "Read",
+  "ja": "読みもの",
+  "es": "Leer",
+  "zh": "阅读",
+  "fr": "Lire",
+  "it": "Leggi",
+  "th": "อ่าน",
+  "km": "អាន"
+ },
+ "g.l.film": {
+  "en": "Films",
+  "ja": "動画",
+  "es": "Vídeos",
+  "zh": "视频",
+  "fr": "Films",
+  "it": "Video",
+  "th": "วิดีโอ",
+  "km": "វីដេអូ"
+ },
+ "g.l.voice": {
+  "en": "Voices",
+  "ja": "職人の声",
+  "es": "Voces",
+  "zh": "匠人之声",
+  "fr": "Voix",
+  "it": "Voci",
+  "th": "เสียงช่าง",
+  "km": "សំឡេងជាង"
+ },
+ "g.l.gloss": {
+  "en": "Words",
+  "ja": "用語",
+  "es": "Términos",
+  "zh": "术语",
+  "fr": "Termes",
+  "it": "Termini",
+  "th": "คำศัพท์",
+  "km": "ពាក្យ"
+ },
+ "g.l.basics": {
+  "en": "Basics and history",
+  "ja": "基本と歴史",
+  "es": "Lo básico e historia",
+  "zh": "基础与历史",
+  "fr": "Bases et histoire",
+  "it": "Basi e storia",
+  "th": "พื้นฐานและประวัติ",
+  "km": "មូលដ្ឋាន និងប្រវត្តិ"
+ },
+ "g.l.species": {
+  "en": "Trees",
+  "ja": "樹種",
+  "es": "Especies",
+  "zh": "树种",
+  "fr": "Espèces",
+  "it": "Specie",
+  "th": "ชนิดต้นไม้",
+  "km": "ប្រភេទដើមឈើ"
+ },
+ "g.l.seasons": {
+  "en": "Seasons and care",
+  "ja": "季節の手入れ",
+  "es": "Estaciones y cuidados",
+  "zh": "四季养护",
+  "fr": "Saisons et soins",
+  "it": "Stagioni e cure",
+  "th": "ฤดูกาลและการดูแล",
+  "km": "រដូវ និងការថែទាំ"
+ },
+ "g.l.ask": {
+  "en": "Ask a garden about this",
+  "ja": "この問いを園に聞く",
+  "es": "Pregunta esto a un jardín",
+  "zh": "把这个问题问园子",
+  "fr": "Poser la question à un jardin",
+  "it": "Chiedilo a un giardino",
+  "th": "ถามเรื่องนี้กับสวน",
+  "km": "សួរសួនអំពីរឿងនេះ"
+ },
+ "g.l.voiceQ": {
+  "en": "A question for a master",
+  "ja": "職人に聞いてみたいこと",
+  "es": "Una pregunta para un maestro",
+  "zh": "想问匠人的问题",
+  "fr": "Une question pour un maître",
+  "it": "Una domanda per un maestro",
+  "th": "คำถามถึงช่าง",
+  "km": "សំណួរសម្រាប់ជាង"
+ },
+ "g.l.src": {
+  "en": "Sources",
+  "ja": "出典",
+  "es": "Fuentes",
+  "zh": "出处",
+  "fr": "Sources",
+  "it": "Fonti",
+  "th": "แหล่งที่มา",
+  "km": "ប្រភព"
+ },
+ "g.l.filmNote": {
+  "en": "Explainer films our team made in 3D for the first version of this project. Captions are in Japanese and English.",
+  "ja": "このプロジェクトの初代で、チームが3Dで作った解説動画です。字幕は日本語と英語です。",
+  "es": "Vídeos explicativos que el equipo hizo en 3D para la primera versión del proyecto. Subtítulos en japonés e inglés.",
+  "zh": "这是团队为本项目第一版用 3D 制作的讲解视频，字幕为日语和英语。",
+  "fr": "Films explicatifs réalisés en 3D par l'équipe pour la première version du projet. Sous-titres en japonais et en anglais.",
+  "it": "Video esplicativi realizzati in 3D dal team per la prima versione del progetto. Sottotitoli in giapponese e inglese.",
+  "th": "วิดีโออธิบายที่ทีมทำด้วย 3D สำหรับโปรเจกต์รุ่นแรก คำบรรยายเป็นภาษาญี่ปุ่นและอังกฤษ",
+  "km": "វីដេអូពន្យល់ដែលក្រុមធ្វើជា 3D សម្រាប់កំណែដំបូងនៃគម្រោងនេះ។ អក្សររត់ជាភាសាជប៉ុន និងអង់គ្លេស។"
+ },
+ "g.l.short": {
+  "en": "Short",
+  "ja": "ショート",
+  "es": "Corto",
+  "zh": "短视频",
+  "fr": "Court",
+  "it": "Breve",
+  "th": "สั้น",
+  "km": "ខ្លី"
+ },
+ "g.l.voiceLead": {
+  "en": "Answers from the gardens on BONSAIGO. All gardens and people here are fictional samples.",
+  "ja": "BONSAIGO の園が答えた言葉です。園と人は、すべて架空の見本です。",
+  "es": "Respuestas de los jardines de BONSAIGO. Todos los jardines y personas son ejemplos ficticios.",
+  "zh": "BONSAIGO 上各园子的回答。园子和人物均为虚构示例。",
+  "fr": "Réponses des jardins de BONSAIGO. Jardins et personnes sont des exemples fictifs.",
+  "it": "Risposte dei giardini di BONSAIGO. Giardini e persone sono esempi fittizi.",
+  "th": "คำตอบจากสวนบน BONSAIGO สวนและบุคคลทั้งหมดเป็นตัวอย่างสมมติ",
+  "km": "ចម្លើយពីសួននៅលើ BONSAIGO។ សួន និងមនុស្សទាំងអស់ជាគំរូប្រឌិត។"
+ },
+ "g.l.glossLead": {
+  "en": "Bonsai words stay in Japanese, with a meaning you can read. Tap one to open it.",
+  "ja": "盆栽の言葉は日本語のまま残し、読める意味を添えています。押すと開きます。",
+  "es": "Las palabras del bonsái se quedan en japonés, con un significado que puedes leer. Toca una para abrirla.",
+  "zh": "盆栽用语保留日语，并附上你能读懂的意思。点一下打开。",
+  "fr": "Les mots du bonsaï restent en japonais, avec un sens lisible. Touchez-en un pour l'ouvrir.",
+  "it": "Le parole del bonsai restano in giapponese, con un significato leggibile. Toccane una per aprirla.",
+  "th": "คำศัพท์บอนไซคงเป็นภาษาญี่ปุ่น พร้อมความหมายที่อ่านได้ แตะเพื่อเปิด",
+  "km": "ពាក្យបុនសៃនៅជាភាសាជប៉ុន ជាមួយអត្ថន័យដែលអ្នកអានបាន។ ចុចដើម្បីបើក។"
+ },
+ "g.film.pine": {
+  "en": "Black pine: how one cut makes more branches",
+  "ja": "黒松：芽切りで、枝はふえる",
+  "es": "Pino negro: un corte que multiplica las ramas",
+  "zh": "黑松：一次芽切，枝条变多",
+  "fr": "Pin noir : une coupe qui multiplie les branches",
+  "it": "Pino nero: un taglio che moltiplica i rami",
+  "th": "สนดำ: ตัดยอดครั้งเดียว กิ่งเพิ่มขึ้น",
+  "km": "ស្រល់ខ្មៅ៖ កាត់ពន្លកម្តង មែកកើនឡើង"
+ },
+ "g.film.maple": {
+  "en": "Japanese maple: one tree, four seasons",
+  "ja": "もみじ：一本の木の四季",
+  "es": "Arce japonés: un árbol, cuatro estaciones",
+  "zh": "日本红枫：一棵树的四季",
+  "fr": "Érable du Japon : un arbre, quatre saisons",
+  "it": "Acero giapponese: un albero, quattro stagioni",
+  "th": "เมเปิลญี่ปุ่น: ต้นเดียว สี่ฤดู",
+  "km": "ដើមម៉េផលជប៉ុន៖ ដើមមួយ បួនរដូវ"
+ },
+ "g.film.eight": {
+  "en": "Eight trees of bonsai",
+  "ja": "盆栽の8つの木",
+  "es": "Ocho árboles del bonsái",
+  "zh": "盆栽的八种树",
+  "fr": "Huit arbres du bonsaï",
+  "it": "Otto alberi del bonsai",
+  "th": "ต้นไม้ 8 ชนิดของบอนไซ",
+  "km": "ដើមឈើ 8 ប្រភេទនៃបុនសៃ"
+ },
+ "g.film.s1": {
+  "en": "Mekiri in 30 seconds",
+  "ja": "30秒の芽切り",
+  "es": "El mekiri en 30 segundos",
+  "zh": "30 秒看芽切",
+  "fr": "Le mekiri en 30 secondes",
+  "it": "Il mekiri in 30 secondi",
+  "th": "เมะคิริใน 30 วินาที",
+  "km": "មេគិរី ក្នុង 30 វិនាទី"
+ },
+ "g.film.s2": {
+  "en": "A maple's year, short",
+  "ja": "もみじの一年（ショート）",
+  "es": "El año de un arce, en corto",
+  "zh": "红枫的一年（短视频）",
+  "fr": "L'année d'un érable, en bref",
+  "it": "L'anno di un acero, in breve",
+  "th": "หนึ่งปีของเมเปิล (สั้น)",
+  "km": "មួយឆ្នាំរបស់ម៉េផល (ខ្លី)"
+ },
+ "g.film.s3": {
+  "en": "Eight trees, short",
+  "ja": "8つの木（ショート）",
+  "es": "Ocho árboles, en corto",
+  "zh": "八种树（短视频）",
+  "fr": "Huit arbres, en bref",
+  "it": "Otto alberi, in breve",
+  "th": "ต้นไม้ 8 ชนิด (สั้น)",
+  "km": "ដើមឈើ 8 ប្រភេទ (ខ្លី)"
+ },
+ "a.mh.name": {
+  "en": "{N}",
+  "ja": "{N} 様",
+  "es": "{N}",
+  "zh": "{N} 师傅",
+  "fr": "{N}",
+  "it": "{N}",
+  "th": "คุณ{N}",
+  "km": "{N}"
+ },
+ "a.mh.out": {
+  "en": "Posts on BONSAIGO's official X and Instagram",
+  "ja": "BONSAIGO の公式 X とインスタに出た投稿",
+  "es": "Publicaciones en el X e Instagram oficiales de BONSAIGO",
+  "zh": "BONSAIGO 官方 X 和 Instagram 上的帖子",
+  "fr": "Publications sur le X et l'Instagram officiels de BONSAIGO",
+  "it": "Post su X e Instagram ufficiali di BONSAIGO",
+  "th": "โพสต์บน X และ Instagram ทางการของ BONSAIGO",
+  "km": "ការបង្ហោះលើ X និង Instagram ផ្លូវការរបស់ BONSAIGO"
+ },
+ "a.x.master": {
+  "en": "Master",
+  "ja": "園主",
+  "es": "Maestro",
+  "zh": "园主",
+  "fr": "Maître",
+  "it": "Maestro",
+  "th": "เจ้าของสวน",
+  "km": "ម្ចាស់សួន"
+ },
+ "a.x.appr": {
+  "en": "Apprentice from {C}",
+  "ja": "{C}から来たお弟子さん",
+  "es": "Aprendiz de {C}",
+  "zh": "来自{C}的弟子",
+  "fr": "Apprenti venu de {C}",
+  "it": "Apprendista da {C}",
+  "th": "ลูกศิษย์จาก{C}",
+  "km": "សិស្សមកពី{C}"
+ },
+ "a.x.member": {
+  "en": "{P}",
+  "ja": "{E}の{P}さん",
+  "es": "{P}",
+  "zh": "{P}",
+  "fr": "{P}",
+  "it": "{P}",
+  "th": "{P}",
+  "km": "{P}"
+ },
+ "a.x.answersIn": {
+  "en": "answers in {L}",
+  "ja": "{L}で答える",
+  "es": "responde en {L}",
+  "zh": "用{L}回答",
+  "fr": "répond en {L}",
+  "it": "risponde in {L}",
+  "th": "ตอบเป็น{L}",
+  "km": "ឆ្លើយជា{L}"
+ },
+ "a.x.placeF": {
+  "en": "Garden name",
+  "ja": "園の名前",
+  "es": "Nombre del jardín",
+  "zh": "园名",
+  "fr": "Nom du jardin",
+  "it": "Nome del giardino",
+  "th": "ชื่อสวน",
+  "km": "ឈ្មោះសួន"
+ },
+ "a.x.regionF": {
+  "en": "Region",
+  "ja": "地域",
+  "es": "Región",
+  "zh": "地区",
+  "fr": "Région",
+  "it": "Regione",
+  "th": "ภูมิภาค",
+  "km": "តំបន់"
+ },
+ "a.x.newOne": {
+  "en": "Newly registered",
+  "ja": "新しく登録",
+  "es": "Registrado ahora",
+  "zh": "新注册",
+  "fr": "Nouvellement inscrit",
+  "it": "Appena registrato",
+  "th": "ลงทะเบียนใหม่",
+  "km": "ទើបចុះឈ្មោះ"
+ },
+ "a.steps.1": {
+  "en": "The photo and question arrive in the language you answer in.",
+  "ja": "写真と相談が、あなたの答える言葉で届く",
+  "es": "La foto y la pregunta llegan en el idioma en que respondes.",
+  "zh": "照片和问题会用你回答的语言送达。",
+  "fr": "La photo et la question arrivent dans la langue où vous répondez.",
+  "it": "Foto e domanda arrivano nella lingua in cui rispondi.",
+  "th": "รูปและคำถามจะมาถึงเป็นภาษาที่คุณใช้ตอบ",
+  "km": "រូបថត និងសំណួរមកដល់ជាភាសាដែលអ្នកឆ្លើយ។"
+ },
+ "a.steps.2": {
+  "en": "Read the draft answer and fix only what is different, by voice. Your own way of speaking is fine.",
+  "ja": "答えの案を読み、違うところだけ声で直す。方言のままで大丈夫",
+  "es": "Lee el borrador y corrige por voz solo lo que no coincide. Habla a tu manera.",
+  "zh": "读答案草稿，只用语音改不对的地方。照平常说话就好。",
+  "fr": "Lisez le brouillon et corrigez à voix haute seulement ce qui diffère. Parlez comme d'habitude.",
+  "it": "Leggi la bozza e correggi a voce solo ciò che non va. Parla come sempre.",
+  "th": "อ่านร่างคำตอบ แล้วแก้ด้วยเสียงเฉพาะจุดที่ไม่ตรง พูดแบบที่คุณพูดได้เลย",
+  "km": "អានសេចក្តីព្រាងចម្លើយ ហើយកែដោយសំឡេងតែកន្លែងខុស។ និយាយតាមរបៀបរបស់អ្នកបាន។"
+ },
+ "a.steps.3": {
+  "en": "It reaches the asker in their language.",
+  "ja": "相手の言葉で届く",
+  "es": "Llega a quien pregunta en su idioma.",
+  "zh": "以对方的语言送达。",
+  "fr": "La réponse arrive dans la langue de la personne.",
+  "it": "Arriva a chi ha chiesto nella sua lingua.",
+  "th": "ถึงผู้ถามเป็นภาษาของเขา",
+  "km": "ទៅដល់អ្នកសួរជាភាសារបស់គេ។"
+ },
+ "a.det.by": {
+  "en": "",
+  "ja": "",
+  "es": "",
+  "zh": "",
+  "fr": "",
+  "it": "",
+  "th": "",
+  "km": ""
+ },
+ "a.dr.hd": {
+  "en": "Draft answer",
+  "ja": "答えの案",
+  "es": "Borrador de respuesta",
+  "zh": "答案草稿",
+  "fr": "Brouillon de réponse",
+  "it": "Bozza di risposta",
+  "th": "ร่างคำตอบ",
+  "km": "សេចក្តីព្រាងចម្លើយ"
+ },
+ "a.x.useDraft": {
+  "en": "Start from the draft",
+  "ja": "案から始める",
+  "es": "Empezar desde el borrador",
+  "zh": "从草稿开始",
+  "fr": "Partir du brouillon",
+  "it": "Parti dalla bozza",
+  "th": "เริ่มจากร่าง",
+  "km": "ចាប់ផ្តើមពីសេចក្តីព្រាង"
+ },
+ "a.x.making": {
+  "en": "Preparing a draft answer…",
+  "ja": "答えの案を書いています…",
+  "es": "Preparando un borrador…",
+  "zh": "正在写答案草稿…",
+  "fr": "Préparation d'un brouillon…",
+  "it": "Sto preparando una bozza…",
+  "th": "กำลังเขียนร่างคำตอบ…",
+  "km": "កំពុងសរសេរសេចក្តីព្រាង…"
+ },
+ "a.conf.bar": {
+  "en": "as the asker will read it",
+  "ja": "相手が読む文",
+  "es": "tal como lo leerá",
+  "zh": "对方读到的内容",
+  "fr": "tel que la personne le lira",
+  "it": "come lo leggerà",
+  "th": "ตามที่ผู้ถามจะอ่าน",
+  "km": "ដូចដែលអ្នកសួរនឹងអាន"
+ },
+ "a.x.drafting": {
+  "en": "Writing the posts in 8 languages…",
+  "ja": "8つの言葉で投稿を書いています…",
+  "es": "Escribiendo las publicaciones en 8 idiomas…",
+  "zh": "正在用 8 种语言写帖子…",
+  "fr": "Rédaction des publications en 8 langues…",
+  "it": "Scrivo i post in 8 lingue…",
+  "th": "กำลังเขียนโพสต์ 8 ภาษา…",
+  "km": "កំពុងសរសេរការបង្ហោះជា 8 ភាសា…"
+ },
+ "a.x.writing8": {
+  "en": "8 languages",
+  "ja": "8つの言葉",
+  "es": "8 idiomas",
+  "zh": "8 种语言",
+  "fr": "8 langues",
+  "it": "8 lingue",
+  "th": "8 ภาษา",
+  "km": "8 ភាសា"
+ },
+ "a.x.imgLow": {
+  "en": "A person will check the photo before it is posted.",
+  "ja": "人が写真を確かめてから投稿します。",
+  "es": "Una persona revisará la foto antes de publicarla.",
+  "zh": "发布前会由人确认照片。",
+  "fr": "Une personne vérifiera la photo avant publication.",
+  "it": "Una persona controllerà la foto prima di pubblicarla.",
+  "th": "จะมีคนตรวจรูปก่อนโพสต์",
+  "km": "មនុស្សនឹងពិនិត្យរូបមុនបង្ហោះ។"
+ },
+ "a.x.img.unsure": {
+  "en": "This photo will be checked by a person before posting.",
+  "ja": "この写真は、人が確かめてから投稿します。",
+  "es": "Una persona revisará esta foto antes de publicarla.",
+  "zh": "这张照片会先由人确认再发布。",
+  "fr": "Cette photo sera vérifiée par une personne avant publication.",
+  "it": "Questa foto sarà controllata da una persona prima della pubblicazione.",
+  "th": "รูปนี้จะมีคนตรวจก่อนโพสต์",
+  "km": "រូបនេះនឹងត្រូវមនុស្សពិនិត្យមុនបង្ហោះ។"
+ },
+ "a.x.img.err": {
+  "en": "The photo couldn't be checked, so a person will check it.",
+  "ja": "写真を確かめられなかったので、人が確かめます",
+  "es": "No se pudo revisar la foto; la revisará una persona.",
+  "zh": "照片未能确认，将由人来确认。",
+  "fr": "La photo n'a pas pu être vérifiée ; une personne le fera.",
+  "it": "Non è stato possibile controllare la foto: lo farà una persona.",
+  "th": "ตรวจรูปไม่ได้ จึงให้คนตรวจแทน",
+  "km": "មិនអាចពិនិត្យរូបបាន មនុស្សនឹងពិនិត្យ។"
+ },
+ "a.x.postsS": {
+  "en": "Reading it in {A} is enough. The other languages say the same thing.",
+  "ja": "{A}を読めば大丈夫です。ほかの言葉も同じことを書いています。",
+  "es": "Basta con leerlo en {A}. Los demás idiomas dicen lo mismo.",
+  "zh": "读{A}版就够了，其他语言写的是同样的内容。",
+  "fr": "Le lire en {A} suffit. Les autres langues disent la même chose.",
+  "it": "Basta leggerlo in {A}. Le altre lingue dicono la stessa cosa.",
+  "th": "อ่านภาษา{A}ก็พอ ภาษาอื่นเขียนเหมือนกัน",
+  "km": "អានជា{A}គឺគ្រប់គ្រាន់ ភាសាផ្សេងសរសេរដូចគ្នា។"
+ },
+ "a.x.confOk": {
+  "en": "Checked: turned back into {A}, the meaning matches your words.",
+  "ja": "確かめ済み：{A}に戻しても、意味が合っています。",
+  "es": "Comprobado: devuelto al {A}, el sentido coincide con tus palabras.",
+  "zh": "已确认：译回{A}后，意思与你的话一致。",
+  "fr": "Vérifié : retraduit en {A}, le sens correspond à vos mots.",
+  "it": "Verificato: ritradotto in {A}, il senso corrisponde alle tue parole.",
+  "th": "ตรวจแล้ว: แปลกลับเป็น{A} ความหมายตรงกับคำของคุณ",
+  "km": "បានពិនិត្យ៖ បកប្រែត្រឡប់ជា{A} អត្ថន័យត្រូវនឹងពាក្យរបស់អ្នក។"
+ },
+ "a.x.same": {
+  "en": "The asker also uses {L}, so your words go exactly as written.",
+  "ja": "相手も{L}なので、あなたの言葉が訳さずにそのまま届きます。",
+  "es": "Quien pregunta también usa {L}: tus palabras van tal cual.",
+  "zh": "对方也用{L}，你的话将原样送达，不翻译。",
+  "fr": "La personne utilise aussi {L} : vos mots partent tels quels.",
+  "it": "Anche chi chiede usa {L}: le tue parole arrivano così come sono.",
+  "th": "ผู้ถามใช้{L}เหมือนกัน คำของคุณจะถึงตามที่เขียน",
+  "km": "អ្នកសួរក៏ប្រើ{L}ដែរ ពាក្យរបស់អ្នកទៅដល់ដូចដើម។"
+ },
+ "a.x.asWho": {
+  "en": "Answering as {P} · {E}",
+  "ja": "{E}の{P}として答えます",
+  "es": "Respondes como {P} · {E}",
+  "zh": "以{E}的{P}身份回答",
+  "fr": "Vous répondez en tant que {P} · {E}",
+  "it": "Rispondi come {P} · {E}",
+  "th": "ตอบในนาม {P} · {E}",
+  "km": "ឆ្លើយក្នុងនាម {P} · {E}"
+ },
+ "a.x.answerIn": {
+  "en": "Your answer language",
+  "ja": "答える言葉",
+  "es": "Tu idioma de respuesta",
+  "zh": "你的回答语言",
+  "fr": "Votre langue de réponse",
+  "it": "La tua lingua di risposta",
+  "th": "ภาษาที่คุณตอบ",
+  "km": "ភាសាដែលអ្នកឆ្លើយ"
+ },
+ "a.ml.eye": {
+  "en": "Learn · your words, 24 articles, films, voices",
+  "ja": "学ぶ · 言葉の届き方・読みもの24本・動画・職人の声",
+  "es": "Aprende · tus palabras, 24 artículos, vídeos, voces",
+  "zh": "学习 · 你的用语、24 篇文章、视频、匠人之声",
+  "fr": "Apprendre · vos mots, 24 articles, films, voix",
+  "it": "Impara · le tue parole, 24 articoli, video, voci",
+  "th": "เรียนรู้ · คำของคุณ บทความ 24 เรื่อง วิดีโอ เสียงช่าง",
+  "km": "រៀន · ពាក្យរបស់អ្នក អត្ថបទ 24 វីដេអូ សំឡេងជាង"
+ },
+ "a.ml.h": {
+  "en": "How your words arrive, and bonsai to learn",
+  "ja": "言葉の届き方と、盆栽の学び",
+  "es": "Cómo llegan tus palabras, y bonsái para aprender",
+  "zh": "你的用语如何送达，以及盆栽知识",
+  "fr": "Comment vos mots arrivent, et le bonsaï à apprendre",
+  "it": "Come arrivano le tue parole, e il bonsai da imparare",
+  "th": "คำของคุณไปถึงอย่างไร และความรู้บอนไซ",
+  "km": "ពាក្យរបស់អ្នកទៅដល់យ៉ាងណា និងចំណេះបុនសៃ"
+ },
+ "a.ml.words": {
+  "en": "Your words",
+  "ja": "届き方",
+  "es": "Tus palabras",
+  "zh": "你的用语",
+  "fr": "Vos mots",
+  "it": "Le tue parole",
+  "th": "คำของคุณ",
+  "km": "ពាក្យរបស់អ្នក"
+ },
+ "a.ml.lead": {
+  "en": "Your bonsai words are first put into this plain Japanese, then reach each country in these words. If something is off, fix it or let us know.",
+  "ja": "あなたの盆栽の言葉は、まずこの日本語に言いかえてから、各国にこの言葉で届きます。違っていたら、直すか知らせてください。",
+  "es": "Tus palabras de bonsái se pasan primero a este japonés sencillo y llegan a cada país con estas palabras. Si algo no está bien, corrígelo o avísanos.",
+  "zh": "你的盆栽用语会先改写成这段平实的日语，再以下面的说法送到各国。如有不对，请修改或告诉我们。",
+  "fr": "Vos mots de bonsaï sont d'abord reformulés dans ce japonais simple, puis arrivent dans chaque pays avec ces mots. Si quelque chose cloche, corrigez-le ou signalez-le.",
+  "it": "Le tue parole di bonsai vengono prima riformulate in questo giapponese semplice, poi arrivano in ogni paese con queste parole. Se qualcosa non va, correggilo o segnalalo.",
+  "th": "คำบอนไซของคุณจะถูกเรียบเรียงเป็นภาษาญี่ปุ่นง่าย ๆ นี้ก่อน แล้วไปถึงแต่ละประเทศด้วยคำเหล่านี้ ถ้าไม่ถูก แก้ไขหรือแจ้งเราได้",
+  "km": "ពាក្យបុនសៃរបស់អ្នកត្រូវបានសរសេរជាភាសាជប៉ុនសាមញ្ញនេះជាមុន រួចទៅដល់ប្រទេសនីមួយៗតាមពាក្យទាំងនេះ។ បើមិនត្រូវ សូមកែ ឬប្រាប់យើង។"
+ },
+ "a.ml.plain": {
+  "en": "Said in plain Japanese",
+  "ja": "言いかえた日本語",
+  "es": "En japonés sencillo",
+  "zh": "改写后的日语",
+  "fr": "En japonais simple",
+  "it": "In giapponese semplice",
+  "th": "ภาษาญี่ปุ่นแบบเรียบเรียง",
+  "km": "ជាភាសាជប៉ុនសាមញ្ញ"
+ },
+ "a.ml.arrive": {
+  "en": "How it arrives",
+  "ja": "各国では、こう届きます",
+  "es": "Cómo llega",
+  "zh": "在各国这样送达",
+  "fr": "Comment il arrive",
+  "it": "Come arriva",
+  "th": "ไปถึงแต่ละประเทศแบบนี้",
+  "km": "ទៅដល់បែបនេះ"
+ },
+ "a.ml.fix": {
+  "en": "Fix",
+  "ja": "直す",
+  "es": "Corregir",
+  "zh": "修改",
+  "fr": "Corriger",
+  "it": "Correggi",
+  "th": "แก้",
+  "km": "កែ"
+ },
+ "a.ml.wrong": {
+  "en": "This is wrong",
+  "ja": "違うと知らせる",
+  "es": "Esto está mal",
+  "zh": "告知不对",
+  "fr": "C'est faux",
+  "it": "È sbagliato",
+  "th": "แจ้งว่าไม่ถูก",
+  "km": "ប្រាប់ថាខុស"
+ },
+ "a.ml.which": {
+  "en": "Which one?",
+  "ja": "どれを直しますか",
+  "es": "¿Cuál?",
+  "zh": "改哪一个？",
+  "fr": "Lequel ?",
+  "it": "Quale?",
+  "th": "แก้อันไหน",
+  "km": "កែមួយណា?"
+ },
+ "a.ml.fixPh": {
+  "en": "The right way to say it",
+  "ja": "正しい言い方",
+  "es": "La forma correcta de decirlo",
+  "zh": "正确的说法",
+  "fr": "La bonne façon de le dire",
+  "it": "Il modo giusto di dirlo",
+  "th": "คำที่ถูกต้อง",
+  "km": "របៀបនិយាយត្រឹមត្រូវ"
+ },
+ "a.ml.send": {
+  "en": "Send",
+  "ja": "送る",
+  "es": "Enviar",
+  "zh": "发送",
+  "fr": "Envoyer",
+  "it": "Invia",
+  "th": "ส่ง",
+  "km": "ផ្ញើ"
+ },
+ "a.ml.thanks": {
+  "en": "Revised. It now shows in Learn for askers too.",
+  "ja": "直しました。相談する人の「学ぶ」にも、すぐに出ます。",
+  "es": "Corregido. Ya aparece también en Aprende para quien pregunta.",
+  "zh": "已修改。提问的人在“学习”里也会立刻看到。",
+  "fr": "C'est corrigé. Cela apparaît aussi dans Apprendre pour les demandeurs.",
+  "it": "Corretto. Ora compare anche in Impara per chi chiede.",
+  "th": "แก้แล้ว ผู้ถามจะเห็นในหน้าเรียนรู้ทันที",
+  "km": "បានកែហើយ។ អ្នកសួរនឹងឃើញក្នុង រៀន ភ្លាមៗ។"
+ },
+ "a.ml.yours": {
+  "en": "You sent",
+  "ja": "あなたが送った直し",
+  "es": "Lo que enviaste",
+  "zh": "你提交的修改",
+  "fr": "Vos envois",
+  "it": "Hai inviato",
+  "th": "สิ่งที่คุณส่ง",
+  "km": "អ្វីដែលអ្នកបានផ្ញើ"
+ },
+ "a.ml.flagged": {
+  "en": "Marked as wrong",
+  "ja": "違うと知らせました",
+  "es": "Marcado como incorrecto",
+  "zh": "已告知不对",
+  "fr": "Signalé comme faux",
+  "it": "Segnalato come sbagliato",
+  "th": "แจ้งว่าไม่ถูกแล้ว",
+  "km": "បានប្រាប់ថាខុស"
+ },
+ "a.x.emptyPost": {
+  "en": "Write the post text for X and Instagram.",
+  "ja": "X とインスタの文を入れてください。",
+  "es": "Escribe el texto para X e Instagram.",
+  "zh": "请填写 X 和 Instagram 的文字。",
+  "fr": "Écrivez le texte pour X et Instagram.",
+  "it": "Scrivi il testo per X e Instagram.",
+  "th": "กรุณาใส่ข้อความสำหรับ X และ Instagram",
+  "km": "សូមសរសេរអត្ថបទសម្រាប់ X និង Instagram។"
+ },
+ "a.sumLbl": {
+  "en": "What the garden reads in {A}, in your words",
+  "ja": "園には{A}で、こう届きます",
+  "es": "Lo que el jardín lee en {A}, en tus palabras",
+  "zh": "园里会用{A}读到这些内容",
+  "fr": "Ce que le jardin lit en {A}, dans vos mots",
+  "it": "Cosa legge il giardino in {A}, nelle tue parole",
+  "th": "สิ่งที่สวนจะอ่านเป็น{A} แสดงเป็นภาษาของคุณ",
+  "km": "អ្វីដែលសួនអានជា{A} បង្ហាញជាភាសារបស់អ្នក"
+ },
+ "g.sent.flowSame": {
+  "en": "Same language · arrives as you wrote it",
+  "ja": "同じ言葉 · 書いたまま届きます",
+  "es": "Mismo idioma · llega tal como lo escribiste",
+  "zh": "同一种语言 · 按你写的原样送达",
+  "fr": "Même langue · arrive tel que vous l'avez écrit",
+  "it": "Stessa lingua · arriva così come l'hai scritto",
+  "th": "ภาษาเดียวกัน · ส่งถึงตามที่คุณเขียน",
+  "km": "ភាសាដូចគ្នា · ទៅដល់ដូចដែលអ្នកសរសេរ"
+ },
+ "g.sent.flowRaw": {
+  "en": "Sample mode · sent as written, without translation",
+  "ja": "見本モード · 訳さずに、書いたまま届きます",
+  "es": "Modo de muestra · se envía tal cual, sin traducir",
+  "zh": "示例模式 · 不翻译，按原文送达",
+  "fr": "Mode exemple · envoyé tel quel, sans traduction",
+  "it": "Modalità esempio · inviato così com'è, senza traduzione",
+  "th": "โหมดตัวอย่าง · ส่งตามที่เขียน ไม่แปล",
+  "km": "របៀបគំរូ · ផ្ញើដូចដែលសរសេរ ដោយមិនបកប្រែ"
+ },
+ "g.welcome.h1": {
+  "en": "Bonsai wisdom, to the world. <em>On to the next hundred years.</em>",
+  "ja": "盆栽の知恵を、世界へ。<em>次の百年へ。</em>",
+  "es": "La sabiduría del bonsái, al mundo. <em>Hacia los próximos cien años.</em>",
+  "zh": "把盆栽的智慧，带向世界。<em>传向下一个百年。</em>",
+  "fr": "La sagesse du bonsaï, vers le monde. <em>Pour les cent prochaines années.</em>",
+  "it": "La saggezza del bonsai, verso il mondo. <em>Verso i prossimi cento anni.</em>",
+  "th": "ภูมิปัญญาบอนไซ สู่โลก <em>สู่ร้อยปีข้างหน้า</em>",
+  "km": "ប្រាជ្ញាបុនសៃ ទៅកាន់ពិភពលោក។ <em>ឆ្ពោះទៅមួយរយឆ្នាំខាងមុខ។</em>"
+ },
+ "g.wel.tag": {
+  "en": "Ask Japan's bonsai masters, in your own words",
+  "ja": "日本の盆栽の師匠に、いつもの言葉で聞こう",
+  "es": "Pregunta a los maestros de bonsái de Japón, en tu idioma",
+  "zh": "用你自己的语言，请教日本的盆栽师傅",
+  "fr": "Demandez aux maîtres du bonsaï japonais, dans votre langue",
+  "it": "Chiedi ai maestri di bonsai del Giappone, nella tua lingua",
+  "th": "ถามครูบอนไซญี่ปุ่น ด้วยภาษาของคุณเอง",
+  "km": "សួរគ្រូបុនសៃជប៉ុន ជាភាសារបស់អ្នក"
+ },
+ "g.win.h": {
+  "en": "Ask the answers so far",
+  "ja": "たまった答えに聞く",
+  "es": "Pregunta a las respuestas reunidas",
+  "zh": "向已积累的回答提问",
+  "fr": "Interrogez les réponses déjà réunies",
+  "it": "Chiedi alle risposte raccolte",
+  "th": "ถามจากคำตอบที่สะสมไว้",
+  "km": "សួរពីចម្លើយដែលបានប្រមូល"
+ },
+ "g.win.lead": {
+  "en": "Answers from the gardens collect here. The more questions get answered, the smarter this gets. {N} answers so far.",
+  "ja": "園の答えが、ここにたまります。相談に答えがつくほど、賢くなります。いま {N} 件。",
+  "es": "Aquí se reúnen las respuestas de los jardines. Cuantas más preguntas se responden, más sabe. Ahora hay {N}.",
+  "zh": "各园的回答会积累在这里。回答越多，它就越聪明。目前共 {N} 条。",
+  "fr": "Les réponses des jardins s'accumulent ici. Plus il y a de réponses, plus c'est utile. {N} pour l'instant.",
+  "it": "Qui si raccolgono le risposte dei giardini. Più domande ricevono risposta, più diventa utile. Ora sono {N}.",
+  "th": "คำตอบจากสวนต่าง ๆ สะสมอยู่ที่นี่ ยิ่งมีคำตอบมาก ก็ยิ่งฉลาดขึ้น ตอนนี้มี {N} เรื่อง",
+  "km": "ចម្លើយពីសួននានាប្រមូលនៅទីនេះ។ ចម្លើយកាន់តែច្រើន វាកាន់តែឆ្លាត។ ឥឡូវមាន {N}។"
+ },
+ "g.win.ph": {
+  "en": "e.g. When should I take the wire off?",
+  "ja": "例：針金はいつ外せばいい？",
+  "es": "p. ej. ¿Cuándo quito el alambre?",
+  "zh": "例如：铝丝什么时候拆？",
+  "fr": "ex. Quand retirer le fil ?",
+  "it": "es. Quando tolgo il filo?",
+  "th": "เช่น ควรถอดลวดเมื่อไร",
+  "km": "ឧ. ពេលណាគួរដោះលួស?"
+ },
+ "g.win.go": {
+  "en": "Ask",
+  "ja": "聞く",
+  "es": "Preguntar",
+  "zh": "提问",
+  "fr": "Demander",
+  "it": "Chiedi",
+  "th": "ถาม",
+  "km": "សួរ"
+ },
+ "g.win.from": {
+  "en": "From the answer by {P}",
+  "ja": "{P}の答えから",
+  "es": "De la respuesta de {P}",
+  "zh": "出自 {P} 的回答",
+  "fr": "D'après la réponse de {P}",
+  "it": "Dalla risposta di {P}",
+  "th": "จากคำตอบของ {P}",
+  "km": "ពីចម្លើយរបស់ {P}"
+ },
+ "g.win.none": {
+  "en": "Nothing close yet. Ask a garden directly.",
+  "ja": "まだ近い答えがありません。園に直接聞いてみましょう。",
+  "es": "Aún no hay nada parecido. Pregunta directamente a un jardín.",
+  "zh": "还没有相近的回答。直接问问园子吧。",
+  "fr": "Rien d'approchant pour l'instant. Demandez directement à un jardin.",
+  "it": "Ancora niente di simile. Chiedi direttamente a un giardino.",
+  "th": "ยังไม่มีคำตอบที่ใกล้เคียง ลองถามสวนโดยตรง",
+  "km": "មិនទាន់មានចម្លើយជិតនៅឡើយ។ សួរសួនដោយផ្ទាល់។"
+ },
+ "g.win.ask": {
+  "en": "Ask a garden about this",
+  "ja": "この問いを園に聞く",
+  "es": "Preguntar esto a un jardín",
+  "zh": "把这个问题问园子",
+  "fr": "Poser cette question à un jardin",
+  "it": "Chiedi questo a un giardino",
+  "th": "ถามเรื่องนี้กับสวน",
+  "km": "សួរសំណួរនេះទៅសួន"
+ },
+ "g.ask.share": {
+  "en": "Answers join Q&A without your name, so the next person can learn too.",
+  "ja": "答えは、あなたの名前を出さずに Q&A にたまり、次の人の学びになります。",
+  "es": "Las respuestas se guardan en Q&A sin tu nombre, para que otros también aprendan.",
+  "zh": "回答会以不显示你名字的方式存进问答，供后来的人学习。",
+  "fr": "Les réponses rejoignent les Q&R sans votre nom, pour que d'autres apprennent aussi.",
+  "it": "Le risposte entrano nelle Q&A senza il tuo nome, così anche altri imparano.",
+  "th": "คำตอบจะเก็บไว้ในถาม-ตอบโดยไม่แสดงชื่อคุณ เพื่อให้คนต่อไปได้เรียนรู้",
+  "km": "ចម្លើយនឹងរក្សាទុកក្នុងសំណួរ-ចម្លើយ ដោយមិនបង្ហាញឈ្មោះអ្នក ដើម្បីឱ្យអ្នកបន្ទាប់បានរៀន។"
+ },
+ "g.gl.fixed": {
+  "en": "Revised by {P}",
+  "ja": "{P}が直しました",
+  "es": "Corregido por {P}",
+  "zh": "由 {P} 修订",
+  "fr": "Revu par {P}",
+  "it": "Rivisto da {P}",
+  "th": "แก้โดย {P}",
+  "km": "កែដោយ {P}"
+ },
+ "g.art.notes": {
+  "en": "Notes from the masters",
+  "ja": "職人の気づき",
+  "es": "Notas de los maestros",
+  "zh": "师傅们的心得",
+  "fr": "Notes des maîtres",
+  "it": "Note dei maestri",
+  "th": "ข้อสังเกตจากช่าง",
+  "km": "កំណត់សម្គាល់ពីជាង"
+ },
+ "g.art.noteLang": {
+  "en": "Written in {L}",
+  "ja": "{L}で書かれています",
+  "es": "Escrito en {L}",
+  "zh": "以{L}撰写",
+  "fr": "Écrit en {L}",
+  "it": "Scritto in {L}",
+  "th": "เขียนเป็นภาษา{L}",
+  "km": "សរសេរជាភាសា {L}"
+ },
+ "a.ml.noteBtn": {
+  "en": "Add a note",
+  "ja": "気づきを足す",
+  "es": "Añadir una nota",
+  "zh": "补充心得",
+  "fr": "Ajouter une note",
+  "it": "Aggiungi una nota",
+  "th": "เพิ่มข้อสังเกต",
+  "km": "បន្ថែមកំណត់សម្គាល់"
+ },
+ "a.ml.notePh": {
+  "en": "What you notice in your own garden",
+  "ja": "自分の園で気づいていること",
+  "es": "Lo que observas en tu propio jardín",
+  "zh": "你在自己园里注意到的事",
+  "fr": "Ce que vous remarquez dans votre jardin",
+  "it": "Ciò che noti nel tuo giardino",
+  "th": "สิ่งที่คุณสังเกตเห็นในสวนของตัวเอง",
+  "km": "អ្វីដែលអ្នកសង្កេតឃើញនៅសួនរបស់អ្នក"
+ },
+ "a.ml.noteThanks": {
+  "en": "Added. Askers see it under this article too.",
+  "ja": "足しました。相談する人の読みものにも出ます。",
+  "es": "Añadido. Quien pregunta también lo ve en este artículo.",
+  "zh": "已补充。提问的人在这篇文章下也能看到。",
+  "fr": "Ajouté. Les demandeurs le voient aussi sous cet article.",
+  "it": "Aggiunto. Lo vede anche chi chiede, sotto questo articolo.",
+  "th": "เพิ่มแล้ว ผู้ถามจะเห็นใต้บทความนี้ด้วย",
+  "km": "បានបន្ថែម។ អ្នកសួរក៏ឃើញនៅក្រោមអត្ថបទនេះដែរ។"
+ },
+ "a.mh.merit": {
+  "en": "Your part: a photo and OK",
+  "ja": "あなたの手間は、写真と OK だけ",
+  "es": "Tu parte: una foto y OK",
+  "zh": "你只需要：一张照片和“确定”",
+  "fr": "Votre part : une photo et OK",
+  "it": "La tua parte: una foto e OK",
+  "th": "สิ่งที่คุณทำ: ถ่ายรูปแล้วกด OK",
+  "km": "ការងាររបស់អ្នក៖ រូបថត និងចុច OK"
+ },
+ "a.mh.meritT": {
+  "en": "BONSAIGO posts to its official X and Instagram in 8 languages. Your answers stay in Q&A and keep teaching the next people.",
+  "ja": "発信は BONSAIGO が、公式の X とインスタに8つの言葉で。答えは Q&A に残り、次の人に教え続けます。",
+  "es": "BONSAIGO publica en su X e Instagram oficiales en 8 idiomas. Tus respuestas quedan en Q&A y siguen enseñando.",
+  "zh": "由 BONSAIGO 用 8 种语言发布到官方 X 和 Instagram。你的回答留在问答里，继续教后来的人。",
+  "fr": "BONSAIGO publie sur ses X et Instagram officiels en 8 langues. Vos réponses restent dans les Q&R et continuent d'enseigner.",
+  "it": "BONSAIGO pubblica su X e Instagram ufficiali in 8 lingue. Le tue risposte restano nelle Q&A e continuano a insegnare.",
+  "th": "BONSAIGO โพสต์ลง X และ Instagram ทางการใน 8 ภาษา คำตอบของคุณอยู่ในถาม-ตอบและสอนคนต่อไปเรื่อย ๆ",
+  "km": "BONSAIGO បង្ហោះលើ X និង Instagram ផ្លូវការ ជា 8 ភាសា។ ចម្លើយរបស់អ្នកនៅក្នុងសំណួរ-ចម្លើយ ហើយបន្តបង្រៀនអ្នកបន្ទាប់។"
+ }
+}

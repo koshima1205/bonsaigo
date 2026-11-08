@@ -754,3 +754,23 @@ html,body{font-variant-numeric:lining-nums}
 
 /* 職人の画面には、確かめの点数（0.92 など）を出さない。チェックの印だけ（1108昼 kenpin） */
 .scr.k .score,.scr.k .cf,.scr.k .verdict .by{display:none}
+
+/* 11/08 昼2：AI 窓口・職人の気づき・直した訳・職人の利点 */
+.win{margin-top:14px;padding:14px 14px 12px;border-radius:18px;background:var(--moss-soft)}
+.win>b{display:block;font-size:14px;color:var(--moss)}
+.win>p{margin:4px 0 10px;font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+.win-in{display:flex;gap:8px}
+.win-in input{flex:1;min-width:0;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--paper);font:inherit;font-size:14px}
+.win-in .cta{width:auto;padding:0 16px;min-height:44px;font-size:14px}
+.win-a{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--paper);border:1px solid var(--line)}
+.win-a q{display:block;font-size:14px;line-height:1.7;quotes:none}
+.win-a .by{margin-top:8px;font-size:12px;color:var(--moss);font-weight:700}
+.win-a .about{margin-top:6px;font-size:12px;color:var(--ink-2)}
+.win-a .cta{margin-top:10px;min-height:44px;font-size:14px}
+.notes{margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+.notes>b{display:block;font-size:13px;color:var(--moss)}
+.notes .chip{margin-top:12px}
+.fixd{display:block;font-style:normal;font-size:11px;color:var(--moss);margin-top:2px}
+.merit{margin-top:14px;padding:14px 16px;border-radius:18px;background:var(--moss-soft)}
+.merit b{display:block;font:700 15px/1.4 var(--f-jp-display);color:var(--moss)}
+.merit span{display:block;margin-top:4px;font-size:12.5px;line-height:1.65;color:var(--ink)}

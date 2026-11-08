@@ -674,7 +674,7 @@ const routes = {
     } catch (e) {
       if (e instanceof LimitReached) throw e;
       // AI が答えられなかったときは、通さずに「人が確かめる」に倒す
-      tree.image_check = { ok: false, is_bonsai: null, confidence: 0, sure: false, needs_person: true, reason_ja: "AI が写真を確かめられなかったので、人が確かめます", reason_en: "The AI could not check this photo, so a person will." };
+      tree.image_check = { ok: false, is_bonsai: null, confidence: 0, sure: false, needs_person: true, reason_ja: "AI が写真を確かめられなかったので、人が確かめます", reason_en: "The AI could not check this photo, so a person will.", failed: true };
     }
     if (!tree.image_check.ok) {
       tree.status = tree.image_check.needs_person ? "image_held" : "image_failed";

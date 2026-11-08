@@ -243,10 +243,13 @@ const LOGIN_FAILS = new Map();
 const FAIL_WINDOW = 15 * 60 * 1000, FAIL_MAX = (k) => (k.startsWith("ip:") ? 20 : 5);
 // メールアドレスだけで数えると、他人がわざと間違えて止められてしまうので「同じ回線から、同じメールアドレス」で数える
 function loginKeys(email) { const req = requestContext.getStore()?.req, ip = req ? clientIp(req) : "?"; return [`ip:${ip}`, `mail:${ip}:${email}`]; }
+// アカウント全体の失敗は「止める」のではなく「遅くする」。本人が締め出されず、あちこちの回線からの総当たりも遅くなる
+async function loginSlow(email) { const f = LOGIN_FAILS.get(`acct:${email}`); if (f && Date.now() - f.at < FAIL_WINDOW && f.n >= 10) await new Promise((r) => setTimeout(r, Math.min(5000, (f.n - 9) * 500))); }
 function loginOk(email) { const [, k] = loginKeys(email); LOGIN_FAILS.delete(k); }
 function loginBlocked(email) { const now = Date.now(); return loginKeys(email).some((k) => { const f = LOGIN_FAILS.get(k); return f && now - f.at < FAIL_WINDOW && f.n >= FAIL_MAX(k); }); }
 function loginFailed(email) { const now = Date.now();
-  if (LOGIN_FAILS.size > 5000) for (const [k, f] of LOGIN_FAILS) if (now - f.at >= FAIL_WINDOW) LOGIN_FAILS.delete(k); for (const k of loginKeys(email)) { const f = LOGIN_FAILS.get(k); LOGIN_FAILS.set(k, f && now - f.at < FAIL_WINDOW ? { n: f.n + 1, at: f.at } : { n: 1, at: now }); } }
+  if (LOGIN_FAILS.size > 5000) for (const [k, f] of LOGIN_FAILS) if (now - f.at >= FAIL_WINDOW) LOGIN_FAILS.delete(k);
+  { const k = `acct:${email}`, f = LOGIN_FAILS.get(k); LOGIN_FAILS.set(k, f && now - f.at < FAIL_WINDOW ? { n: f.n + 1, at: f.at } : { n: 1, at: now }); } for (const k of loginKeys(email)) { const f = LOGIN_FAILS.get(k); LOGIN_FAILS.set(k, f && now - f.at < FAIL_WINDOW ? { n: f.n + 1, at: f.at } : { n: 1, at: now }); } }
 
 function readImages(list) {
   if (list == null) return [];
@@ -474,6 +477,7 @@ const routes = {
       // 職人はメールとパスワードで入る（11/08 箱崎さんの修正案：名前を一覧から選ぶのはデモ用の作りだった）
       const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
       if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");
+      await loginSlow(email);
       const t = allTeachers().find((x) => teacherEmail(x) === email);
       if (!t || !passOk(t, String(b.password || ""))) { loginFailed(email); throw new BadRequest("メールアドレスかパスワードが違います"); }
       loginOk(email);
@@ -524,6 +528,7 @@ const routes = {
       if (b.mode === "signin") {
         const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
         if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");
+        await loginSlow(email);
         const gr = store.growers.find((x) => x.email === email);
         const pw = String(b.password || "");
         const ok = gr && (() => { const x = Buffer.from(scryptSync(pw, gr.pass.salt, 32).toString("hex")), y = Buffer.from(gr.pass.hash); return x.length === y.length && timingSafeEqual(x, y); })();

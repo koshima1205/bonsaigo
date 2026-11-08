@@ -82,6 +82,7 @@
           <div class="sec-h jp"><h3 data-i18n="a.x.new"></h3></div>
           <label class="field"><span data-i18n="a.x.nameF"></span><input id="mName" maxlength="40" autocomplete="name"></label>
           <label class="field"><span data-i18n="a.x.placeF"></span><input id="mPlace" maxlength="60"></label>
+          <label class="field"><span data-i18n="a.x.regionF"></span><select id="mRegion"></select></label>
           <div class="field"><span data-i18n="a.x.spF"></span><div class="spl" id="mSp"></div></div>
           <p class="err" id="mErr" hidden></p>
           <button class="cta moss" id="b-mreg" style="margin-top:16px" data-i18n="a.x.reg"></button>
@@ -117,7 +118,8 @@
             <button class="chip" id="askSample"><svg><use href="#i-img"/></svg><span data-i18n="g.x.photoSample"></span></button>
           </div>
           <div class="field" style="margin-top:16px"><span data-i18n="g.x.to"></span></div>
-          <div class="to-pick" id="toPick"></div>
+          <button class="garden-card" id="gCard" data-go="gpick"></button>
+          <p class="lang-note" id="gLangNote"></p>
           <textarea class="compose" id="askText" rows="5" maxlength="3000"></textarea>
           <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span data-i18n="g.ask.hint"></span></div>
           <p class="err" id="askErr" hidden></p>
@@ -125,6 +127,30 @@
         <div class="dock"><button class="cta" id="b-send"><svg><use href="#i-send"/></svg><span data-i18n="g.ask.send"></span></button></div>
         <div class="busy" id="askBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small>Claude · Sonnet</small><b data-i18n="g.x.sending"></b></div></div>
         <nav class="tabs" data-tabs="g" data-on="ask"></nav>
+      </section>
+
+      <!-- 相談する人：園を選ぶ（地域 → 木か困りごと → 答えられる園） -->
+      <section class="scr" id="s-gpick">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="g.x.to"></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
+        <div class="pad">
+          <h2 class="h-en" data-i18n="g.gp.h"></h2>
+          <p class="lead" data-i18n="g.gp.lead"></p>
+          <div class="gp-h" data-i18n="g.gp.region"></div>
+          <div class="chips wrap" id="gpRegion"></div>
+          <div class="gp-h" data-i18n="g.gp.tree"></div>
+          <div class="chips wrap" id="gpTree"></div>
+          <div class="gp-h sub" data-i18n="g.gp.topic"></div>
+          <div class="chips wrap" id="gpTopic"></div>
+          <div class="gp-h"><span data-i18n="g.gp.list"></span><span class="gp-n" id="gpN"></span></div>
+          <div id="gpList"></div>
+        </div>
+      </section>
+
+      <!-- 読みもの1本（相談する人） -->
+      <section class="scr" id="s-art">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="g.learn.h"></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
+        <div class="pad"><div id="artBody"></div></div>
+        <nav class="tabs" data-tabs="g" data-on="learn"></nav>
       </section>
 
       <!-- 届いていく -->
@@ -176,19 +202,19 @@
         <div class="pad">
           <div class="eyebrow c" data-i18n="g.learn.eye"></div>
           <h2 class="h-en" data-i18n="g.learn.h"></h2>
-          <div class="seg" id="learnSeg"><button class="on" data-seg="art" data-i18n="g.x.art"></button><button data-seg="gl" data-i18n="g.x.gloss"></button></div>
-          <div id="artList"></div>
-          <div id="glWrap" hidden><p class="lead" data-i18n="g.learn.lead"></p><div id="glList" style="margin-top:6px"></div></div>
+          <div class="seg four" id="learnSeg"><button class="on" data-seg="art" data-i18n="g.l.art"></button><button data-seg="film" data-i18n="g.l.film"></button><button data-seg="voice" data-i18n="g.l.voice"></button><button data-seg="gl" data-i18n="g.l.gloss"></button></div>
+          <div id="learnBox"></div>
         </div>
         <nav class="tabs" data-tabs="g" data-on="learn"></nav>
       </section>
 
       <!-- 職人：ホーム -->
       <section class="scr k" id="s-mhome">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><span class="mode-pill" data-mode></span><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
+        <div class="topbar"><div class="gtag" data-garden></div><div class="r"><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
         <div class="pad">
           <div class="hello" data-i18n="a.mh.hi"></div>
           <h2 class="h-jp" id="mHello"></h2>
+          <div class="who-sub" id="mWho"></div>
           <button class="lang-pill" data-pick="a" style="margin-top:12px"><svg><use href="#i-globe"/></svg><span data-i18n="a.pickLbl"></span><b class="lp-name"></b></button>
           <button class="tile" data-go="inbox"><span class="ic c"><svg><use href="#i-reply"/></svg></span><div><b data-i18n="a.mh.q"></b><span id="mQT" data-i18n="a.mh.qT0"></span></div><span class="nbox" id="mNbox" hidden><span class="n" id="mN">0</span><small data-i18n="a.mh.nLbl"></small></span></button>
           <button class="tile" data-go="reg"><span class="ic"><svg><use href="#i-cam"/></svg></span><div><b data-i18n="a.mh.reg"></b><span data-i18n="a.mh.regT"></span></div><span class="n" style="color:var(--moss)">›</span></button>
@@ -197,15 +223,15 @@
             <div><b id="mPosts">0</b><span data-i18n="a.mh.posts"></span><div class="sns"><i>X</i><i>Instagram</i></div></div>
             <div><b id="mAns">0</b><span data-i18n="a.mh.qa"></span></div>
           </div>
-          <button class="cost-card" data-cost><div class="hd"><svg><use href="#i-coin"/></svg><span data-i18n="a.x.cost"></span><span style="margin-left:auto;opacity:.6">›</span></div><div class="meter" id="mMeter"></div></button>
         </div>
         <nav class="tabs" data-tabs="a" data-on="mhome"></nav>
       </section>
 
       <!-- 職人：回答する（届いた相談） -->
       <section class="scr k" id="s-inbox">
-        <div class="topbar"><div class="eyebrow" data-i18n="a.inbox.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><div class="gtag" data-garden></div></div>
         <div class="pad">
+          <div class="eyebrow" data-i18n="a.inbox.eye"></div>
           <h2 class="h-jp" data-i18n="a.tab.answer"></h2>
           <div id="inboxList"></div>
           <div class="steps"><h4 data-i18n="a.steps.h"></h4>
@@ -218,7 +244,7 @@
 
       <!-- 職人：相談を読んで、答える -->
       <section class="scr k" id="s-detail">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="gtag" data-garden></div></div>
         <div class="pad">
           <div class="eyebrow" id="dEye"></div>
           <h2 class="h-jp" id="dTitle"></h2>
@@ -230,6 +256,7 @@
             <div class="orig-body" id="origBody" hidden></div>
           </div>
           <div class="draft" id="dDraft"></div>
+          <div class="as-who"><span id="dAs"></span><button class="lang-pill" data-pick="a"><svg><use href="#i-globe"/></svg><span data-i18n="a.x.answerIn"></span><b class="lp-name"></b></button></div>
           <div class="ans-area">
             <textarea id="ansText" maxlength="3000"></textarea>
             <div class="ans-tools">
@@ -240,19 +267,20 @@
           <p class="err" id="dErr" hidden></p>
         </div>
         <div class="dock"><button class="cta copper" id="b-preview" data-i18n="a.x.preview"></button></div>
-        <div class="busy" id="dBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small>Sonnet → Haiku</small><b data-i18n="a.x.translating"></b></div></div>
+        <div class="busy" id="dBusy"><div class="in"><div class="leaf"><i></i><i></i></div><b data-i18n="a.x.translating"></b></div></div>
       </section>
 
       <!-- 職人：届く形を確かめて送る -->
       <section class="scr k" id="s-confirm">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="gtag" data-garden></div></div>
         <div class="pad">
           <div class="eyebrow" data-i18n="a.conf.eye"></div>
           <h2 class="h-jp" data-i18n="a.conf.h2"></h2>
           <div id="confCheck"></div>
+          <p class="lang-note" id="confSame" hidden></p>
           <div class="preview"><div class="bar"><span id="confLang">ENGLISH</span><span data-i18n="a.conf.bar"></span></div><div class="en-body" id="confBody"></div></div>
           <div class="back-tr"><b id="confBackB"></b><span id="confBack"></span></div>
-          <div class="after"><svg><use href="#i-qa"/></svg><span data-i18n="a.conf.after"></span></div>
+          <div class="after"><svg><use href="#i-qa"/></svg><span id="confAfter"></span></div>
           <p class="err" id="cErr" hidden></p>
         </div>
         <div class="dock"><div class="answer-actions"><button class="cta ghost" data-back data-i18n="a.x.fix"></button><button class="cta copper" id="b-reply"><svg><use href="#i-send"/></svg><span id="replyLbl" data-i18n="a.x.send"></span></button></div></div>
@@ -260,8 +288,9 @@
 
       <!-- 職人：木を登録する 1（写真・樹種・樹齢） -->
       <section class="scr k" id="s-reg">
-        <div class="topbar"><div class="eyebrow" data-i18n="a.reg.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><div class="gtag" data-garden></div></div>
         <div class="pad">
+          <div class="eyebrow" data-i18n="a.reg.eye"></div>
           <h2 class="h-jp" data-i18n="a.reg.h"></h2>
           <div class="stepper"><i class="on"></i><i></i><i></i></div>
           <div class="pick-photo" id="regPhoto"><img src="img/reg.jpg" alt=""><div class="scan" id="scan"></div></div>
@@ -280,14 +309,15 @@
           <p class="err" id="rErr" hidden></p>
         </div>
         <div class="dock"><button class="cta copper" id="b-regGo"><svg><use href="#i-spark"/></svg><span data-i18n="a.x.next"></span></button></div>
-        <div class="busy" id="rBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small id="rBusyM">Haiku</small><b id="rBusyT"></b></div></div>
+        <div class="busy" id="rBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small id="rBusyM"></small><b id="rBusyT"></b></div></div>
         <nav class="tabs" data-tabs="a" data-on="reg"></nav>
       </section>
 
       <!-- 職人：木を登録する 2（投稿の下書きを直して OK） -->
       <section class="scr k" id="s-posts">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="a.talk.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="gtag" data-garden></div></div>
         <div class="pad">
+          <div class="eyebrow" data-i18n="a.talk.eye"></div>
           <h2 class="h-jp" data-i18n="a.x.posts"></h2>
           <div class="stepper"><i class="on"></i><i class="on"></i><i></i></div>
           <div class="check done" id="pcImg"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c1"></b><span id="pcImgT"></span></div><span class="cf" id="pcImgC"></span></div>
@@ -299,13 +329,14 @@
           <div id="textResult"></div>
         </div>
         <div class="dock"><button class="cta moss" id="b-postOk"><svg><use href="#i-check"/></svg><span data-i18n="a.x.ok"></span></button></div>
-        <div class="busy" id="pBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small>rules → Haiku</small><b data-i18n="a.x.chkText"></b></div></div>
+        <div class="busy" id="pBusy"><div class="in"><div class="leaf"><i></i><i></i></div><b data-i18n="a.x.chkText"></b></div></div>
       </section>
 
       <!-- 職人：木を登録する 3（送ったら、こう出る） -->
       <section class="scr k" id="s-pub">
-        <div class="topbar"><div class="eyebrow" data-i18n="a.pub.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><div class="gtag" data-garden></div></div>
         <div class="pad">
+          <div class="eyebrow" data-i18n="a.pub.eye"></div>
           <h2 class="h-jp" data-i18n="a.x.preview2"></h2>
           <div class="stepper"><i class="on"></i><i class="on"></i><i class="on"></i></div>
           <div class="check" id="pc1"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c1"></b><span id="pc1T"></span></div><span class="cf" id="pc1C"></span></div>
@@ -320,13 +351,20 @@
 
       <!-- 職人：学ぶ -->
       <section class="scr k" id="s-mlearn">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><div class="gtag" data-garden></div></div>
         <div class="pad">
           <div class="eyebrow c" data-i18n="a.ml.eye"></div>
           <h2 class="h-jp" data-i18n="a.ml.h"></h2>
-          <p class="lead" data-i18n="a.ml.lead"></p>
-          <div id="mlList"></div>
+          <div class="seg four" id="mlSeg"><button class="on" data-seg="words" data-i18n="a.ml.words"></button><button data-seg="art" data-i18n="g.l.art"></button><button data-seg="film" data-i18n="g.l.film"></button><button data-seg="voice" data-i18n="g.l.voice"></button></div>
+          <div id="mlBox"></div>
         </div>
+        <nav class="tabs" data-tabs="a" data-on="mlearn"></nav>
+      </section>
+
+      <!-- 読みもの1本（職人） -->
+      <section class="scr k" id="s-mart">
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="gtag" data-garden></div></div>
+        <div class="pad"><div id="martBody"></div></div>
         <nav class="tabs" data-tabs="a" data-on="mlearn"></nav>
       </section>
 
@@ -335,16 +373,18 @@
       <div class="lang-veil" id="lveil"></div>
       <div class="lang-sheet" id="lsheet"><div class="grab"></div><h4 id="lTitle"></h4><div class="lang-list" id="lList"></div></div>
       <div class="cost-sheet" id="costSheet"><div class="grab"></div><h4 id="cH"></h4><ol id="cList"></ol><div class="meter" id="cMeter"></div><div class="models" id="cModels"></div><div class="last" id="cLast"></div></div>
+      <div class="fix-sheet" id="fixSheet"><div class="grab"></div><h4 id="fxH"></h4><div class="chips wrap" id="fxWhich"></div><textarea id="fxText" rows="2" maxlength="300"></textarea><p class="err" id="fxErr" hidden></p><button class="cta moss" id="fxSend" data-i18n="a.ml.send"></button></div>
       <div class="toast" id="toast"></div>
     </div></div>
   </div>
 
   <aside class="side">
-    <h1>BONSAIGO<small>盆栽ゴー</small></h1>
+    <h1>BONSAIGO</h1>
     <p>海外で盆栽を育てる人と、日本の職人を、言葉の壁なしでつなぐアプリです。</p>
     <div class="tip"><b>試し方</b>「盆栽を育てています」で入り、写真つきの相談を送る → 右上の ⇄ で「職人」に切りかえ → 回答する → もう一度右上の ⇄ で相談した人に戻ると、答えが自分の言葉で届いています。</div>
-    <div class="tip"><b>見本モード</b>AI の鍵がないときは、見本の答えで最後まで動きます（料金はかかりません）。確かめ・料金の守りの流れは、本物のときと同じ道を通ります。</div>
-    <div class="tip"><b>写真について</b>木の絵と動画はチームが 3D で作ったもの、庭の写真は大宮盆栽美術館で撮ったものです。職人・相談はすべて架空の見本です。</div>
+    <div class="tip"><b>言葉</b>相談する人も答える人も、8つの言葉から自分の言葉を選べます。言葉が同じなら訳さずにそのまま、違えば意味で訳して確かめてから届きます。</div>
+    <div class="tip"><b>見本モード</b>AI の鍵がないときは、見本の答えで最後まで動きます（料金はかかりません）。訳せるのは見本の質問だけで、ほかの質問は書いた言葉のまま届きます。</div>
+    <div class="tip"><b>写真について</b>木の絵と動画はチームが 3D で作ったもの、庭の写真は大宮盆栽美術館で撮ったものです。園・職人・相談はすべて架空の見本です。</div>
   </aside>
 </div>
 

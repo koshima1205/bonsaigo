@@ -40,6 +40,25 @@ const RECORDED = existsSync(path.join(HERE, "見本の答え.json"))
 const BG_SAMPLE_FILE = path.join(HERE, "盆栽ゴー_見本の答え.json");
 const BG_SAMPLE = existsSync(BG_SAMPLE_FILE) ? JSON.parse(readFileSync(BG_SAMPLE_FILE, "utf8")) : { recorded: {}, qa: [], concepts: [] };
 Object.assign(RECORDED, BG_SAMPLE.recorded);
+// 園と人（すべて架空の見本）。相談する人は「地域 → 木か困りごと → 園」で選び、相談は園に届く。園の人ならだれでも答えられる
+const readJson = (rel, d) => { try { return JSON.parse(readFileSync(path.join(HERE, rel), "utf8")); } catch { return d; } };
+const WORLD = readJson("盆栽ゴー/data/world.json", { regions: [], gardens: [], people: [], topics: {}, species: {}, glossary: [] });
+const WORLD_PEOPLE = WORLD.people.map((p) => ({ id: p.id, name_ja: p.name_ja, name_en: p.name_en, garden: p.garden, role: p.role, lang: p.lang, from: p.from, specialty_ja: [], can_teach_ja: [], bio_en: "", offers: ["one_question"] }));
+// Q&A の見本：調べた悩みをもとに書いた12問（8つの言葉）。答えた園と人を、木と困りごとで割りふる
+const QA_FILE = readJson("盆栽ゴー/data/qa.json", null);
+if (QA_FILE && QA_FILE.length) {
+  const used = {};
+  BG_SAMPLE.qa = QA_FILE.map((x) => {
+    const fit = WORLD.gardens.filter((g) => (g.species || []).includes(x.tree) && (g.topics || []).includes(x.topic));
+    const pool = fit.length ? fit : WORLD.gardens.filter((g) => (g.species || []).includes(x.tree) || (g.topics || []).includes(x.topic));
+    const g = (pool.length ? pool : WORLD.gardens)[(used[x.topic] = (used[x.topic] || 0) + 1) % Math.max(1, (pool.length ? pool : WORLD.gardens).length)];
+    const people = g ? WORLD.people.filter((p) => p.garden === g.id) : [];
+    const who = people[(x.id.length + Number(String(x.id).replace(/\D/g, "") || 0)) % Math.max(1, people.length)] || null;
+    return { ...x, garden_id: g?.id || null, person_id: who?.id || null };
+  });
+  // 樹種と困りごとの名前（8つの言葉）も、言いかえ表に足す
+  for (const group of [...Object.values(WORLD.species || {}), ...Object.values(WORLD.topics || {})]) BG_SAMPLE.concepts.push(Object.values(group).map((w) => String(w).toLowerCase()).filter((w) => w.length >= 2));
+}
 
 const MODE = process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN
   ? "claude-api"
@@ -241,7 +260,18 @@ function cleanTermMarks(s) {
   return String(s).replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, (m, shown, word) => (GLOSSARY_WORDS.has(word.trim()) ? `[[${shown}|${word.trim()}]]` : shown));
 }
 
-function allTeachers() { return [...SAMPLE_TEACHERS, ...store.teachers]; }
+function allTeachers() { return [...WORLD_PEOPLE, ...SAMPLE_TEACHERS, ...store.teachers]; }
+function allGardens() { return [...WORLD.gardens, ...(store.gardens || [])]; }
+const gardenById = (id) => allGardens().find((g) => g.id === id);
+// 園で答える言葉＝園主の言葉
+const gardenLang = (g) => { const m = allTeachers().find((t) => t.garden === g?.id && t.role === "master") || allTeachers().find((t) => t.garden === g?.id); return m?.lang || "ja"; };
+const myGarden = (me) => teacherById(me?.teacher_id)?.garden || null;
+const personCard = (t) => t && { id: t.id, name_ja: t.name_ja, name_en: t.name_en, role: t.role || "master", lang: t.lang || "ja", from: t.from || null, garden: t.garden || null };
+// 職人の言葉そのまま（言葉が同じとき）を、見出しと段落に分ける
+function splitWords(v) {
+  const parts = String(v).split(/(?<=[。．.!?！？])\s*/).map((x) => x.trim()).filter(Boolean);
+  return { headline: parts[0] || String(v), paragraphs: parts.length > 1 ? [parts.slice(1).join(" ")] : [] };
+}
 function teacherById(id) { return allTeachers().find((t) => t.id === id); }
 
 // 同じ木の、前の相談と職人の答え（新しい順に3件まで）。AIには全部ではなく、この分だけ渡す
@@ -257,7 +287,7 @@ function treeHistory(c) {
 function publicConsultation(c) {
   const { usd, offer_id, asker_id, ...rest } = c;
   const out = { ...rest, tree_history: treeHistory(c) };
-  if (currentUser()?.role !== "shokunin") { delete out.ai_draft; delete out.ai_draft_status; delete out.tree_history; delete out.pending_answer; if (out.answer) out.answer = { ...out.answer, review: { checked: out.answer.review?.checked, ok: out.answer.review?.ok, confidence: out.answer.review?.confidence, sample: out.answer.review?.sample } }; if (out.for_craftsperson) out.for_craftsperson = { summary_ja: out.for_craftsperson.summary_ja, points_ja: out.for_craftsperson.points_ja }; }
+  if (currentUser()?.role !== "shokunin") { delete out.ai_draft; delete out.ai_draft_status; delete out.tree_history; delete out.pending_answer; if (out.answer) out.answer = { ...out.answer, review: { checked: out.answer.review?.checked, ok: out.answer.review?.ok, confidence: out.answer.review?.confidence, sample: out.answer.review?.sample } }; if (out.for_craftsperson) out.for_craftsperson = { summary_ja: out.for_craftsperson.summary_ja, points_ja: out.for_craftsperson.points_ja, same_lang: Boolean(out.for_craftsperson.same_lang), untranslated: Boolean(out.for_craftsperson.untranslated) }; }
   return out;
 }
 
@@ -401,7 +431,7 @@ const HIDDEN_PAGES = new Set(["01", "02", "06", "07", "08", "09", "12", "14", "1
 // 役割ごとの画面。違う役割の人が開いたら、その人のホームへ戻す
 const PAGE_ROLE = { "03": "aikouka", "05": "aikouka", "13": "aikouka", "18": "aikouka", "04": "shokunin", "17": "shokunin", "22": "shokunin" };
 const OPEN_WITHOUT_LOGIN = (rel) => rel === LOGIN_PAGE || rel.startsWith("共通/") || rel.startsWith("盆栽ゴー/") || rel === "用語集.json";
-const teacherCard = (t) => ({ id: t.id, name_ja: t.name_ja, name_en: t.name_en });
+const teacherCard = (t) => ({ id: t.id, name_ja: t.name_ja, name_en: t.name_en, garden: t.garden || null, role: t.role || "master", lang: t.lang || "ja", from: t.from || null });
 
 /* ---------- 役割ごとの処理 ---------- */
 async function makePosts({ kind, note, images, context }) {
@@ -417,7 +447,7 @@ const routes = {
   "GET /api/teachers": async () => ({ teachers: store.teachers.map(({ offers, ...t }) => t), offers: [] }),
 
   /* ログイン（パスワードなし。合言葉の門の内側だけで使う） */
-  "GET /api/me": async () => ({ user: currentUser(), teachers: allTeachers().map(teacherCard) }),
+  "GET /api/me": async () => ({ user: currentUser(), teachers: [...WORLD_PEOPLE, ...store.teachers].map(teacherCard), gardens: allGardens() }),
   "POST /api/login": async (b) => {
     const role = b.role === "shokunin" ? "shokunin" : b.role === "aikouka" ? "aikouka" : null;
     if (!role) throw new BadRequest("職人か海外の人かを選んでください");
@@ -426,7 +456,7 @@ const routes = {
       // 見本の職人（または前に登録した職人）を選んで入る
       const t = teacherById(b.teacher_id);
       if (!t) throw new BadRequest("職人を選んでください");
-      user = { id: `u-${t.id}`, role, name: t.name_ja, lang: "ja", teacher_id: t.id };
+      user = { id: `u-${t.id}`, role, name: t.name_ja, lang: lang(b.lang || t.lang || "ja"), teacher_id: t.id };
     } else if (role === "shokunin") {
       // 新しく職人として登録する（デモ用。名前・言語・得意な木・園名と地域だけ）
       const name = text(b.name, 40, "お名前");
@@ -435,7 +465,15 @@ const routes = {
       const place = typeof b.place === "string" ? b.place.trim().slice(0, 60) : "";
       // 紹介文（bio）と最初のひとこと（first_words）も空で作る。ないと「職人を探す」と /api/match が止まっていた（11/8 直した）
       const empty = Object.fromEntries(LANGS8.map((l) => [l, ""]));
-      const t = { id: `t-${randomUUID().slice(0, 8)}`, name_ja: name, name_en: name, title_ja: place, specialty_ja: specialties, can_teach_ja: [], bio_en: "", bio: { ...empty }, first_words: { ...empty }, lang: lang(b.lang || "ja"), offers: OFFERS.map((o) => o.id) };
+      // 園も一緒に作る（園の名前がなければ「◯◯の園」）。地域・得意な木は、相談する人が園を探すときに使う
+      const SP = ["pine", "juniper", "whitepine", "maple", "azalea", "ume", "zelkova", "needle"];
+      const spKeys = (Array.isArray(b.species) ? b.species : []).filter((x) => SP.includes(x));
+      const region = WORLD.regions.some((r) => r.id === b.region) ? b.region : (WORLD.regions[0]?.id || "");
+      const gid = `rg-${randomUUID().slice(0, 8)}`;
+      const gname = place || `${name}の園`;
+      if (!store.gardens) store.gardens = [];
+      store.gardens.unshift({ id: gid, region, name_ja: gname, name: Object.fromEntries(LANGS8.map((l) => [l, gname])), species: spKeys.length ? spKeys : ["pine"], topics: ["wire", "repot", "water", "pruning"], about: { ...empty }, registered: true });
+      const t = { id: `t-${randomUUID().slice(0, 8)}`, name_ja: name, name_en: name, title_ja: gname, garden: gid, role: "master", specialty_ja: specialties, can_teach_ja: [], bio_en: "", bio: { ...empty }, first_words: { ...empty }, lang: lang(b.lang || "ja"), offers: OFFERS.map((o) => o.id) };
       store.teachers.unshift(t);
       await save();
       user = { id: `u-${t.id}`, role, name, lang: t.lang, teacher_id: t.id };
@@ -559,22 +597,38 @@ const routes = {
     const question = text(b.question, 3000, "質問");
     const images = readImages(b.images);
     // 宛先が決まっていなければ、いちばん新しく登録した職人へ（いなければ見本の職人）
-    const teacher = teacherById(b.teacher_id) || store.teachers[0] || SAMPLE_TEACHERS[0];
+    const garden = gardenById(b.garden_id) || WORLD.gardens[0];
+    if (!garden) throw new BadRequest("園を選んでください");
+    const teacher = allTeachers().find((t) => t.garden === garden.id && t.role === "master") || allTeachers().find((t) => t.garden === garden.id);
+    const gl = gardenLang(garden);
     const offer = OFFERS.find((o) => o.id === b.offer_id) || OFFERS[0];
-    const forCraftsperson = await ask("toCraftsperson", `Asker's language: ${langName(l)}.\nTheir question:\n${input(question)}`, images);
-    forCraftsperson.terms_ja = (forCraftsperson.terms_ja || []).filter((w) => GLOSSARY_WORDS.has(w));
+    const isSample = Boolean(b.is_sample);
+    let forCraftsperson;
+    if (gl === l) {
+      // 言葉が同じ：訳さず、そのまま届ける（AI を使わない）
+      forCraftsperson = { title_ja: question.split(/\n/)[0].slice(0, 60), summary_ja: question, points_ja: [], ai_mitate_ja: "", terms_ja: [], same_lang: true };
+    } else if (MODE === "sample" && !isSample) {
+      // 見本モードは訳せない。見本の質問でないときは、原文のまま届ける
+      forCraftsperson = { title_ja: question.split(/\n/)[0].slice(0, 60), summary_ja: question, points_ja: [], ai_mitate_ja: "", terms_ja: [], untranslated: true };
+    } else {
+      forCraftsperson = await ask("toCraftsperson", `Asker's language: ${langName(l)}.\nThe garden answers in ${langName(gl)}. Write every field whose name ends in _ja in ${langName(gl)}.\nTheir question:\n${input(question)}`, images);
+      forCraftsperson.terms_ja = (forCraftsperson.terms_ja || []).filter((w) => GLOSSARY_WORDS.has(w));
+    }
     // どの木の相談か。前に相談した木なら同じ番号を使い、なければ新しい木にする
     const known = typeof b.tree_id === "string" && store.consultations.some((x) => x.tree_id === b.tree_id && x.asker_id === me.id);
-    const c = { id: randomUUID(), at: new Date().toISOString(), asker_id: me.id, asker_name: me.name, lang: l, question, image: images[0] || null, tree_id: known ? b.tree_id : randomUUID(), teacher_id: teacher.id, offer_id: offer.id, usd: offer.usd, for_craftsperson: forCraftsperson, ai_draft: null, ai_draft_status: "making", answer: null };
+    const c = { id: randomUUID(), at: new Date().toISOString(), asker_id: me.id, asker_name: me.name, lang: l, question, image: images[0] || null, tree_id: known ? b.tree_id : randomUUID(), teacher_id: teacher?.id || null, garden_id: garden.id, garden_lang: gl, is_sample: isSample, offer_id: offer.id, usd: offer.usd, for_craftsperson: forCraftsperson, ai_draft: null, ai_draft_status: "making", answer: null };
     store.consultations.unshift(c);
     await save();
     // 答えの案は裏で作る。相談した人は待たせない
-    makeDraft(c, images).then((d) => { c.ai_draft = d; c.ai_draft_status = d ? "done" : "failed"; return save(); });
+    // 見本モードの案は見本の質問のときだけ（ほかの質問に、合わない案を出さない）
+    if ((MODE === "sample" && !isSample) || forCraftsperson.same_lang) { c.ai_draft_status = "none"; await save(); }
+    else makeDraft(c, images).then((d) => { c.ai_draft = d; c.ai_draft_status = d ? "done" : "failed"; return save(); });
     return publicConsultation(c);
   },
   "GET /api/consultations": async () => {
     const me = needUser();
-    const mine = store.consultations.filter((c) => (me.role === "shokunin" ? c.teacher_id === me.teacher_id : c.asker_id === me.id));
+    const g = myGarden(me);
+    const mine = store.consultations.filter((c) => (me.role === "shokunin" ? (c.garden_id ? c.garden_id === g : c.teacher_id === me.teacher_id) : c.asker_id === me.id));
     return { consultations: mine.slice(0, 30).map(publicConsultation) };
   },
 
@@ -582,7 +636,9 @@ const routes = {
   "POST /api/consultations/:id/answer": async (b, id) => {
     const me = needUser("shokunin");
     const c = store.consultations.find((x) => x.id === id);
-    if (!c || c.teacher_id !== me.teacher_id) throw new NotFound();
+    if (!c || !(c.garden_id ? c.garden_id === myGarden(me) : c.teacher_id === me.teacher_id)) throw new NotFound();
+    const al = lang(b.lang || me.lang || "ja");
+    const by = personCard(teacherById(me.teacher_id));
     // 盆栽ゴー：「届く形を見る」で作った答えを、職人が確かめてから送る
     if (b.confirm) {
       if (!c.pending_answer) throw new BadRequest("送る前の答えがありません");
@@ -596,9 +652,15 @@ const routes = {
     const voice = typeof b.voice === "string" ? b.voice.trim().slice(0, 3000) : "";
     const marks = Array.isArray(b.marks) ? b.marks.filter((m) => typeof m === "string" && /^[ML0-9. ]+$/.test(m) && m.length < 20000).slice(0, 50) : [];
     if (!voice && !marks.length) throw new BadRequest("話すか、写真に書き込んでください");
-    let fixed, review = { ok: true, problems_ja: [] };
-    if (voice) {
-      const material = `Asker's language: ${langName(c.lang)}.\nAsker's question:\n${input(c.question)}\nCraftsperson's words in Japanese:\n${input(voice)}`;
+    let fixed, review = { ok: true, problems_ja: [] }, same = false, untranslated = false;
+    if (voice && al === c.lang) {
+      // 言葉が同じ：訳さず、職人の言葉のまま届ける（AI を使わない）
+      same = true; fixed = { ...splitWords(voice), back_translation_ja: "" };
+    } else if (voice && MODE === "sample" && !c.is_sample) {
+      // 見本モードは訳せない。見本の質問でないときは、職人の言葉のまま届ける
+      untranslated = true; fixed = { ...splitWords(voice), back_translation_ja: "" };
+    } else if (voice) {
+      const material = `Asker's language: ${langName(c.lang)}.\nAsker's question:\n${input(c.question)}\nCraftsperson's words in ${langName(al)}:\n${input(voice)}\nWrite back_translation_ja in ${langName(al)}, so the craftsperson can check it.`;
       const draft = await ask("toLearner", material, [], `toLearner_${c.lang}`);
       review = guard.judge(await ask("reviewAnswer", `${material}\nThe rewrite to check:\n${input(JSON.stringify(draft))}`));
       // 確かさが線より下のときは、直した案に置きかえず、職人に見てもらう（人の確かめに倒す）
@@ -617,7 +679,8 @@ const routes = {
       headline: cleanTermMarks(fixed.headline),
       paragraphs,
       back_translation_ja: [fixed.back_translation_ja, marks.length ? MARK_NOTE.ja : ""].filter(Boolean).join("\n"),
-      review: { ok: review.ok, problems_ja: review.problems_ja || [], checked: Boolean(voice), confidence: review.confidence ?? null, needs_person: Boolean(review.needs_person), sample: MODE === "sample" },
+      review: { ok: review.ok, problems_ja: review.problems_ja || [], checked: Boolean(voice) && !same && !untranslated, confidence: same || untranslated ? null : review.confidence ?? null, needs_person: Boolean(review.needs_person), sample: MODE === "sample" },
+      answer_lang: al, same_lang: same, untranslated, by,
     };
     if (b.preview) { c.pending_answer = made; await save(); return { ...publicConsultation(c), pending_answer: made }; }
     c.answer = made;
@@ -629,7 +692,7 @@ const routes = {
   "POST /api/consultations/:id/posts": async (b, id) => {
     const me = needUser("shokunin");
     const c = store.consultations.find((x) => x.id === id);
-    if (!c || c.teacher_id !== me.teacher_id) throw new NotFound();
+    if (!c || !(c.garden_id ? c.garden_id === myGarden(me) : c.teacher_id === me.teacher_id)) throw new NotFound();
     if (!c.answer) throw new BadRequest("まだ職人の答えがありません");
     const context = `Question (summary for the craftsperson): ${c.for_craftsperson.summary_ja}\nCraftsperson's answer: ${c.answer.voice_ja}`;
     return makePosts({ kind: "photo", note: context, images: c.image ? [c.image] : [] });
@@ -644,6 +707,20 @@ const routes = {
     const q = String(url.searchParams.get("q") || "").normalize("NFKC").toLowerCase().trim().slice(0, 80);
     const r = searchQa(q, l, currentUser());
     return { items: r.hits, also: r.also };
+  },
+
+  // 職人が「この訳は違う」「こう直して」と知らせる。用語集を直すときに使う（すぐには変えない）
+  "GET /api/bonsaigo/gloss": async () => { const me = needUser("shokunin"); return { items: (store.gloss_fb || []).filter((x) => x.teacher_id === me.teacher_id).slice(0, 50) }; },
+  "POST /api/bonsaigo/gloss": async (b) => {
+    const me = needUser("shokunin");
+    const term = typeof b.term === "string" ? b.term.trim().slice(0, 20) : "";
+    if (!WORLD.glossary.some((g) => g.ja === term)) throw new BadRequest("用語を選んでください");
+    const kind = b.kind === "wrong" ? "wrong" : "fix";
+    const item = { id: randomUUID(), at: new Date().toISOString(), teacher_id: me.teacher_id, term, lang: b.lang === "plain" ? "plain" : lang(b.lang), kind, text: kind === "fix" ? text(b.text, 300, "直した言い方") : (typeof b.text === "string" ? b.text.trim().slice(0, 300) : "") };
+    if (!store.gloss_fb) store.gloss_fb = [];
+    store.gloss_fb.unshift(item); store.gloss_fb = store.gloss_fb.slice(0, 500);
+    await save();
+    return item;
   },
 
   "GET /api/bonsaigo/trees": async () => { const me = needUser("shokunin"); return { trees: (store.bonsaigo_trees || []).filter((t) => t.teacher_id === me.teacher_id).slice(0, 20).map(publicTree) }; },
@@ -693,6 +770,7 @@ const routes = {
     if (!tree || !tree.draft) throw new NotFound();
     const pick = (o) => Object.fromEntries(LANGS8.map((l) => [l, String(o?.[l] ?? "").slice(0, 2000)]));
     const x = pick(b.x || tree.draft.x), instagram = pick(b.instagram || tree.draft.instagram);
+    if ([...Object.values(x), ...Object.values(instagram)].some((v) => !v.trim())) throw new BadRequest("投稿の文が空です");
     let check;
     const rule = ruleCheck([...Object.values(x), ...Object.values(instagram)]);
     if (!rule.ok) {
@@ -720,7 +798,7 @@ function searchQa(q, l, me) {
   // 載せるのは見本と、自分の相談（職人なら自分あての相談）だけ。ほかの人の相談は出さない
   const isMine = (c) => me && (me.role === "shokunin" ? c.teacher_id === me.teacher_id : c.asker_id === me.id);
   const done = store.consultations.filter((c) => c.answer && c.answer.headline && isMine(c)).slice(0, 40).map((c) => ({
-    id: c.id, tree: null, own: true, lang: c.lang,
+    id: c.id, tree: null, own: true, lang: c.lang, garden_id: c.garden_id || null, person_id: c.answer.by?.id || null, answer_lang: c.answer.answer_lang || null,
     q: { [c.lang]: c.question, ja: c.for_craftsperson?.summary_ja || "" },
     a: { [c.lang]: [c.answer.headline, ...(c.answer.paragraphs || [])].join(" "), ja: c.answer.back_translation_ja || "" },
   }));
@@ -744,7 +822,7 @@ function searchQa(q, l, me) {
     }
     if (!matched) continue;
     const show = item.q[l] ? l : item.q.en ? "en" : item.lang;
-    hits.push({ id: item.id, tree: item.tree, own: Boolean(item.own), lang: show, asked_in: item.lang || null, matched_in: matched, other_lang: matched !== l, q: item.q[show], a: item.a[show] || item.a.en || "" });
+    hits.push({ id: item.id, tree: item.tree, topic: item.topic || null, garden_id: item.garden_id || null, person_id: item.person_id || null, own: Boolean(item.own), lang: show, asked_in: item.lang || null, matched_in: matched, other_lang: matched !== l, q: item.q[show], a: item.a[show] || item.a.en || "" });
   }
   // 言葉をまたいで探した印：打った言葉のほかに、どの言い方でも探したか（画面に少しだけ見せる）
   // 文字の種類（ラテン・漢字/かな・タイ・クメール）ごとに順に1つずつ取り、言葉をまたいだことが見えるように

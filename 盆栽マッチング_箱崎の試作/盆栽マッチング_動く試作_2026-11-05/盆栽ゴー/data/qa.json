@@ -1,0 +1,314 @@
+[
+ {
+  "id": "q1",
+  "tree": "juniper",
+  "topic": "wire",
+  "lang": null,
+  "q": {
+   "en": "I wired my juniper about eight months ago and just noticed the wire is cutting deep into a few branches. Can I just unwind it? I'm scared of snapping them.",
+   "ja": "ジュニパーに針金をかけて8か月ほどたちます。今日見たら、何本かの枝に針金が深く食い込んでいました。ほどいてもいいですか？枝が折れそうで怖いです。",
+   "es": "Até con alambre mi junípero hace ocho meses y ahora veo que el alambre se ha clavado hondo en varias ramas. ¿Puedo simplemente desenrollarlo? Tengo miedo de que se rompan.",
+   "zh": "我给桧柏上了铁丝大约八个月，今天发现有几根枝条被铁丝勒得很深。可以直接拆开吗？我怕把枝条弄断。",
+   "fr": "J'ai ligaturé mon genévrier il y a huit mois et je vois maintenant que le fil s'enfonce profondément dans plusieurs branches. Puis-je simplement le dérouler ? J'ai peur de les casser.",
+   "it": "Ho messo il filo al mio ginepro circa otto mesi fa e oggi vedo che si è conficcato in profondità in alcuni rami. Posso semplicemente svolgerlo? Ho paura di spezzarli.",
+   "th": "ฉันพันลวดต้นจูนิเปอร์ไว้ประมาณแปดเดือน วันนี้เห็นว่าลวดฝังลึกลงในกิ่งหลายกิ่ง แกะลวดออกเลยได้ไหม กลัวกิ่งหัก",
+   "km": "ខ្ញុំរុំលួសលើដើមជូនីពើរបានប្រហែលប្រាំបីខែ ថ្ងៃនេះឃើញលួសចូលជ្រៅក្នុងមែកខ្លះ។ តើខ្ញុំអាចស្រាយវាចេញតែម្តងបានទេ? ខ្ញុំខ្លាចមែកបាក់។"
+  },
+  "a": {
+   "en": "That is wire bite, and on a growing juniper it can show up within a few months. Please don't unwind it: the spiral drags on the bark. Snip the wire into short pieces with cutters, working from the branch tip back toward the trunk, and lift each piece away. The grooves usually fade over a year or two. If the branch still needs shaping, wait a few weeks, then do the [[rewiring|針金掛け]] with thinner wire in a new spiral position. Next time, [[wire removal|針金外し]] every three to four months in the growing season will spare you this.",
+   "ja": "それは針金の食い込みで、成長期のジュニパーなら数か月で起こります。ぐるぐるほどくと樹皮を引っ張るので、おすすめしません。ニッパーで針金を短く切り、枝先から幹のほうへ向かって一片ずつ外してください。食い込みの跡は、1〜2年でだいぶ目立たなくなることが多いです。まだ形を整えたい枝は、数週間あけてから、細めの針金を巻く位置をずらして[[針金掛け|針金掛け]]をやり直します。次からは成長期なら3〜4か月を目安に[[針金外し|針金外し]]をすると、食い込みを防げます。",
+   "es": "Eso es marca de alambre, y en un junípero en crecimiento puede aparecer en pocos meses. Mejor no lo desenrolles, porque la espiral tira de la corteza. Corta el alambre en trozos cortos con alicate, desde la punta de la rama hacia el tronco, y ve retirando cada trozo. Las marcas suelen suavizarse en uno o dos años. Si la rama aún necesita forma, espera unas semanas y vuelve a hacer el [[alambrado|針金掛け]] con un alambre más fino, cambiando la posición de la espiral. La próxima vez, el [[retirado del alambre|針金外し]] cada tres o cuatro meses en la época de crecimiento te evitará este problema.",
+   "zh": "这是铁丝勒进树皮了，生长期的桧柏几个月内就可能出现。不建议顺着螺旋拆，因为会拉扯树皮。请用剪钳把铁丝剪成短段，从枝尖往树干方向，一段一段取下。勒痕一般一两年内会淡化不少。如果枝条还需要造型，隔几周后用更细的铁丝、避开原来的位置重新[[缠铁丝|針金掛け]]。下次在生长期大约每三四个月就[[拆铁丝|針金外し]]一次，就能避免。",
+   "fr": "C'est ce qu'on appelle une marque de fil, et sur un genévrier en croissance elle peut apparaître en quelques mois. Évitez de dérouler : la spirale tire sur l'écorce. Coupez le fil en petits morceaux avec une pince, de la pointe de la branche vers le tronc, et retirez chaque morceau. Les marques s'estompent en général en un ou deux ans. Si la branche doit encore être travaillée, attendez quelques semaines puis refaites le [[ligaturage|針金掛け]] avec un fil plus fin, en décalant la spirale. La prochaine fois, le [[retrait du fil|針金外し]] tous les trois à quatre mois en saison de croissance vous évitera ce souci.",
+   "it": "È il segno del filo che morde, e su un ginepro in crescita può comparire in pochi mesi. Meglio non svolgerlo: la spirale tira la corteccia. Taglia il filo in pezzetti con le tronchesine, dalla punta del ramo verso il tronco, e togli ogni pezzo. I segni di solito si attenuano in uno o due anni. Se il ramo ha ancora bisogno di forma, aspetta qualche settimana e rifai l'[[applicazione del filo|針金掛け]] con un filo più sottile, spostando la spirale. La prossima volta, la [[rimozione del filo|針金外し]] ogni tre o quattro mesi nel periodo di crescita ti eviterà il problema.",
+   "th": "นี่คือลวดกินเข้าเนื้อไม้ ซึ่งต้นจูนิเปอร์ที่กำลังโตอาจเป็นได้ภายในไม่กี่เดือน อย่าคลายลวดเป็นเกลียวออก เพราะจะดึงเปลือกไม้ ให้ใช้คีมตัดลวดเป็นท่อนสั้นๆ จากปลายกิ่งเข้าหาลำต้น แล้วค่อยๆ ดึงแต่ละท่อนออก รอยมักจางลงในหนึ่งถึงสองปี ถ้ากิ่งยังต้องจัดทรง ให้รอสักสองสามสัปดาห์ แล้ว[[พันลวด|針金掛け]]ใหม่ด้วยลวดที่เล็กลงและเลี่ยงตำแหน่งเดิม คราวหน้าควร[[ถอดลวด|針金外し]]ทุกสามถึงสี่เดือนในช่วงที่ต้นเติบโต",
+   "km": "នេះគឺជាស្នាមលួសចូលក្នុងសំបក ហើយនៅលើជូនីពើរដែលកំពុងលូតលាស់ វាអាចកើតឡើងក្នុងរយៈពេលពីរបីខែ។ កុំស្រាយលួសជារង្វង់ព្រោះវាទាញសំបកឈើ ចូរប្រើដង្កៀបកាត់លួសជាកំណាត់ខ្លីៗ ចាប់ពីចុងមែកមករកដើម រួចយកចេញម្តងមួយកំណាត់។ ស្នាមភាគច្រើនរសាត់ទៅក្នុងរយៈពេលមួយទៅពីរឆ្នាំ។ បើមែកនៅត្រូវការរៀបរូប សូមរង់ចាំពីរបីសប្តាហ៍ រួច[[រុំលួស|針金掛け]]ឡើងវិញដោយប្រើលួសតូចជាង ហើយប្តូរទីតាំងរុំ។ លើកក្រោយ ត្រូវ[[ដោះលួស|針金外し]]រៀងរាល់បីទៅបួនខែក្នុងរដូវលូតលាស់។"
+  }
+ },
+ {
+  "id": "q2",
+  "tree": "juniper",
+  "topic": "indoor",
+  "lang": null,
+  "q": {
+   "en": "I bought a juniper bonsai and have kept it on a shelf by the living room window for three months. The foliage is turning yellow-brown from the inside and a couple of branches feel dry. What am I doing wrong?",
+   "ja": "ジュニパーの盆栽を買って、リビングの窓辺の棚に3か月置いています。葉が内側から黄褐色になってきて、枝が何本か乾いた感じです。何がいけないのでしょうか。",
+   "es": "Compré un junípero bonsái y lo tengo tres meses en una estantería junto a la ventana del salón. El follaje se pone amarillo-marrón desde dentro y un par de ramas se sienten secas. ¿Qué estoy haciendo mal?",
+   "zh": "我买了一盆桧柏盆景，在客厅窗边的架子上放了三个月。叶子从里面开始发黄发褐，有几根枝条摸起来是干的。我哪里做错了？",
+   "fr": "J'ai acheté un genévrier bonsaï et il est depuis trois mois sur une étagère près de la fenêtre du salon. Le feuillage jaunit et brunit de l'intérieur et quelques branches semblent sèches. Qu'est-ce que je fais de travers ?",
+   "it": "Ho comprato un ginepro bonsai e lo tengo da tre mesi su una mensola vicino alla finestra del soggiorno. Il fogliame ingiallisce e imbrunisce dall'interno e un paio di rami sembrano secchi. Dove sbaglio?",
+   "th": "ฉันซื้อบอนไซจูนิเปอร์มาและวางบนชั้นริมหน้าต่างห้องนั่งเล่นมาสามเดือน ใบเริ่มเหลืองน้ำตาลจากด้านในและมีกิ่งหนึ่งสองกิ่งที่ดูแห้ง ฉันทำอะไรผิดคะ",
+   "km": "ខ្ញុំទិញបុនសាយជូនីពើរ ហើយដាក់លើធ្នើក្បែរបង្អួចបន្ទប់ទទួលភ្ញៀវបីខែហើយ។ ស្លឹកចាប់ផ្តើមលឿងត្នោតពីខាងក្នុង ហើយមែកខ្លះមើលទៅស្ងួត។ តើខ្ញុំធ្វើខុសអ្វី?"
+  },
+  "a": {
+   "en": "Juniper is an outdoor tree that needs strong sun and a cold winter rest, and a room is usually too dim and too warm for it, so it often declines slowly even when it looks fine at first. Put it outdoors in a bright spot today, ideally with morning sun, and shield it only from hard frost. Don't [[repot|植え替え]], feed heavily with [[fertilizer|施肥]], or do a hard [[prune|剪定]] now, because the tree needs to recover first. Branches that are truly dry rarely come back, so wait until spring to see what buds and cut those off then.",
+   "ja": "ジュニパーは屋外の木で、強い日光と冬の寒さによる休みが必要です。室内は暗くて暖かすぎることが多く、最初は元気に見えても少しずつ弱っていきます。今日のうちに、明るい屋外（できれば朝日の当たる場所）に出し、厳しい霜だけは避けてください。弱っている間は[[植え替え|植え替え]]、多めの[[施肥|施肥]]、強い[[剪定|剪定]]はしないでください。完全に乾いた枝はまず戻らないので、春に芽が動くのを見てから切り取るのがよいでしょう。",
+   "es": "El junípero es un árbol de exterior que necesita sol fuerte y un reposo frío en invierno; una habitación suele ser demasiado oscura y cálida, así que se debilita poco a poco aunque al principio parezca sano. Sácalo hoy a un lugar luminoso, mejor con sol de mañana, y protégelo solo de heladas fuertes. Ahora no hagas [[trasplante|植え替え]], ni abones mucho ([[abonado|施肥]]), ni una [[poda|剪定]] fuerte, porque primero debe recuperarse. Las ramas realmente secas rara vez vuelven, así que espera a la primavera para ver qué brota y entonces córtalas.",
+   "zh": "桧柏是户外树种，需要强光和冬季低温休眠，室内通常太暗也太暖，所以即使一开始看着正常，也会慢慢衰弱。请今天就把它搬到明亮的室外，最好有上午的阳光，只需避开严重霜冻。恢复之前不要[[换盆|植え替え]]，不要大量[[施肥|施肥]]，也不要重[[修剪|剪定]]。真正干透的枝条很难再活，建议等到春天看哪里发芽，再把枯枝剪掉。",
+   "fr": "Le genévrier est un arbre d'extérieur qui demande un soleil franc et un repos hivernal au froid ; une pièce est souvent trop sombre et trop chaude, et il s'affaiblit lentement même s'il semble bien au début. Sortez-le dès aujourd'hui dans un endroit lumineux, de préférence avec le soleil du matin, en le protégeant seulement des fortes gelées. Pour l'instant, évitez le [[rempotage|植え替え]], un apport important d'[[engrais|施肥]] et une [[taille|剪定]] sévère, car il doit d'abord récupérer. Les branches vraiment sèches reviennent rarement : attendez le printemps pour voir ce qui repart, puis coupez le reste.",
+   "it": "Il ginepro è una pianta da esterno che ha bisogno di sole forte e di un riposo al freddo in inverno; in casa di solito è troppo buio e troppo caldo, così si indebolisce lentamente anche se all'inizio sembra a posto. Portalo fuori oggi stesso in un posto luminoso, meglio con il sole del mattino, proteggendolo solo dalle gelate forti. Per ora niente [[rinvaso|植え替え]], niente [[concimazione|施肥]] abbondante e niente [[potatura|剪定]] drastica, perché deve prima riprendersi. I rami davvero secchi raramente tornano: aspetta la primavera per vedere cosa germoglia e poi tagliali.",
+   "th": "จูนิเปอร์เป็นไม้กลางแจ้งที่ต้องการแดดจัดและช่วงพักตัวในฤดูหนาว ห้องในบ้านมักมืดและอุ่นเกินไป ต้นจึงค่อยๆ อ่อนแอลงแม้ตอนแรกจะดูปกติ วันนี้ให้ย้ายไปไว้กลางแจ้งที่สว่าง ถ้าได้แดดเช้าจะดี และกันแค่น้ำค้างแข็งรุนแรง ช่วงนี้อย่า[[เปลี่ยนกระถาง|植え替え]] อย่า[[ใส่ปุ๋ย|施肥]]มาก และอย่า[[ตัดแต่ง|剪定]]แรง เพราะต้นต้องฟื้นก่อน กิ่งที่แห้งสนิทมักไม่กลับมา รอถึงฤดูใบไม้ผลิดูว่าตรงไหนแตกตาแล้วค่อยตัดกิ่งแห้งออก",
+   "km": "ជូនីពើរជាដើមឈើខាងក្រៅ ត្រូវការពន្លឺថ្ងៃខ្លាំង និងការសម្រាកក្នុងរដូវត្រជាក់ ចំណែកក្នុងបន្ទប់ច្រើនតែងងឹត និងកក់ក្តៅពេក ដូច្នេះវាចុះខ្សោយបន្តិចម្តងៗ ទោះមើលទៅដំបូងដូចធម្មតា។ ថ្ងៃនេះសូមយកវាទៅទីកន្លែងភ្លឺខាងក្រៅ ល្អបំផុតមានថ្ងៃព្រឹក ហើយការពារតែពីទឹកកកខ្លាំង។ ពេលនេះកុំ[[ប្តូរថ្លាង|植え替え]] កុំ[[ដាក់ជី|施肥]]ច្រើន ហើយកុំ[[កាត់តុប|剪定]]ខ្លាំង ព្រោះដើមត្រូវជាសះស្បើយសិន។ មែកដែលស្ងួតពិតប្រាកដកម្រស្រស់ឡើងវិញ ដូច្នេះសូមរង់ចាំដល់និទាឃរដូវមើលថាកន្លែងណាចេញពន្លក ហើយចាំកាត់មែកស្ងួតចោល។"
+  }
+ },
+ {
+  "id": "q3",
+  "tree": "pine",
+  "topic": "repot",
+  "lang": null,
+  "q": {
+   "en": "My black pine has been in the same pot for six years. Roots are poking out of the drainage holes and water takes ages to soak in. It's late autumn now. Can I repot it today, and how much root can I cut?",
+   "ja": "黒松を6年同じ鉢で育てています。根が鉢底の穴から出ていて、水がなかなかしみ込みません。今は晩秋ですが、今日植え替えてもいいでしょうか。根はどのくらい切れますか。",
+   "es": "Mi pino negro lleva seis años en la misma maceta. Las raíces asoman por los agujeros de drenaje y el agua tarda mucho en filtrarse. Estamos a finales de otoño. ¿Puedo trasplantarlo hoy y cuánta raíz puedo cortar?",
+   "zh": "我的黑松在同一个盆里养了六年，根从排水孔里钻出来，浇水半天渗不下去。现在是深秋，今天能换盆吗？根最多可以剪多少？",
+   "fr": "Mon pin noir est dans le même pot depuis six ans. Les racines sortent par les trous de drainage et l'eau met très longtemps à pénétrer. Nous sommes en fin d'automne. Puis-je le rempoter aujourd'hui, et quelle quantité de racines puis-je couper ?",
+   "it": "Il mio pino nero è nello stesso vaso da sei anni. Le radici escono dai fori di drenaggio e l'acqua impiega molto ad assorbirsi. Siamo a fine autunno. Posso rinvasarlo oggi e quante radici posso tagliare?",
+   "th": "สนดำของฉันอยู่ในกระถางเดิมมาหกปีแล้ว รากโผล่ออกมาทางรูระบายน้ำ และน้ำซึมลงช้ามาก ตอนนี้เป็นปลายฤดูใบไม้ร่วง วันนี้เปลี่ยนกระถางได้ไหม ตัดรากได้แค่ไหน",
+   "km": "ស្រល់ខ្មៅរបស់ខ្ញុំនៅក្នុងថ្លាងដដែលអស់ប្រាំមួយឆ្នាំ។ ឫសចេញតាមរន្ធបង្ហូរទឹក ហើយទឹកជ្រាបយឺតណាស់។ ឥឡូវជាចុងរដូវស្លឹកឈើជ្រុះ។ តើថ្ងៃនេះខ្ញុំអាចប្តូរថ្លាងបានទេ ហើយអាចកាត់ឫសប៉ុន្មាន?"
+  },
+  "a": {
+   "en": "Late autumn isn't the best moment; early spring, just before the buds swell, is the usual and safer time for pine. Wait until then if you can. When you do [[repot|植え替え]], remove roughly a third of the old soil and roots from the outside and bottom, and keep the fine white roots and the soil around the core, since pines rely on that soil's helpful fungi. Use a fast-draining [[soil mix|用土]], for example coarse [[akadama|赤玉土]] with grit, so [[drainage|水はけ]] stays good. Don't strip all the soil off or cut the roots hard in one go, and shield the tree from frost and wind afterward.",
+   "ja": "晩秋はあまり向いておらず、松は芽がふくらむ直前の早春が一般的で安全です。できればそれまで待ってください。[[植え替え|植え替え]]のときは、古い土と根を外側と底から全体の3分の1ほど落とし、細い白い根と中心の土は残します。松は土の中の菌に助けられているためです。[[用土|用土]]は[[赤玉土|赤玉土]]の粗めの粒にゴロ土などを混ぜた、[[水はけ|水はけ]]のよいものにします。土を全部落としたり、一度に根を強く切ったりしないでください。植え替え後は霜と風を避けましょう。",
+   "es": "El final del otoño no es el mejor momento; en el pino lo habitual y más seguro es principios de primavera, justo antes de que se hinchen las yemas. Si puedes, espera. Al hacer el [[trasplante|植え替え]], quita más o menos un tercio de la tierra vieja y de las raíces por fuera y por debajo, y conserva las raíces finas blancas y la tierra del centro, porque el pino depende de los hongos beneficiosos de ese sustrato. Usa un [[sustrato|用土]] de drenaje rápido, por ejemplo [[akadama|赤玉土]] gruesa con grava, para mantener un buen [[drenaje|水はけ]]. No quites toda la tierra ni cortes mucha raíz de golpe, y protege el árbol de heladas y viento después.",
+   "zh": "深秋不是最合适的时机，松树一般在早春芽快要鼓起之前换盆更常见也更稳妥，可以的话请等到那时。[[换盆|植え替え]]时，从外侧和底部去掉大约三分之一的旧土和根，保留白色细根和中心的土，因为松树依靠土里的有益菌。[[培养土|用土]]要选透水快的，例如粗颗粒的[[赤玉土|赤玉土]]加粗砂石，保证[[排水|水はけ]]良好。不要一次把土全洗掉或重剪根，换盆后也要避开霜冻和大风。",
+   "fr": "La fin d'automne n'est pas le meilleur moment ; pour un pin, le début du printemps, juste avant le gonflement des bourgeons, est le plus habituel et le plus sûr. Attendez si vous le pouvez. Lors du [[rempotage|植え替え]], retirez environ un tiers de l'ancien substrat et des racines par l'extérieur et par le dessous, et gardez les fines racines blanches et la terre du centre, car le pin dépend des champignons utiles de ce sol. Choisissez un [[substrat|用土]] très drainant, par exemple de l'[[akadama|赤玉土]] grossière avec du gravier, pour un bon [[drainage|水はけ]]. Ne retirez pas toute la terre et ne taillez pas fortement les racines d'un coup, puis protégez l'arbre du gel et du vent.",
+   "it": "La fine dell'autunno non è il momento migliore; per il pino il periodo più comune e sicuro è l'inizio della primavera, poco prima che le gemme si gonfino. Se puoi, aspetta. Durante il [[rinvaso|植え替え]] togli circa un terzo del vecchio substrato e delle radici dall'esterno e dal fondo, e mantieni le radici fini bianche e la terra al centro, perché il pino dipende dai funghi utili di quel terriccio. Usa un [[substrato|用土]] a drenaggio rapido, per esempio [[akadama|赤玉土]] a grana grossa con ghiaietto, per un buon [[drenaggio|水はけ]]. Non togliere tutta la terra né tagliare molte radici in una volta sola, e proteggi l'albero da gelo e vento dopo.",
+   "th": "ปลายฤดูใบไม้ร่วงไม่ใช่ช่วงที่ดีที่สุด สนมักเปลี่ยนกระถางต้นฤดูใบไม้ผลิก่อนตาจะพองตัว ซึ่งปลอดภัยกว่า ถ้ารอได้ให้รอ เวลา[[เปลี่ยนกระถาง|植え替え]] ให้เอาดินเก่าและรากออกประมาณหนึ่งในสามจากด้านนอกและด้านล่าง เก็บรากฝอยสีขาวและดินตรงกลางไว้ เพราะสนพึ่งเชื้อราที่เป็นประโยชน์ในดิน ใช้[[ดินปลูก|用土]]ที่ระบายเร็ว เช่น[[ดินอาคาดามะ|赤玉土]]เม็ดใหญ่ผสมกรวด เพื่อให้[[ระบายน้ำ|水はけ]]ดี อย่าล้างดินออกหมดหรือตัดรากแรงในครั้งเดียว และหลังเปลี่ยนกระถางให้กันน้ำค้างแข็งและลม",
+   "km": "ចុងរដូវស្លឹកឈើជ្រុះមិនមែនជាពេលល្អបំផុតទេ ស្រល់ភាគច្រើនប្តូរថ្លាងនៅដើមនិទាឃរដូវមុនពន្លកហើម ដែលមានសុវត្ថិភាពជាង បើអាចសូមរង់ចាំ។ ពេល[[ប្តូរថ្លាង|植え替え]] ត្រូវយកដីចាស់និងឫសចេញប្រហែលមួយភាគបីពីខាងក្រៅនិងខាងក្រោម ទុកឫសស្តើងពណ៌សនិងដីកណ្តាល ព្រោះស្រល់ពឹងលើផ្សិតមានប្រយោជន៍ក្នុងដី។ ប្រើ[[ដីដាំ|用土]]ដែលបង្ហូរទឹកលឿន ដូចជា[[ដីអាកាដាម៉ា|赤玉土]]គ្រាប់ធំលាយក្រួស ដើម្បីឲ្យ[[ការបង្ហូរទឹក|水はけ]]ល្អ។ កុំយកដីចេញអស់ ឬកាត់ឫសខ្លាំងម្តងតែមួយ ហើយក្រោយមកការពារពីទឹកកកនិងខ្យល់។"
+  }
+ },
+ {
+  "id": "q4",
+  "tree": "maple",
+  "topic": "water",
+  "lang": null,
+  "q": {
+   "en": "In midsummer the edges of my Japanese maple's leaves turned crispy brown, even though I water every morning. The pot is small and sits in afternoon sun. Is this over- or under-watering?",
+   "ja": "真夏に、イロハモミジの葉のふちが茶色くパリパリになりました。毎朝水はあげています。鉢は小さく、午後の日が当たります。水のやりすぎでしょうか、足りないのでしょうか。",
+   "es": "En pleno verano los bordes de las hojas de mi arce japonés se pusieron marrones y quebradizos, aunque lo riego cada mañana. La maceta es pequeña y le da el sol de la tarde. ¿Es exceso o falta de riego?",
+   "zh": "盛夏时，我的鸡爪槭叶缘变得焦褐干脆，可我每天早上都浇水。盆很小，下午会晒到太阳。这是浇水太多还是太少？",
+   "fr": "En plein été, les bords des feuilles de mon érable du Japon sont devenus bruns et cassants, alors que j'arrose tous les matins. Le pot est petit et reçoit le soleil de l'après-midi. Est-ce un excès ou un manque d'eau ?",
+   "it": "In piena estate i bordi delle foglie del mio acero giapponese sono diventati marroni e croccanti, anche se lo annaffio ogni mattina. Il vaso è piccolo e prende il sole del pomeriggio. È troppa o troppo poca acqua?",
+   "th": "กลางฤดูร้อน ขอบใบเมเปิลญี่ปุ่นของฉันเป็นสีน้ำตาลกรอบ ทั้งที่รดน้ำทุกเช้า กระถางเล็กและโดนแดดบ่าย เป็นเพราะรดน้ำมากไปหรือน้อยไปคะ",
+   "km": "ពាក់កណ្តាលរដូវក្តៅ គែមស្លឹកម៉ាផលជប៉ុនរបស់ខ្ញុំប្រែជាត្នោតស្រួយ ទោះខ្ញុំស្រោចទឹកគ្រប់ព្រឹក។ ថ្លាងតូច ហើយត្រូវថ្ងៃរសៀល។ តើនេះដោយសារស្រោចទឹកច្រើនពេក ឬតិចពេក?"
+  },
+  "a": {
+   "en": "It is most likely leaf scorch from the pot drying out in the afternoon heat: a small pot can be wet at breakfast and bone dry by mid-afternoon. Check with a finger or a wooden skewer around midday, and give a thorough [[watering|水やり]] until water runs from the drainage holes, then once more in the evening if it's dry. Move it to light shade in the afternoon and lift the pot on a stand for airflow. A pot that stays soggy is a different problem, so make sure the mix has good [[drainage|水はけ]]. Don't give [[fertilizer|施肥]] while the leaves are stressed; burned leaves won't recover, but new ones will come.",
+   "ja": "午後の暑さで鉢が乾いてしまう葉焼けの可能性が高いです。小さな鉢は、朝はぬれていても午後には乾ききることがあります。昼ごろに指や竹串で土の中を確かめ、[[水やり|水やり]]は鉢底から水が流れ出るまでたっぷり与え、夕方にも乾いていればもう一度あげてください。午後は明るい日陰に移し、鉢は台に上げて風を通します。ずっとべちゃべちゃな場合は別の問題なので、用土の[[水はけ|水はけ]]も見直しましょう。葉が弱っている間は[[施肥|施肥]]をしないでください。焼けた葉は戻りませんが、新しい葉は出てきます。",
+   "es": "Lo más probable es una quemadura de hoja porque la maceta se seca con el calor de la tarde: una maceta pequeña puede estar húmeda al desayuno y completamente seca a media tarde. Comprueba con el dedo o un palillo de madera hacia el mediodía y haz un [[riego|水やり]] abundante hasta que salga agua por los agujeros, y otra vez al atardecer si sigue seco. Pásalo a sombra ligera por la tarde y eleva la maceta sobre un soporte para que circule el aire. Si el sustrato se queda empapado es otro problema, así que revisa el [[drenaje|水はけ]]. No abones ([[abonado|施肥]]) mientras las hojas sufren; las quemadas no se recuperan, pero saldrán nuevas.",
+   "zh": "更可能是下午高温把盆土晒干造成的叶片灼伤。小盆早上还是湿的，到下午可能已经完全干透。中午前后用手指或竹签检查盆土，[[浇水|水やり]]要浇透，直到盆底流出水，傍晚如果又干了再浇一次。下午移到明亮的半阴处，把盆垫高以便通风。如果盆土一直湿漉漉则是另一个问题，请检查土的[[排水|水はけ]]。叶子受伤期间不要[[施肥|施肥]]。焦掉的叶子不会恢复，但会长出新叶。",
+   "fr": "Il s'agit très probablement de brûlures dues au dessèchement du pot sous la chaleur de l'après-midi : un petit pot peut être humide au petit-déjeuner et complètement sec en milieu d'après-midi. Vérifiez avec le doigt ou une brochette en bois vers midi, et faites un [[arrosage|水やり]] copieux jusqu'à ce que l'eau sorte par les trous, puis un second le soir si c'est sec. Mettez l'arbre à l'ombre légère l'après-midi et surélevez le pot pour la circulation de l'air. Un pot qui reste détrempé est un autre problème : vérifiez le [[drainage|水はけ]]. Pas d'[[engrais|施肥]] tant que les feuilles souffrent ; les feuilles brûlées ne reviennent pas, mais de nouvelles pousseront.",
+   "it": "Molto probabilmente è una scottatura delle foglie perché il vaso si asciuga con il caldo pomeridiano: un vaso piccolo può essere umido a colazione e secchissimo a metà pomeriggio. Controlla con un dito o uno stecchino verso mezzogiorno e fai una [[annaffiatura|水やり]] abbondante finché l'acqua esce dai fori, ripetendola la sera se è asciutto. Spostalo in ombra leggera al pomeriggio e sollevalo su un supporto per far circolare l'aria. Se il vaso resta fradicio è un altro problema, quindi controlla il [[drenaggio|水はけ]]. Niente [[concime|施肥]] mentre le foglie soffrono; quelle bruciate non guariscono, ma ne usciranno di nuove.",
+   "th": "มีโอกาสสูงว่าเป็นใบไหม้เพราะกระถางแห้งในความร้อนช่วงบ่าย กระถางเล็กอาจเปียกตอนเช้าแต่แห้งสนิทตอนบ่าย ลองใช้นิ้วหรือไม้เสียบเช็กดินราวเที่ยง แล้ว[[รดน้ำ|水やり]]ให้ชุ่มจนน้ำไหลออกก้นกระถาง และถ้าตอนเย็นยังแห้งให้รดอีกรอบ ช่วงบ่ายย้ายไปที่ร่มรำไรและยกกระถางขึ้นให้ลมผ่าน ถ้าดินแฉะตลอดเป็นปัญหาอีกแบบ ให้ตรวจ[[การระบายน้ำ|水はけ]]ของดิน ระหว่างที่ใบเสียหายอย่า[[ใส่ปุ๋ย|施肥]] ใบที่ไหม้จะไม่กลับมา แต่จะมีใบใหม่แตกออกมา",
+   "km": "ទំនងជាស្លឹកឆេះដោយសារថ្លាងស្ងួតក្នុងកម្តៅរសៀល ថ្លាងតូចអាចសើមពេលព្រឹក ប៉ុន្តែស្ងួតស្រឡះនៅពាក់កណ្តាលរសៀល។ ពេលជិតថ្ងៃត្រង់ សូមប្រើម្រាមដៃ ឬឈើចាក់ពិនិត្យដី រួច[[ស្រោចទឹក|水やり]]ឲ្យជោកដល់ទឹកហូរចេញពីរន្ធខាងក្រោម ហើយបើល្ងាចនៅស្ងួតសូមស្រោចម្តងទៀត។ ពេលរសៀលសូមប្តូរទៅម្លប់ស្រាលៗ ហើយលើកថ្លាងពីលើជើងទ្រដើម្បីឲ្យខ្យល់ចរ។ បើដីសើមជោកជានិច្ចជាបញ្ហាមួយទៀត សូមពិនិត្យ[[ការបង្ហូរទឹក|水はけ]]របស់ដី។ ពេលស្លឹកកំពុងឈឺ កុំ[[ដាក់ជី|施肥]] ស្លឹកដែលឆេះមិនស្រស់ឡើងវិញទេ ប៉ុន្តែស្លឹកថ្មីនឹងដុះចេញ។"
+  }
+ },
+ {
+  "id": "q5",
+  "tree": "azalea",
+  "topic": "newtree",
+  "lang": null,
+  "q": {
+   "en": "I just bought an azalea bonsai at a market. The flowers are almost finished and several leaves are turning yellow. Should I repot it right away, and how do I look after it?",
+   "ja": "市場でツツジの盆栽を買いました。花はもう終わりかけで、葉が何枚か黄色くなっています。すぐ植え替えたほうがいいですか。どう世話すればよいでしょう。",
+   "es": "Acabo de comprar una azalea bonsái en un mercado. Las flores casi han terminado y varias hojas se están poniendo amarillas. ¿Debo trasplantarla enseguida y cómo la cuido?",
+   "zh": "我在集市上买了一盆杜鹃盆景。花快谢完了，有几片叶子发黄。要马上换盆吗？平时该怎么养？",
+   "fr": "Je viens d'acheter une azalée bonsaï sur un marché. Les fleurs sont presque finies et plusieurs feuilles jaunissent. Dois-je la rempoter tout de suite et comment m'en occuper ?",
+   "it": "Ho appena comprato un'azalea bonsai al mercato. I fiori stanno finendo e diverse foglie ingialliscono. Devo rinvasarla subito e come me ne prendo cura?",
+   "th": "ฉันเพิ่งซื้อบอนไซอะซาเลียจากตลาด ดอกใกล้จะโรยหมดแล้ว และใบเริ่มเหลืองหลายใบ ต้องเปลี่ยนกระถางทันทีไหม แล้วต้องดูแลอย่างไร",
+   "km": "ខ្ញុំទើបទិញបុនសាយអាសាលេអានៅផ្សារ។ ផ្កាជិតរោយអស់ ហើយស្លឹកខ្លះចាប់ផ្តើមលឿង។ តើត្រូវប្តូរថ្លាងភ្លាមៗទេ ហើយត្រូវថែរក្សាយ៉ាងដូចម្តេច?"
+  },
+  "a": {
+   "en": "Don't repot it right away. Give it a few weeks to settle in a bright, half-shaded spot outdoors, since some older leaves yellowing after a move is common. Azalea likes acidic soil and soft water such as rainwater, and it dislikes drying out completely, so keep up steady [[watering|水やり]]. Remove spent flowers, and do your [[pruning|剪定]] soon after flowering, because later cuts remove next year's buds. Plan the [[repotting|植え替え]] for after flowering in mild weather, and hold off on [[fertilizer|施肥]] for the first few weeks.",
+   "ja": "すぐに植え替えなくて大丈夫です。まず数週間、屋外の明るい半日陰に置いて落ち着かせてください。環境が変わると古い葉が黄色くなるのはよくあることです。ツツジは酸性の土ややわらかい水（雨水など）を好み、完全に乾かすのを嫌うので、[[水やり|水やり]]は切らさないようにします。咲き終わった花がらは取り、[[剪定|剪定]]は花後すぐに行います。あとで切ると来年の花芽を落としてしまうからです。[[植え替え|植え替え]]は花後の穏やかな時期にし、[[施肥|施肥]]は最初の数週間は控えましょう。",
+   "es": "No la trasplantes enseguida. Dale unas semanas para adaptarse en un lugar luminoso y de media sombra al aire libre; que algunas hojas viejas amarilleen tras un cambio es habitual. La azalea prefiere sustrato ácido y agua blanda como la de lluvia, y no soporta secarse del todo, así que mantén un [[riego|水やり]] constante. Quita las flores marchitas y haz la [[poda|剪定]] justo después de la floración, porque más tarde cortarías las yemas del año siguiente. Planea el [[trasplante|植え替え]] tras la floración con tiempo templado y espera unas semanas antes de aplicar [[abono|施肥]].",
+   "zh": "不需要马上换盆。先放在室外明亮的半阴处缓几周，换环境后老叶发黄是常见现象。杜鹃喜欢酸性土和雨水之类的软水，也怕彻底干透，所以[[浇水|水やり]]要保持稳定。把谢掉的花摘除，[[修剪|剪定]]要在花后尽快进行，太晚剪会把明年的花芽剪掉。[[换盆|植え替え]]安排在花后天气温和的时候，头几周先不要[[施肥|施肥]]。",
+   "fr": "Ne la rempotez pas tout de suite. Laissez-lui quelques semaines pour s'adapter à un endroit lumineux et mi-ombragé à l'extérieur ; que quelques vieilles feuilles jaunissent après un déménagement est courant. L'azalée aime un substrat acide et une eau douce comme l'eau de pluie, et supporte mal de sécher complètement, donc gardez un [[arrosage|水やり]] régulier. Retirez les fleurs fanées et faites la [[taille|剪定]] juste après la floraison, car plus tard vous couperiez les boutons de l'an prochain. Prévoyez le [[rempotage|植え替え]] après la floraison par temps doux, et attendez quelques semaines avant de donner de l'[[engrais|施肥]].",
+   "it": "Non rinvasarla subito. Lasciale qualche settimana per adattarsi in un posto luminoso e a mezz'ombra all'aperto; che alcune foglie vecchie ingialliscano dopo uno spostamento è normale. L'azalea ama il terreno acido e l'acqua dolce come quella piovana, e non sopporta di seccare del tutto, quindi mantieni un'[[annaffiatura|水やり]] costante. Togli i fiori appassiti e fai la [[potatura|剪定]] subito dopo la fioritura, perché più tardi taglieresti le gemme dell'anno dopo. Pianifica il [[rinvaso|植え替え]] dopo la fioritura con clima mite e aspetta qualche settimana prima di dare [[concime|施肥]].",
+   "th": "ยังไม่ต้องรีบเปลี่ยนกระถาง ให้พักต้นไม้สักสองสามสัปดาห์ในที่กลางแจ้งสว่างและมีร่มรำไร ใบเก่าเหลืองบางใบหลังย้ายที่เป็นเรื่องที่พบบ่อย อะซาเลียชอบดินเป็นกรดและน้ำอ่อนอย่างน้ำฝน และไม่ชอบให้แห้งสนิท จึงต้อง[[รดน้ำ|水やり]]สม่ำเสมอ เด็ดดอกที่โรยออก แล้ว[[ตัดแต่ง|剪定]]ทันทีหลังดอกบาน เพราะถ้าตัดช้าจะตัดตาดอกของปีหน้าทิ้ง ให้วางแผน[[เปลี่ยนกระถาง|植え替え]]หลังดอกบานช่วงอากาศไม่ร้อนไม่หนาว และรอสักสองสามสัปดาห์ก่อน[[ใส่ปุ๋ย|施肥]]",
+   "km": "មិនចាំបាច់ប្តូរថ្លាងភ្លាមៗទេ សូមឲ្យវាសម្របខ្លួនពីរបីសប្តាហ៍នៅកន្លែងភ្លឺនិងមានម្លប់ពាក់កណ្តាលខាងក្រៅ ស្លឹកចាស់ខ្លះលឿងក្រោយប្តូរទីកន្លែងជារឿងធម្មតា។ អាសាលេអាចូលចិត្តដីអាស៊ីតនិងទឹកទន់ដូចទឹកភ្លៀង ហើយមិនចូលចិត្តស្ងួតស្រឡះទេ ដូច្នេះត្រូវ[[ស្រោចទឹក|水やり]]ឲ្យទៀងទាត់។ ដកផ្កាដែលរោយចេញ ហើយ[[កាត់តុប|剪定]]ភ្លាមៗក្រោយផ្កា ព្រោះបើកាត់យឺតនឹងកាត់បាត់ពន្លកផ្កាឆ្នាំក្រោយ។ គ្រោង[[ប្តូរថ្លាង|植え替え]]ក្រោយផ្កានៅពេលអាកាសធាតុស្រាល ហើយរង់ចាំពីរបីសប្តាហ៍មុន[[ដាក់ជី|施肥]]។"
+  }
+ },
+ {
+  "id": "q6",
+  "tree": "ume",
+  "topic": "pruning",
+  "lang": null,
+  "q": {
+   "en": "My ume has shot up long straight shoots this summer, and it flowered only a little last spring. When and how should I prune it?",
+   "ja": "梅に、今年の夏、まっすぐな長い枝がたくさん伸びました。去年の春は花があまり咲きませんでした。いつ、どう切ればいいですか。",
+   "es": "Mi ume (albaricoquero japonés) ha sacado este verano muchos brotes largos y rectos, y floreció muy poco la primavera pasada. ¿Cuándo y cómo debo podarlo?",
+   "zh": "我的梅花今年夏天长出很多又长又直的枝条，去年春天花开得很少。该什么时候、怎么修剪？",
+   "fr": "Mon ume (abricotier du Japon) a produit cet été beaucoup de longues pousses droites et il a très peu fleuri au printemps dernier. Quand et comment dois-je le tailler ?",
+   "it": "Il mio ume (albicocco giapponese) quest'estate ha emesso molti getti lunghi e dritti e la primavera scorsa ha fiorito pochissimo. Quando e come devo potarlo?",
+   "th": "ต้นบ๊วยญี่ปุ่นของฉันแตกกิ่งยาวตรงขึ้นมามากในฤดูร้อนนี้ และออกดอกน้อยมากเมื่อฤดูใบไม้ผลิที่แล้ว ควรตัดแต่งเมื่อไรและอย่างไร",
+   "km": "ដើមអ៊ូមេរបស់ខ្ញុំដុះមែកវែងត្រង់ៗច្រើនក្នុងរដូវក្តៅនេះ ហើយរដូវផ្ការីកមុនចេញផ្កាតិចណាស់។ តើគួរកាត់តុបពេលណា និងដោយរបៀបណា?"
+  },
+  "a": {
+   "en": "Ume blooms mainly on short side twigs from the previous year's growth, so timing matters. Right after flowering, do a light [[cutting back|切り戻し]] of branches that are getting too long. In early summer, shorten the strong upright [[water shoots|徒長枝]] to two or three leaves; this encourages the short twigs that carry flower buds. In winter, while it's dormant, remove [[problem branches|忌み枝]] such as crossing or parallel ones. Avoid big [[pruning|剪定]] in autumn, since you may cut off the flower buds already formed.",
+   "ja": "梅の花は、前の年に伸びた枝に出る短い枝につくことが主なので、時期が大切です。花が終わったらすぐに、伸びすぎた枝を軽く[[切り戻し|切り戻し]]します。初夏には、勢いよく上に伸びる[[徒長枝|徒長枝]]を葉2〜3枚残して短くします。そうすると、花芽をつける短い枝が出やすくなります。冬の休みの時期には、交差した枝や平行な枝などの[[忌み枝|忌み枝]]を整理します。秋に大きな[[剪定|剪定]]をすると、できた花芽を落としてしまうことがあるので避けてください。",
+   "es": "El ume florece sobre todo en ramitas cortas del crecimiento del año anterior, así que el momento importa. Justo después de la floración haz un [[recorte|切り戻し]] ligero de las ramas que se alargan demasiado. A comienzos del verano, acorta los [[brotes vigorosos|徒長枝]] verticales a dos o tres hojas; así se favorecen las ramitas cortas que llevan las yemas de flor. En invierno, con el árbol en reposo, quita las [[ramas problemáticas|忌み枝]] como las que se cruzan o van paralelas. Evita una [[poda|剪定]] fuerte en otoño, porque podrías cortar las yemas de flor ya formadas.",
+   "zh": "梅花主要开在上一年长出的枝条上的短枝上，所以时机很重要。花后马上对过长的枝条做轻度的[[回缩|切り戻し]]。初夏把势头强、向上直立的[[徒长枝|徒長枝]]剪短到留两三片叶，这样容易长出带花芽的短枝。冬季休眠期，整理交叉、平行等[[忌枝|忌み枝]]。秋天不要做大幅度[[修剪|剪定]]，以免把已形成的花芽剪掉。",
+   "fr": "L'ume fleurit surtout sur de courts rameaux portés par la pousse de l'année précédente, donc le moment compte. Juste après la floraison, faites un léger [[raccourcissement|切り戻し]] des branches trop longues. Au début de l'été, raccourcissez les [[gourmands|徒長枝]] vigoureux à deux ou trois feuilles ; cela favorise les petits rameaux porteurs de boutons à fleurs. En hiver, pendant le repos, retirez les [[branches gênantes|忌み枝]] comme celles qui se croisent ou sont parallèles. Évitez une grosse [[taille|剪定]] en automne, car vous pourriez couper des boutons floraux déjà formés.",
+   "it": "L'ume fiorisce soprattutto su rametti corti nati dalla crescita dell'anno precedente, quindi il momento conta. Subito dopo la fioritura fai un leggero [[accorciamento|切り戻し]] dei rami troppo lunghi. All'inizio dell'estate accorcia i [[succhioni|徒長枝]] vigorosi e verticali a due o tre foglie; così si favoriscono i rametti corti che portano le gemme da fiore. In inverno, a riposo, elimina i [[rami problematici|忌み枝]] come quelli incrociati o paralleli. Evita una [[potatura|剪定]] drastica in autunno, perché potresti tagliare le gemme da fiore già formate.",
+   "th": "บ๊วยออกดอกส่วนใหญ่บนกิ่งสั้นที่แตกจากกิ่งของปีก่อน เวลาจึงสำคัญ หลังดอกบานทันที ให้[[ตัดสั้น|切り戻し]]กิ่งที่ยาวเกินไปเล็กน้อย ต้นฤดูร้อนให้ตัด[[กิ่งแตกพุ่ง|徒長枝]]ที่แข็งแรงและตั้งตรงให้เหลือใบสองถึงสามใบ ซึ่งช่วยให้เกิดกิ่งสั้นที่มีตาดอก ในฤดูหนาวช่วงพักตัว ให้เก็บ[[กิ่งต้องห้าม|忌み枝]] เช่น กิ่งไขว้หรือกิ่งขนานกัน หลีกเลี่ยงการ[[ตัดแต่ง|剪定]]หนักในฤดูใบไม้ร่วง เพราะอาจตัดตาดอกที่เกิดขึ้นแล้วทิ้ง",
+   "km": "អ៊ូមេចេញផ្កាភាគច្រើនលើមែកខ្លីៗដែលដុះពីមែកឆ្នាំមុន ដូច្នេះពេលវេលាសំខាន់។ ភ្លាមៗក្រោយផ្កា ត្រូវ[[កាត់ខ្លី|切り戻し]]មែកដែលវែងពេកបន្តិច។ ដើមរដូវក្តៅ ត្រូវកាត់[[មែកដុះលឿន|徒長枝]]ដែលរឹងមាំនិងត្រង់ឡើងលើឲ្យនៅសល់ស្លឹកពីរទៅបី ដើម្បីជួយឲ្យមានមែកខ្លីដែលមានពន្លកផ្កា។ រដូវត្រជាក់ពេលវាសម្រាក សូមសម្អាត[[មែកមិនល្អ|忌み枝]] ដូចជាមែកដែលឆ្លងគ្នា ឬស្របគ្នា។ ចៀសវាង[[កាត់តុប|剪定]]ខ្លាំងនៅរដូវស្លឹកឈើជ្រុះ ព្រោះអាចកាត់បាត់ពន្លកផ្កាដែលបានបង្កើតរួច។"
+  }
+ },
+ {
+  "id": "q7",
+  "tree": "whitepine",
+  "topic": "winter",
+  "lang": null,
+  "q": {
+   "en": "Winters here drop to around -15°C. My white pine (five-needle) is in a ceramic pot on the patio. Should I bring it into the house for the winter?",
+   "ja": "冬は-15℃ほどまで下がる地域です。ゴヨウマツの盆栽を、陶器の鉢に入れてベランダに置いています。冬は家の中に入れたほうがいいですか。",
+   "es": "Aquí los inviernos bajan hasta unos -15 °C. Mi pino blanco japonés (de cinco agujas) está en una maceta de cerámica en el patio. ¿Debo meterlo en casa durante el invierno?",
+   "zh": "我这里冬天会降到零下15度左右。我的五针松放在露台的陶盆里。冬天要搬进屋里吗？",
+   "fr": "Ici, les hivers descendent jusqu'à environ -15 °C. Mon pin blanc du Japon (à cinq aiguilles) est dans un pot en céramique sur la terrasse. Dois-je le rentrer à la maison pour l'hiver ?",
+   "it": "Qui gli inverni scendono fino a circa -15 °C. Il mio pino bianco giapponese (a cinque aghi) è in un vaso di ceramica sul terrazzo. Devo portarlo in casa per l'inverno?",
+   "th": "ที่นี่ฤดูหนาวอุณหภูมิลงไปประมาณ -15 องศา ฉันมีต้นสนห้าใบ (white pine) ในกระถางเซรามิกที่ระเบียง ควรเอาเข้าบ้านช่วงหน้าหนาวไหม",
+   "km": "នៅទីនេះរដូវរងាធ្លាក់ដល់ប្រហែល -១៥ អង្សារ។ ស្រល់ស (ប្រាំស្លឹក) របស់ខ្ញុំនៅក្នុងថ្លាងសេរ៉ាមិចនៅលើរានហាល។ តើគួរយកចូលក្នុងផ្ទះក្នុងរដូវរងាទេ?"
+  },
+  "a": {
+   "en": "No, please don't bring it into a warm room. Pines need the cold to go dormant, and indoors the tree would be weakened and may wake up too early. The real risk is the roots in a small ceramic pot freezing hard, so set the pot on the ground in a sheltered spot, bank mulch or leaves around it, or move it to an unheated garage or shed with some light. For this [[winter care|冬越し]], check weekly and do a little [[watering|水やり]] only when the soil is dry. Avoid [[fertilizer|施肥]] in winter.",
+   "ja": "暖かい室内には入れないでください。松は寒さに当たって休む必要があり、室内では弱って、早く目覚めてしまうことがあります。本当に気をつけたいのは、小さな陶器の鉢の中で根が固く凍ることです。鉢を地面に置いて風を避け、周りをわらや落ち葉で囲むか、暖房のない車庫や物置の明るい場所に移してください。この[[冬越し|冬越し]]の間は週に一度は様子を見て、土が乾いたときだけ少なめに[[水やり|水やり]]をします。冬の[[施肥|施肥]]は避けましょう。",
+   "es": "No, por favor no lo metas en una habitación cálida. Los pinos necesitan el frío para entrar en reposo, y dentro de casa se debilitaría y podría despertar demasiado pronto. El riesgo real es que las raíces se congelen del todo en una maceta de cerámica pequeña, así que pon la maceta en el suelo en un lugar resguardado y rodéala de mantillo u hojas, o muévela a un garaje o cobertizo sin calefacción con algo de luz. Durante esta [[invernada|冬越し]], revisa cada semana y haz un poco de [[riego|水やり]] solo cuando el sustrato esté seco. Evita el [[abono|施肥]] en invierno.",
+   "zh": "请不要搬进温暖的房间。松树需要低温才能休眠，放在室内会变弱，还可能过早苏醒。真正的风险是小陶盆里的根被冻硬，所以可以把盆放在地面背风处，周围培上稻草或落叶，或者移到有些光线、没有暖气的车库或棚屋里。这段[[越冬|冬越し]]期间每周看一次，只有土干了才少量[[浇水|水やり]]。冬天不要[[施肥|施肥]]。",
+   "fr": "Non, ne le rentrez pas dans une pièce chauffée. Les pins ont besoin du froid pour entrer en dormance, et à l'intérieur l'arbre s'affaiblirait et pourrait se réveiller trop tôt. Le vrai risque est que les racines gèlent complètement dans un petit pot en céramique : posez le pot au sol dans un endroit abrité et entourez-le de paillis ou de feuilles, ou placez-le dans un garage ou un abri non chauffé avec un peu de lumière. Pendant cet [[hivernage|冬越し]], vérifiez chaque semaine et faites un petit [[arrosage|水やり]] seulement si le substrat est sec. Évitez l'[[engrais|施肥]] en hiver.",
+   "it": "No, per favore non portarlo in una stanza calda. I pini hanno bisogno del freddo per entrare in riposo e in casa l'albero si indebolirebbe e potrebbe risvegliarsi troppo presto. Il vero rischio è che le radici gelino completamente in un piccolo vaso di ceramica, quindi appoggia il vaso a terra in un punto riparato e circondalo di pacciame o foglie, oppure spostalo in un garage o capanno non riscaldato con un po' di luce. Durante questo [[svernamento|冬越し]], controlla ogni settimana e fai una piccola [[annaffiatura|水やり]] solo se il substrato è asciutto. Evita il [[concime|施肥]] in inverno.",
+   "th": "ไม่ควรนำเข้าห้องที่อุ่นนะคะ สนต้องการความหนาวเพื่อเข้าสู่การพักตัว ถ้าอยู่ในบ้านต้นจะอ่อนแอและอาจตื่นเร็วเกินไป ความเสี่ยงจริงคือรากแข็งตัวในกระถางเซรามิกใบเล็ก ให้วางกระถางบนพื้นในที่กำบังลม พอกฟางหรือใบไม้รอบกระถาง หรือย้ายไปไว้ในโรงรถหรือโรงเก็บที่ไม่มีเครื่องทำความร้อนแต่มีแสงบ้าง ตลอดช่วง[[การผ่านหน้าหนาว|冬越し]] ให้ตรวจสัปดาห์ละครั้ง และ[[รดน้ำ|水やり]]เล็กน้อยเฉพาะเมื่อดินแห้ง หลีกเลี่ยงการ[[ใส่ปุ๋ย|施肥]]ในฤดูหนาว",
+   "km": "សូមកុំយកចូលបន្ទប់ក្តៅ ស្រល់ត្រូវការត្រជាក់ដើម្បីចូលសម្រាក បើនៅក្នុងផ្ទះដើមនឹងចុះខ្សោយ ហើយអាចភ្ញាក់មុនពេល។ ហានិភ័យពិតគឺឫសកកជាប់ក្នុងថ្លាងសេរ៉ាមិចតូច ដូច្នេះសូមដាក់ថ្លាងលើដីនៅកន្លែងបាំងខ្យល់ ហើយគ្របជុំវិញដោយចំបើង ឬស្លឹកឈើ ឬយកទៅរោងឡានឬជង្រុកដែលគ្មានកំដៅតែមានពន្លឺបន្តិច។ ក្នុងអំឡុង[[រដូវរងា|冬越し]] សូមពិនិត្យរាល់សប្តាហ៍ ហើយ[[ស្រោចទឹក|水やり]]បន្តិចតែពេលដីស្ងួត។ ចៀសវាង[[ដាក់ជី|施肥]]ក្នុងរដូវរងា។"
+  }
+ },
+ {
+  "id": "q8",
+  "tree": "zelkova",
+  "topic": "pests",
+  "lang": null,
+  "q": {
+   "en": "In this hot dry spell my zelkova's leaves look dull and speckled pale, and there are tiny reddish dots and fine webbing under the leaves. Is this a pest?",
+   "ja": "暑くて乾燥した日が続いて、ケヤキの葉がつやをなくして白っぽくかすれ、葉の裏に赤っぽい小さな点と細かいクモの巣のようなものがあります。害虫でしょうか。",
+   "es": "Con este calor seco, las hojas de mi zelkova están opacas y moteadas de pálido, y debajo hay puntitos rojizos y telarañas finas. ¿Es una plaga?",
+   "zh": "这段时间又热又干，我的榉树叶子失去光泽、发白有斑点，叶背有红色小点和细细的蛛网。是虫害吗？",
+   "fr": "Avec cette chaleur sèche, les feuilles de mon zelkova sont ternes, piquetées de pâle, et il y a de minuscules points rougeâtres et de fines toiles sous les feuilles. Est-ce un parasite ?",
+   "it": "Con questo caldo secco le foglie del mio zelkova sono opache e punteggiate di chiaro, e sotto le foglie ci sono puntini rossastri e fini ragnatele. È un parassita?",
+   "th": "ช่วงอากาศร้อนและแห้งนี้ ใบต้นเซลโควา (zelkova) ของฉันหมองและเป็นจุดด่างซีด ใต้ใบมีจุดแดงเล็กๆ และใยบางๆ เป็นแมลงหรือเปล่า",
+   "km": "ពេលអាកាសធាតុក្តៅនិងស្ងួតនេះ ស្លឹកហ្សេលកូវ៉ារបស់ខ្ញុំអាប់ពន្លឺ មានពណ៌ស្លេកជាចំណុចៗ ហើយនៅក្រោមស្លឹកមានចំណុចក្រហមតូចៗ និងសរសៃពីងពាងស្តើងៗ។ តើជាសត្វល្អិតមែនទេ?"
+  },
+  "a": {
+   "en": "It sounds like spider mites, which thrive in hot, dry, still air. Spray the undersides of the leaves with a strong jet of water every few days, and use a miticide or insecticidal soap according to the label if they keep coming back. Avoid spraying in the midday sun. Keep the tree where air moves and don't let it dry out; steady [[watering|水やり]] helps it resist. Don't do a full [[leaf cutting|葉刈り]] now, because a stressed tree may not recover, and hold off on [[fertilizer|施肥]] until it's healthy again.",
+   "ja": "ハダニの可能性が高いです。ハダニは暑くて乾燥し、風が通らない環境で増えます。葉の裏に、数日おきに強めの水を吹きかけて洗い流してください。それでも再発するときは、ラベルの使い方に従ってダニ用の薬剤や殺虫石けんを使います。日中の強い日差しの下での散布は避けましょう。風通しのよい場所に置き、乾かしすぎないよう[[水やり|水やり]]を安定させると、木も抵抗しやすくなります。弱っている今は[[葉刈り|葉刈り]]をしないでください。回復するまで[[施肥|施肥]]も控えます。",
+   "es": "Suena a ácaros (araña roja), que prosperan con aire caliente, seco y quieto. Rocía el envés de las hojas con un chorro fuerte de agua cada pocos días y, si vuelven, usa un acaricida o jabón insecticida siguiendo la etiqueta. Evita pulverizar bajo el sol del mediodía. Mantén el árbol donde circule el aire y no dejes que se seque; un [[riego|水やり]] constante lo ayuda a resistir. No hagas ahora una [[defoliación|葉刈り]] completa, porque un árbol estresado puede no recuperarse, y no apliques [[abono|施肥]] hasta que esté sano otra vez.",
+   "zh": "很像红蜘蛛，它们喜欢又热又干又不通风的环境。每隔几天用较强的水流冲洗叶背；如果反复出现，按标签说明使用杀螨剂或杀虫皂。避免在正午强光下喷药。把树放在通风处，别让盆土干透，稳定的[[浇水|水やり]]有助于树自身抵抗。树弱的时候现在不要做[[摘叶|葉刈り]]，并且恢复健康之前也先不要[[施肥|施肥]]。",
+   "fr": "Cela ressemble à des acariens (araignées rouges), qui prospèrent par temps chaud, sec et sans vent. Aspergez le dessous des feuilles avec un jet d'eau assez fort tous les quelques jours et, s'ils reviennent, utilisez un acaricide ou du savon insecticide selon l'étiquette. Évitez de traiter en plein soleil de midi. Placez l'arbre dans un endroit aéré et ne le laissez pas sécher ; un [[arrosage|水やり]] régulier l'aide à résister. Ne faites pas maintenant un [[défeuillage|葉刈り]] complet, car un arbre stressé peut ne pas s'en remettre, et attendez qu'il soit en forme avant de lui donner de l'[[engrais|施肥]].",
+   "it": "Sembrano ragnetti rossi, che prosperano con aria calda, secca e ferma. Spruzza la pagina inferiore delle foglie con un getto d'acqua deciso ogni pochi giorni e, se ritornano, usa un acaricida o sapone insetticida seguendo l'etichetta. Evita di trattare sotto il sole di mezzogiorno. Tieni l'albero dove l'aria circola e non lasciarlo seccare; un'[[annaffiatura|水やり]] regolare lo aiuta a resistere. Non fare ora una [[defogliazione|葉刈り]] completa, perché un albero stressato può non riprendersi, e rimanda il [[concime|施肥]] finché non sta di nuovo bene.",
+   "th": "ฟังดูเหมือนไรแดง ซึ่งชอบอากาศร้อน แห้ง และนิ่ง ให้ฉีดน้ำแรงๆ ที่ใต้ใบทุกสองสามวัน และถ้ากลับมาอีกให้ใช้ยาฆ่าไรหรือสบู่ฆ่าแมลงตามฉลาก หลีกเลี่ยงการฉีดพ่นกลางแดดเที่ยง วางต้นไว้ที่ลมผ่านและอย่าปล่อยให้แห้ง การ[[รดน้ำ|水やり]]สม่ำเสมอช่วยให้ต้นทนขึ้น ตอนนี้อย่าทำ[[การเด็ดใบทั้งต้น|葉刈り]] เพราะต้นที่เครียดอาจฟื้นไม่ทัน และรอให้แข็งแรงก่อนจึงค่อย[[ใส่ปุ๋ย|施肥]]",
+   "km": "ទំនងជាមមាចក្រហម (spider mites) ដែលចូលចិត្តខ្យល់ក្តៅ ស្ងួត និងមិនមានខ្យល់បក់។ សូមបាញ់ទឹកខ្លាំងៗលើផ្នែកក្រោមស្លឹករាល់ពីរបីថ្ងៃ ហើយបើវាត្រឡប់មកវិញ សូមប្រើថ្នាំសម្លាប់មមាចឬសាប៊ូសម្លាប់សត្វល្អិតតាមស្លាក។ ចៀសវាងការបាញ់ក្រោមថ្ងៃត្រង់។ ដាក់ដើមនៅកន្លែងមានខ្យល់ចរ និងកុំឲ្យវាស្ងួត ការ[[ស្រោចទឹក|水やり]]ទៀងទាត់ជួយឲ្យវាធន់។ ពេលនេះកុំធ្វើ[[ការបេះស្លឹកទាំងអស់|葉刈り]] ព្រោះដើមដែលហត់នឿយអាចមិនជាសះស្បើយ ហើយរង់ចាំវាមាំមួនវិញសិនមុន[[ដាក់ជី|施肥]]។"
+  }
+ },
+ {
+  "id": "q9",
+  "tree": "needle",
+  "topic": "feeding",
+  "lang": null,
+  "q": {
+   "en": "I put solid organic fertilizer cakes on my needle juniper in spring, and now the tips of the foliage look yellowish. How often should I feed it, and did I do something wrong?",
+   "ja": "春に固形の有機肥料を杜松（ネズ）にのせたところ、葉先が黄色っぽくなってきました。どのくらいの頻度であげればよいのでしょう。私のやり方がまずかったでしょうか。",
+   "es": "En primavera puse abono orgánico sólido sobre mi junípero de agujas y ahora las puntas del follaje se ven amarillentas. ¿Cada cuánto debo abonarlo y hice algo mal?",
+   "zh": "春天我在杜松上放了固体有机肥，现在叶尖有点发黄。应该多久施一次肥？是不是我做错了？",
+   "fr": "Au printemps, j'ai posé des boulettes d'engrais organique solide sur mon genévrier à aiguilles et maintenant le bout du feuillage jaunit. À quelle fréquence dois-je fertiliser, et ai-je fait une erreur ?",
+   "it": "In primavera ho messo concime organico solido sul mio ginepro ad aghi e ora le punte del fogliame sono giallastre. Ogni quanto devo concimare e ho sbagliato qualcosa?",
+   "th": "ฉันวางปุ๋ยอินทรีย์แบบก้อนบนต้นจูนิเปอร์ใบเข็ม (ต้นเนซึ) ตอนฤดูใบไม้ผลิ ตอนนี้ปลายใบดูเหลือง ควรให้ปุ๋ยบ่อยแค่ไหน และฉันทำอะไรผิดหรือเปล่า",
+   "km": "ខ្ញុំដាក់ជីសរីរាង្គរឹងលើជូនីពើរស្លឹកម្ជុលក្នុងរដូវផ្ការីក ហើយឥឡូវចុងស្លឹកមើលទៅលឿងៗ។ តើគួរដាក់ជីញឹកញាប់ប៉ុណ្ណា ហើយតើខ្ញុំធ្វើខុសអ្វីទេ?"
+  },
+  "a": {
+   "en": "Needle juniper is a moderate feeder, so one round in spring isn't too much. A common routine is small solid cakes at the pot edge about every four to five weeks from spring to early summer and again in early autumn, skipping the peak heat of midsummer and the winter. Yellow tips can also come from soggy soil, so check the [[drainage|水はけ]] and whether the pot is root-bound, which would call for [[repotting|植え替え]] at the right season. Don't put cakes against the trunk, and avoid [[fertilizing|施肥]] a weak or newly repotted tree for three or four weeks.",
+   "ja": "ネズは肥料をほどほどに好む木なので、春に1回あげたこと自体は多すぎではありません。よくある目安は、春から初夏と初秋に、固形肥料を鉢のふち近くに小さく置き、4〜5週間おきにあげることです。真夏の暑い盛りと冬は休みます。葉先の黄変は、土がじめじめしている場合にも起こります。[[水はけ|水はけ]]を確かめ、根づまりしていれば適期に[[植え替え|植え替え]]をしましょう。肥料は幹の根元に当てないでください。弱っている木や植え替え直後の木には、3〜4週間は[[施肥|施肥]]を控えます。",
+   "es": "El junípero de agujas es de apetito moderado, así que una ronda en primavera no es excesiva. Una rutina habitual es poner pequeñas bolitas sólidas junto al borde de la maceta cada cuatro o cinco semanas desde la primavera hasta principios de verano y de nuevo a principios de otoño, saltándose el calor máximo del verano y el invierno. Las puntas amarillas también pueden deberse a un sustrato encharcado, así que revisa el [[drenaje|水はけ]] y si las raíces están apretadas, lo que pediría un [[trasplante|植え替え]] en la época adecuada. No pongas las bolitas pegadas al tronco y evita el [[abonado|施肥]] en un árbol débil o recién trasplantado durante tres o cuatro semanas.",
+   "zh": "杜松需肥适中，春天施一次并不算多。常见的做法是在春季到初夏、以及初秋，把小块固体肥放在盆边，每四到五周一次，盛夏最热的时候和冬天不施。叶尖发黄也可能是土太湿造成的，请检查[[排水|水はけ]]，也看看是否根系已盘满盆，如果是，要在合适的季节[[换盆|植え替え]]。肥块不要紧贴树干放，树势弱或刚换盆的树三四周内不要[[施肥|施肥]]。",
+   "fr": "Le genévrier à aiguilles a un appétit modéré, donc un apport au printemps n'est pas excessif. Un rythme courant : de petites boulettes solides près du bord du pot toutes les quatre à cinq semaines du printemps au début de l'été, puis au début de l'automne, en sautant la plus forte chaleur de l'été et l'hiver. Un jaunissement des pointes peut aussi venir d'un substrat détrempé ; vérifiez donc le [[drainage|水はけ]] et si les racines sont à l'étroit, ce qui demanderait un [[rempotage|植え替え]] à la bonne saison. Ne posez pas les boulettes contre le tronc et évitez l'[[engrais|施肥]] sur un arbre affaibli ou fraîchement rempoté pendant trois ou quatre semaines.",
+   "it": "Il ginepro ad aghi è un mangiatore moderato, quindi una concimazione in primavera non è eccessiva. Una routine comune è mettere piccole palline solide vicino al bordo del vaso ogni quattro o cinque settimane da primavera a inizio estate e di nuovo a inizio autunno, saltando il caldo massimo estivo e l'inverno. Le punte gialle possono dipendere anche da un substrato fradicio, quindi controlla il [[drenaggio|水はけ]] e se le radici sono troppo strette, cosa che richiederebbe un [[rinvaso|植え替え]] nella stagione giusta. Non mettere le palline contro il tronco ed evita la [[concimazione|施肥]] su un albero debole o appena rinvasato per tre o quattro settimane.",
+   "th": "จูนิเปอร์ใบเข็มกินปุ๋ยปานกลาง การให้ปุ๋ยหนึ่งรอบในฤดูใบไม้ผลิจึงไม่มากเกินไป แนวทางที่พบบ่อยคือวางปุ๋ยก้อนเล็กๆ ใกล้ขอบกระถางทุกสี่ถึงห้าสัปดาห์ตั้งแต่ฤดูใบไม้ผลิถึงต้นฤดูร้อน และอีกครั้งตอนต้นฤดูใบไม้ร่วง เว้นช่วงร้อนจัดกลางฤดูร้อนและฤดูหนาว ปลายใบเหลืองอาจเกิดจากดินแฉะ ให้ตรวจ[[การระบายน้ำ|水はけ]] และดูว่ารากแน่นกระถางหรือไม่ ถ้าแน่นต้อง[[เปลี่ยนกระถาง|植え替え]]ในฤดูที่เหมาะสม อย่าวางปุ๋ยชิดลำต้น และอย่า[[ใส่ปุ๋ย|施肥]]ต้นที่อ่อนแอหรือเพิ่งเปลี่ยนกระถางเป็นเวลาสามถึงสี่สัปดาห์",
+   "km": "ជូនីពើរស្លឹកម្ជុលស៊ីជីមធ្យម ដូច្នេះការដាក់ជីមួយលើកនៅនិទាឃរដូវមិនច្រើនពេកទេ។ របៀបធម្មតាគឺដាក់ជីរឹងដុំតូចៗក្បែរគែមថ្លាងរៀងរាល់បួនទៅប្រាំសប្តាហ៍ ពីនិទាឃរដូវដល់ដើមរដូវក្តៅ ហើយម្តងទៀតនៅដើមរដូវស្លឹកឈើជ្រុះ ដោយរំលងកំឡុងកម្តៅខ្លាំងនិងរដូវរងា។ ចុងលឿងក៏អាចមកពីដីសើមជោក ដូច្នេះសូមពិនិត្យ[[ការបង្ហូរទឹក|水はけ]] និងមើលថាតើឫសចង្អៀតថ្លាងឬអត់ បើចង្អៀតត្រូវ[[ប្តូរថ្លាង|植え替え]]ក្នុងរដូវសមស្រប។ កុំដាក់ជីដុំជិតដើម ហើយកុំ[[ដាក់ជី|施肥]]ដើមដែលខ្សោយ ឬទើបប្តូរថ្លាងរយៈពេលបីទៅបួនសប្តាហ៍។"
+  }
+ },
+ {
+  "id": "q10",
+  "tree": null,
+  "topic": "leaves",
+  "lang": null,
+  "q": {
+   "en": "My ficus bonsai kept in the house has been dropping yellow leaves since I moved it to a new spot in autumn. Is it dying?",
+   "ja": "室内で育てているガジュマル（ficus）の盆栽が、秋に置き場所を変えてから黄色い葉をぽろぽろ落とします。枯れてしまうのでしょうか。",
+   "es": "Mi bonsái de ficus, que tengo dentro de casa, deja caer hojas amarillas desde que lo cambié de sitio en otoño. ¿Se está muriendo?",
+   "zh": "我养在室内的榕树盆景，自从秋天换了位置后一直掉黄叶。它是不是要死了？",
+   "fr": "Mon bonsaï de ficus, que je garde dans la maison, perd des feuilles jaunes depuis que je l'ai déplacé à l'automne. Est-il en train de mourir ?",
+   "it": "Il mio bonsai di ficus, che tengo in casa, perde foglie gialle da quando l'ho spostato in autunno. Sta morendo?",
+   "th": "บอนไซไทรของฉันที่เลี้ยงในบ้านทิ้งใบเหลืองมาตั้งแต่ย้ายที่ในฤดูใบไม้ร่วง มันกำลังจะตายหรือเปล่า",
+   "km": "បុនសាយហ្វីគូស (ficus) របស់ខ្ញុំដែលចិញ្ចឹមក្នុងផ្ទះ ជ្រុះស្លឹកលឿងតាំងពីខ្ញុំប្តូរកន្លែងនៅរដូវស្លឹកឈើជ្រុះ។ តើវាកំពុងស្លាប់ឬ?"
+  },
+  "a": {
+   "en": "Probably not. Ficus often drops leaves when light, temperature or drafts change, which is more a reaction than a sign of death. Put it in the brightest spot you have, away from heaters, air conditioners and cold windows, ideally above about 15°C. Check the soil before each [[watering|水やり]] and give water only when the surface is dry, and never let the pot sit in a saucer of water, so the [[drainage|水はけ]] stays healthy. Scratch a twig lightly: green underneath means it is alive. Avoid hard [[pruning|剪定]] or [[repotting|植え替え]] until it's warm and growing again.",
+   "ja": "枯れると決まったわけではありません。ガジュマルは光や温度、風が変わると葉を落とすことがよくあり、枯れるサインというより反応に近いものです。家の中でいちばん明るい場所に置き、暖房やエアコンの風、冷たい窓際から離してください。目安は15℃以上です。[[水やり|水やり]]は毎回土を確かめて、表面が乾いたときだけにし、受け皿に水をためたままにしないでください。[[水はけ|水はけ]]を保つためです。枝を爪で軽く削って、下が緑なら生きています。暖かくなって再び伸び出すまでは、強い[[剪定|剪定]]や[[植え替え|植え替え]]は避けましょう。",
+   "es": "Probablemente no. El ficus suele soltar hojas cuando cambian la luz, la temperatura o las corrientes de aire, y es más una reacción que una señal de muerte. Ponlo en el lugar más luminoso que tengas, lejos de calefactores, aire acondicionado y ventanas frías, idealmente por encima de unos 15 °C. Comprueba la tierra antes de cada [[riego|水やり]] y riega solo cuando la superficie esté seca, sin dejar nunca la maceta en un plato con agua, para que el [[drenaje|水はけ]] siga sano. Raspa un poco una ramita: si debajo es verde, está vivo. Evita una [[poda|剪定]] fuerte o el [[trasplante|植え替え]] hasta que haga calor y vuelva a crecer.",
+   "zh": "不一定。榕树在光线、温度或风向改变时常会掉叶，更像一种应激反应，而不一定是要死了。请把它放在家里最明亮的地方，远离暖气、空调和冰冷的窗边，最好在15度以上。每次[[浇水|水やり]]前先检查土壤，只在表面干了才浇，也别让花盆一直泡在托盘的水里，这样[[排水|水はけ]]才不会变差。用指甲轻刮一下细枝，下面是绿色就说明还活着。等天气变暖、重新长新芽之前，避免重[[修剪|剪定]]和[[换盆|植え替え]]。",
+   "fr": "Probablement pas. Le ficus perd souvent des feuilles quand la lumière, la température ou les courants d'air changent ; c'est plus une réaction qu'un signe de mort. Placez-le à l'endroit le plus lumineux, loin des radiateurs, de la climatisation et des fenêtres froides, idéalement au-dessus d'environ 15 °C. Vérifiez la terre avant chaque [[arrosage|水やり]] et n'arrosez que lorsque la surface est sèche, sans jamais laisser le pot dans une soucoupe d'eau, pour que le [[drainage|水はけ]] reste sain. Grattez légèrement une brindille : si c'est vert dessous, il est vivant. Évitez une [[taille|剪定]] sévère ou un [[rempotage|植え替え]] tant qu'il ne fait pas chaud et que l'arbre ne repousse pas.",
+   "it": "Probabilmente no. Il ficus spesso perde foglie quando cambiano luce, temperatura o correnti d'aria, ed è più una reazione che un segno di morte. Mettilo nel punto più luminoso che hai, lontano da termosifoni, condizionatori e finestre fredde, idealmente sopra i 15 °C circa. Controlla il terriccio prima di ogni [[annaffiatura|水やり]] e annaffia solo quando la superficie è asciutta, senza lasciare mai il vaso in un sottovaso pieno d'acqua, così il [[drenaggio|水はけ]] resta sano. Gratta leggermente un rametto: se sotto è verde, è vivo. Evita una [[potatura|剪定]] drastica o il [[rinvaso|植え替え]] finché non fa caldo e non riparte la crescita.",
+   "th": "ส่วนใหญ่ไม่ใช่ค่ะ ต้นไทรมักทิ้งใบเมื่อแสง อุณหภูมิ หรือกระแสลมเปลี่ยน ซึ่งเป็นปฏิกิริยามากกว่าสัญญาณว่าตาย ให้วางไว้ในจุดที่สว่างที่สุด ห่างจากเครื่องทำความร้อน แอร์ และหน้าต่างที่เย็น ควรอยู่เหนือประมาณ 15 องศา ตรวจดินก่อน[[รดน้ำ|水やり]]ทุกครั้ง รดเมื่อผิวดินแห้งเท่านั้น และอย่าให้กระถางแช่น้ำในจานรอง เพื่อให้[[การระบายน้ำ|水はけ]]ดีอยู่เสมอ ลองขูดกิ่งเล็กๆ เบาๆ ถ้าข้างในเป็นสีเขียวแสดงว่ายังมีชีวิต หลีกเลี่ยงการ[[ตัดแต่ง|剪定]]หนักหรือ[[เปลี่ยนกระถาง|植え替え]]จนกว่าอากาศจะอุ่นและต้นกลับมาโตอีก",
+   "km": "ប្រហែលជាមិនមែនទេ ហ្វីគូសតែងជ្រុះស្លឹកពេលពន្លឺ សីតុណ្ហភាព ឬខ្យល់ប្រែប្រួល ដែលជាប្រតិកម្មជាងជាសញ្ញាស្លាប់។ សូមដាក់វានៅកន្លែងភ្លឺបំផុត ឆ្ងាយពីម៉ាស៊ីនកម្តៅ ម៉ាស៊ីនត្រជាក់ និងបង្អួចត្រជាក់ ល្អបំផុតលើសពី ១៥ អង្សារ។ ពិនិត្យដីមុន[[ស្រោចទឹក|水やり]]រាល់ដង ស្រោចតែពេលផ្ទៃដីស្ងួត ហើយកុំទុកថ្លាងត្រាំទឹកក្នុងចានរង ដើម្បីរក្សា[[ការបង្ហូរទឹក|水はけ]]ឲ្យល្អ។ សូមកោសមែកតូចមួយថ្នមៗ បើខាងក្រោមពណ៌ខៀវមានន័យថានៅរស់។ ចៀសវាង[[កាត់តុប|剪定]]ខ្លាំង ឬ[[ប្តូរថ្លាង|植え替え]] រហូតដល់អាកាសធាតុកក់ក្តៅហើយដើមលូតលាស់ឡើងវិញ។"
+  }
+ },
+ {
+  "id": "q11",
+  "tree": "pine",
+  "topic": "pruning",
+  "lang": null,
+  "q": {
+   "en": "My pine pushed out long new candles this spring and the needles at the tips are going to be very long. Do I need to cut them, and when?",
+   "ja": "松の新芽（みどり）が春に長く伸びてきました。先の葉もかなり長くなりそうです。切ったほうがいいですか。いつやればよいですか。",
+   "es": "Mi pino ha sacado largas velas nuevas esta primavera y las agujas de las puntas van a ser muy largas. ¿Hay que cortarlas y cuándo?",
+   "zh": "我的松树春天长出了长长的新芽，顶端的针叶看起来会很长。需要剪吗？什么时候剪？",
+   "fr": "Mon pin a poussé de longues bougies nouvelles ce printemps et les aiguilles du bout vont être très longues. Faut-il les couper, et quand ?",
+   "it": "Il mio pino ha spinto lunghe candele nuove questa primavera e gli aghi in punta saranno molto lunghi. Devo tagliarle e quando?",
+   "th": "สนของฉันแตกยอดอ่อนยาวๆ ในฤดูใบไม้ผลิ ใบเข็มที่ปลายจะยาวมาก ต้องตัดไหม แล้วตัดเมื่อไร",
+   "km": "ស្រល់របស់ខ្ញុំចេញពន្លកថ្មីវែងៗក្នុងនិទាឃរដូវនេះ ហើយស្លឹកម្ជុលនៅចុងនឹងវែងណាស់។ តើត្រូវកាត់ទេ ហើយពេលណា?"
+  },
+  "a": {
+   "en": "Yes, this is the usual job called candle pinching. Do it when the candles have extended but the needles haven't opened yet, around late spring depending on your climate. Use [[candle pinching|芽摘み]] on the strong ones, shortening them to about half to two-thirds, and leave weak candles alone or take only a little, so the tree stays balanced. Don't snip across the needles, which turns the tips brown. Pinch the strong top first and the weak lower parts later, and ease off the [[fertilizer|施肥]] to keep needles shorter; leave structural [[pruning|剪定]] of branches for autumn.",
+   "ja": "はい、よく行う作業で、いわゆる「みどり摘み」です。新芽が伸びて、まだ葉が開いていないころに行います。気候にもよりますが、晩春ごろです。強い芽は[[芽摘み|芽摘み]]で半分から3分の2ほどの長さにし、弱い芽はそのままか、ほんの少しだけ摘んで、木全体のバランスをとります。葉を横に切ると先が茶色くなるので避けましょう。強い上の部分から先に、弱い下の部分はあとにします。葉を短くしたいなら[[施肥|施肥]]を控えめにします。枝の形づくりの[[剪定|剪定]]は秋に回しましょう。",
+   "es": "Sí, es el trabajo habitual llamado pinzado de velas. Hazlo cuando las velas ya se han alargado pero las agujas todavía no se han abierto, hacia finales de primavera según tu clima. Con el [[pinzado de velas|芽摘み]], acorta las fuertes a la mitad o dos tercios de su longitud y deja las débiles sin tocar o quita solo un poco, para mantener el equilibrio del árbol. No cortes las agujas a través, porque las puntas se ponen marrones. Pellizca primero la parte superior fuerte y después las zonas bajas débiles, y modera el [[abonado|施肥]] para que las agujas salgan más cortas; deja la [[poda|剪定]] estructural de ramas para el otoño.",
+   "zh": "需要，这是常见的作业，叫摘芽。在新芽已经伸长、针叶还没展开时进行，大致在晚春，要看当地气候。对强壮的芽用[[摘芽|芽摘み]]，摘到原长的一半到三分之二，弱芽不动或只摘一点，保持树势均衡。不要从针叶中间横着剪，否则尖端会变褐。先处理强的上部，弱的下部晚些再处理，想让针叶短一些就少一点[[施肥|施肥]]；枝条结构的[[修剪|剪定]]留到秋天。",
+   "fr": "Oui, c'est le travail habituel appelé pincement des bougies. Faites-le lorsque les bougies se sont allongées mais que les aiguilles ne sont pas encore ouvertes, vers la fin du printemps selon votre climat. Avec le [[pincement des bougies|芽摘み]], raccourcissez les fortes à la moitié ou aux deux tiers, et laissez les faibles ou n'en retirez qu'un peu, afin de garder l'arbre équilibré. Ne coupez pas les aiguilles en travers, car les pointes brunissent. Pincez d'abord le haut vigoureux, puis les parties basses faibles plus tard, et modérez l'[[engrais|施肥]] pour des aiguilles plus courtes ; gardez la [[taille|剪定]] de structure des branches pour l'automne.",
+   "it": "Sì, è il lavoro abituale chiamato cimatura delle candele. Falla quando le candele si sono allungate ma gli aghi non si sono ancora aperti, verso fine primavera a seconda del clima. Con la [[cimatura delle candele|芽摘み]] accorcia quelle forti a metà o a due terzi e lascia quelle deboli intatte o togline solo un poco, per mantenere l'equilibrio dell'albero. Non tagliare gli aghi di traverso, perché le punte diventano marroni. Spunta prima la parte alta vigorosa e più tardi le zone basse deboli, e riduci il [[concime|施肥]] per avere aghi più corti; lascia la [[potatura|剪定]] strutturale dei rami all'autunno.",
+   "th": "ต้องค่ะ เป็นงานปกติที่เรียกว่าการเด็ดยอดอ่อนสน ทำตอนที่ยอดยืดยาวแล้วแต่ใบเข็มยังไม่คลี่ ราวปลายฤดูใบไม้ผลิ ขึ้นกับสภาพอากาศ ใช้[[การเด็ดยอด|芽摘み]]กับยอดที่แข็งแรง ให้เหลือครึ่งหนึ่งถึงสองในสามของความยาว ส่วนยอดอ่อนแอให้ปล่อยไว้หรือเด็ดเพียงเล็กน้อย เพื่อให้ต้นสมดุล อย่าตัดขวางใบเข็ม เพราะปลายจะเป็นสีน้ำตาล ให้ทำส่วนบนที่แข็งแรงก่อน ส่วนล่างที่อ่อนแอทำทีหลัง และลดการ[[ใส่ปุ๋ย|施肥]]ถ้าอยากให้ใบเข็มสั้นลง ส่วนการ[[ตัดแต่ง|剪定]]กิ่งเพื่อวางโครงสร้างให้รอถึงฤดูใบไม้ร่วง",
+   "km": "បាទ/ចាស នេះជាការងារធម្មតា ហៅថាការបេះពន្លកស្រល់។ ធ្វើនៅពេលពន្លកលូតវែងហើយ ប៉ុន្តែស្លឹកម្ជុលមិនទាន់បើក ប្រហែលចុងនិទាឃរដូវ អាស្រ័យលើអាកាសធាតុ។ ប្រើ[[ការបេះពន្លក|芽摘み]]លើពន្លកដែលរឹងមាំ ឲ្យនៅសល់ពាក់កណ្តាលទៅពីរភាគបីនៃប្រវែង ចំណែកពន្លកខ្សោយទុកឬបេះតិចតួច ដើម្បីរក្សាតុល្យភាពដើម។ កុំកាត់ស្លឹកម្ជុលដោយកាត់ឆ្លងកណ្តាល ព្រោះចុងនឹងប្រែជាត្នោត។ ធ្វើផ្នែកខាងលើដែលមាំមុន ហើយផ្នែកក្រោមដែលខ្សោយធ្វើពេលក្រោយ ហើយបន្ថយ[[ការដាក់ជី|施肥]]បើចង់ឲ្យស្លឹកម្ជុលខ្លី ចំណែក[[ការកាត់តុប|剪定]]រចនាសម្ព័ន្ធមែកទុកដល់រដូវស្លឹកឈើជ្រុះ។"
+  }
+ },
+ {
+  "id": "q12",
+  "tree": "maple",
+  "topic": "wire",
+  "lang": null,
+  "q": {
+   "en": "I'd like to wire my Japanese maple. It's late autumn and the leaves have dropped. Will the thin branches snap, and how tight should the wire be?",
+   "ja": "イロハモミジに針金をかけたいです。今は晩秋で、葉は落ちました。細い枝は折れませんか。針金はどのくらいの強さで巻けばいいですか。",
+   "es": "Quiero alambrar mi arce japonés. Estamos a finales de otoño y ya ha perdido las hojas. ¿Se romperán las ramas finas y cuánto debo apretar el alambre?",
+   "zh": "我想给我的鸡爪槭上铁丝。现在是深秋，叶子已经落光。细枝会不会折断？铁丝要缠多紧？",
+   "fr": "Je voudrais ligaturer mon érable du Japon. Nous sommes en fin d'automne et il a perdu ses feuilles. Les fines branches risquent-elles de casser, et à quel point serrer le fil ?",
+   "it": "Vorrei mettere il filo al mio acero giapponese. Siamo a fine autunno e ha perso le foglie. I rami sottili si spezzeranno e quanto devo stringere il filo?",
+   "th": "ฉันอยากพันลวดต้นเมเปิลญี่ปุ่น ตอนนี้ปลายฤดูใบไม้ร่วงและใบร่วงหมดแล้ว กิ่งเล็กจะหักไหม และควรพันลวดแน่นแค่ไหน",
+   "km": "ខ្ញុំចង់រុំលួសលើដើមម៉ាផលជប៉ុន។ ឥឡូវជាចុងរដូវស្លឹកឈើជ្រុះ ស្លឹកជ្រុះអស់ហើយ។ តើមែកស្តើងនឹងបាក់ទេ ហើយត្រូវរុំលួសតឹងប៉ុណ្ណា?"
+  },
+  "a": {
+   "en": "Maple bark is thin and scars easily, and the branches can be brittle, so go gently. Late autumn after leaf fall or early spring before the buds open are both common times. For the [[wiring|針金掛け]], use aluminum wire a size thinner than the branch seems to need, wrap it loosely at roughly 45 degrees without crossing wires, and bend in small steps; if you hear a crack, stop. Maples thicken fast, so plan [[wire removal|針金外し]] within about three to four months and check often in the growing season. For thick branches, consider guy wires instead of forcing a bend.",
+   "ja": "モミジは樹皮が薄くて傷つきやすく、枝も折れやすいので、やさしく行ってください。葉が落ちた晩秋か、芽が開く前の早春がよく選ばれます。[[針金掛け|針金掛け]]は、枝に必要そうな太さより一段細いアルミ線を使い、約45度の角度でゆるめに巻いて、針金同士を交差させません。曲げるときは少しずつで、ピシッと音がしたらそこでやめましょう。モミジは太りが早いので、[[針金外し|針金外し]]は3〜4か月以内を目安にし、成長期はこまめに見てください。太い枝は無理に曲げず、ひもなどで引く方法も考えましょう。",
+   "es": "La corteza del arce es fina y se marca con facilidad, y las ramas pueden ser quebradizas, así que ve con suavidad. Finales de otoño tras la caída de las hojas o principios de primavera antes de que abran las yemas son épocas habituales. Para el [[alambrado|針金掛け]] usa alambre de aluminio un grosor más fino de lo que parece necesario, enróllalo flojo a unos 45 grados sin cruzar los alambres y dobla en pasos pequeños; si oyes un crujido, para. Los arces engrosan rápido, así que planifica el [[retirado del alambre|針金外し]] en unos tres o cuatro meses y revisa a menudo en la época de crecimiento. En ramas gruesas, considera tirantes en lugar de forzar la curva.",
+   "zh": "槭树树皮薄，容易留下伤痕，枝条也可能脆，所以动作要轻。落叶后的深秋，或者芽张开之前的早春，都是常用的时机。[[缠铁丝|針金掛け]]时选比你觉得需要的再细一号的铝线，大约以45度松松地缠绕，铁丝之间不要交叉，弯折要一点点来，听到响声就停下。槭树长粗很快，所以[[拆铁丝|針金外し]]大约在三到四个月内进行，生长期要经常检查。粗枝不要硬掰，可以考虑用拉线来牵引。",
+   "fr": "L'écorce de l'érable est fine et marque facilement, et les branches peuvent être cassantes ; allez-y donc doucement. La fin d'automne après la chute des feuilles ou le début du printemps avant l'ouverture des bourgeons sont des périodes courantes. Pour le [[ligaturage|針金掛け]], prenez du fil d'aluminium d'un calibre plus fin que ce qui semble nécessaire, enroulez-le sans serrer à environ 45 degrés sans croiser les fils, et courbez par petites étapes ; si vous entendez un craquement, arrêtez. Les érables grossissent vite : prévoyez le [[retrait du fil|針金外し]] sous trois à quatre mois environ et vérifiez souvent en saison de croissance. Pour les grosses branches, pensez aux haubans plutôt que de forcer la courbe.",
+   "it": "La corteccia dell'acero è sottile e si segna facilmente, e i rami possono essere fragili, quindi vai piano. Fine autunno dopo la caduta delle foglie o inizio primavera prima che si aprano le gemme sono periodi comuni. Per l'[[applicazione del filo|針金掛け]] usa filo di alluminio un diametro più sottile di quanto sembri necessario, avvolgilo lasco a circa 45 gradi senza incrociare i fili e piega a piccoli passi; se senti uno scricchiolio, fermati. Gli aceri ingrossano in fretta, quindi pianifica la [[rimozione del filo|針金外し]] entro circa tre o quattro mesi e controlla spesso nel periodo di crescita. Per i rami grossi, valuta dei tiranti invece di forzare la curva.",
+   "th": "เปลือกเมเปิลบางและเป็นรอยง่าย กิ่งก็อาจเปราะ จึงควรทำเบาๆ ปลายฤดูใบไม้ร่วงหลังใบร่วง หรือต้นฤดูใบไม้ผลิก่อนตาจะแตก เป็นช่วงที่นิยมทำ ตอน[[พันลวด|針金掛け]] ให้ใช้ลวดอะลูมิเนียมเล็กกว่าที่คิดว่าต้องใช้หนึ่งขนาด พันหลวมๆ ทำมุมประมาณ 45 องศา อย่าให้ลวดไขว้กัน และดัดทีละน้อย ถ้าได้ยินเสียงแตกให้หยุด เมเปิลโตเร็ว จึงควร[[ถอดลวด|針金外し]]ภายในราวสามถึงสี่เดือน และตรวจบ่อยในฤดูที่โต สำหรับกิ่งใหญ่ ลองใช้การดึงด้วยสายแทนการฝืนดัด",
+   "km": "សំបកម៉ាផលស្តើង ងាយមានស្នាម ហើយមែកអាចផុយ ដូច្នេះត្រូវធ្វើថ្នមៗ។ ចុងរដូវស្លឹកឈើជ្រុះក្រោយស្លឹកជ្រុះ ឬដើមនិទាឃរដូវមុនពន្លកបើក ជាពេលដែលគេនិយមធ្វើ។ ពេល[[រុំលួស|針金掛け]] សូមប្រើលួសអាលុយមីញ៉ូមតូចជាងអ្វីដែលគិតថាត្រូវការមួយទំហំ រុំឲ្យរលុងនៅមុំប្រហែល ៤៥ អង្សារ កុំឲ្យលួសឆ្លងគ្នា ហើយបត់ជាជំហានតូចៗ បើឮសូរបែក សូមឈប់។ ម៉ាផលធំលឿន ដូច្នេះត្រូវ[[ដោះលួស|針金外し]]ក្នុងរយៈពេលប្រហែលបីទៅបួនខែ ហើយពិនិត្យញឹកញាប់ក្នុងរដូវលូតលាស់។ សម្រាប់មែកធំ សូមពិចារណាប្រើខ្សែទាញជំនួសការបង្ខំបត់។"
+  }
+ }
+]

@@ -8,20 +8,35 @@
   const screen = $("#screen");
   const LANGS = ["en", "es", "zh", "fr", "it", "th", "km", "ja"];
   const store = { get(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
-  // 言葉は1つ。右上で選んだ言葉で、相談する人の画面も職人の画面も全部出す（11/08）
+  // 言葉は両側で別々に選ぶ（11/08 午後）。相談する人＝GL、答える人（職人・お弟子さん）＝AL
   let GL = store.get("bg-l", ""); if (!LANGS.includes(GL)) { const n = String(navigator.language || "en").slice(0, 2); GL = LANGS.includes(n) ? n : "en"; }
-  let AL = GL;
-  const nm = (tc) => (tc ? (GL === "ja" || (GL === "zh" && !/[\u3040-\u30ff]/.test(tc.name_ja || "")) ? tc.name_ja : tc.name_en) || tc.name_en || "" : "");
-  let ME = null, MODE = "sample", TEACHERS = [], GLOSSARY = [];
-  let toTeacher = "s1", curConsult = null, curTree = null, consults = [];
+  let AL = store.get("bg-a", ""); if (!LANGS.includes(AL)) AL = GL;
+  const nm = (tc, L = GL) => (tc ? (L === "ja" || (L === "zh" && !/[\u3040-\u30ff]/.test(tc.name_ja || "")) ? tc.name_ja : tc.name_en) || tc.name_en || "" : "");
+  let ME = null, MODE = "sample", TEACHERS = [], GLOSSARY = [], GARDENS = [];
+  let WORLD = { regions: [], countries: {}, gardens: [], people: [], topics: {}, species: {}, glossary: [] };
+  let toGarden = store.get("bg-g", "g1"), curConsult = null, curTree = null, consults = [];
+  const gardenOf = (id) => GARDENS.find((g) => g.id === id) || null;
+  const gName = (g, L) => (g ? (g.name && g.name[L]) || g.name_ja || "" : "");
+  const regName = (id, L) => { const r = WORLD.regions.find((x) => x.id === id); return r ? r.name[L] || r.name.en : ""; };
+  const ctry = (c, L) => (WORLD.countries[c] && WORLD.countries[c][L]) || c || "";
+  const peopleOf = (g) => TEACHERS.filter((x) => x.garden === (g && g.id));
+  const gardenLang = (g) => { const ps = peopleOf(g); return ((ps.find((x) => x.role === "master") || ps[0]) || {}).lang || "ja"; };
+  const myPerson = () => TEACHERS.find((x) => ME && x.id === ME.teacher_id) || null;
+  const myGarden = () => gardenOf(myPerson() && myPerson().garden);
+  const initial = (tc, L) => [...(nm(tc, L) || "?")][0];
+  // 役割の言い方（園主／◯◯から来たお弟子さん）
+  const roleLbl = (p, L, side) => p.role === "apprentice" ? D(L, side === "a" ? "a.x.appr" : "g.gp.appr").replace("{C}", ctry(p.from, L)) : D(L, side === "a" ? "a.x.master" : "g.gp.master");
+  // 相談する人の画面の {A}＝相手（答える人）の言葉
+  const otherL = () => (cur === "answer" && curConsult && curConsult.answer && curConsult.answer.answer_lang) || gardenLang(gardenOf(toGarden));
 
   /* ── 言葉 ── */
   const D = (L, k) => (I18N[L] && I18N[L][k] != null) ? I18N[L][k] : (I18N[k.startsWith("g.") || k.startsWith("c.") ? "en" : "ja"][k] ?? I18N.en[k] ?? "");
   const sideLang = () => (ME && ME.role === "shokunin") || $("#s-" + cur)?.classList.contains("k") ? AL : GL;
-  function langOf(k) { return k.startsWith("g.") ? GL : k.startsWith("a.") ? AL : sideLang(); }
-  function t(k, vars) {
-    const L = langOf(k), n = I18N[L].names;
-    let s = D(L, k).replace(/\{A\}/g, k.startsWith("a.") ? n[AL] : n.ja).replace(/\{G\}/g, n[GL]);
+  // はじまりの画面は、相談する人が選んだ言葉で出す（「職人として使う」も）
+  function langOf(k) { return k.startsWith("g.") || k === "a.welcome.master" ? GL : k.startsWith("a.") ? AL : sideLang(); }
+  function t(k, vars, Lover) {
+    const L = Lover || langOf(k), n = I18N[L].names;
+    let s = D(L, k).replace(/\{A\}/g, k.startsWith("a.") ? n[AL] : n[otherL()] || n.ja).replace(/\{G\}/g, n[GL]);
     if (vars) for (const [a, b] of Object.entries(vars)) s = s.split(`{${a}}`).join(b);
     return s;
   }
@@ -118,7 +133,7 @@
   // 役割が違う画面へは、まず入口へ
   function go(id) {
     const needA = $("#s-" + id)?.classList.contains("k") && !["mstart"].includes(id);
-    const needG = ["home", "ask", "qa", "learn", "answer"].includes(id);
+    const needG = ["home", "ask", "qa", "learn", "answer", "gpick", "art"].includes(id);
     if (id === "gstart" && ME && ME.role === "aikouka") return show("home");
     if (needA && (!ME || ME.role !== "shokunin")) return show("mstart");
     if (needG && (!ME || ME.role !== "aikouka")) return show("gstart");
@@ -130,9 +145,12 @@
     async gstart() { $("#gName").value = $("#gName").value || ""; showErr("#gErr", ""); },
     async mstart() {
       showErr("#mErr", "");
-      try { const d = await api("GET", "/me"); TEACHERS = d.teachers || []; } catch {}
-      $("#whoList").innerHTML = TEACHERS.map((tc) => `<button data-tid="${esc(tc.id)}"><span class="seal">${esc(nm(tc).charAt(0))}</span><div><b>${esc(nm(tc))}</b><span>${esc(t(tc.id.startsWith("t-") ? "a.x.newOne" : "a.x.demo"))}</span></div><span style="margin-left:auto;color:var(--ink-2)">›</span></button>`).join("");
+      await refreshTeachers();
+      // 園の名前の下に、その園の人だけを並べる（新しく登録した園が先）
+      const order = [...GARDENS.filter((g) => g.registered), ...GARDENS.filter((g) => !g.registered)];
+      $("#whoList").innerHTML = order.map((g) => { const ps = peopleOf(g); if (!ps.length) return ""; return `<div class="who-garden"><h4>${esc(gName(g, AL))}<span>${esc(regName(g.region, AL))}</span></h4><div class="who">${ps.map((tc) => `<button data-tid="${esc(tc.id)}"><span class="seal">${esc(initial(tc, AL))}</span><div><b>${esc(t("a.x.member", { E: gName(g, AL), P: nm(tc, AL) }))}</b><small>${esc(roleLbl(tc, AL, "a"))} · ${esc(t("a.x.answersIn", { L: I18N[AL].names[tc.lang] || tc.lang }))}${g.registered ? " · " + esc(t("a.x.newOne")) : ""}</small></div><span style="margin-left:auto;color:var(--ink-2)">›</span></button>`).join("")}</div></div>`; }).join("");
       $("#mSp").innerHTML = SPECIES.map(([k]) => `<label><input type="checkbox" value="${k}" ${k === "pine" ? "checked" : ""}><span>${esc(spName(k, AL))}</span></label>`).join("");
+      $("#mRegion").innerHTML = WORLD.regions.map((r) => `<option value="${esc(r.id)}">${esc(r.name[AL] || r.name.en)}</option>`).join("");
     },
     async home() {
       $("#gHello").textContent = `${t("g.home.hi")}${ME ? ", " + ME.name : ""}`;
@@ -151,18 +169,25 @@
         }
       } catch (e) { if (e.status === 401) { ME = null; show("welcome"); } }
     },
-    ask() {
+    async ask() {
       showErr("#askErr", "");
       if (!$("#askText").value.trim()) $("#askText").value = t("g.q");
       $("#askText").placeholder = t("g.ask.ph");
-      $("#toPick").innerHTML = TEACHERS.slice(0, 6).map((tc) => `<button class="${tc.id === toTeacher ? "on" : ""}" data-to="${esc(tc.id)}"><span class="seal">${esc(nm(tc).charAt(0))}</span>${esc(nm(tc))}</button>`).join("");
+      if (!GARDENS.length) await refreshTeachers();
+      paintGardenCard();
     },
+    gpick() { renderGpick(); },
     answer() { renderAnswer(); },
     qa() { searchQa(); },
     learn() { renderLearn(); },
+    art() { renderArticle($("#artBody"), curArt, GL, "g"); },
+    mart() { renderArticle($("#martBody"), curArt, AL, "a"); },
     async mhome() {
       if (!TEACHERS.length) await refreshTeachers();
-      $("#mHello").textContent = ME ? (nm(TEACHERS.find((x) => x.id === ME.teacher_id)) || ME.name) : "";
+      // 「おはようございます　◯◯ 様」。下に、役割と園
+      const mp = myPerson();
+      $("#mHello").textContent = t("a.mh.name", { N: mp ? nm(mp, AL) : ME ? ME.name : "" });
+      $("#mWho").textContent = mp ? `${roleLbl(mp, AL, "a")} · ${gName(myGarden(), AL)}` : "";
       try {
         const [c, tr] = await Promise.all([api("GET", "/consultations"), api("GET", "/bonsaigo/trees")]);
         consults = c.consultations || [];
@@ -182,9 +207,7 @@
     },
     detail() { renderDetail(); },
     reg() { renderReg(); },
-    mlearn() {
-      $("#mlList").innerHTML = Object.entries(KEY2HEAD).map(([k, kj]) => `<div class="ml"><div class="kj">${kj}<small>${esc(ROMA[k])}</small></div><div class="tr"><span>${esc(D(GL, `g.gloss.${k}.m`))}</span></div></div>`).join("");
-    },
+    mlearn() { renderMl(); },
   };
   const ROMA = { hazushi: "harigane-hazushi", kake: "harigane-kake", mekiri: "mekiri", metsumi: "metsumi", jin: "jin", nebari: "nebari", tachiagari: "tachiagari", uekae: "uekae" };
 
@@ -196,7 +219,10 @@
   });
   $("#whoList").addEventListener("click", async (e) => {
     const b = e.target.closest("[data-tid]"); if (!b) return;
-    try { const d = await api("POST", "/login", { role: "shokunin", teacher_id: b.dataset.tid }); ME = d.user; show("mhome"); }
+    // 答える言葉は、その人がふだん答える言葉から始める（ホームと答える画面で変えられる）
+    const p = TEACHERS.find((x) => x.id === b.dataset.tid);
+    if (p && LANGS.includes(p.lang)) { AL = p.lang; store.set("bg-a", AL); }
+    try { const d = await api("POST", "/login", { role: "shokunin", teacher_id: b.dataset.tid, lang: AL }); ME = d.user; show("mhome"); }
     catch (er) { showErr("#mErr", errText(er, "a")); }
   });
   $("#b-mreg").addEventListener("click", async () => {
@@ -204,32 +230,64 @@
     const sp = $$("#mSp input:checked").map((i) => spName(i.value, "ja"));
     if (!name) return showErr("#mErr", t("a.x.errName"));
     if (!sp.length) return showErr("#mErr", t("a.x.errSp"));
-    try { const d = await api("POST", "/login", { role: "shokunin", name, place: $("#mPlace").value.trim(), specialties: sp, lang: AL }); ME = d.user; await refreshTeachers(); show("mhome"); }
+    try { const d = await api("POST", "/login", { role: "shokunin", name, place: $("#mPlace").value.trim(), region: $("#mRegion").value, species: $$("#mSp input:checked").map((i) => i.value), specialties: sp, lang: AL }); ME = d.user; await refreshTeachers(); show("mhome"); }
     catch (e) { showErr("#mErr", errText(e, "a")); }
   });
-  async function refreshTeachers() { try { const d = await api("GET", "/me"); TEACHERS = d.teachers || []; if (!TEACHERS.some((x) => x.id === toTeacher) && TEACHERS[0]) toTeacher = TEACHERS[0].id; } catch {} }
+  async function refreshTeachers() { try { const d = await api("GET", "/me"); TEACHERS = d.teachers || []; GARDENS = d.gardens || []; if (!gardenOf(toGarden) && GARDENS[0]) toGarden = GARDENS[0].id; paintGtag(); } catch {} }
+  // 職人の画面の左上：自分の園の名前（すべて架空の見本）
+  function paintGtag() { const g = myGarden(); $$("[data-garden]").forEach((el) => { el.innerHTML = g ? `<span>${esc(gName(g, AL))}</span>` : ""; }); }
 
   /* ── 相談する ── */
   let askPhoto = { src: "img/ask.jpg" };
   $("#askFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (!f) return; const u = await fileUrl(f); setPhoto("#askPhoto", u); $("#askPhoto").classList.add("own"); askPhoto = { src: u }; });
   $("#askSample").addEventListener("click", () => { setPhoto("#askPhoto", "img/ask.jpg"); $("#askPhoto").classList.remove("own"); askPhoto = { src: "img/ask.jpg" }; });
   function setPhoto(box, src) { const b = $(box); b.classList.add("swap"); setTimeout(() => { $("img", b).src = src; b.classList.remove("swap"); }, 220); }
-  $("#toPick").addEventListener("click", (e) => { const b = e.target.closest("[data-to]"); if (!b) return; toTeacher = b.dataset.to; $$("#toPick button").forEach((x) => x.classList.toggle("on", x === b)); });
+  // 園の札（人と、答える言葉つき）
+  function peopleHtml(g, L, side) { return `<div class="ppl">${peopleOf(g).map((p) => `<div><span class="seal">${esc(initial(p, L))}</span><span>${esc(nm(p, L))} · ${esc(roleLbl(p, L, side))}</span><em>${esc(I18N[L].names[p.lang] || p.lang)}</em></div>`).join("")}</div>`; }
+  function paintGardenCard() {
+    const g = gardenOf(toGarden) || GARDENS[0]; if (!g) return; toGarden = g.id;
+    const L = gardenLang(g);
+    $("#gCard").innerHTML = `<span class="chg">${esc(t("g.gp.change"))} ›</span><div class="nm"><b>${esc(gName(g, GL))}</b><span>${esc(regName(g.region, GL))}</span></div>${peopleHtml(g, GL, "g")}`;
+    $("#gLangNote").textContent = L === GL ? t("g.gp.same") : t("g.gp.diff", { L: I18N[GL].names[L] || L });
+    applyLang();
+  }
+  // 園を選ぶ：地域 → 木か困りごと → 答えられる園（縦に並べる）
+  let gpRegion = "all", gpTree = "", gpTopic = "";
+  function renderGpick() {
+    const chip = (attr, v, on, label) => `<button class="chip ${on ? "on" : ""}" ${attr}="${esc(v)}">${esc(label)}</button>`;
+    $("#gpRegion").innerHTML = chip("data-rg", "all", gpRegion === "all", t("g.gp.all")) + WORLD.regions.map((r) => chip("data-rg", r.id, gpRegion === r.id, r.name[GL] || r.name.en)).join("");
+    $("#gpTree").innerHTML = chip("data-tr", "", !gpTree, t("g.gp.any")) + Object.entries(WORLD.species).map(([k, n]) => chip("data-tr", k, gpTree === k, n[GL] || n.en)).join("");
+    $("#gpTopic").innerHTML = Object.entries(WORLD.topics).map(([k, n]) => chip("data-tp", k, gpTopic === k, n[GL] || n.en)).join("");
+    const list = GARDENS.filter((g) => (gpRegion === "all" || g.region === gpRegion) && (!gpTree || (g.species || []).includes(gpTree)) && (!gpTopic || (g.topics || []).includes(gpTopic)) && peopleOf(g).length);
+    $("#gpN").textContent = list.length === 1 ? t("g.gp.n1") : t("g.gp.n", { N: list.length });
+    $("#gpList").innerHTML = list.length ? list.map((g) => `<div class="gcard"><div class="nm"><b>${esc(gName(g, GL))}</b><span>${esc(regName(g.region, GL))}</span></div>${g.about && g.about[GL] ? `<p>${esc(g.about[GL])}</p>` : ""}<div class="sp">${(g.species || []).map((k) => `<i>${esc((WORLD.species[k] || {})[GL] || k)}</i>`).join("")}${(g.topics || []).map((k) => `<i>${esc((WORLD.topics[k] || {})[GL] || k)}</i>`).join("")}</div>${peopleHtml(g, GL, "g")}<button class="cta go" data-gid="${esc(g.id)}">${esc(t("g.gp.pick"))}</button></div>`).join("") : `<div class="empty" style="margin-top:12px">${esc(t("g.gp.none"))}</div>`;
+  }
+  $("#s-gpick").addEventListener("click", (e) => {
+    const rg = e.target.closest("[data-rg]"), tr = e.target.closest("[data-tr]"), tp = e.target.closest("[data-tp]"), gd = e.target.closest("[data-gid]");
+    if (rg) { gpRegion = rg.dataset.rg; renderGpick(); }
+    else if (tr) { gpTree = tr.dataset.tr; gpTopic = ""; renderGpick(); }
+    else if (tp) { gpTopic = gpTopic === tp.dataset.tp ? "" : tp.dataset.tp; gpTree = ""; renderGpick(); }
+    else if (gd) { toGarden = gd.dataset.gid; store.set("bg-g", toGarden); back(); }
+  });
   $("#b-send").addEventListener("click", async () => {
     const q = $("#askText").value.trim(); if (!q) return showErr("#askErr", t("g.x.errEmpty"));
     showErr("#askErr", ""); busy("#askBusy", true);
     try {
       const image = await toB64(askPhoto.src);
-      const c = await api("POST", "/consultations", { question: q, lang: GL, teacher_id: toTeacher, images: [image] });
+      const isSample = q === D(GL, "g.q");
+      const c = await api("POST", "/consultations", { question: q, lang: GL, garden_id: toGarden, images: [image], is_sample: isSample });
       busy("#askBusy", false); $("#askText").value = "";
       $("#j1t").textContent = q;
-      // 職人に届く中身。見本モードは、選んだ言葉で「職人にはこう届く」を見せる（画面に別の言葉を混ぜない）
-      $("#j2l").textContent = D(GL, "a.sumLbl").replace(/\{A\}/g, I18N[GL].names.ja);
-      if (MODE === "sample") $("#j2t").innerHTML = D(GL, "a.sum");
-      else $("#j2t").innerHTML = esc(c.for_craftsperson?.summary_ja || "") + (c.for_craftsperson?.points_ja?.length ? `<br><br>${c.for_craftsperson.points_ja.map((p) => `<mark>${esc(p)}</mark>`).join("<br>")}` : "");
-      const tc = TEACHERS.find((x) => x.id === toTeacher);
+      // 園に届く中身。言葉が同じならそのまま。見本モードは、見本の質問だけ「こう届く」を見せる
+      const g = gardenOf(toGarden), L = gardenLang(g), fc = c.for_craftsperson || {};
+      $("#j2l").textContent = D(GL, "a.sumLbl").replace(/\{A\}/g, I18N[GL].names[L] || L);
+      const fk = fc.same_lang ? "g.sent.flowSame" : fc.untranslated ? "g.sent.flowRaw" : "g.sent.flow", fe = $("#jf [data-i18n]");
+      fe.dataset.i18n = fk; fe.innerHTML = terms(t(fk), "g", true);
+      if (fc.same_lang || fc.untranslated) $("#j2t").textContent = q;
+      else if (MODE === "sample") $("#j2t").innerHTML = D(GL, "a.sum");
+      else $("#j2t").innerHTML = esc(fc.summary_ja || "") + (fc.points_ja?.length ? `<br><br>${fc.points_ja.map((p) => `<mark>${esc(p)}</mark>`).join("<br>")}` : "");
       show("sent");
-      $("#jd b").textContent = "✓ " + nm(tc);
+      $("#jd b").textContent = "✓ " + gName(g, GL);
     } catch (e) { busy("#askBusy", false); showErr("#askErr", errText(e, "g")); }
   });
   const enterSent = () => {
@@ -248,18 +306,20 @@
     const low = review.needs_person || review.ok === false;
     const head = side === "a" ? t(low ? "a.x.confLow" : "a.x.confOk") : D(L, "g.x.checkedS");
     const body = side === "a" ? "" : D(L, "g.x.checked");
-    return `<div class="verified ${low ? "low" : ""}"><span class="ok"><svg><use href="#${low ? "i-hold" : "i-check"}"/></svg></span><div><b>${esc(head)}</b>${body ? `<span>${esc(body)}</span>` : ""}${review.sample ? `<div class="sample-note"><i>SAMPLE</i>${esc(D(L, side === "a" ? "c.mode.sample" : "g.x.sample"))}</div>` : ""}</div>${conf != null ? `<span class="score">${conf.toFixed(2)}</span>` : ""}</div>`;
+    return `<div class="verified ${low ? "low" : ""}"><span class="ok"><svg><use href="#${low ? "i-hold" : "i-check"}"/></svg></span><div><b>${esc(head)}</b>${body ? `<span>${esc(body)}</span>` : ""}${review.sample && side !== "a" ? `<div class="sample-note"><i>SAMPLE</i>${esc(D(L, side === "a" ? "c.mode.sample" : "g.x.sample"))}</div>` : ""}</div>${conf != null ? `<span class="score">${conf.toFixed(2)}</span>` : ""}</div>`;
   }
   function renderAnswer() {
     const c = curConsult; if (!c) return;
-    const tc = TEACHERS.find((x) => x.id === c.teacher_id);
-    $("#ansWho").textContent = nm(tc) || t("g.banner.b");
-    $("#ansBy").textContent = t("g.ans.by");
+    // 答えた人と園の名前を両方出す（お弟子さんが園の代わりに答えることもある）
+    const g = gardenOf(c.garden_id), by = c.answer && c.answer.by;
+    $("#ansWho").textContent = gName(g, GL) || t("g.banner.b");
+    $("#ansBy").textContent = by ? t("g.ans.by2", { P: `${nm(by, GL)} · ${roleLbl(by, GL, "g")}`, L: I18N[GL].names[c.answer.answer_lang] || c.answer.answer_lang || "" }) : "";
+    $("#s-answer .tnote").hidden = !c.answer || Boolean(c.answer.same_lang || c.answer.untranslated);
     $("#ansImg").src = c.image ? `data:${c.image.media_type};base64,${c.image.data}` : "img/ask.jpg";
     $("#ansQ").textContent = c.question;
     if (!c.answer) { $("#ansBody").innerHTML = `<div class="empty">${esc(t("g.x.wait"))}</div>`; $("#ansCheck").innerHTML = ""; $("#jpOrig").textContent = ""; return; }
     $("#ansBody").innerHTML = `<h2>${terms(c.answer.headline, "g")}</h2>${c.answer.paragraphs.map((p) => `<p>${terms(p, "g")}</p>`).join("")}`;
-    $("#ansCheck").innerHTML = verifiedBox(c.answer.review, "g");
+    $("#ansCheck").innerHTML = c.answer.same_lang || c.answer.untranslated ? `<p class="lang-note">${esc(t(c.answer.same_lang ? "g.x.sameAns" : "g.x.untr"))}</p>` : verifiedBox(c.answer.review, "g");
     $("#jpOrig").textContent = c.answer.back_translation_ja || "";
     $("#jpOrig").lang = "ja";
   }
@@ -276,33 +336,107 @@
         // 言葉をまたいで探した言い方を見せる（どの言葉で打っても同じ答えに当たる、の証拠）
         $("#qaAlso").innerHTML = q && d.also && d.also.length ? `<svg><use href="#i-globe"/></svg><span>${esc(t("g.x.alsoSearched"))}</span>` : "";
       }
-      $(box).innerHTML = items.length ? items.map((it) => `<div class="qa"><div class="top"><span class="tree">${it.tree ? `<img src="img/t-${TREE_IMG[it.tree] || it.tree}.webp" alt="">` : `<img src="img/ask.jpg" alt="" style="object-fit:cover;height:100%">`}</span><div><b>${esc(it.q)}</b><div class="meta">${it.tree ? `<span>${esc(t("g.tree." + it.tree))}</span>` : ""}${it.asked_in && it.asked_in !== GL ? `<span>${esc(t("g.x.askedIn", { L: I18N[GL].names[it.asked_in] || it.asked_in }))}</span>` : ""}${it.other_lang && q ? `<span class="other"><svg><use href="#i-globe"/></svg>${esc(t("g.x.qaOther"))}</span>` : ""}</div></div></div><div class="a">${terms(it.a, "g")}</div></div>`).join("") : `<div class="empty" style="margin-top:12px">${esc(t("g.x.qaNone"))}</div>`;
+      $(box).innerHTML = items.length ? items.map((it) => `<div class="qa"><div class="top"><span class="tree">${it.tree ? `<img src="img/t-${TREE_IMG[it.tree] || it.tree}.webp" alt="">` : `<img src="img/ask.jpg" alt="" style="object-fit:cover;height:100%">`}</span><div><b>${esc(it.q)}</b><div class="meta">${qaBy(it, GL) ? `<span>${esc(qaBy(it, GL))}</span>` : ""}${it.tree ? `<span>${esc(t("g.tree." + it.tree))}</span>` : ""}${it.asked_in && it.asked_in !== GL ? `<span>${esc(t("g.x.askedIn", { L: I18N[GL].names[it.asked_in] || it.asked_in }))}</span>` : ""}${it.other_lang && q ? `<span class="other"><svg><use href="#i-globe"/></svg>${esc(t("g.x.qaOther"))}</span>` : ""}</div></div></div><div class="a">${terms(it.a, "g")}</div></div>`).join("") : `<div class="empty" style="margin-top:12px">${esc(t("g.x.qaNone"))}</div>`;
     } catch {}
   }
+  const qaBy = (it, L) => { const p = TEACHERS.find((x) => x.id === it.person_id), g = gardenOf(it.garden_id); return p && g ? D(L, "g.qa.by").replace("{P}", nm(p, L)).replace("{G}", gName(g, L)) : g ? gName(g, L) : ""; };
   function searchQa() {
     const q = $("#qaQ").value.trim(); $("#qaClear").hidden = !q;
-    $("#qaChips").innerHTML = ["juniper", "pine", "maple", "azalea", "ume"].map((k) => `<button class="chip" data-f="${k}">${esc(t("g.tree." + k).replace(/\s*\(.*\)$/, ""))}</button>`).join("");
+    const nameOf = (o) => (o ? o[GL] || o.en : "");
+    $("#qaChips").innerHTML = ["juniper", "pine", "maple", "azalea", "ume"].map((k) => `<button class="chip" data-f="${k}">${esc(nameOf(WORLD.species[k]) || t("g.tree." + k))}</button>`).join("") + ["wire", "repot", "water", "winter", "pests", "indoor"].map((k) => `<button class="chip" data-f="${k}">${esc(nameOf(WORLD.topics[k]))}</button>`).join("");
     loadQa(q, "#qaList");
   }
   $("#qaQ").addEventListener("input", () => { clearTimeout(qaTimer); qaTimer = setTimeout(searchQa, 220); });
   $("#qaClear").addEventListener("click", (e) => { e.preventDefault(); $("#qaQ").value = ""; searchQa(); });
   $("#qaChips").addEventListener("click", (e) => { const b = e.target.closest("[data-f]"); if (!b) return; $("#qaQ").value = b.textContent; searchQa(); });
 
-  /* ── 学ぶ（記事と用語） ── */
-  let seg = "art";
-  const ARTS = [["g.art1", "img/grow.jpg", 2], ["g.art2", "../共通/写真/A_使える_2階から見た盆栽庭園の全景_横.jpg", 3], ["g.art3", "../共通/写真/A_使える_美術館の入口の小道_縦.jpg", 2]];
-  function renderLearn() {
+  /* ── 学ぶ：読みもの24本・動画・職人の声・用語（両側で同じ中身を、それぞれの言葉で） ── */
+  let seg = "art", mlSeg = "words", curArt = 1, LEARN = null, FB = [];
+  async function loadLearn() {
+    if (LEARN) return LEARN;
+    const part = (u) => fetch(u).then((r) => (r.ok ? r.json() : [])).catch(() => []);
+    const [a, b] = await Promise.all([part("data/learn_a.json"), part("data/learn_b.json")]);
+    LEARN = [...a, ...b].sort((x, y) => x.no - y.no);
+    return LEARN;
+  }
+  const GARDEN1 = "../共通/写真/A_使える_2階から見た盆栽庭園の全景_横.jpg", PATH1 = "../共通/写真/A_使える_美術館の入口の小道_縦.jpg";
+  const ART_IMG = { "black-pine": "img/t-pine.webp", "white-pine": "img/t-white-pine.webp", shimpaku: "img/t-juniper.webp", "japanese-maple": "img/t-maple.webp", satsuki: "img/t-azalea.webp", ume: "img/t-ume.webp", zelkova: "img/t-zelkova.webp", "needle-juniper": "img/t-needle-juniper.webp", "flowering-year": "img/t-ume.webp", omiya: GARDEN1, history: PATH1, "what-is-bonsai": "img/grow.jpg", styles: "img/t-juniper.webp", "how-to-look": "img/t-pine.webp", spring: "img/t-maple.webp", autumn: "img/t-maple.webp", winter: "img/t-zelkova.webp", "early-summer": "img/t-pine.webp", midsummer: "img/t-azalea.webp" };
+  const artImg = (a) => ART_IMG[a.slug] || [GARDEN1, "img/grow.jpg", PATH1][a.no % 3];
+  const FILMS = [["a-pine", "g.film.pine"], ["b-maple", "g.film.maple"], ["c-eight", "g.film.eight"], ["s1-mekiri", "g.film.s1", 1], ["s2-maple", "g.film.s2", 1], ["s3-eight", "g.film.s3", 1]];
+  const pick8 = (o, L) => (o ? o[L] || o.en || "" : "");
+  async function learnHtml(kind, L, side) {
+    if (kind === "art") {
+      const arts = await loadLearn();
+      return ["basics", "species", "seasons"].map((gr) => `<div class="lg-h">${esc(D(L, "g.l." + gr))}</div>` + arts.filter((a) => a.group === gr).map((a) => `<button class="arow" data-art="${a.no}"><img src="${artImg(a)}" alt="" loading="lazy"><div><em>${String(a.no).padStart(2, "0")} · ${esc(D(L, "g.x.min").replace("{N}", a.minutes || 4))}</em><b>${esc(pick8(a.title, L))}</b><span>${esc(pick8(a.lead, L))}</span></div></button>`).join("")).join("");
+    }
+    if (kind === "film") return `<p class="lead">${esc(D(L, "g.l.filmNote"))}</p>` + FILMS.map(([f, k, tall]) => `<div class="film ${tall ? "tall" : ""}"><video controls playsinline preload="none" poster="films/${f}.jpg" src="films/${f}.mp4"></video><div class="cap"><small>${esc(tall ? D(L, "g.l.short") : "FILM")}</small>${esc(D(L, k))}</div></div>`).join("");
+    if (kind === "voice") {
+      let items = []; try { items = (await api("GET", `/bonsaigo/qa?lang=${L}&q=`)).items || []; } catch {}
+      return `<p class="lead">${esc(D(L, "g.l.voiceLead"))}</p>` + items.filter((it) => !it.own).map((it) => { const p = TEACHERS.find((x) => x.id === it.person_id), g = gardenOf(it.garden_id); return `<div class="vq"><q>${terms(it.a, side)}</q><div class="by">${p ? `<span class="seal">${esc(initial(p, L))}</span>` : ""}<span>${esc(p ? `${nm(p, L)} · ${roleLbl(p, L, side)}` : "")}${g ? ` · ${esc(gName(g, L))}` : ""}</span></div><div class="about">Q · ${esc(it.q)}</div></div>`; }).join("");
+    }
+    if (kind === "gl") return `<p class="lead">${esc(D(L, "g.l.glossLead"))}</p>` + WORLD.glossary.map((w) => `<button class="gl" data-term="${esc(w.ja)}"><span class="kj">${esc(w.ja)}<small>${esc(w.roma)}</small></span><span class="m">${esc(L === "ja" ? w.yomi : w.shown[L])}</span><span class="go">›</span></button>`).join("");
+    return "";
+  }
+  async function renderLearn() {
     $$("#learnSeg button").forEach((b) => b.classList.toggle("on", b.dataset.seg === seg));
-    $("#artList").hidden = seg !== "art"; $("#glWrap").hidden = seg !== "gl";
-    $("#artList").innerHTML = ARTS.map(([k, img, min], i) => `<button class="art" data-art="${i}"><div class="ph"><img src="${img}" alt=""></div><div class="tx"><div class="eyebrow c">${esc(t("g.x.min", { N: min }))}</div><h4>${esc(t(k + ".t"))}</h4><div class="body">${t(k + ".p")}</div><span class="more">${esc(t("g.x.art"))} ›</span></div></button>`).join("");
-    $("#glList").innerHTML = Object.entries(KEY2HEAD).map(([k, kj]) => `<button class="gl" data-term="${kj}"><span class="kj">${kj}<small>${ROMA[k]}</small></span><span class="m">${esc(t(`g.gloss.${k}.m`))}</span><span class="go">›</span></button>`).join("");
+    const want = seg; const html = await learnHtml(seg, GL, "g");
+    if (want === seg && cur === "learn") $("#learnBox").innerHTML = html;
   }
   $("#learnSeg").addEventListener("click", (e) => { const b = e.target.closest("[data-seg]"); if (!b) return; seg = b.dataset.seg; renderLearn(); });
-  $("#artList").addEventListener("click", (e) => { const b = e.target.closest(".art"); if (b) b.classList.toggle("open"); });
+  $("#learnBox").addEventListener("click", (e) => { const b = e.target.closest("[data-art]"); if (!b) return; curArt = Number(b.dataset.art); show("art"); });
+  // 読みもの1本
+  async function renderArticle(box, no, L, side) {
+    const a = (await loadLearn()).find((x) => x.no === no); if (!a) return;
+    const body = (a.body && (a.body[L] || a.body.en)) || [];
+    box.innerHTML = `<div class="artv" lang="${L}"><div class="hero"><img src="${artImg(a)}" alt=""></div><div class="eyebrow c" style="margin-top:14px">${esc(D(L, "g.l." + a.group))} · ${esc(D(L, "g.x.min").replace("{N}", a.minutes || 4))}</div><h1>${esc(pick8(a.title, L))}</h1><p class="ld">${esc(pick8(a.lead, L))}</p>${body.map((x) => (x.h ? `<h3>${esc(x.h)}</h3>` : `<p>${esc(x.p)}</p>`)).join("")}${pick8(a.voice, L) ? `<div class="voice"><b>${esc(D(L, "g.l.voiceQ"))}</b><p>${esc(pick8(a.voice, L))}</p>${side === "g" ? `<button class="cta" data-askq="${a.no}">${esc(D(L, "g.l.ask"))}</button>` : ""}</div>` : ""}${(a.sources || []).length ? `<div class="src"><b>${esc(D(L, "g.l.src"))}</b><br>${a.sources.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join("<br>")}</div>` : ""}</div>`;
+    scroller(side === "g" ? "art" : "mart").scrollTop = 0;
+  }
+  $("#artBody").addEventListener("click", async (e) => { const b = e.target.closest("[data-askq]"); if (!b) return; const a = (await loadLearn()).find((x) => x.no === Number(b.dataset.askq)); $("#askText").value = pick8(a.voice, GL); go("ask"); });
+
+  // 職人の学ぶ：自分の言葉がどう届くか（言いかえた日本語 → 各国の言葉）＋直す・違うと知らせる
+  async function renderMl() {
+    $$("#mlSeg button").forEach((b) => b.classList.toggle("on", b.dataset.seg === mlSeg));
+    const want = mlSeg; let html;
+    if (mlSeg === "words") {
+      try { FB = (await api("GET", "/bonsaigo/gloss")).items || []; } catch { FB = []; }
+      const others = LANGS.filter((l) => l !== "ja");
+      html = `<p class="lead">${esc(t("a.ml.lead"))}</p>` + WORLD.glossary.map((w) => {
+        const mine = FB.filter((f) => f.term === w.ja);
+        return `<div class="wd"><div class="kj">${esc(w.ja)}<small>${esc(w.roma)}</small></div><div class="pl"><b>${esc(t("a.ml.plain"))}</b>${esc(w.plain_ja)}</div><div class="ar">${esc(t("a.ml.arrive"))}</div><div class="tr">${others.map((l) => `<i>${esc(I18N[l].self)}</i><span class="${l === AL ? "me" : ""}" lang="${l}"><b>${esc(w.shown[l])}</b>${l === AL ? ` — ${esc(w.meaning[l])}` : ""}</span>`).join("")}</div><div class="act"><button class="chip" data-fx="${esc(w.ja)}" data-kind="fix">${esc(t("a.ml.fix"))}</button><button class="chip" data-fx="${esc(w.ja)}" data-kind="wrong">${esc(t("a.ml.wrong"))}</button></div>${mine.map((f) => `<div class="fb">✓ ${esc(f.kind === "wrong" ? t("a.ml.flagged") : t("a.ml.yours"))} · ${esc(f.lang === "plain" ? t("a.ml.plain") : (I18N[f.lang] || {}).self || f.lang)}${f.text ? `：${esc(f.text)}` : ""}</div>`).join("")}</div>`;
+      }).join("");
+    } else html = await learnHtml(mlSeg, AL, "a");
+    if (want === mlSeg && cur === "mlearn") $("#mlBox").innerHTML = html;
+  }
+  $("#mlSeg").addEventListener("click", (e) => { const b = e.target.closest("[data-seg]"); if (!b) return; mlSeg = b.dataset.seg; renderMl(); });
+  let fx = { term: "", kind: "fix", lang: "plain" };
+  $("#mlBox").addEventListener("click", (e) => {
+    const a = e.target.closest("[data-art]"); if (a) { curArt = Number(a.dataset.art); show("mart"); return; }
+    const b = e.target.closest("[data-fx]"); if (!b) return;
+    fx = { term: b.dataset.fx, kind: b.dataset.kind, lang: "plain" };
+    $("#fxH").textContent = `${fx.term} · ${t(fx.kind === "fix" ? "a.ml.fix" : "a.ml.wrong")}`;
+    paintFxWhich();
+    $("#fxText").hidden = fx.kind !== "fix"; $("#fxText").value = ""; $("#fxText").placeholder = t("a.ml.fixPh"); showErr("#fxErr", "");
+    const host = $("#s-" + cur); if (!host.contains($("#fixSheet"))) host.append($("#lveil"), $("#fixSheet"));
+    $("#lveil").classList.add("show"); $("#fixSheet").classList.add("show");
+  });
+  function paintFxWhich() { $("#fxWhich").innerHTML = [["plain", t("a.ml.plain")], ...LANGS.filter((l) => l !== "ja").map((l) => [l, I18N[l].self])].map(([v, n]) => `<button class="chip ${v === fx.lang ? "on" : ""}" data-fl="${v}">${esc(n)}</button>`).join(""); }
+  $("#fxWhich").addEventListener("click", (e) => { const b = e.target.closest("[data-fl]"); if (!b) return; fx.lang = b.dataset.fl; paintFxWhich(); });
+  $("#fxSend").addEventListener("click", async () => {
+    if (fx.kind === "fix" && !$("#fxText").value.trim()) return showErr("#fxErr", t("a.ml.fixPh"));
+    try { await api("POST", "/bonsaigo/gloss", { term: fx.term, lang: fx.lang, kind: fx.kind, text: $("#fxText").value }); closeSheets(); toast(t("a.ml.thanks")); renderMl(); }
+    catch (er) { showErr("#fxErr", errText(er, "a")); }
+  });
 
   /* ── 用語の札（意味と、なぜそうするか） ── */
   function openGloss(head) {
-    const k = HEAD2KEY[head], g = GLOSSARY.find((x) => x.ja === head);
+    const k = HEAD2KEY[head], g = GLOSSARY.find((x) => x.ja === head), w = WORLD.glossary.find((x) => x.ja === head);
+    if (w) {
+      $("#gK").textContent = head; $("#gR").textContent = w.roma;
+      const SL = $("#s-" + cur).classList.contains("k") ? AL : GL;
+      $("#gM").textContent = SL === "ja" ? w.yomi : w.shown[SL]; $("#gP").textContent = SL === "ja" ? w.plain_ja : w.meaning[SL]; $("#gW").textContent = "";
+      const host = $("#s-" + cur); if (!host.contains($("#sheet"))) host.append($("#veil"), $("#sheet"));
+      $("#veil").classList.add("show"); $("#sheet").classList.add("show"); return;
+    }
     if (!k && !g) return;
     $("#gK").textContent = head; $("#gR").textContent = k ? ROMA[k] : (g.yomi || "");
     if (k) { $("#gM").textContent = t(`g.gloss.${k}.m`); $("#gP").textContent = t(`g.gloss.${k}.p`); $("#gW").textContent = ""; }
@@ -310,7 +444,7 @@
     const host = $("#s-" + cur); if (!host.contains($("#sheet"))) host.append($("#veil"), $("#sheet"));
     $("#veil").classList.add("show"); $("#sheet").classList.add("show");
   }
-  function closeSheets() { ["#veil", "#sheet", "#lveil", "#lsheet", "#costSheet"].forEach((s) => $(s).classList.remove("show")); }
+  function closeSheets() { ["#veil", "#sheet", "#lveil", "#lsheet", "#costSheet", "#fixSheet"].forEach((s) => $(s).classList.remove("show")); }
   $("#veil").addEventListener("click", closeSheets); $("#sheet").addEventListener("click", closeSheets);
 
   /* ── 職人：相談を読んで、答える ── */
@@ -325,9 +459,12 @@
     $("#dMitate").textContent = fc.mitate || "";
     $("#dPoints").innerHTML = (fc.points || []).map((p) => `<li>${esc(p)}</li>`).join("");
     $("#dTerms").innerHTML = (fc.terms || []).map((w) => `<span class="chip">${esc(w)}</span>`).join("");
-    $("#origBtn").textContent = t("a.det.orig").replace(/\{G\}/g, I18N[AL].names[c.lang] || c.lang);
+    $("#origBtn").textContent = D(AL, "a.det.orig").replace(/\{G\}/g, I18N[AL].names[c.lang] || c.lang);
     $("#origBody").textContent = c.question; $("#origBody").hidden = true;
     $("#ansText").placeholder = t("a.x.editPh");
+    $("#dAs").textContent = t("a.x.asWho", { P: nm(myPerson(), AL), E: gName(myGarden(), AL) });
+    // 言葉が同じ・訳していない相談は、原文がそのまま本文
+    $("#origBtn").hidden = Boolean(fc.raw);
     if (c.answer) $("#ansText").value = c.answer.voice_ja || $("#ansText").value;
     paintDraft(c);
     clearInterval(draftPoll);
@@ -343,6 +480,7 @@
   // 職人に見せる相談の中身。見本モードは選んだ言葉の見本、本物のAIのときは日本語（職人向け）
   function forCraft(c) {
     const f = c.for_craftsperson || {};
+    if (f.same_lang || f.untranslated) return { title: f.title_ja, mitate: "", points: [c.question], terms: [], raw: true };
     if (MODE === "sample") return { title: plain("a.det.h2"), mitate: plain("a.det.cap"), points: [1, 2, 3, 4].map((i) => plain(`a.det.li${i}`)), terms: [D("ja", "a.det.t1"), D("ja", "a.det.t2")] };
     return { title: f.title_ja, mitate: f.ai_mitate_ja, points: f.points_ja, terms: f.terms_ja };
   }
@@ -354,7 +492,7 @@
   function paintDraft(c) {
     const s = c.ai_draft_status, d0 = draftOf(c), d = d0 && { draft_ja: d0.text, check_ja: d0.checks };
     $("#b-useDraft").disabled = !d;
-    $("#dDraft").innerHTML = `<div class="hd"><b>${esc(t("a.dr.hd"))}</b><span>${s === "making" ? "Sonnet…" : "Sonnet"}</span></div>` +
+    $("#dDraft").innerHTML = `<div class="hd"><b>${esc(t("a.dr.hd"))}</b></div>` +
       (s === "making" ? `<div class="dr-text" style="color:var(--ink-2)">${esc(t("a.x.making"))}</div>` : d ? `<div class="dr-text">${esc(d.draft_ja)}</div>${d.check_ja?.length ? `<div style="padding:0 12px 12px"><b style="font-size:12.5px;color:var(--copper)">${esc(t("a.x.checkList"))}</b><ul class="checks">${d.check_ja.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}` : `<div class="dr-text" style="color:var(--ink-2)">${esc(t("a.x.noDraft"))}</div>`);
   }
   $("#origBtn").addEventListener("click", () => { const b = $("#origBody"); b.hidden = !b.hidden; });
@@ -384,7 +522,7 @@
     const voice = $("#ansText").value.trim(); if (!voice) return showErr("#dErr", t("a.x.editPh"));
     showErr("#dErr", ""); busy("#dBusy", true);
     try {
-      const r = await api("POST", `/consultations/${curConsult.id}/answer`, { voice, preview: true, from_draft: fromDraft });
+      const r = await api("POST", `/consultations/${curConsult.id}/answer`, { voice, preview: true, from_draft: fromDraft, lang: AL });
       pending = r.pending_answer; busy("#dBusy", false); show("confirm");
     } catch (e) { busy("#dBusy", false); showErr("#dErr", errText(e, "a")); }
   });
@@ -395,8 +533,13 @@
     $("#confBody").innerHTML = `<h5>${terms(pending.headline, "a")}</h5>${pending.paragraphs.map((p) => `<p>${terms(p, "a")}</p>`).join("")}`;
     $("#confBody").lang = L;
     $("#confCheck").innerHTML = verifiedBox(pending.review, "a");
-    $("#confBackB").textContent = D(AL, "a.conf.backB").replace(/\{G\}/g, I18N[AL].names[L] || L).replace(/\{A\}/g, I18N[AL].names.ja);
+    $("#confAfter").innerHTML = terms(D(AL, "a.conf.after").replace(/\{G\}/g, I18N[AL].names[curConsult.lang] || curConsult.lang), "a", true);
+    $("#confBackB").textContent = D(AL, "a.conf.backB").replace(/\{G\}/g, I18N[AL].names[L] || L).replace(/\{A\}/g, I18N[AL].names[AL]);
     $("#confBack").textContent = MODE === "sample" ? plain("a.conf.back") : pending.back_translation_ja;
+    // 言葉が同じなら、訳さずにそのまま届く（戻して確かめる欄は出さない）
+    const raw = pending.same_lang || pending.untranslated;
+    $("#s-confirm .back-tr").hidden = raw;
+    $("#confSame").hidden = !pending.same_lang; $("#confSame").textContent = t("a.x.same", { L: I18N[AL].names[L] || L });
     const low = pending.review?.needs_person || pending.review?.ok === false;
     $("#replyLbl").textContent = t(low ? "a.x.sendAnyway" : "a.x.send");
     showErr("#cErr", "");
@@ -404,7 +547,7 @@
   $("#b-reply").addEventListener("click", async () => {
     try {
       await api("POST", `/consultations/${curConsult.id}/answer`, { confirm: true, at: pending && pending.at });
-      toast(t("a.x.sent").replace(/\{G\}/g, I18N[AL].names[curConsult.lang] || curConsult.lang));
+      toast(D(AL, "a.x.sent").replace(/\{G\}/g, I18N[AL].names[curConsult.lang] || curConsult.lang));
       pending = null; fromDraft = false; hist.length = 0; show("inbox", { push: false });
     } catch (e) { showErr("#cErr", errText(e, "a")); }
   });
@@ -424,14 +567,14 @@
   $("#regNg").addEventListener("click", () => pickReg("ng", "img/room.jpg"));
   $("#regFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (!f) return; pickReg("own", await fileUrl(f)); });
   const imgReason = (tr) => { const ic = tr.image_check || {}; if (ic.failed) return t("a.x.img.err"); if (MODE === "sample") return t(`a.x.img.${tr.sample === "pine" ? "ok" : tr.sample === "ng" ? "ng" : "unsure"}`); return (ic.reasons && ic.reasons[GL]) || (GL === "ja" ? ic.reason_ja : ic.reason_en); };
-  const textProblems = (tc) => tc.codes && tc.codes.length ? tc.codes.map((c) => t("a.rule." + c)) : tc.problems_by_lang && tc.problems_by_lang[GL] ? [tc.problems_by_lang[GL]] : (GL === "ja" ? tc.problems_ja : tc.problems_en) || [];
+  const textProblems = (tc) => tc.codes && tc.codes.length ? tc.codes.map((c) => t("a.rule." + c)) : tc.problems_by_lang && tc.problems_by_lang[AL] ? [tc.problems_by_lang[AL]] : (AL === "ja" ? tc.problems_ja : tc.problems_en) || [];
   const confTxt = (c) => (typeof c === "number" ? c.toFixed(2) : "–");
   function verdict(kind, title, lines, by) {
-    return `<div class="verdict v-${kind}"><div class="hd"><span class="ic"><svg><use href="#${kind === "hold" ? "i-hold" : "i-x"}"/></svg></span><b>${esc(title)}</b></div>${lines.length > 1 ? `<ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>` : `<p>${esc(lines[0] || "")}</p>`}<div class="by"><span>${esc(by)}</span></div></div>`;
+    return `<div class="verdict v-${kind}"><div class="hd"><span class="ic"><svg><use href="#${kind === "hold" ? "i-hold" : "i-x"}"/></svg></span><b>${esc(title)}</b></div>${lines.length > 1 ? `<ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>` : `<p>${esc(lines[0] || "")}</p>`}${by ? `<div class="by"><span>${esc(by)}</span></div>` : ""}</div>`;
   }
   $("#b-regGo").addEventListener("click", async () => {
     showErr("#rErr", ""); $("#regResult").innerHTML = "";
-    $("#rBusyT").textContent = t("a.x.chkImg"); $("#rBusyM").textContent = `Haiku · ${t("a.x.pass")}`;
+    $("#rBusyT").textContent = t("a.x.chkImg"); $("#rBusyM").textContent = "";
     busy("#rBusy", true); $("#scan").classList.add("on");
     const swap = setTimeout(() => { $("#rBusyT").textContent = t("a.x.drafting"); $("#rBusyM").textContent = t("a.x.writing8"); }, 1400);
     try {
@@ -440,7 +583,7 @@
       clearTimeout(swap); busy("#rBusy", false); $("#scan").classList.remove("on");
       curTree = tr; curTree.src = regPhoto.src;
       const ic = tr.image_check || {}, reason = imgReason(tr);
-      const by = `${t("a.x.byAi")} · ${t("a.x.conf", { P: confTxt(ic.confidence) })} · ${t("a.x.pass")}`;
+      const by = t("a.x.conf", { P: confTxt(ic.confidence) });
       if (tr.status === "image_failed") { $("#regResult").innerHTML = verdict("ng", t("a.x.imgFail"), [reason], by) + `<button class="cta ghost" style="margin-top:12px" id="b-retake">${esc(t("a.x.retake"))}</button>`; scrollEnd("reg"); return; }
       if (tr.status === "image_held") { $("#regResult").innerHTML = verdict("hold", t("a.x.held"), [t("a.x.imgLow"), reason], by); scrollEnd("reg"); return; }
       show("posts");
@@ -453,20 +596,21 @@
     const tr = curTree; if (!tr || !tr.draft) return;
     const ic = tr.image_check || {};
     $("#pcImgT").textContent = imgReason(tr); $("#pcImgC").textContent = confTxt(ic.confidence);
-    $("#pX").value = tr.draft.x[GL]; $("#pIg").value = tr.draft.instagram[GL];
+    $("#pX").value = tr.draft.x[AL]; $("#pIg").value = tr.draft.instagram[AL];
     $("#pAllBody").innerHTML = LANGS.map((l) => `<div class="l" lang="${l}"><i>${l.toUpperCase()}</i><span>${esc(tr.draft.x[l])}</span></div>`).join("");
     $("#textResult").innerHTML = "";
   };
-  $("#b-tryNg").addEventListener("click", () => { $("#pX").value = t("a.x.ngText"); $("#pX").focus(); });
+  $("#b-tryNg").addEventListener("click", () => { $("#pX").value = t("a.x.ngText"); $("#pX").focus({ preventScroll: true }); });
   $("#b-postOk").addEventListener("click", async () => {
     const tr = curTree; if (!tr) return;
+    if (!$("#pX").value.trim() || !$("#pIg").value.trim()) { $("#textResult").innerHTML = `<p class="err">${esc(t("a.x.emptyPost"))}</p>`; return; }
     busy("#pBusy", true); $("#textResult").innerHTML = "";
     try {
-      const r = await api("POST", `/bonsaigo/trees/${tr.id}/check`, { x: { ...tr.draft.x, [GL]: $("#pX").value }, instagram: { ...tr.draft.instagram, [GL]: $("#pIg").value } });
+      const r = await api("POST", `/bonsaigo/trees/${tr.id}/check`, { x: { ...tr.draft.x, [AL]: $("#pX").value }, instagram: { ...tr.draft.instagram, [AL]: $("#pIg").value } });
       busy("#pBusy", false);
       Object.assign(curTree, r);
       const tc = r.text_check || {}, probs = textProblems(tc);
-      const by = tc.by === "rules" ? t("a.x.byRules") : `${t("a.x.byAi")} · ${t("a.x.conf", { P: confTxt(tc.confidence) })} · ${t("a.x.pass")}`;
+      const by = tc.by === "rules" ? "" : t("a.x.conf", { P: confTxt(tc.confidence) });
       if (r.status === "text_failed") { $("#textResult").innerHTML = verdict("ng", t("a.x.textFail"), probs || [], by); scrollEnd("posts"); return; }
       if (r.status === "text_held") { $("#textResult").innerHTML = verdict("hold", t("a.x.held"), [t("a.x.imgLow")], by); scrollEnd("posts"); return; }
       show("pub");
@@ -475,14 +619,14 @@
   let pubLang = "en";
   function paintPub() {
     const f = curTree?.final || curTree?.draft; if (!f) return;
-    $("#pubLangs").innerHTML = LANGS.map((l) => `<button class="chip ${l === pubLang ? "on" : ""}" data-pl="${l}">${esc(I18N[l].self)}</button>`).join("");
+    $("#pubLangs").innerHTML = [AL, ...LANGS.filter((l) => l !== AL)].map((l) => `<button class="chip ${l === pubLang ? "on" : ""}" data-pl="${l}">${esc(I18N[l].self)}</button>`).join("");
     $("#pubX").textContent = f.x[pubLang]; $("#pubIg").textContent = f.instagram[pubLang];
     $("#pubX").lang = $("#pubIg").lang = pubLang;
   }
   $("#pubLangs").addEventListener("click", (e) => { const b = e.target.closest("[data-pl]"); if (!b) return; pubLang = b.dataset.pl; paintPub(); });
   enter.pub = () => {
     const tr = curTree; if (!tr) return;
-    pubLang = GL;
+    pubLang = AL;
     ["#pubImg1", "#pubImg2"].forEach((s) => ($(s).src = tr.src || "img/reg.jpg"));
     const ic = tr.image_check || {};
     $("#pc1T").textContent = imgReason(tr); $("#pc1C").textContent = confTxt(ic.confidence);
@@ -500,7 +644,7 @@
       const c = await api("GET", "/bonsaigo/cost"); MODE = c.mode;
       const L = sideLang();
       const meter = `<div><b>${c.today.total}<small>/${c.limits.total}</small></b><span>${esc(D(L, "c.cost.today").split("·")[0].replace(/\{N\}.*$/, "").trim() || "Today")}</span><div class="bar"><i style="width:${Math.min(100, c.today.total / c.limits.total * 100)}%"></i></div></div><div><b>${c.today.me}<small>/${c.limits.perUser}</small></b><span>${esc(ME ? (ME.role === "shokunin" ? nm(TEACHERS.find((x) => x.id === ME.teacher_id)) || ME.name : ME.name) : "—")}</span><div class="bar"><i style="width:${Math.min(100, c.today.me / c.limits.perUser * 100)}%"></i></div></div><div><b>${c.today.cache_hits}</b><span>${esc(D(L, "c.cached"))}</span></div>`;
-      $("#mMeter").innerHTML = meter; $("#cMeter").innerHTML = meter;
+      $("#cMeter").innerHTML = meter;
       $("#cModels").innerHTML = [["check", "1"], ["main", "2"], ["fallback", "2"]].map(([k]) => `<div><b>${esc(c.models[k].replace(/^claude-/, ""))}</b>${esc(t("c.m." + k, { P: String(c.confidence_line) }))}</div>`).join("");
       $("#cLast").innerHTML = `<div style="border:0;color:#E9C9AC">${esc(D(L, "c.cost.last"))}</div>` + (c.last || []).map((x) => { const tier = /^check/.test(x.task) || x.task === "reviewAnswer" ? "check" : "main"; const model = String(x.model || "").replace(/^sample \((.*)\)$/, "$1").replace(/^claude-/, ""); return `<div><span>${esc(D(L, "c.m." + tier).replace(/\{P\}/g, String(c.confidence_line)))}</span><em>${esc(x.cached ? D(L, "c.cached") : model)}</em></div>`; }).join("");
       paintMode();
@@ -528,20 +672,26 @@
   }
   $("#lList").addEventListener("click", (e) => {
     const b = e.target.closest("[data-l]"); if (!b) return;
-    GL = AL = b.dataset.l; store.set("bg-l", GL);
-    $$("#lList button").forEach((x) => x.classList.toggle("on", x === b));
+    if (pickFor === "a") { AL = b.dataset.l; store.set("bg-a", AL); }
+    else { GL = b.dataset.l; store.set("bg-l", GL); if (!store.get("bg-a", "")) AL = GL; }
+    paintGtag();
+    // 選んだ言葉で、言葉の一覧も描き直す（閉じた札に前の言葉が残らないように）
+    { const ui = I18N[b.dataset.l]; $("#lTitle").textContent = D(b.dataset.l, "c.pick"); $("#lList").innerHTML = LANGS.map((l) => `<button data-l="${l}" class="${l === b.dataset.l ? "on" : ""}"><b>${I18N[l].self}</b><span>${ui.names[l]}</span></button>`).join(""); }
     applyLang(); enter[cur] && enter[cur]();
     setTimeout(closeSheets, 220);
   });
   $("#lveil").addEventListener("click", closeSheets);
 
   function applyLang() {
-    $$("[data-i18n]").forEach((el) => { const k = el.dataset.i18n; el.innerHTML = terms(t(k, el.dataset.n != null ? { N: el.dataset.n } : undefined), k.startsWith("a.") ? "a" : "g", true); });
+    // 職人の画面の中は、相談する人の言葉の鍵（g.）でも、職人が選んだ言葉で出す
+    $$("[data-i18n]").forEach((el) => { const k = el.dataset.i18n, inA = Boolean(el.closest(".scr.k")); el.innerHTML = terms(t(k, el.dataset.n != null ? { N: el.dataset.n } : undefined, inA ? AL : undefined), inA || k.startsWith("a.") ? "a" : "g", true); });
+    $("#qaQ").placeholder = D(GL, "g.qa.search");
     $$("[data-pick]").forEach((b) => { b.querySelector(".lp-name").textContent = I18N[b.dataset.pick === "g" ? GL : AL].self; });
     $$(".scr:not(.k)").forEach((el) => (el.lang = GL === "zh" ? "zh-CN" : GL));
     $$(".scr.k").forEach((el) => (el.lang = AL === "zh" ? "zh-CN" : AL));
     document.documentElement.lang = sideLang();
     paintMode();
+    paintGtag();
   }
 
   /* ── 大きさ合わせ ── */
@@ -556,7 +706,8 @@
   /* ── はじめ ── */
   (async () => {
     applyLang();
-    try { const d = await api("GET", "/me"); ME = d.user; TEACHERS = d.teachers || []; } catch {}
+    try { WORLD = await (await fetch("data/world.json")).json(); } catch {}
+    try { const d = await api("GET", "/me"); ME = d.user; TEACHERS = d.teachers || []; GARDENS = d.gardens || []; paintGtag(); } catch {}
     try { GLOSSARY = await (await fetch("../用語集.json")).json(); } catch {}
     loadCost();
     // #home などで、その画面から開ける（録画・確かめ用）

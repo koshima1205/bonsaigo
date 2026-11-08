@@ -1,0 +1,1249 @@
+{
+ "regions": [
+  {
+   "id": "jp-omiya",
+   "country": "jp",
+   "name": {
+    "en": "Saitama · Omiya",
+    "ja": "埼玉・大宮",
+    "es": "Saitama · Omiya",
+    "zh": "埼玉·大宫",
+    "fr": "Saitama · Omiya",
+    "it": "Saitama · Omiya",
+    "th": "ไซตามะ · โอมิยะ",
+    "km": "សាអ៊ីតាម៉ា · អូមីយ៉ា"
+   }
+  },
+  {
+   "id": "jp-takamatsu",
+   "country": "jp",
+   "name": {
+    "en": "Kagawa · Takamatsu",
+    "ja": "香川・高松",
+    "es": "Kagawa · Takamatsu",
+    "zh": "香川·高松",
+    "fr": "Kagawa · Takamatsu",
+    "it": "Kagawa · Takamatsu",
+    "th": "คางาวะ · ทาคามัตสึ",
+    "km": "កាហ្គាវ៉ា · តាកាម៉ាត់ស៊ូ"
+   }
+  },
+  {
+   "id": "jp-aichi",
+   "country": "jp",
+   "name": {
+    "en": "Aichi",
+    "ja": "愛知",
+    "es": "Aichi",
+    "zh": "爱知",
+    "fr": "Aichi",
+    "it": "Aichi",
+    "th": "ไอจิ",
+    "km": "អាអ៊ីឈិ"
+   }
+  },
+  {
+   "id": "jp-hiroshima",
+   "country": "jp",
+   "name": {
+    "en": "Hiroshima",
+    "ja": "広島",
+    "es": "Hiroshima",
+    "zh": "广岛",
+    "fr": "Hiroshima",
+    "it": "Hiroshima",
+    "th": "ฮิโรชิม่า",
+    "km": "ហ៊ីរ៉ូស៊ីម៉ា"
+   }
+  },
+  {
+   "id": "jp-tokyo",
+   "country": "jp",
+   "name": {
+    "en": "Tokyo",
+    "ja": "東京",
+    "es": "Tokio",
+    "zh": "东京",
+    "fr": "Tokyo",
+    "it": "Tokyo",
+    "th": "โตเกียว",
+    "km": "តូក្យូ"
+   }
+  },
+  {
+   "id": "jp-kyoto",
+   "country": "jp",
+   "name": {
+    "en": "Kyoto",
+    "ja": "京都",
+    "es": "Kioto",
+    "zh": "京都",
+    "fr": "Kyoto",
+    "it": "Kyoto",
+    "th": "เกียวโต",
+    "km": "គីយ៉ូតូ"
+   }
+  },
+  {
+   "id": "es-valencia",
+   "country": "es",
+   "name": {
+    "en": "Spain · Valencia",
+    "ja": "スペイン・バレンシア",
+    "es": "España · Valencia",
+    "zh": "西班牙·巴伦西亚",
+    "fr": "Espagne · Valence",
+    "it": "Spagna · Valencia",
+    "th": "สเปน · บาเลนเซีย",
+    "km": "អេស្ប៉ាញ · វ៉ាឡង់ស៊ី"
+   }
+  },
+  {
+   "id": "it-tuscany",
+   "country": "it",
+   "name": {
+    "en": "Italy · Tuscany",
+    "ja": "イタリア・トスカーナ",
+    "es": "Italia · Toscana",
+    "zh": "意大利·托斯卡纳",
+    "fr": "Italie · Toscane",
+    "it": "Italia · Toscana",
+    "th": "อิตาลี · ทัสคานี",
+    "km": "អ៊ីតាលី · តូស្កានី"
+   }
+  },
+  {
+   "id": "us-westcoast",
+   "country": "us",
+   "name": {
+    "en": "USA · West Coast",
+    "ja": "アメリカ西海岸",
+    "es": "EE. UU. · Costa Oeste",
+    "zh": "美国西海岸",
+    "fr": "États-Unis · côte ouest",
+    "it": "USA · Costa Ovest",
+    "th": "สหรัฐฯ · ชายฝั่งตะวันตก",
+    "km": "សហរដ្ឋ · ឆ្នេរខាងលិច"
+   }
+  }
+ ],
+ "countries": {
+  "jp": {
+   "en": "Japan",
+   "ja": "日本",
+   "es": "Japón",
+   "zh": "日本",
+   "fr": "Japon",
+   "it": "Giappone",
+   "th": "ญี่ปุ่น",
+   "km": "ជប៉ុន"
+  },
+  "es": {
+   "en": "Spain",
+   "ja": "スペイン",
+   "es": "España",
+   "zh": "西班牙",
+   "fr": "Espagne",
+   "it": "Spagna",
+   "th": "สเปน",
+   "km": "អេស្ប៉ាញ"
+  },
+  "it": {
+   "en": "Italy",
+   "ja": "イタリア",
+   "es": "Italia",
+   "zh": "意大利",
+   "fr": "Italie",
+   "it": "Italia",
+   "th": "อิตาลี",
+   "km": "អ៊ីតាលី"
+  },
+  "us": {
+   "en": "United States (West Coast)",
+   "ja": "アメリカ（西海岸）",
+   "es": "Estados Unidos (Costa Oeste)",
+   "zh": "美国（西海岸）",
+   "fr": "États-Unis (côte ouest)",
+   "it": "Stati Uniti (Costa Ovest)",
+   "th": "สหรัฐอเมริกา (ชายฝั่งตะวันตก)",
+   "km": "សហរដ្ឋអាមេរិក (ឆ្នេរខាងលិច)"
+  },
+  "th": {
+   "en": "Thailand",
+   "ja": "タイ",
+   "es": "Tailandia",
+   "zh": "泰国",
+   "fr": "Thaïlande",
+   "it": "Thailandia",
+   "th": "ไทย",
+   "km": "ថៃ"
+  }
+ },
+ "gardens": [
+  {
+   "id": "g1",
+   "region": "jp-omiya",
+   "name_ja": "霧松園",
+   "name": {
+    "en": "Musho-en Garden",
+    "ja": "霧松園",
+    "es": "Jardín Musho-en",
+    "zh": "Musho-en 园",
+    "fr": "Jardin Musho-en",
+    "it": "Giardino Musho-en",
+    "th": "สวน Musho-en",
+    "km": "សួន Musho-en"
+   },
+   "species": [
+    "pine",
+    "whitepine",
+    "needle",
+    "juniper"
+   ],
+   "topics": [
+    "wire",
+    "repot",
+    "pruning",
+    "pests"
+   ],
+   "about": {
+    "en": "Specializes in pines and needle conifers, with careful guidance on wiring and repotting.",
+    "ja": "松や針葉樹が得意で、針金掛けと植え替えを丁寧に教えてくれる園です。",
+    "es": "Se especializa en pinos y coníferas, y explica con cuidado el alambrado y el trasplante.",
+    "zh": "擅长松树和针叶树，会细心指导铁丝造型和换盆。",
+    "fr": "Spécialisé dans les pins et conifères, avec des conseils soignés sur la ligature et le rempotage.",
+    "it": "È specializzato in pini e conifere e spiega con cura legatura e rinvaso.",
+    "th": "เชี่ยวชาญสนและไม้ใบเข็ม สอนการพันลวดและการเปลี่ยนกระถางอย่างละเอียด",
+    "km": "ជំនាញលើដើមស្រល់ និងឈើស្លឹកម្ជុល ហើយណែនាំការរុំខ្សែលួស និងការប្តូរផើងយ៉ាងយកចិត្តទុកដាក់។"
+   }
+  },
+  {
+   "id": "g2",
+   "region": "jp-takamatsu",
+   "name_ja": "凪松園",
+   "name": {
+    "en": "Nagimatsu-en Garden",
+    "ja": "凪松園",
+    "es": "Jardín Nagimatsu-en",
+    "zh": "Nagimatsu-en 园",
+    "fr": "Jardin Nagimatsu-en",
+    "it": "Giardino Nagimatsu-en",
+    "th": "สวน Nagimatsu-en",
+    "km": "សួន Nagimatsu-en"
+   },
+   "species": [
+    "pine",
+    "juniper",
+    "needle"
+   ],
+   "topics": [
+    "wire",
+    "pruning",
+    "water",
+    "feeding",
+    "pests"
+   ],
+   "about": {
+    "en": "Strong on pines and junipers, especially pruning and the daily routine of watering and feeding.",
+    "ja": "松と真柏が得意で、剪定や、水やり・肥料の毎日のコツに強い園です。",
+    "es": "Fuerte en pinos y enebros, sobre todo en poda y en la rutina diaria de riego y abonado.",
+    "zh": "擅长松树和真柏，尤其是修剪以及浇水、施肥的日常诀窍。",
+    "fr": "Fort sur les pins et genévriers, surtout la taille et la routine d'arrosage et d'engrais.",
+    "it": "Forte su pini e ginepri, in particolare potatura e routine quotidiana di annaffiatura e concimazione.",
+    "th": "เก่งเรื่องสนและจูนิเปอร์ โดยเฉพาะการตัดแต่งกิ่ง และเคล็ดลับการรดน้ำใส่ปุ๋ยทุกวัน",
+    "km": "ជំនាញលើស្រល់ និងជូនីពើរ ជាពិសេសការកាត់ច្រឹប និងគន្លឹះស្រោចទឹក ដាក់ជីប្រចាំថ្ងៃ។"
+   }
+  },
+  {
+   "id": "g3",
+   "region": "jp-aichi",
+   "name_ja": "朝霞園",
+   "name": {
+    "en": "Asagasumi-en Garden",
+    "ja": "朝霞園",
+    "es": "Jardín Asagasumi-en",
+    "zh": "Asagasumi-en 园",
+    "fr": "Jardin Asagasumi-en",
+    "it": "Giardino Asagasumi-en",
+    "th": "สวน Asagasumi-en",
+    "km": "សួន Asagasumi-en"
+   },
+   "species": [
+    "maple",
+    "zelkova",
+    "azalea"
+   ],
+   "topics": [
+    "leaves",
+    "repot",
+    "pruning",
+    "water"
+   ],
+   "about": {
+    "en": "Knows leafy trees well, such as maples and zelkova, including leaf problems and repotting.",
+    "ja": "楓や欅など葉ものに詳しく、葉の悩みや植え替えの相談が得意な園です。",
+    "es": "Conoce bien los árboles de hoja, como arces y zelkovas, con problemas de hojas y trasplante.",
+    "zh": "熟悉枫树、榉树等观叶树种，擅长解答叶子问题和换盆。",
+    "fr": "Connaît bien les arbres à feuilles comme les érables et zelkovas, y compris les problèmes de feuilles et le rempotage.",
+    "it": "Conosce bene le latifoglie come aceri e zelkova, con problemi alle foglie e rinvaso.",
+    "th": "รู้จักไม้ใบอย่างเมเปิลและเซลโควาเป็นอย่างดี ให้คำปรึกษาเรื่องปัญหาใบและการเปลี่ยนกระถาง",
+    "km": "ស្គាល់ដើមស្លឹកដូចជាម៉េផល និងសែលកូវ៉ាច្បាស់ ហើយជួយបញ្ហាស្លឹក និងការប្តូរផើង។"
+   }
+  },
+  {
+   "id": "g4",
+   "region": "jp-hiroshima",
+   "name_ja": "汐風園",
+   "name": {
+    "en": "Shiokaze-en Garden",
+    "ja": "汐風園",
+    "es": "Jardín Shiokaze-en",
+    "zh": "Shiokaze-en 园",
+    "fr": "Jardin Shiokaze-en",
+    "it": "Giardino Shiokaze-en",
+    "th": "สวน Shiokaze-en",
+    "km": "សួន Shiokaze-en"
+   },
+   "species": [
+    "azalea",
+    "ume",
+    "pine"
+   ],
+   "topics": [
+    "water",
+    "winter",
+    "pests",
+    "feeding"
+   ],
+   "about": {
+    "en": "Gives practical advice on azaleas and ume, from watering to winter care.",
+    "ja": "つつじや梅の育て方が得意で、水やりから冬越しまで実用的に答える園です。",
+    "es": "Da consejos prácticos sobre azaleas y ume, del riego al cuidado en invierno.",
+    "zh": "擅长杜鹃和梅树，从浇水到越冬都给出实用的建议。",
+    "fr": "Donne des conseils pratiques sur les azalées et les ume, de l'arrosage à l'hivernage.",
+    "it": "Dà consigli pratici su azalee e ume, dall'annaffiatura al periodo invernale.",
+    "th": "ให้คำแนะนำใช้งานได้จริงเรื่องอาซาเลียและบ๊วย ตั้งแต่การรดน้ำถึงการดูแลช่วงหนาว",
+    "km": "ផ្តល់ដំបូន្មានជាក់ស្តែងអំពីអាហ្សាលា និងអ៊ុយមេ ពីការស្រោចទឹក ដល់ការថែរក្សារដូវរងា។"
+   }
+  },
+  {
+   "id": "g5",
+   "region": "jp-tokyo",
+   "name_ja": "月影園",
+   "name": {
+    "en": "Tsukikage-en Garden",
+    "ja": "月影園",
+    "es": "Jardín Tsukikage-en",
+    "zh": "Tsukikage-en 园",
+    "fr": "Jardin Tsukikage-en",
+    "it": "Giardino Tsukikage-en",
+    "th": "สวน Tsukikage-en",
+    "km": "សួន Tsukikage-en"
+   },
+   "species": [
+    "ume",
+    "maple",
+    "zelkova",
+    "azalea"
+   ],
+   "topics": [
+    "newtree",
+    "indoor",
+    "water",
+    "leaves",
+    "feeding"
+   ],
+   "about": {
+    "en": "Friendly to beginners: how to choose a first tree and how to enjoy it indoors.",
+    "ja": "はじめての人にやさしく、最初の木の選び方や室内での楽しみ方を教える園です。",
+    "es": "Amable con principiantes: cómo elegir el primer árbol y disfrutarlo en interior.",
+    "zh": "对新手很友好，教你如何挑选第一棵树以及在室内养护的乐趣。",
+    "fr": "Accueillant pour les débutants : choisir son premier arbre et en profiter en intérieur.",
+    "it": "Accogliente con i principianti: come scegliere il primo albero e coltivarlo in casa.",
+    "th": "ใจดีกับมือใหม่ สอนวิธีเลือกต้นแรกและวิธีปลูกเพลิน ๆ ในบ้าน",
+    "km": "រួសរាយចំពោះអ្នកចាប់ផ្តើម ណែនាំរបៀបជ្រើសរើសដើមដំបូង និងរបៀបរីករាយជាមួយវាក្នុងផ្ទះ។"
+   }
+  },
+  {
+   "id": "g6",
+   "region": "jp-kyoto",
+   "name_ja": "苔雫園",
+   "name": {
+    "en": "Kokeshizuku-en Garden",
+    "ja": "苔雫園",
+    "es": "Jardín Kokeshizuku-en",
+    "zh": "Kokeshizuku-en 园",
+    "fr": "Jardin Kokeshizuku-en",
+    "it": "Giardino Kokeshizuku-en",
+    "th": "สวน Kokeshizuku-en",
+    "km": "សួន Kokeshizuku-en"
+   },
+   "species": [
+    "maple",
+    "ume",
+    "azalea",
+    "zelkova"
+   ],
+   "topics": [
+    "leaves",
+    "winter",
+    "water",
+    "pruning"
+   ],
+   "about": {
+    "en": "Quiet, careful advice on seasonal leaf care and getting trees through winter.",
+    "ja": "季節ごとの葉の手入れや冬越しを、静かに丁寧に答える園です。",
+    "es": "Consejos tranquilos y cuidadosos sobre el cuidado estacional de las hojas y el invierno.",
+    "zh": "安静细致地解答四季叶片养护与越冬问题。",
+    "fr": "Des conseils calmes et attentifs sur les soins saisonniers des feuilles et l'hivernage.",
+    "it": "Consigli calmi e attenti sulla cura stagionale delle foglie e sullo svernamento.",
+    "th": "ให้คำแนะนำอย่างสงบและละเอียดเรื่องการดูแลใบตามฤดูกาลและการผ่านหน้าหนาว",
+    "km": "ផ្តល់ដំបូន្មានស្ងប់ស្ងាត់ និងយកចិត្តទុកដាក់អំពីការថែស្លឹកតាមរដូវ និងរដូវរងា។"
+   }
+  },
+  {
+   "id": "g7",
+   "region": "es-valencia",
+   "name_ja": "ひだまり園",
+   "name": {
+    "en": "Hidamari-en Garden",
+    "ja": "ひだまり園",
+    "es": "Jardín Hidamari-en",
+    "zh": "Hidamari-en 园",
+    "fr": "Jardin Hidamari-en",
+    "it": "Giardino Hidamari-en",
+    "th": "สวน Hidamari-en",
+    "km": "សួន Hidamari-en"
+   },
+   "species": [
+    "juniper",
+    "pine",
+    "zelkova"
+   ],
+   "topics": [
+    "water",
+    "repot",
+    "pests",
+    "indoor"
+   ],
+   "about": {
+    "en": "Founded by a bonsai artist who trained in Japan; knows watering and pests in a hot, dry climate.",
+    "ja": "日本で修行した人が開いた園で、暑くて乾く気候での水やりや害虫に詳しい園です。",
+    "es": "Fundado por un artista que se formó en Japón; conoce el riego y las plagas en climas cálidos y secos.",
+    "zh": "由曾在日本修行的人创办，熟悉炎热干燥气候下的浇水与虫害。",
+    "fr": "Fondé par un artiste formé au Japon ; connaît l'arrosage et les parasites en climat chaud et sec.",
+    "it": "Fondato da un artista formatosi in Giappone; conosce annaffiatura e parassiti in clima caldo e secco.",
+    "th": "ก่อตั้งโดยผู้ที่ไปฝึกวิชาที่ญี่ปุ่น รู้เรื่องการรดน้ำและแมลงศัตรูในอากาศร้อนแห้ง",
+    "km": "បង្កើតដោយអ្នកដែលបានហ្វឹកហាត់នៅជប៉ុន ស្គាល់ការស្រោចទឹក និងសត្វល្អិតក្នុងអាកាសធាតុក្តៅស្ងួត។"
+   }
+  },
+  {
+   "id": "g8",
+   "region": "it-tuscany",
+   "name_ja": "鳴松園",
+   "name": {
+    "en": "Narumatsu-en Garden",
+    "ja": "鳴松園",
+    "es": "Jardín Narumatsu-en",
+    "zh": "Narumatsu-en 园",
+    "fr": "Jardin Narumatsu-en",
+    "it": "Giardino Narumatsu-en",
+    "th": "สวน Narumatsu-en",
+    "km": "សួន Narumatsu-en"
+   },
+   "species": [
+    "pine",
+    "juniper",
+    "whitepine",
+    "ume"
+   ],
+   "topics": [
+    "wire",
+    "pruning",
+    "newtree",
+    "winter"
+   ],
+   "about": {
+    "en": "Run by people who studied in Japan; clear explanations of wiring and pruning for European trees.",
+    "ja": "日本で学んだ人たちが開いた園で、針金掛けや剪定をヨーロッパの木に合わせて分かりやすく伝えます。",
+    "es": "Dirigido por personas que estudiaron en Japón; explican claramente alambrado y poda para árboles europeos.",
+    "zh": "由曾在日本学习的人开办，为欧洲的树木清楚讲解铁丝造型和修剪。",
+    "fr": "Tenu par des personnes ayant étudié au Japon ; explications claires sur la ligature et la taille pour les arbres européens.",
+    "it": "Gestito da chi ha studiato in Giappone; spiega con chiarezza legatura e potatura per gli alberi europei.",
+    "th": "เปิดโดยผู้ที่เคยเรียนที่ญี่ปุ่น อธิบายการพันลวดและการตัดแต่งสำหรับต้นไม้ยุโรปอย่างเข้าใจง่าย",
+    "km": "បើកដោយអ្នកដែលបានសិក្សានៅជប៉ុន ពន្យល់ការរុំខ្សែលួស និងការកាត់ច្រឹបសម្រាប់ដើមឈើអឺរ៉ុបឱ្យងាយយល់។"
+   }
+  },
+  {
+   "id": "g9",
+   "region": "us-westcoast",
+   "name_ja": "西海園",
+   "name": {
+    "en": "Saikai-en Garden",
+    "ja": "西海園",
+    "es": "Jardín Saikai-en",
+    "zh": "Saikai-en 园",
+    "fr": "Jardin Saikai-en",
+    "it": "Giardino Saikai-en",
+    "th": "สวน Saikai-en",
+    "km": "សួន Saikai-en"
+   },
+   "species": [
+    "juniper",
+    "pine",
+    "maple"
+   ],
+   "topics": [
+    "indoor",
+    "water",
+    "newtree",
+    "feeding",
+    "wire"
+   ],
+   "about": {
+    "en": "Opened by a bonsai artist who trained in Japan; helps beginners choose trees and care for them at home.",
+    "ja": "日本で修行した人が開いた園で、はじめての木選びや家での育て方を手伝います。",
+    "es": "Abierto por un artista que se formó en Japón; ayuda a principiantes a elegir árboles y cuidarlos en casa.",
+    "zh": "由曾在日本修行的人开办，帮助新手选树并在家养护。",
+    "fr": "Ouvert par un artiste formé au Japon ; aide les débutants à choisir leurs arbres et à les soigner chez eux.",
+    "it": "Aperto da un artista formatosi in Giappone; aiuta i principianti a scegliere gli alberi e a curarli a casa.",
+    "th": "เปิดโดยผู้ที่ไปฝึกวิชาที่ญี่ปุ่น ช่วยมือใหม่เลือกต้นไม้และดูแลที่บ้าน",
+    "km": "បើកដោយអ្នកដែលបានហ្វឹកហាត់នៅជប៉ុន ជួយអ្នកចាប់ផ្តើមជ្រើសរើសដើមឈើ និងថែវានៅផ្ទះ។"
+   }
+  }
+ ],
+ "people": [
+  {
+   "id": "p1",
+   "garden": "g1",
+   "name_ja": "青木 義郎",
+   "name_en": "Aoki Yoshiro",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p2",
+   "garden": "g1",
+   "name_ja": "マルコ・ベリーニ",
+   "name_en": "Marco Bellini",
+   "role": "apprentice",
+   "lang": "it",
+   "from": "it"
+  },
+  {
+   "id": "p3",
+   "garden": "g2",
+   "name_ja": "村上 清志",
+   "name_en": "Murakami Kiyoshi",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p4",
+   "garden": "g2",
+   "name_ja": "ソムチャイ・プラサート",
+   "name_en": "Somchai Prasert",
+   "role": "apprentice",
+   "lang": "th",
+   "from": "th"
+  },
+  {
+   "id": "p5",
+   "garden": "g3",
+   "name_ja": "近藤 雅人",
+   "name_en": "Kondo Masato",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p6",
+   "garden": "g3",
+   "name_ja": "ハビエル・モレノ",
+   "name_en": "Javier Moreno",
+   "role": "apprentice",
+   "lang": "es",
+   "from": "es"
+  },
+  {
+   "id": "p7",
+   "garden": "g4",
+   "name_ja": "石原 敏夫",
+   "name_en": "Ishihara Toshio",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p8",
+   "garden": "g4",
+   "name_ja": "石原 由紀",
+   "name_en": "Ishihara Yuki",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p9",
+   "garden": "g5",
+   "name_ja": "森川 哲也",
+   "name_en": "Morikawa Tetsuya",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p10",
+   "garden": "g6",
+   "name_ja": "西村 和子",
+   "name_en": "Nishimura Kazuko",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p11",
+   "garden": "g6",
+   "name_ja": "西村 健",
+   "name_en": "Nishimura Ken",
+   "role": "master",
+   "lang": "ja",
+   "from": "jp"
+  },
+  {
+   "id": "p12",
+   "garden": "g7",
+   "name_ja": "アルベルト・フェレー",
+   "name_en": "Alberto Ferrer",
+   "role": "master",
+   "lang": "es",
+   "from": "es"
+  },
+  {
+   "id": "p13",
+   "garden": "g7",
+   "name_ja": "ルシア・ナバロ",
+   "name_en": "Lucía Navarro",
+   "role": "master",
+   "lang": "es",
+   "from": "es"
+  },
+  {
+   "id": "p14",
+   "garden": "g8",
+   "name_ja": "ジュリア・フェッラーロ",
+   "name_en": "Giulia Ferraro",
+   "role": "master",
+   "lang": "it",
+   "from": "it"
+  },
+  {
+   "id": "p15",
+   "garden": "g8",
+   "name_ja": "パオロ・グレコ",
+   "name_en": "Paolo Greco",
+   "role": "master",
+   "lang": "it",
+   "from": "it"
+  },
+  {
+   "id": "p16",
+   "garden": "g9",
+   "name_ja": "デイビッド・ハート",
+   "name_en": "David Hart",
+   "role": "master",
+   "lang": "en",
+   "from": "us"
+  },
+  {
+   "id": "p17",
+   "garden": "g9",
+   "name_ja": "エミリー・カーター",
+   "name_en": "Emily Carter",
+   "role": "master",
+   "lang": "en",
+   "from": "us"
+  },
+  {
+   "id": "p18",
+   "garden": "g9",
+   "name_ja": "ソペア・チャン",
+   "name_en": "Sophea Chan",
+   "role": "apprentice",
+   "lang": "km",
+   "from": "us"
+  }
+ ],
+ "topics": {
+  "wire": {
+   "en": "Wiring",
+   "ja": "針金",
+   "es": "Alambrado",
+   "zh": "铁丝造型",
+   "fr": "Ligature",
+   "it": "Legatura con filo",
+   "th": "การพันลวด",
+   "km": "ការរុំខ្សែលួស"
+  },
+  "repot": {
+   "en": "Repotting",
+   "ja": "植え替え",
+   "es": "Trasplante",
+   "zh": "换盆",
+   "fr": "Rempotage",
+   "it": "Rinvaso",
+   "th": "การเปลี่ยนกระถาง",
+   "km": "ការប្តូរផើង"
+  },
+  "water": {
+   "en": "Watering",
+   "ja": "水やり",
+   "es": "Riego",
+   "zh": "浇水",
+   "fr": "Arrosage",
+   "it": "Annaffiatura",
+   "th": "การรดน้ำ",
+   "km": "ការស្រោចទឹក"
+  },
+  "winter": {
+   "en": "Winter care",
+   "ja": "冬越し",
+   "es": "Invierno",
+   "zh": "越冬",
+   "fr": "Hivernage",
+   "it": "Inverno",
+   "th": "ช่วงฤดูหนาว",
+   "km": "រដូវរងា"
+  },
+  "pests": {
+   "en": "Pests & disease",
+   "ja": "病害虫",
+   "es": "Plagas y enfermedades",
+   "zh": "病虫害",
+   "fr": "Parasites et maladies",
+   "it": "Parassiti e malattie",
+   "th": "ศัตรูพืชและโรค",
+   "km": "សត្វល្អិត និងជំងឺ"
+  },
+  "pruning": {
+   "en": "Pruning",
+   "ja": "剪定",
+   "es": "Poda",
+   "zh": "修剪",
+   "fr": "Taille",
+   "it": "Potatura",
+   "th": "การตัดแต่งกิ่ง",
+   "km": "ការកាត់ច្រឹប"
+  },
+  "indoor": {
+   "en": "Indoors",
+   "ja": "室内で育てる",
+   "es": "En interior",
+   "zh": "室内养护",
+   "fr": "En intérieur",
+   "it": "In casa",
+   "th": "ปลูกในบ้าน",
+   "km": "ដាំក្នុងផ្ទះ"
+  },
+  "feeding": {
+   "en": "Fertilizing",
+   "ja": "肥料",
+   "es": "Abonado",
+   "zh": "施肥",
+   "fr": "Engrais",
+   "it": "Concimazione",
+   "th": "การใส่ปุ๋ย",
+   "km": "ការដាក់ជី"
+  },
+  "newtree": {
+   "en": "Choosing a first tree",
+   "ja": "はじめての木選び",
+   "es": "Elegir el primer árbol",
+   "zh": "挑选第一棵树",
+   "fr": "Choisir son premier arbre",
+   "it": "Scegliere il primo albero",
+   "th": "เลือกต้นแรก",
+   "km": "ជ្រើសរើសដើមដំបូង"
+  },
+  "leaves": {
+   "en": "Leaf problems",
+   "ja": "葉の悩み",
+   "es": "Problemas de hojas",
+   "zh": "叶子问题",
+   "fr": "Problèmes de feuilles",
+   "it": "Problemi alle foglie",
+   "th": "ปัญหาใบ",
+   "km": "បញ្ហាស្លឹក"
+  }
+ },
+ "species": {
+  "pine": {
+   "en": "Japanese pine (black/red)",
+   "ja": "松（黒松・赤松）",
+   "es": "Pino japonés (negro/rojo)",
+   "zh": "松树（黑松·赤松）",
+   "fr": "Pin japonais (noir/rouge)",
+   "it": "Pino giapponese (nero/rosso)",
+   "th": "สนญี่ปุ่น (สนดำ/สนแดง)",
+   "km": "ស្រល់ជប៉ុន (ខ្មៅ/ក្រហម)"
+  },
+  "juniper": {
+   "en": "Juniper",
+   "ja": "真柏・杜松",
+   "es": "Enebro",
+   "zh": "真柏·杜松",
+   "fr": "Genévrier",
+   "it": "Ginepro",
+   "th": "จูนิเปอร์",
+   "km": "ជូនីពើរ"
+  },
+  "whitepine": {
+   "en": "Japanese white pine",
+   "ja": "五葉松",
+   "es": "Pino blanco japonés",
+   "zh": "五针松",
+   "fr": "Pin blanc du Japon",
+   "it": "Pino bianco giapponese",
+   "th": "สนห้าใบ",
+   "km": "ស្រល់ស្លឹកប្រាំ"
+  },
+  "maple": {
+   "en": "Maple",
+   "ja": "楓・紅葉",
+   "es": "Arce",
+   "zh": "枫树",
+   "fr": "Érable",
+   "it": "Acero",
+   "th": "เมเปิล",
+   "km": "ម៉េផល"
+  },
+  "azalea": {
+   "en": "Azalea (satsuki)",
+   "ja": "皐月・つつじ",
+   "es": "Azalea (satsuki)",
+   "zh": "杜鹃（皋月）",
+   "fr": "Azalée (satsuki)",
+   "it": "Azalea (satsuki)",
+   "th": "อาซาเลีย (ซัตสึกิ)",
+   "km": "អាហ្សាលា (សាត់ស៊ូគី)"
+  },
+  "ume": {
+   "en": "Japanese apricot (ume)",
+   "ja": "梅",
+   "es": "Ciruelo japonés (ume)",
+   "zh": "梅树",
+   "fr": "Abricotier du Japon (ume)",
+   "it": "Albicocco giapponese (ume)",
+   "th": "บ๊วย (อุเมะ)",
+   "km": "ផ្លែអ៊ុយមេ (ume)"
+  },
+  "zelkova": {
+   "en": "Zelkova",
+   "ja": "欅",
+   "es": "Zelkova",
+   "zh": "榉树",
+   "fr": "Zelkova",
+   "it": "Zelkova",
+   "th": "เซลโควา",
+   "km": "សែលកូវ៉ា"
+  },
+  "needle": {
+   "en": "Other needle conifers",
+   "ja": "針葉樹",
+   "es": "Otras coníferas de aguja",
+   "zh": "其他针叶树",
+   "fr": "Autres conifères à aiguilles",
+   "it": "Altre conifere ad aghi",
+   "th": "ไม้ใบเข็มอื่น ๆ",
+   "km": "ឈើស្លឹកម្ជុលផ្សេងទៀត"
+  }
+ },
+ "glossary": [
+  {
+   "ja": "針金掛け",
+   "yomi": "はりがねかけ",
+   "roma": "harigane-kake",
+   "plain_ja": "枝や幹に針金を巻いて、曲げたい向きに止めておくこと。",
+   "shown": {
+    "en": "wiring",
+    "es": "alambrado",
+    "zh": "缠铁丝",
+    "fr": "ligature",
+    "it": "legatura con filo",
+    "th": "การพันลวด",
+    "km": "ការរុំខ្សែលួស"
+   },
+   "meaning": {
+    "en": "Wrapping wire around a branch or trunk to bend it and hold it in a chosen position. A branch left alone tends to grow straight, so wiring keeps a lively, natural-looking movement.",
+    "es": "Enrollar alambre alrededor de una rama o del tronco para doblarlo y mantenerlo en la posición elegida. Una rama sin guiar tiende a crecer recta; el alambrado conserva un movimiento natural y vivo.",
+    "zh": "把铁丝缠在树枝或树干上，让它弯向想要的方向并固定住。树枝任其生长往往会长得笔直，铁丝造型能让枝条保持自然生动的姿态。",
+    "fr": "Enrouler un fil autour d'une branche ou du tronc pour la courber et la maintenir dans la position voulue. Une branche laissée libre pousse souvent droite ; la ligature garde un mouvement vivant et naturel.",
+    "it": "Avvolgere un filo attorno a un ramo o al tronco per piegarlo e mantenerlo nella posizione scelta. Un ramo lasciato libero tende a crescere dritto; la legatura mantiene un movimento vivo e naturale.",
+    "th": "การพันลวดรอบกิ่งหรือลำต้นเพื่อดัดและยึดให้อยู่ในทิศทางที่ต้องการ กิ่งที่ปล่อยตามธรรมชาติมักโตตรง การพันลวดช่วยให้กิ่งมีลีลาที่ดูเป็นธรรมชาติ",
+    "km": "ការរុំខ្សែលួសជុំវិញមែក ឬគល់ដើម ដើម្បីបត់ និងទប់វាឱ្យនៅទិសដៅដែលចង់បាន។ មែកដែលទុកតាមធម្មជាតិច្រើនតែលូតត្រង់ ការរុំខ្សែលួសជួយឱ្យមែកមានចលនាស្អាតតាមធម្មជាតិ។"
+   }
+  },
+  {
+   "ja": "針金外し",
+   "yomi": "はりがねはずし",
+   "roma": "harigane-hazushi",
+   "plain_ja": "枝の形が決まったら、針金が食い込んで傷になる前に切って外すこと。",
+   "shown": {
+    "en": "wire removal",
+    "es": "retirada del alambre",
+    "zh": "拆铁丝",
+    "fr": "retrait du fil",
+    "it": "rimozione del filo",
+    "th": "การถอดลวด",
+    "km": "ការដោះខ្សែលួស"
+   },
+   "meaning": {
+    "en": "Removing the wire that was used for bending, before it starts cutting into the growing branch. Left on too long, it leaves a scar on the bark.",
+    "es": "Quitar el alambre usado para doblar la rama antes de que empiece a clavarse en ella mientras crece. Si se deja demasiado tiempo, deja una cicatriz en la corteza.",
+    "zh": "在铁丝勒进正在生长的树枝之前，把用来弯曲的铁丝取下来。留得太久，会在树皮上留下伤痕。",
+    "fr": "Retirer le fil utilisé pour courber la branche avant qu'il ne s'enfonce dans la branche en croissance. Laissé trop longtemps, il laisse une cicatrice sur l'écorce.",
+    "it": "Togliere il filo usato per piegare il ramo prima che inizi a penetrare nel ramo in crescita. Se lasciato troppo a lungo, lascia una cicatrice sulla corteccia.",
+    "th": "การถอดลวดที่ใช้ดัดกิ่งออกก่อนที่ลวดจะบากเข้าไปในกิ่งที่กำลังโต ถ้าทิ้งไว้นานเกินไปจะเกิดรอยแผลบนเปลือกไม้",
+    "km": "ការដោះខ្សែលួសដែលប្រើសម្រាប់បត់មែកចេញ មុនពេលវាចាប់ផ្តើមចូលជ្រៅក្នុងមែកដែលកំពុងលូតលាស់។ បើទុកយូរពេក វានឹងបន្សល់ស្លាកស្នាមលើសំបក។"
+   }
+  },
+  {
+   "ja": "芽切り",
+   "yomi": "めきり",
+   "roma": "me-kiri",
+   "plain_ja": "主に松で、初夏に伸びた新しい芽（みどり）を根元から切って、次の芽を出させること。",
+   "shown": {
+    "en": "decandling",
+    "es": "corte de candelas (decandling)",
+    "zh": "剪新芽（松树的“芽切”）",
+    "fr": "coupe des bougies (decandling)",
+    "it": "taglio delle candele (decandling)",
+    "th": "การตัดยอดอ่อนของสน (decandling)",
+    "km": "ការកាត់ពន្លកថ្មីនៃស្រល់ (decandling)"
+   },
+   "meaning": {
+    "en": "Mainly on pines: cutting off the new spring shoot (the \"candle\") at its base in early summer. Several smaller second shoots grow back, giving denser, finer growth.",
+    "es": "Sobre todo en pinos: cortar por la base el brote nuevo de primavera (la \"candela\") a principios del verano. Rebrotan varios brotes más pequeños, con un crecimiento más denso y fino.",
+    "zh": "主要用于松树：在初夏把春天长出的新芽（“松芽”）从基部剪掉。之后会长出数个较小的二次芽，枝叶更密更细。",
+    "fr": "Surtout sur les pins : couper à la base la nouvelle pousse de printemps (la « bougie ») au début de l'été. Plusieurs pousses secondaires plus petites repartent, pour une croissance plus dense et plus fine.",
+    "it": "Soprattutto sui pini: tagliare alla base il nuovo germoglio primaverile (la \"candela\") all'inizio dell'estate. Ricrescono più germogli secondari piccoli, con una crescita più fitta e fine.",
+    "th": "ใช้กับสนเป็นหลัก คือการตัดยอดอ่อนที่แตกในฤดูใบไม้ผลิ (เรียกว่า \"แคนเดิล\") ออกที่โคนในช่วงต้นฤดูร้อน จะแตกยอดใหม่ที่เล็กกว่าหลายยอด ทำให้ทรงแน่นและละเอียดขึ้น",
+    "km": "ប្រើជាសំខាន់ជាមួយស្រល់៖ កាត់ពន្លកថ្មីនៃរដូវផ្ការីក (ហៅថា \"candle\") ត្រង់គល់ នៅដើមរដូវក្តៅ។ នឹងមានពន្លកទីពីរតូចៗច្រើនដុះឡើងវិញ ធ្វើឱ្យស្លឹកក្រាស់ និងល្អិតជាងមុន។"
+   }
+  },
+  {
+   "ja": "芽摘み",
+   "yomi": "めつみ",
+   "roma": "me-tsumi",
+   "plain_ja": "伸び始めたやわらかい新芽を、指先でつまんで取ること。",
+   "shown": {
+    "en": "pinching",
+    "es": "pinzado",
+    "zh": "摘芽",
+    "fr": "pincement",
+    "it": "cimatura",
+    "th": "การเด็ดยอดอ่อน",
+    "km": "ការបេះពន្លក"
+   },
+   "meaning": {
+    "en": "Pinching off a newly growing shoot with your fingertips while it is still soft. It makes the tree branch out and fill in, instead of stretching out leggy.",
+    "es": "Pellizcar con los dedos un brote nuevo mientras aún está tierno. Hace que el árbol ramifique y se llene, en lugar de alargarse y quedar ralo.",
+    "zh": "趁新芽还嫩的时候，用指尖把它摘掉。这样树会分出更多枝、变得更密，而不是徒长稀疏。",
+    "fr": "Pincer du bout des doigts une jeune pousse encore tendre. L'arbre se ramifie et se garnit, au lieu de s'étirer et de se dégarnir.",
+    "it": "Pizzicare con le dita un germoglio nuovo mentre è ancora tenero. L'albero si ramifica e si infoltisce, invece di allungarsi e restare rado.",
+    "th": "การใช้ปลายนิ้วเด็ดยอดอ่อนที่เพิ่งแตกขณะที่ยังนิ่มอยู่ ทำให้ต้นแตกกิ่งแขนงมากขึ้นและแน่นขึ้น แทนที่จะยืดยาวและโปร่ง",
+    "km": "ការប្រើចុងម្រាមដៃបេះពន្លកថ្មីពេលវានៅទន់នៅឡើយ។ វាធ្វើឱ្យដើមចេញមែកបន្ថែម និងក្រាស់ឡើង ជំនួសឱ្យការលូតវែងស្រឡះ។"
+   }
+  },
+  {
+   "ja": "葉刈り",
+   "yomi": "はがり",
+   "roma": "ha-gari",
+   "plain_ja": "葉のある木の葉を、わざと全部または半分ほど切り落として、新しい小さな葉を出させること。",
+   "shown": {
+    "en": "defoliation",
+    "es": "defoliación",
+    "zh": "摘叶",
+    "fr": "défoliation",
+    "it": "defogliazione",
+    "th": "การตัดใบออก",
+    "km": "ការកាត់ស្លឹកចេញ"
+   },
+   "meaning": {
+    "en": "Cutting off all or about half of the living leaves from a deciduous tree on purpose. The tree pushes out a fresh set of smaller leaves with more branching.",
+    "es": "Cortar a propósito todas las hojas vivas, o la mitad, de un árbol caducifolio. El árbol saca un juego nuevo de hojas más pequeñas y con más ramificación.",
+    "zh": "有意把落叶树上还活着的叶子全部或剪掉一半左右。树会重新长出一批更小的新叶，分枝也更多。",
+    "fr": "Couper volontairement toutes les feuilles vivantes, ou environ la moitié, d'un arbre à feuilles caduques. L'arbre produit alors de nouvelles feuilles plus petites, avec plus de ramification.",
+    "it": "Tagliare di proposito tutte le foglie vive, o circa la metà, di un albero a foglia caduca. L'albero produce nuove foglie più piccole e con più ramificazione.",
+    "th": "การตั้งใจตัดใบที่ยังเขียวของไม้ผลัดใบออกทั้งหมดหรือประมาณครึ่งหนึ่ง ต้นจะแตกใบชุดใหม่ที่เล็กกว่าเดิมและแตกกิ่งมากขึ้น",
+    "km": "ការកាត់ស្លឹកដែលនៅរស់របស់ដើមឈើជ្រុះស្លឹកចេញទាំងអស់ ឬប្រហែលពាក់កណ្តាល ដោយចេតនា។ ដើមនឹងចេញស្លឹកថ្មីតូចជាងមុន និងមានមែកច្រើនជាងមុន។"
+   }
+  },
+  {
+   "ja": "剪定",
+   "yomi": "せんてい",
+   "roma": "sentei",
+   "plain_ja": "枝や葉をハサミで切って、木の大きさや形を整えること。",
+   "shown": {
+    "en": "pruning",
+    "es": "poda",
+    "zh": "修剪",
+    "fr": "taille",
+    "it": "potatura",
+    "th": "การตัดแต่งกิ่ง",
+    "km": "ការកាត់ច្រឹបមែក"
+   },
+   "meaning": {
+    "en": "Cutting branches and leaves with shears to control the tree's size and shape. Where and how much to cut is a matter of the craftsman's judgment.",
+    "es": "Cortar ramas y hojas con tijeras para controlar el tamaño y la forma del árbol. Dónde y cuánto cortar es una decisión que depende del criterio del artesano.",
+    "zh": "用剪刀剪去枝叶，调整树的大小和形状。在哪里剪、剪多少，要看匠人的判断。",
+    "fr": "Couper branches et feuilles au sécateur pour maîtriser la taille et la forme de l'arbre. Où couper et combien relève du jugement de l'artisan.",
+    "it": "Tagliare rami e foglie con le forbici per controllare dimensioni e forma dell'albero. Dove e quanto tagliare dipende dal giudizio dell'artigiano.",
+    "th": "การใช้กรรไกรตัดกิ่งและใบเพื่อควบคุมขนาดและทรงของต้น ตัดตรงไหนและตัดมากแค่ไหนขึ้นอยู่กับวิจารณญาณของช่าง",
+    "km": "ការប្រើកន្ត្រៃកាត់មែក និងស្លឹក ដើម្បីគ្រប់គ្រងទំហំ និងរូបរាងរបស់ដើម។ កាត់កន្លែងណា និងកាត់ប៉ុន្មាន គឺអាស្រ័យលើការវិនិច្ឆ័យរបស់ជាងស្មើដៃ។"
+   }
+  },
+  {
+   "ja": "切り戻し",
+   "yomi": "きりもどし",
+   "roma": "kiri-modoshi",
+   "plain_ja": "伸びた枝を、途中の芽や節のところまで短く切ること。",
+   "shown": {
+    "en": "cutting back",
+    "es": "poda de reducción",
+    "zh": "回剪",
+    "fr": "rabattage",
+    "it": "taglio di accorciamento",
+    "th": "การตัดกลับ",
+    "km": "ការកាត់មែកឱ្យខ្លី"
+   },
+   "meaning": {
+    "en": "Cutting a shoot back to an earlier bud or node, shortening it rather than removing it entirely. The branch keeps its length in check and new buds grow from there.",
+    "es": "Cortar un brote hasta una yema o nudo anterior, acortándolo en lugar de eliminarlo. La rama mantiene su longitud controlada y de ahí salen nuevas yemas.",
+    "zh": "把长出的枝条剪回到前面的某个芽或节处，是缩短而不是整枝剪掉。这样能控制枝条长度，并从该处长出新芽。",
+    "fr": "Couper une pousse jusqu'à un bourgeon ou un nœud plus bas, pour la raccourcir sans la supprimer. La longueur de la branche reste maîtrisée et de nouveaux bourgeons repartent de là.",
+    "it": "Tagliare un germoglio fino a una gemma o a un nodo più indietro, accorciandolo invece di eliminarlo. Il ramo mantiene la lunghezza sotto controllo e da lì ripartono nuove gemme.",
+    "th": "การตัดกิ่งที่ยืดยาวกลับมาถึงตาหรือข้อที่อยู่ก่อนหน้า เป็นการทำให้สั้นลงแทนที่จะตัดทิ้งทั้งกิ่ง ช่วยคุมความยาวกิ่งและแตกตาใหม่จากจุดนั้น",
+    "km": "ការកាត់មែកដែលលូតវែងត្រឡប់មកត្រឹមពន្លក ឬថ្នាំងមុន ដើម្បីធ្វើឱ្យខ្លី ជំនួសឱ្យការកាត់ចោលទាំងមែក។ មែកនៅរក្សាប្រវែងបាន ហើយពន្លកថ្មីដុះចេញពីទីនោះ។"
+   }
+  },
+  {
+   "ja": "植え替え",
+   "yomi": "うえかえ",
+   "roma": "ue-kae",
+   "plain_ja": "鉢から木を出して、古い土を落とし、根を整えてから、新しい土で鉢に戻すこと。",
+   "shown": {
+    "en": "repotting",
+    "es": "trasplante",
+    "zh": "换盆",
+    "fr": "rempotage",
+    "it": "rinvaso",
+    "th": "การเปลี่ยนกระถาง",
+    "km": "ការប្តូរផើង"
+   },
+   "meaning": {
+    "en": "Taking a bonsai out of its pot, trimming and refreshing its root ball, and returning it to a pot with fresh soil. It is done just before the tree wakes from dormancy, when roots recover most easily.",
+    "es": "Sacar el bonsái de la maceta, recortar y renovar el cepellón y devolverlo a una maceta con sustrato nuevo. Se hace justo antes de que el árbol despierte de la dormancia, cuando las raíces se recuperan con más facilidad.",
+    "zh": "把盆景从盆里取出，修整并更新根团，再用新土种回盆中。通常在树木即将结束休眠之前进行，此时根最容易恢复。",
+    "fr": "Sortir le bonsaï de son pot, tailler et rafraîchir la motte, puis le remettre dans un pot avec un substrat neuf. On le fait juste avant le réveil de l'arbre après la dormance, quand les racines se rétablissent le plus facilement.",
+    "it": "Estrarre il bonsai dal vaso, sistemare e rinnovare le radici e rimetterlo in un vaso con substrato fresco. Si fa poco prima che l'albero esca dalla dormienza, quando le radici si riprendono più facilmente.",
+    "th": "การนำบอนไซออกจากกระถาง ตัดแต่งและทำความสะอาดก้อนราก แล้วปลูกกลับลงกระถางด้วยดินใหม่ ทำก่อนที่ต้นจะตื่นจากการพักตัว ซึ่งเป็นช่วงที่รากฟื้นตัวได้ง่ายที่สุด",
+    "km": "ការយកបន្សាយចេញពីផើង កាត់តម្រឹម និងធ្វើឱ្យឫសថ្មី ហើយដាក់ត្រឡប់ចូលផើងវិញជាមួយដីថ្មី។ ធ្វើមុនពេលដើមភ្ញាក់ពីការសម្រាក ដែលជាពេលឫសងើបឡើងវិញបានងាយបំផុត។"
+   }
+  },
+  {
+   "ja": "根張り",
+   "yomi": "ねばり",
+   "roma": "nebari",
+   "plain_ja": "幹の根元で、土の上に見えている根の広がり方。",
+   "shown": {
+    "en": "nebari (root flare)",
+    "es": "nebari (base de raíces)",
+    "zh": "根盘 (nebari)",
+    "fr": "nebari (assise des racines)",
+    "it": "nebari (radici alla base)",
+    "th": "เนบาริ (รากที่แผ่ที่โคนต้น)",
+    "km": "nebari (ឫសរីកនៅគល់ដើម)"
+   },
+   "meaning": {
+    "en": "The visible spread of surface roots radiating from the base of the trunk at soil level. A solid nebari makes the tree look settled and long-established.",
+    "es": "La extensión visible de las raíces superficiales que irradian desde la base del tronco, a nivel del suelo. Un buen nebari hace que el árbol se vea asentado y antiguo.",
+    "zh": "指树干基部、在土面上可见的根系向四周伸展的样子。根盘扎实，树看起来稳重，仿佛已在原地生长多年。",
+    "fr": "L'étalement visible des racines de surface qui rayonnent depuis la base du tronc, au niveau du sol. Un nebari solide donne à l'arbre un air stable et ancien.",
+    "it": "La distesa visibile delle radici superficiali che si irradiano dalla base del tronco, a livello del terreno. Un buon nebari fa sembrare l'albero stabile e radicato da molto tempo.",
+    "th": "ลักษณะการแผ่ของรากที่เห็นบนผิวดินรอบโคนลำต้น เนบาริที่แข็งแรงทำให้ต้นดูมั่นคงและเหมือนเติบโตอยู่ที่นั่นมานาน",
+    "km": "ការលាតសន្ធឹងនៃឫសលើផ្ទៃដី ដែលអាចមើលឃើញនៅគល់ដើម។ nebari រឹងមាំធ្វើឱ្យដើមមើលទៅមាំមួន ហាក់ដូចជាដុះនៅទីនោះយូរមកហើយ។"
+   }
+  },
+  {
+   "ja": "立ち上がり",
+   "yomi": "たちあがり",
+   "roma": "tachiagari",
+   "plain_ja": "土から出たばかりの幹の根元（はじめの10cmほど）の太さと曲がり。",
+   "shown": {
+    "en": "trunk base (tachiagari)",
+    "es": "arranque del tronco (tachiagari)",
+    "zh": "树干起势 (tachiagari)",
+    "fr": "départ du tronc (tachiagari)",
+    "it": "attacco del tronco (tachiagari)",
+    "th": "โคนลำต้น (ทาจิอาการิ)",
+    "km": "គល់ដើម (tachiagari)"
+   },
+   "meaning": {
+    "en": "The lowest part of the trunk where it rises out of the soil (roughly the first 10 cm), and how thick and curved it is. It sets the strength and direction of the whole tree.",
+    "es": "La parte más baja del tronco, donde emerge del suelo (aproximadamente los primeros 10 cm), y su grosor y curvatura. Define la fuerza y la dirección de todo el árbol.",
+    "zh": "树干刚从土里长出来的最下部（大约最初的10厘米）及其粗细和弯曲。它决定了整棵树的力度与走向。",
+    "fr": "La partie la plus basse du tronc, là où il sort du sol (environ les 10 premiers cm), avec son épaisseur et sa courbe. Elle donne sa force et sa direction à tout l'arbre.",
+    "it": "La parte più bassa del tronco, dove emerge dal terreno (circa i primi 10 cm), con il suo spessore e la sua curvatura. Determina la forza e la direzione di tutto l'albero.",
+    "th": "ส่วนล่างสุดของลำต้นที่โผล่พ้นดิน (ประมาณ 10 ซม.แรก) รวมถึงความหนาและความโค้ง ส่วนนี้กำหนดพลังและทิศทางของทั้งต้น",
+    "km": "ផ្នែកខាងក្រោមបំផុតនៃគល់ដើមដែលដុះចេញពីដី (ប្រហែល 10 សង់ទីម៉ែត្រដំបូង) និងកម្រាស់ ព្រមទាំងភាពកោងរបស់វា។ វាកំណត់កម្លាំង និងទិសដៅនៃដើមទាំងមូល។"
+   }
+  },
+  {
+   "ja": "ジン",
+   "yomi": "じん",
+   "roma": "jin",
+   "plain_ja": "枝の先を、皮をむいて白く枯らして見せる表現。",
+   "shown": {
+    "en": "jin (deadwood branch)",
+    "es": "jin (rama seca blanqueada)",
+    "zh": "jin（白色枯枝）",
+    "fr": "jin (branche morte blanchie)",
+    "it": "jin (ramo secco sbiancato)",
+    "th": "จิน (กิ่งแห้งสีขาว)",
+    "km": "jin (មែកស្ងួតពណ៌ស)"
+   },
+   "meaning": {
+    "en": "Bleached, bark-stripped deadwood made on a branch or the top of the tree. It suggests a tree that has survived storms and adds a sense of age.",
+    "es": "Madera muerta blanqueada y sin corteza, hecha en una rama o en la punta del árbol. Evoca un árbol que ha sobrevivido a tormentas y aporta sensación de edad.",
+    "zh": "在树枝或树顶上剥去树皮、晒成白色的枯木造型。它让人联想到历经风雨幸存下来的树，增添岁月感。",
+    "fr": "Bois mort blanchi et dépouillé de son écorce, réalisé sur une branche ou au sommet de l'arbre. Il évoque un arbre qui a survécu aux tempêtes et donne une impression d'âge.",
+    "it": "Legno secco sbiancato e privo di corteccia, ricavato su un ramo o sulla cima dell'albero. Richiama un albero sopravvissuto alle tempeste e dà un senso di età.",
+    "th": "ไม้แห้งสีขาวที่ลอกเปลือกออก ทำที่กิ่งหรือยอดของต้น สื่อถึงต้นไม้ที่รอดจากพายุและเพิ่มความรู้สึกของวัย",
+    "km": "ឈើស្ងួតពណ៌សដែលបកសំបកចេញ ធ្វើនៅលើមែក ឬកំពូលដើម។ វាបង្ហាញពីដើមឈើដែលរួចផុតពីព្យុះ ហើយបន្ថែមអារម្មណ៍នៃអាយុកាល។"
+   }
+  },
+  {
+   "ja": "シャリ",
+   "yomi": "しゃり",
+   "roma": "shari",
+   "plain_ja": "幹の一部の皮をむいて、白く枯れた木肌を見せる表現（枝なら「ジン」）。",
+   "shown": {
+    "en": "shari (deadwood trunk)",
+    "es": "shari (tronco seco blanqueado)",
+    "zh": "shari（白色枯干）",
+    "fr": "shari (tronc blanchi)",
+    "it": "shari (tronco secco sbiancato)",
+    "th": "ชาริ (ลำต้นแห้งสีขาว)",
+    "km": "shari (គល់ស្ងួតពណ៌ស)"
+   },
+   "meaning": {
+    "en": "An area of dead, bark-stripped wood running along the trunk itself, as opposed to jin which is on a branch. Against living bark, the white wood suggests a long struggle with nature.",
+    "es": "Una zona de madera muerta y sin corteza a lo largo del propio tronco, a diferencia del jin, que está en una rama. Frente a la corteza viva, la madera blanca sugiere una larga lucha con la naturaleza.",
+    "zh": "树干本身一段去皮、枯白的木质部分，不同于位于枝上的 jin。白色枯木与鲜活的树皮形成对比，暗示这棵树长年与自然搏斗。",
+    "fr": "Une zone de bois mort, dépouillée de son écorce, le long du tronc lui-même, par opposition au jin qui se trouve sur une branche. Face à l'écorce vivante, le bois blanc évoque une longue lutte avec la nature.",
+    "it": "Una zona di legno secco privo di corteccia lungo il tronco stesso, a differenza dello jin che si trova su un ramo. Contro la corteccia viva, il legno bianco suggerisce una lunga lotta con la natura.",
+    "th": "บริเวณไม้แห้งที่ลอกเปลือกออกตามแนวลำต้นเอง ต่างจากจินที่อยู่บนกิ่ง เมื่อเทียบกับเปลือกที่ยังมีชีวิต เนื้อไม้สีขาวสื่อถึงการต่อสู้กับธรรมชาติมายาวนาน",
+    "km": "តំបន់ឈើស្ងួតដែលបកសំបកចេញតាមបណ្តោយគល់ដើមខ្លួនឯង ខុសពី jin ដែលនៅលើមែក។ ពេលប្រៀបនឹងសំបកដែលនៅរស់ ឈើពណ៌សបង្ហាញពីការតស៊ូជាមួយធម្មជាតិយូរឆ្នាំ។"
+   }
+  },
+  {
+   "ja": "用土",
+   "yomi": "ようど",
+   "roma": "yodo",
+   "plain_ja": "盆栽を植えるための土。ふつうの庭の土ではなく、粒の土を何種類か混ぜて作る。",
+   "shown": {
+    "en": "soil mix",
+    "es": "sustrato",
+    "zh": "培养土",
+    "fr": "substrat",
+    "it": "substrato",
+    "th": "ดินปลูก",
+    "km": "ដីលាយ"
+   },
+   "meaning": {
+    "en": "The soil blend a bonsai is planted in: not ordinary garden dirt, but a mix of a few granular soils. The mix is balanced for drainage and water retention and changed to suit the tree and the pot.",
+    "es": "La mezcla de suelo en la que se planta el bonsái: no es tierra de jardín común, sino una combinación de varios suelos granulares. Se equilibra el drenaje y la retención de agua y se ajusta al árbol y a la maceta.",
+    "zh": "盆景所种植的土壤配方：不是普通的庭园土，而是由几种颗粒状的土混合而成。排水与保水要配比得当，并根据树种和盆的深浅调整。",
+    "fr": "Le mélange de terres dans lequel on plante un bonsaï : pas de la terre de jardin ordinaire, mais un assemblage de quelques terres granuleuses. On équilibre drainage et rétention d'eau et on l'adapte à l'arbre et au pot.",
+    "it": "La miscela di terreni in cui si pianta un bonsai: non terra da giardino comune, ma un insieme di alcuni terreni granulari. Si bilancia drenaggio e ritenzione d'acqua e la si adatta all'albero e al vaso.",
+    "th": "ส่วนผสมดินที่ใช้ปลูกบอนไซ ไม่ใช่ดินสวนทั่วไป แต่เป็นดินเม็ดหลายชนิดผสมกัน ปรับสมดุลระหว่างการระบายน้ำและการเก็บน้ำ และเปลี่ยนสูตรให้เหมาะกับชนิดต้นและกระถาง",
+    "km": "ល្បាយដីដែលប្រើដាំបន្សាយ មិនមែនដីសួនធម្មតាទេ តែជាល្បាយនៃដីគ្រាប់ជាច្រើនប្រភេទ។ ត្រូវតុល្យភាពរវាងការបង្ហូរទឹក និងការទប់ទឹក ហើយកែប្រែតាមប្រភេទដើម និងផើង។"
+   }
+  },
+  {
+   "ja": "水やり",
+   "yomi": "みずやり",
+   "roma": "mizu-yari",
+   "plain_ja": "鉢の土に水をあげること。",
+   "shown": {
+    "en": "watering",
+    "es": "riego",
+    "zh": "浇水",
+    "fr": "arrosage",
+    "it": "annaffiatura",
+    "th": "การรดน้ำ",
+    "km": "ការស្រោចទឹក"
+   },
+   "meaning": {
+    "en": "Giving water to the soil in the pot. A bonsai pot holds little soil, so how much and when you water matters a great deal: too much damages the roots, too little and the tree dries out.",
+    "es": "Dar agua al suelo de la maceta. Una maceta de bonsái tiene poca tierra, así que cuánto y cuándo regar importa mucho: demasiado daña las raíces y muy poco deja secar el árbol.",
+    "zh": "给盆里的土浇水。盆景的盆小、土少，所以浇多少、什么时候浇非常重要：太多会伤根，太少树会干枯。",
+    "fr": "Donner de l'eau à la terre du pot. Un pot de bonsaï contient peu de terre, donc la quantité et le moment comptent beaucoup : trop abîme les racines, trop peu laisse l'arbre se dessécher.",
+    "it": "Dare acqua al terreno nel vaso. Il vaso di un bonsai contiene poco terreno, quindi quanto e quando annaffiare conta molto: troppa acqua danneggia le radici, troppo poca fa seccare l'albero.",
+    "th": "การให้น้ำกับดินในกระถาง กระถางบอนไซมีดินน้อย จึงสำคัญมากว่ารดน้ำเท่าไรและเมื่อไร ให้มากไปรากเสียหาย ให้น้อยไปต้นก็แห้ง",
+    "km": "ការឱ្យទឹកទៅដីក្នុងផើង។ ផើងបន្សាយមានដីតិច ដូច្នេះបរិមាណ និងពេលវេលាស្រោចទឹកសំខាន់ណាស់៖ ច្រើនពេកខូចឫស តិចពេកដើមស្ងួត។"
+   }
+  },
+  {
+   "ja": "施肥",
+   "yomi": "せひ",
+   "roma": "se-hi",
+   "plain_ja": "木に肥料をあげること。",
+   "shown": {
+    "en": "fertilizing",
+    "es": "abonado",
+    "zh": "施肥",
+    "fr": "fertilisation",
+    "it": "concimazione",
+    "th": "การใส่ปุ๋ย",
+    "km": "ការដាក់ជី"
+   },
+   "meaning": {
+    "en": "Giving fertilizer to the tree. The soil in a pot alone is not enough, so nutrients are added during the growing season; wrong timing or amount can make growth leggy or weaken the tree.",
+    "es": "Dar fertilizante al árbol. El suelo de la maceta por sí solo no basta, así que se aportan nutrientes durante la temporada de crecimiento; un momento o cantidad equivocados pueden alargar el crecimiento o debilitar el árbol.",
+    "zh": "给树施肥。仅靠盆土养分不够，所以要在生长期补充肥料；时机或用量不当，会让枝条徒长，或使树变弱。",
+    "fr": "Apporter de l'engrais à l'arbre. La terre du pot seule ne suffit pas, on complète donc en période de croissance ; un mauvais moment ou une mauvaise quantité peut étirer la croissance ou affaiblir l'arbre.",
+    "it": "Dare concime all'albero. Il solo terreno del vaso non basta, quindi si integrano i nutrienti nella stagione di crescita; momento o quantità sbagliati possono allungare la crescita o indebolire l'albero.",
+    "th": "การให้ปุ๋ยแก่ต้นไม้ ดินในกระถางอย่างเดียวไม่พอ จึงเติมธาตุอาหารในช่วงฤดูเติบโต ถ้าผิดเวลาหรือผิดปริมาณ กิ่งอาจยืดยาวหรือต้นอ่อนแอลง",
+    "km": "ការដាក់ជីឱ្យដើម។ ដីក្នុងផើងតែម្យ៉ាងមិនគ្រប់គ្រាន់ទេ ដូច្នេះត្រូវបន្ថែមជីក្នុងរដូវលូតលាស់ ប្រសិនបើខុសពេល ឬខុសបរិមាណ មែកអាចលូតវែងខ្សោយ ឬដើមខ្សោយ។"
+   }
+  },
+  {
+   "ja": "冬越し",
+   "yomi": "ふゆごし",
+   "roma": "fuyu-goshi",
+   "plain_ja": "寒い冬のあいだ、木が凍ったり根が傷んだりしないように守って春まで過ごさせること。",
+   "shown": {
+    "en": "overwintering",
+    "es": "invernada",
+    "zh": "越冬",
+    "fr": "hivernage",
+    "it": "svernamento",
+    "th": "การดูแลช่วงฤดูหนาว",
+    "km": "ការថែរក្សារដូវរងា"
+   },
+   "meaning": {
+    "en": "Protecting a bonsai through the cold of winter so its roots and branches are not damaged by freezing. Roots in a pot are more vulnerable to cold than a tree in the ground, so the tree is sheltered from cold wind and frost.",
+    "es": "Proteger el bonsái durante el frío del invierno para que sus raíces y ramas no se dañen por la congelación. Las raíces en maceta son más vulnerables al frío que las de un árbol en el suelo, por eso se resguarda del viento frío y las heladas.",
+    "zh": "在严寒的冬天保护盆景，避免根和枝条被冻伤。盆里的根比地栽树的根更怕冷，所以要让树避开寒风和霜冻。",
+    "fr": "Protéger un bonsaï pendant le froid de l'hiver pour que ses racines et ses branches ne soient pas abîmées par le gel. Les racines en pot sont plus sensibles au froid que celles d'un arbre en pleine terre, on l'abrite donc du vent froid et du gel.",
+    "it": "Proteggere il bonsai durante il freddo invernale perché radici e rami non siano danneggiati dal gelo. Le radici in vaso sono più vulnerabili al freddo di quelle di un albero in piena terra, perciò si ripara l'albero dal vento freddo e dal gelo.",
+    "th": "การปกป้องบอนไซตลอดความหนาวของฤดูหนาว เพื่อไม่ให้รากและกิ่งเสียหายจากการแข็งตัว รากในกระถางทนหนาวได้น้อยกว่าต้นที่ปลูกลงดิน จึงต้องกำบังต้นจากลมหนาวและน้ำค้างแข็ง",
+    "km": "ការការពារបន្សាយក្នុងរដូវរងាត្រជាក់ កុំឱ្យឫស និងមែកខូចដោយទឹកកក។ ឫសក្នុងផើងងាយរងគ្រោះដោយត្រជាក់ជាងដើមដែលដាំក្នុងដី ដូច្នេះត្រូវការពារដើមពីខ្យល់ត្រជាក់ និងទឹកកក។"
+   }
+  }
+ ]
+}

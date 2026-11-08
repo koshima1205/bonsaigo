@@ -178,5 +178,135 @@
   "it": "OK (registra per la pubblicazione)",
   "th": "ตกลง (ลงทะเบียนเพื่อโพสต์)",
   "km": "យល់ព្រម (ចុះឈ្មោះសម្រាប់ផុស)"
+ },
+ "g.ask.win": {
+  "ja": "まずAI窓口に聞く",
+  "en": "Ask the AI desk first",
+  "es": "Pregunta primero al asistente de IA",
+  "zh": "先问AI窗口",
+  "fr": "Demander d'abord à l'accueil IA",
+  "it": "Chiedi prima allo sportello IA",
+  "th": "ถามโต๊ะ AI ก่อน",
+  "km": "សួរតុ AI ជាមុនសិន"
+ },
+ "g.ask.solved": {
+  "ja": "解決しました",
+  "en": "That solved it",
+  "es": "Ya está resuelto",
+  "zh": "问题解决了",
+  "fr": "C'est réglé",
+  "it": "Risolto",
+  "th": "แก้ได้แล้ว",
+  "km": "បានដោះស្រាយហើយ"
+ },
+ "g.ask.toCraft": {
+  "ja": "職人に聞く",
+  "en": "Ask a craftsperson",
+  "es": "Preguntar a un artesano",
+  "zh": "问匠人",
+  "fr": "Demander à un artisan",
+  "it": "Chiedi a un artigiano",
+  "th": "ถามช่าง",
+  "km": "សួរជាង"
+ },
+ "g.ask.solvedT": {
+  "ja": "よかったです。また気になることがあれば、いつでも聞いてください。",
+  "en": "Glad it helped. Ask again any time.",
+  "es": "Nos alegra haberte ayudado. Pregunta cuando quieras.",
+  "zh": "太好了。有其他问题随时来问。",
+  "fr": "Tant mieux. Revenez quand vous voulez.",
+  "it": "Bene! Chiedi pure quando vuoi.",
+  "th": "ดีใจที่ช่วยได้ ถามได้ทุกเมื่อ",
+  "km": "រីករាយដែលបានជួយ។ សួរបានគ្រប់ពេល។"
+ },
+ "g.ask.treeF": {
+  "ja": "どの木の相談ですか",
+  "en": "Which tree is this about?",
+  "es": "¿Sobre qué árbol es?",
+  "zh": "是关于哪棵树的咨询？",
+  "fr": "De quel arbre s'agit-il ?",
+  "it": "Di quale albero si tratta?",
+  "th": "ปรึกษาเรื่องต้นไหน",
+  "km": "តើជាដើមឈើមួយណា?"
+ },
+ "g.ask.treeNew": {
+  "ja": "新しい木",
+  "en": "A new tree",
+  "es": "Un árbol nuevo",
+  "zh": "新的树",
+  "fr": "Un nouvel arbre",
+  "it": "Un albero nuovo",
+  "th": "ต้นใหม่",
+  "km": "ដើមឈើថ្មី"
+ },
+ "g.ask.treeNote": {
+  "ja": "前に相談した木を選ぶと、職人は前のやりとりを見て答えます。",
+  "en": "Pick a tree you asked about before, and the craftsperson will see your earlier exchange.",
+  "es": "Si eliges un árbol que ya consultaste, el artesano verá la conversación anterior.",
+  "zh": "选择以前咨询过的树，匠人会看着之前的交流来回答。",
+  "fr": "Choisissez un arbre déjà présenté : l'artisan verra vos échanges précédents.",
+  "it": "Scegli un albero di cui hai già chiesto: l'artigiano vedrà lo scambio precedente.",
+  "th": "เลือกต้นที่เคยปรึกษา ช่างจะเห็นการคุยครั้งก่อน",
+  "km": "ជ្រើសដើមឈើដែលធ្លាប់សួរ ជាងនឹងឃើញការសន្ទនាមុន។"
+ },
+ "g.ask.hint": {
+  "ja": "日本語にしなくて大丈夫です。まずAI窓口がすぐに答えます。職人に送るときは、AIが意味をくみ取り、{A}の盆栽用語に直して伝えます。",
+  "en": "No need to write in Japanese. The AI desk answers right away first. When you send it to a craftsperson, AI takes in your meaning and passes it on in {A} bonsai terms.",
+  "es": "No hace falta escribir en japonés. Primero responde al instante el asistente de IA. Al enviarlo a un artesano, la IA entiende lo que quieres decir y lo transmite con términos de bonsái en {A}.",
+  "zh": "不用写日语。AI窗口会先马上回答。发给匠人时，AI 会理解你的意思，换成{A}的盆栽用语转达。",
+  "fr": "Inutile d'écrire en japonais. L'accueil IA répond d'abord tout de suite. Quand vous l'envoyez à un artisan, l'IA saisit votre idée et la transmet avec les termes de bonsaï en {A}.",
+  "it": "Non serve scrivere in giapponese. Prima risponde subito lo sportello IA. Quando lo invii a un artigiano, l'IA coglie il senso e lo trasmette con i termini del bonsai in {A}.",
+  "th": "ไม่ต้องเขียนเป็นภาษาญี่ปุ่น โต๊ะ AI จะตอบทันทีก่อน เมื่อส่งถึงช่าง AI จะเข้าใจความหมายแล้วถ่ายทอดด้วยศัพท์บอนไซภาษา{A}",
+  "km": "មិនចាំបាច់សរសេរជាភាសាជប៉ុនទេ។ តុ AI នឹងឆ្លើយភ្លាមៗជាមុន។ ពេលផ្ញើទៅជាង AI យល់ន័យ ហើយបញ្ជូនជាពាក្យបុនសៃភាសា{A}។"
+ },
+ "g.win.h": {
+  "ja": "AI窓口に聞く",
+  "en": "Ask the AI desk",
+  "es": "Pregunta al asistente de IA",
+  "zh": "问AI窗口",
+  "fr": "Demander à l'accueil IA",
+  "it": "Chiedi allo sportello IA",
+  "th": "ถามโต๊ะ AI",
+  "km": "សួរតុ AI"
+ },
+ "a.inbox.cnt": {
+  "ja": "相談が{N}件、届いています",
+  "en": "{N} questions have arrived",
+  "es": "Han llegado {N} consultas",
+  "zh": "收到了 {N} 条咨询",
+  "fr": "{N} questions sont arrivées",
+  "it": "Sono arrivate {N} domande",
+  "th": "มีคำปรึกษามา {N} เรื่อง",
+  "km": "មានសំណួរ {N} មកដល់"
+ },
+ "a.tag.new": {
+  "ja": "新着",
+  "en": "New",
+  "es": "Nuevo",
+  "zh": "新到",
+  "fr": "Nouveau",
+  "it": "Nuovo",
+  "th": "ใหม่",
+  "km": "ថ្មី"
+ },
+ "a.tag.again": {
+  "ja": "前にも相談した木",
+  "en": "Tree asked about before",
+  "es": "Árbol ya consultado",
+  "zh": "以前咨询过的树",
+  "fr": "Arbre déjà présenté",
+  "it": "Albero già chiesto",
+  "th": "ต้นที่เคยปรึกษา",
+  "km": "ដើមឈើធ្លាប់សួរ"
+ },
+ "a.tag.done": {
+  "ja": "回答済み",
+  "en": "Answered",
+  "es": "Respondido",
+  "zh": "已回答",
+  "fr": "Répondu",
+  "it": "Risposto",
+  "th": "ตอบแล้ว",
+  "km": "បានឆ្លើយ"
  }
 }

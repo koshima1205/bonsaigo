@@ -183,6 +183,8 @@
       $("#askSp").innerHTML = Object.entries(WORLD.species).map(([k, n]) => `<option value="${esc(k)}">${esc(n[GL] || n.en)}</option>`).join("");
       $("#askSp").value = sv;
       suggestGarden();
+      $("#askWinOut").innerHTML = "";
+      paintTrees();
     },
     gpick() { renderGpick(); },
     answer() { renderAnswer(); },
@@ -212,13 +214,23 @@
     async inbox() {
       try {
         const d = await api("GET", "/consultations"); consults = d.consultations || [];
-        $("#inboxList").innerHTML = consults.length ? consults.map((c) => `<button class="inbox-card ${c.answer ? "done" : ""}" data-cid="${c.id}"><div class="row"><img src="${c.image ? "data:" + c.image.media_type + ";base64," + c.image.data : "img/ask.jpg"}" alt=""><div>${c.answer ? `<span class="st">✓ ${esc(t("a.x.done"))}</span>` : `<span class="new">${esc(t("a.x.notYet"))}</span>`}<p>${esc(forCraft(c).title || "")}</p></div></div><div class="from"><span>${esc(t("a.x.from", { L: I18N[AL].names[c.lang] || c.lang }))}</span><span>${esc(new Date(c.at).toLocaleDateString(AL === "zh" ? "zh-CN" : AL))}</span></div></button>`).join("") : `<div class="empty" style="margin-top:16px">${esc(t("a.x.inboxNone"))}</div>`;
+        paintInbox();
       } catch (e) { if (e.status === 401) { ME = null; show("welcome"); } }
     },
     detail() { renderDetail(); },
     reg() { renderReg(); },
     mlearn() { renderMl(); },
   };
+  let inboxTab = "todo";
+  const tagOf = (c) => c.answer ? `<span class="st">✓ ${esc(t("a.tag.done"))}</span>` : (c.tree_history || []).length ? `<span class="new again">${esc(t("a.tag.again"))}</span>` : `<span class="new">${esc(t("a.tag.new"))}</span>`;
+  function paintInbox() {
+    const todo = consults.filter((c) => !c.answer), list = inboxTab === "todo" ? todo : consults.filter((c) => c.answer);
+    const h = $("#inboxH");
+    if (todo.length) { h.dataset.i18n = "a.inbox.cnt"; h.dataset.n = todo.length; h.textContent = t("a.inbox.cnt", { N: todo.length }); } else { h.dataset.i18n = "a.tab.answer"; h.textContent = t("a.tab.answer"); }
+    $$("#inboxSeg [data-ib]").forEach((b) => b.classList.toggle("on", b.dataset.ib === inboxTab));
+    $("#inboxList").innerHTML = list.length ? list.map((c) => `<button class="inbox-card ${c.answer ? "done" : ""}" data-cid="${c.id}"><div class="row"><img src="${c.image ? "data:" + c.image.media_type + ";base64," + c.image.data : "img/ask.jpg"}" alt=""><div>${tagOf(c)}<p>${esc(forCraft(c).title || "")}</p></div></div><div class="from"><span>${esc(t("a.x.from", { L: I18N[AL].names[c.lang] || c.lang }))}</span><span>${esc(new Date(c.at).toLocaleDateString(AL === "zh" ? "zh-CN" : AL))}</span></div></button>`).join("") : `<div class="empty" style="margin-top:16px">${esc(t("a.x.inboxNone"))}</div>`;
+  }
+  $("#inboxSeg").addEventListener("click", (e) => { const b = e.target.closest("[data-ib]"); if (!b) return; inboxTab = b.dataset.ib; paintInbox(); });
   const ROMA = { hazushi: "harigane-hazushi", kake: "harigane-kake", mekiri: "mekiri", metsumi: "metsumi", jin: "jin", nebari: "nebari", tachiagari: "tachiagari", uekae: "uekae" };
 
   /* ── はじまり・ログイン ── */
@@ -327,13 +339,25 @@
     else if (tp) { gpTopic = gpTopic === tp.dataset.tp ? "" : tp.dataset.tp; gpTree = ""; renderGpick(); }
     else if (gd) { toGarden = gd.dataset.gid; store.set("bg-g", toGarden); pickedByHand = true; back(); }
   });
+  // どの木の相談か。前に相談した木を選ぶと、同じ木の番号で送る（職人は前のやりとりを見て答える）
+  let askTree = "";
+  async function paintTrees() {
+    let mine = [];
+    try { mine = (await api("GET", "/consultations")).consultations || []; } catch {}
+    const trees = []; const seen = new Set();
+    for (const c of mine) if (c.tree_id && !seen.has(c.tree_id)) { seen.add(c.tree_id); trees.push(c); }
+    if (askTree && !seen.has(askTree)) askTree = "";
+    $("#askTreeF").hidden = !trees.length;
+    $("#askTrees").innerHTML = `<button class="chip ${askTree ? "" : "on"}" data-tree="">${esc(t("g.ask.treeNew"))}</button>` + trees.slice(0, 5).map((c) => `<button class="chip ${askTree === c.tree_id ? "on" : ""}" data-tree="${esc(c.tree_id)}">${esc(c.question.slice(0, 14))}${c.question.length > 14 ? "…" : ""} · ${esc(new Date(c.at).toLocaleDateString(GL === "zh" ? "zh-CN" : GL, { month: "numeric", day: "numeric" }))}</button>`).join("");
+  }
+  $("#askTrees").addEventListener("click", (e) => { const b = e.target.closest("[data-tree]"); if (!b) return; askTree = b.dataset.tree; $$("#askTrees .chip").forEach((x) => x.classList.toggle("on", x === b)); });
   $("#b-send").addEventListener("click", async () => {
     const q = $("#askText").value.trim(); if (!q) return showErr("#askErr", t("g.x.errEmpty"));
     showErr("#askErr", ""); busy("#askBusy", true);
     try {
       const image = await toB64(askPhoto.src);
       const isSample = q === D(GL, "g.q");
-      const c = await api("POST", "/consultations", { question: q, lang: GL, garden_id: toGarden, images: [image], is_sample: isSample });
+      const c = await api("POST", "/consultations", { question: q, lang: GL, garden_id: toGarden, images: [image], is_sample: isSample, ...(askTree ? { tree_id: askTree } : {}) });
       busy("#askBusy", false); $("#askText").value = "";
       $("#j1t").textContent = q;
       // 園に届く中身。言葉が同じならそのまま。見本モードは、見本の質問だけ「こう届く」を見せる
@@ -408,17 +432,29 @@
   }
   // AI 窓口：たまった答え（見本＋答えのついた相談）から近いものを返す。答えがたまるほど賢くなる
   async function paintWin() { try { const r = await api("GET", `/bonsaigo/qa?lang=${GL}&q=`); $("#winLead").textContent = t("g.win.lead", { N: String(r.pool ?? (r.items || []).length) }); } catch {} $("#winQ").placeholder = D(GL, "g.win.ph"); }
-  async function askWin() {
-    const q = $("#winQ").value.trim(); if (!q) { $("#winQ").focus({ preventScroll: true }); return; }
-    $("#winOut").innerHTML = `<div class="win-a"><p class="lead">…</p></div>`;
+  // AI窓口は1つのしくみ。Q&A の画面と、相談を書く画面の両方から呼ぶ（2026-11-08 すり合わせ）
+  async function winAnswer(q, out, onAsk) {
+    out.innerHTML = `<div class="win-a"><p class="lead">…</p></div>`;
     try {
       const r = await api("POST", "/bonsaigo/window", { q, lang: GL });
-      const ask = `<button class="cta ghost" data-winask>${esc(t("g.win.ask"))}</button>`;
-      if (!r.found) { $("#winOut").innerHTML = `<div class="win-a"><p>${esc(t("g.win.none"))}</p>${ask}</div>`; return; }
+      const ask = onAsk === "ask" ? `<div class="win-btns"><button class="cta ghost" data-winok>${esc(t("g.ask.solved"))}</button><button class="cta" data-wincraft>${esc(t("g.ask.toCraft"))}</button></div>` : `<button class="cta ghost" data-winask>${esc(t("g.win.ask"))}</button>`;
+      if (!r.found) { out.innerHTML = `<div class="win-a"><p>${esc(t("g.win.none"))}</p>${ask}</div>`; return; }
       const s = r.sources[0];
-      $("#winOut").innerHTML = `<div class="win-a"><q>${terms(r.answer, "g")}</q><div class="by">${esc(t("g.win.from", { P: qaBy(s, GL) || "BONSAIGO" }))}</div>${r.sources.map((x) => `<div class="about">Q · ${esc(x.q)}</div>`).join("")}${ask}</div>`;
-    } catch (e) { $("#winOut").innerHTML = `<p class="err">${esc(errText(e, "g"))}</p>`; }
+      out.innerHTML = `<div class="win-a"><q>${terms(r.answer, "g")}</q><div class="by">${esc(t("g.win.from", { P: qaBy(s, GL) || "BONSAIGO" }))}</div>${r.sources.map((x) => `<div class="about">Q · ${esc(x.q)}</div>`).join("")}${ask}</div>`;
+    } catch (e) { out.innerHTML = `<p class="err">${esc(errText(e, "g"))}</p>`; }
   }
+  async function askWin() {
+    const q = $("#winQ").value.trim(); if (!q) { $("#winQ").focus({ preventScroll: true }); return; }
+    winAnswer(q, $("#winOut"), "qa");
+  }
+  $("#askWinGo").addEventListener("click", () => {
+    const q = $("#askText").value.trim(); if (!q) { $("#askText").focus({ preventScroll: true }); return; }
+    winAnswer(q, $("#askWinOut"), "ask");
+  });
+  $("#askWinOut").addEventListener("click", (e) => {
+    if (e.target.closest("[data-winok]")) { toast(t("g.ask.solvedT")); $("#askWinOut").innerHTML = ""; go("home"); }
+    else if (e.target.closest("[data-wincraft]")) $("#b-send").click();
+  });
   $("#winGo").addEventListener("click", askWin);
   $("#winQ").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); askWin(); } });
   $("#winOut").addEventListener("click", (e) => { if (!e.target.closest("[data-winask]")) return; $("#askText").value = $("#winQ").value.trim(); go("ask"); });

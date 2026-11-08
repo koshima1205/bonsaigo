@@ -815,3 +815,8 @@ html,body{font-variant-numeric:lining-nums}
 .posted-links a b{font-weight:800}
 .sugg{display:flex;align-items:center;gap:6px;margin:6px 0 0;color:var(--moss)}
 .sugg svg{width:13px;height:13px;flex:none}
+
+/* 11/08 すり合わせ：AI窓口の2つのボタン・前にも相談した木の札 */
+.win-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.inbox-card .new.again{background:var(--moss-soft);color:var(--moss)}
+#askTrees{margin-top:8px}

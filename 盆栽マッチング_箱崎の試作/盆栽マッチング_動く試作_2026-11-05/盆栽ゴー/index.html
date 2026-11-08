@@ -125,12 +125,14 @@
             <button class="chip" id="askSample"><svg><use href="#i-img"/></svg><span data-i18n="g.x.photoSample"></span></button>
           </div>
           <label class="field" style="margin-top:16px"><span data-i18n="g.ask.spF"></span><select id="askSp"></select></label>
+          <div class="field" style="margin-top:12px" id="askTreeF" hidden><span data-i18n="g.ask.treeF"></span><div class="chips" id="askTrees"></div><p class="lang-note" data-i18n="g.ask.treeNote"></p></div>
           <div class="field" style="margin-top:12px"><span data-i18n="g.x.to"></span></div>
           <p class="lang-note sugg" id="gSugg" hidden><svg><use href="#i-spark"/></svg><span data-i18n="g.ask.sugg"></span></p>
           <button class="garden-card" id="gCard" data-go="gpick"></button>
           <p class="lang-note" id="gLangNote"></p>
           <textarea class="compose" id="askText" rows="5" maxlength="3000"></textarea>
           <button class="chip" id="b-askMic" style="margin-top:8px"><svg width="16" height="16"><use href="#i-mic"/></svg><span data-i18n="g.ask.voice"></span></button>
+          <div class="win" id="askWin" style="margin-top:14px"><button class="cta ghost" id="askWinGo" data-i18n="g.ask.win"></button><div id="askWinOut"></div></div>
           <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span data-i18n="g.ask.hint"></span></div>
           <p class="lang-note" data-i18n="g.ask.share"></p>
           <p class="err" id="askErr" hidden></p>
@@ -245,7 +247,8 @@
         <div class="topbar"><div class="gtag" data-garden></div></div>
         <div class="pad">
           <div class="eyebrow" data-i18n="a.inbox.eye"></div>
-          <h2 class="h-jp" data-i18n="a.tab.answer"></h2>
+          <h2 class="h-jp" id="inboxH" data-i18n="a.tab.answer"></h2>
+          <div class="seg" id="inboxSeg"><button class="on" data-ib="todo" data-i18n="a.x.notYet"></button><button data-ib="done" data-i18n="a.x.done"></button></div>
           <div id="inboxList"></div>
           <div class="steps"><h4 data-i18n="a.steps.h"></h4>
             <div><i>1</i><span data-i18n="a.steps.1"></span></div>

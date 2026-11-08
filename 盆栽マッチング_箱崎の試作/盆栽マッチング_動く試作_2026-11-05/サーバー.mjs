@@ -508,11 +508,35 @@ const routes = {
         setUserCookie(requestContext.getStore().res, requestContext.getStore().req, user);
         return { user };
       }
+      // 相談する人も、メールアドレスとパスワードで入れる（11/08 箱崎さん）。パスワードは scrypt で変えてから持つ
+      if (!store.growers) store.growers = [];
+      if (b.mode === "signin") {
+        const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
+        const gr = store.growers.find((x) => x.email === email);
+        const pw = String(b.password || "");
+        const ok = gr && (() => { const x = Buffer.from(scryptSync(pw, gr.pass.salt, 32).toString("hex")), y = Buffer.from(gr.pass.hash); return x.length === y.length && timingSafeEqual(x, y); })();
+        if (!ok) throw new BadRequest("メールアドレスかパスワードが違います");
+        user = { id: gr.id, role, name: gr.name, lang: lang(b.lang || gr.lang), teacher_id: null };
+        setUserCookie(requestContext.getStore().res, requestContext.getStore().req, user);
+        return { user };
+      }
       const name = text(b.name, 40, "お名前（Name）");
       // 人の印はサーバーが作る（名前からは作らない。同じ名前の別の人に相談が見えないように）
       const prev = currentUser();
       const id = prev && prev.role === "aikouka" ? prev.id : growerIdFromCookie(requestContext.getStore().req) || `u-a-${randomUUID()}`;
       user = { id, role, name, lang: lang(b.lang), teacher_id: null };
+      // メールアドレスを入れたときだけ、ほかの端末からも入れるように覚える（入れなければ今までどおり名前だけ）
+      const gEmail = String(b.email || "").trim().toLowerCase().slice(0, 120);
+      if (gEmail) {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gEmail)) throw new BadRequest("メールアドレスを入れてください");
+        if (store.growers.some((x) => x.email === gEmail)) throw new BadRequest("このメールアドレスは登録済みです");
+        const pw = String(b.password || "");
+        if (pw.length < 8 || pw.length > 200) throw new BadRequest("パスワードは8文字以上にしてください");
+        const salt = randomBytes(16).toString("hex");
+        store.growers = store.growers.filter((x) => x.id !== id);
+        store.growers.push({ id, email: gEmail, pass: { salt, hash: scryptSync(pw, salt, 32).toString("hex") }, name, lang: user.lang, at: new Date().toISOString() });
+        await save();
+      }
     }
     setUserCookie(requestContext.getStore().res, requestContext.getStore().req, user);
     return { user };

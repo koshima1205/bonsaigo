@@ -64,8 +64,14 @@
           <div class="eyebrow c">BONSAIGO</div>
           <h2 class="h-en" data-i18n="g.home.h"></h2>
           <p class="lead" data-i18n="g.home.lead"></p>
-          <label class="field"><span data-i18n="g.x.name"></span><input id="gName" autocomplete="nickname" maxlength="40"></label>
+          <div class="seg" id="gMode"><button class="on" data-gm="new" data-i18n="g.st.new"></button><button data-gm="have" data-i18n="g.st.have"></button></div>
+          <label class="field gm-new"><span data-i18n="g.x.name"></span><input id="gName" autocomplete="nickname" maxlength="40"></label>
+          <label class="field gm-new"><span data-i18n="g.st.mailOpt"></span><input id="gMail" type="email" maxlength="120" autocomplete="email" inputmode="email"></label>
+          <label class="field gm-new"><span data-i18n="g.st.passNew"></span><input id="gPass" type="password" maxlength="200" autocomplete="new-password"></label>
+          <label class="field gm-have" hidden><span data-i18n="g.st.mail"></span><input id="gMail2" type="email" maxlength="120" autocomplete="username" inputmode="email"></label>
+          <label class="field gm-have" hidden><span data-i18n="g.st.pass"></span><input id="gPass2" type="password" maxlength="200" autocomplete="current-password"></label>
           <p class="err" id="gErr" hidden></p>
+          <button class="linkish" data-welcome style="margin-top:16px" data-i18n="g.st.back"></button>
         </div>
         <div class="dock"><button class="cta" id="b-gstart" data-i18n="g.x.start"></button></div>
       </section>
@@ -93,6 +99,7 @@
           <p class="err" id="mErr" hidden></p>
           <button class="cta moss" id="b-mreg" style="margin-top:16px" data-i18n="a.x.reg"></button>
           </details>
+          <button class="linkish" data-welcome style="margin-top:16px" data-i18n="a.x.back"></button>
         </div>
       </section>
 
@@ -118,6 +125,14 @@
       <section class="scr" id="s-ask">
         <div class="topbar"><div class="eyebrow" data-i18n="g.ask.eye"></div><div class="r"></div></div>
         <div class="pad">
+          <div class="ask-done" id="askDone" hidden>
+            <div class="ok-mark"><svg><use href="#i-check"/></svg></div>
+            <h2 class="h-jp" data-i18n="g.sent.done"></h2>
+            <p class="lead" id="adTo"></p>
+            <div class="ad-box"><span class="lbl" id="adLbl"></span><div id="adText"></div></div>
+            <button class="cta" id="b-adHome" data-i18n="g.tab.home"></button>
+            <button class="cta ghost" id="b-adAgain" style="margin-top:10px" data-i18n="g.sent.again"></button>
+          </div>
           <h2 class="h-en" data-i18n="g.ask.h2"></h2>
           <div class="pick-photo" id="askPhoto"><img src="img/ask.jpg" alt=""><span class="ai"><svg><use href="#i-spark"/></svg><span data-i18n="g.ask.chip"></span></span></div>
           <div class="photo-btns">

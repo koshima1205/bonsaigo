@@ -388,5 +388,165 @@
   "it": "Cotogno giapponese",
   "th": "ควินซ์ญี่ปุ่น",
   "km": "ឈើបូកេ"
+ },
+ "g.sent.done": {
+  "ja": "職人に送りました",
+  "en": "Sent to the craftsperson",
+  "es": "Enviado al artesano",
+  "zh": "已发送给匠人",
+  "fr": "Envoyé à l'artisan",
+  "it": "Inviato all'artigiano",
+  "th": "ส่งถึงช่างแล้ว",
+  "km": "បានផ្ញើទៅជាងហើយ"
+ },
+ "g.sent.step2": {
+  "ja": "職人の言葉に直しています…",
+  "en": "Putting it into the craftsperson's words…",
+  "es": "Pasándolo a las palabras del artesano…",
+  "zh": "正在转换成匠人的语言…",
+  "fr": "Mise en mots de l'artisan…",
+  "it": "Lo sto rendendo nelle parole dell'artigiano…",
+  "th": "กำลังเรียบเรียงเป็นภาษาของช่าง…",
+  "km": "កំពុងប្តូរជាពាក្យរបស់ជាង…"
+ },
+ "g.sent.again": {
+  "ja": "もう一つ相談する",
+  "en": "Ask another question",
+  "es": "Hacer otra consulta",
+  "zh": "再咨询一个问题",
+  "fr": "Poser une autre question",
+  "it": "Fai un'altra domanda",
+  "th": "ถามอีกเรื่อง",
+  "km": "សួរសំណួរមួយទៀត"
+ },
+ "g.st.new": {
+  "ja": "はじめて",
+  "en": "First time",
+  "es": "Primera vez",
+  "zh": "第一次使用",
+  "fr": "Première fois",
+  "it": "Prima volta",
+  "th": "ครั้งแรก",
+  "km": "លើកដំបូង"
+ },
+ "g.st.have": {
+  "ja": "登録済みの方",
+  "en": "I have an account",
+  "es": "Ya tengo cuenta",
+  "zh": "已注册",
+  "fr": "J'ai un compte",
+  "it": "Ho già un account",
+  "th": "มีบัญชีแล้ว",
+  "km": "មានគណនីហើយ"
+ },
+ "g.st.mailOpt": {
+  "ja": "メールアドレス（なくても可。入れると、ほかの端末でも続きが見られます）",
+  "en": "Email (optional — add it to continue on other devices)",
+  "es": "Correo (opcional; con él puedes seguir en otros dispositivos)",
+  "zh": "邮箱（可不填。填写后可在其他设备上继续）",
+  "fr": "E-mail (facultatif — pour continuer sur d'autres appareils)",
+  "it": "E-mail (facoltativa: serve per continuare su altri dispositivi)",
+  "th": "อีเมล (ไม่บังคับ ใส่แล้วใช้ต่อในเครื่องอื่นได้)",
+  "km": "អ៊ីមែល (មិនបង្ខំ បញ្ចូលដើម្បីបន្តលើឧបករណ៍ផ្សេង)"
+ },
+ "g.st.mail": {
+  "ja": "メールアドレス",
+  "en": "Email",
+  "es": "Correo",
+  "zh": "邮箱",
+  "fr": "E-mail",
+  "it": "E-mail",
+  "th": "อีเมล",
+  "km": "អ៊ីមែល"
+ },
+ "g.st.passNew": {
+  "ja": "パスワード（8文字以上・メールアドレスを入れたときだけ）",
+  "en": "Password (8+ characters, only if you add an email)",
+  "es": "Contraseña (8+ caracteres, solo si pones correo)",
+  "zh": "密码（8个字符以上，仅在填写邮箱时）",
+  "fr": "Mot de passe (8 caractères min., seulement avec un e-mail)",
+  "it": "Password (almeno 8 caratteri, solo se inserisci l'e-mail)",
+  "th": "รหัสผ่าน (8 ตัวขึ้นไป เฉพาะเมื่อใส่อีเมล)",
+  "km": "ពាក្យសម្ងាត់ (៨តួឡើង ពេលបញ្ចូលអ៊ីមែលប៉ុណ្ណោះ)"
+ },
+ "g.st.pass": {
+  "ja": "パスワード",
+  "en": "Password",
+  "es": "Contraseña",
+  "zh": "密码",
+  "fr": "Mot de passe",
+  "it": "Password",
+  "th": "รหัสผ่าน",
+  "km": "ពាក្យសម្ងាត់"
+ },
+ "g.st.signin": {
+  "ja": "ログイン",
+  "en": "Sign in",
+  "es": "Entrar",
+  "zh": "登录",
+  "fr": "Se connecter",
+  "it": "Accedi",
+  "th": "เข้าสู่ระบบ",
+  "km": "ចូល"
+ },
+ "g.st.errSignin": {
+  "ja": "メールアドレスかパスワードが違います",
+  "en": "The email or password is not correct",
+  "es": "El correo o la contraseña no son correctos",
+  "zh": "邮箱或密码不正确",
+  "fr": "L'e-mail ou le mot de passe est incorrect",
+  "it": "E-mail o password non corretti",
+  "th": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+  "km": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ"
+ },
+ "g.st.errPass": {
+  "ja": "メールアドレスを入れたときは、パスワードを8文字以上で入れてください",
+  "en": "With an email, please set a password of 8 or more characters",
+  "es": "Con correo, pon una contraseña de 8 caracteres o más",
+  "zh": "填写邮箱时，请设置8个字符以上的密码",
+  "fr": "Avec un e-mail, choisissez un mot de passe d'au moins 8 caractères",
+  "it": "Con l'e-mail, imposta una password di almeno 8 caratteri",
+  "th": "เมื่อใส่อีเมล กรุณาตั้งรหัสผ่าน 8 ตัวขึ้นไป",
+  "km": "ពេលបញ្ចូលអ៊ីមែល សូមកំណត់ពាក្យសម្ងាត់ ៨តួឡើង"
+ },
+ "g.st.errUsed": {
+  "ja": "このメールアドレスは登録済みです。「登録済みの方」から入ってください",
+  "en": "This email is already registered. Please sign in under \"I have an account\"",
+  "es": "Este correo ya está registrado. Entra en «Ya tengo cuenta»",
+  "zh": "该邮箱已注册。请从“已注册”登录",
+  "fr": "Cet e-mail est déjà enregistré. Connectez-vous via « J'ai un compte »",
+  "it": "Questa e-mail è già registrata. Accedi da «Ho già un account»",
+  "th": "อีเมลนี้ลงทะเบียนแล้ว กรุณาเข้าที่ \"มีบัญชีแล้ว\"",
+  "km": "អ៊ីមែលនេះបានចុះឈ្មោះហើយ។ សូមចូលតាម \"មានគណនីហើយ\""
+ },
+ "g.st.back": {
+  "ja": "立場を選び直す（はじめの画面へ）",
+  "en": "Choose again (back to the start)",
+  "es": "Elegir de nuevo (volver al inicio)",
+  "zh": "重新选择（回到开始画面）",
+  "fr": "Choisir à nouveau (retour au début)",
+  "it": "Scegli di nuovo (torna all'inizio)",
+  "th": "เลือกใหม่ (กลับหน้าแรก)",
+  "km": "ជ្រើសម្តងទៀត (ត្រឡប់ទៅដើម)"
+ },
+ "a.x.back": {
+  "ja": "立場を選び直す（はじめの画面へ）",
+  "en": "Choose again (back to the start)",
+  "es": "Elegir de nuevo (volver al inicio)",
+  "zh": "重新选择（回到开始画面）",
+  "fr": "Choisir à nouveau (retour au début)",
+  "it": "Scegli di nuovo (torna all'inizio)",
+  "th": "เลือกใหม่ (กลับหน้าแรก)",
+  "km": "ជ្រើសម្តងទៀត (ត្រឡប់ទៅដើម)"
+ },
+ "a.x.voice": {
+  "ja": "声で話す",
+  "en": "Speak",
+  "es": "Hablar",
+  "zh": "用声音说",
+  "fr": "Parler",
+  "it": "Parla",
+  "th": "พูด",
+  "km": "និយាយ"
  }
 }

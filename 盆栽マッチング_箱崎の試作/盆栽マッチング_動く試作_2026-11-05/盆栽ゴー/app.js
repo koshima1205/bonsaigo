@@ -61,7 +61,7 @@
   async function api(method, url, body) {
     const r = await fetch("/api" + url, { method, headers: body ? { "content-type": "application/json" } : {}, body: body ? JSON.stringify(body) : undefined, credentials: "same-origin" });
     let d = {}; try { d = await r.json(); } catch {}
-    if (!r.ok) { const e = new Error(d.error || "error"); e.status = r.status; throw e; }
+    if (!r.ok) { const e = new Error(d.error || "error"); e.status = r.status; e.msg = d.error || ""; throw e; }
     return d;
   }
   function errText(e, side) {
@@ -128,7 +128,8 @@
     if (e.target.closest("[data-cost]")) { openCost(); return; }
     if (e.target.closest("[data-role]")) { show("welcome"); return; }
     const g = e.target.closest("[data-go]"); if (g && !g.disabled) { go(g.dataset.go); return; }
-    if (e.target.closest("[data-back]")) { back(); return; }
+    if (e.target.closest("[data-welcome]")) { hist.length = 0; show("welcome", { push: false }); return; }
+    if (e.target.closest("[data-back]")) { if (hist.length) back(); else show("welcome", { push: false }); return; }
     const tm = e.target.closest("[data-term]"); if (tm) openGloss(tm.dataset.term);
   });
   screen.addEventListener("keydown", (e) => { const tm = e.target.closest("[data-term]"); if (tm && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openGloss(tm.dataset.term); } });
@@ -177,7 +178,7 @@
       } catch (e) { if (e.status === 401) { ME = null; show("welcome"); } }
     },
     async ask() {
-      showErr("#askErr", "");
+      showErr("#askErr", ""); $("#s-ask").classList.remove("done"); $("#askDone").hidden = true;
       if (!$("#askText").value.trim()) $("#askText").value = t("g.q");
       $("#askText").placeholder = t("g.ask.ph");
       if (!GARDENS.length) await refreshTeachers();
@@ -236,10 +237,28 @@
   const ROMA = { hazushi: "harigane-hazushi", kake: "harigane-kake", mekiri: "mekiri", metsumi: "metsumi", jin: "jin", nebari: "nebari", tachiagari: "tachiagari", uekae: "uekae" };
 
   /* ── はじまり・ログイン ── */
+  // 相談する人：名前だけで入る（今までどおり）か、メールアドレスとパスワードも入れておく。登録済みの人はメールとパスワードで入る
+  let gMode = "new";
+  $("#gMode").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-gm]"); if (!b) return; gMode = b.dataset.gm;
+    $$("#gMode [data-gm]").forEach((x) => x.classList.toggle("on", x === b));
+    $$("#s-gstart .gm-new").forEach((x) => (x.hidden = gMode !== "new")); $$("#s-gstart .gm-have").forEach((x) => (x.hidden = gMode !== "have"));
+    const st = $("#b-gstart"); st.dataset.i18n = gMode === "new" ? "g.x.start" : "g.st.signin"; st.textContent = t(st.dataset.i18n); showErr("#gErr", "");
+  });
+  const gLoginErr = (e) => e.status === 400 && /登録済み/.test(e.msg) ? t("g.st.errUsed") : e.status === 400 && /違います/.test(e.msg) ? t("g.st.errSignin") : e.status === 400 && /8文字/.test(e.msg) ? t("g.st.errPass") : errText(e, "g");
   $("#b-gstart").addEventListener("click", async () => {
-    const name = $("#gName").value.trim() || "Guest";
-    try { const d = await api("POST", "/login", { role: "aikouka", name, lang: GL }); ME = d.user; await refreshTeachers(); show("home"); }
-    catch (e) { showErr("#gErr", errText(e, "g")); }
+    let body;
+    if (gMode === "have") {
+      const email = $("#gMail2").value.trim(), password = $("#gPass2").value;
+      if (!email || !password) return showErr("#gErr", t("g.st.errSignin"));
+      body = { role: "aikouka", mode: "signin", email, password, lang: GL };
+    } else {
+      const name = $("#gName").value.trim() || "Guest", email = $("#gMail").value.trim(), password = $("#gPass").value;
+      if (email && password.length < 8) return showErr("#gErr", t("g.st.errPass"));
+      body = { role: "aikouka", name, lang: GL, ...(email ? { email, password } : {}) };
+    }
+    try { const d = await api("POST", "/login", body); ME = d.user; $("#gPass").value = $("#gPass2").value = ""; await refreshTeachers(); show("home"); }
+    catch (e) { showErr("#gErr", gLoginErr(e)); }
   });
   // ログイン。答える言葉は、その人がふだん答える言葉（最初に選んだ言葉）にする
   async function signedIn(d) { ME = d.user; if (LANGS.includes(ME.lang)) { AL = ME.lang; store.set("bg-a", AL); } await refreshTeachers(); applyLang(); show("mhome"); }
@@ -356,6 +375,8 @@
   $("#b-send").addEventListener("click", async () => {
     const q = $("#askText").value.trim(); if (!q) return showErr("#askErr", t("g.x.errEmpty"));
     showErr("#askErr", ""); busy("#askBusy", true);
+    const bt = $("#askBusy b"); bt.dataset.i18n = "g.x.sending"; bt.textContent = t("g.x.sending");
+    const step2 = setTimeout(() => { bt.dataset.i18n = "g.sent.step2"; bt.textContent = t("g.sent.step2"); }, 1200);
     try {
       const image = await toB64(askPhoto.src);
       const isSample = q === D(GL, "g.q");
@@ -370,9 +391,15 @@
       if (fc.same_lang || fc.untranslated) $("#j2t").textContent = q;
       else if (MODE === "sample") $("#j2t").innerHTML = D(GL, "a.sum");
       else $("#j2t").innerHTML = esc(fc.summary_ja || "") + (fc.points_ja?.length ? `<br><br>${fc.points_ja.map((p) => `<mark>${esc(p)}</mark>`).join("<br>")}` : "");
-      show("sent");
-      $("#jd b").textContent = "✓ " + gName(g, GL);
-    } catch (e) { busy("#askBusy", false); showErr("#askErr", errText(e, "g")); }
+      // 黒い別の画面には移らず、相談の画面の中で「職人に送りました」と、どう届いたかの要約を見せる（2026-11-08 すり合わせ 4-5）
+      clearTimeout(step2);
+      $("#adTo").textContent = `${gName(g, GL)} · ${t("g.sent.delT", { A: I18N[GL].names[L] || L })}`;
+      $("#adLbl").textContent = $("#j2l").textContent;
+      $("#adText").innerHTML = $("#j2t").innerHTML;
+      $("#s-ask").classList.add("done"); $("#askDone").hidden = false;
+      scroller("ask")?.scrollTo({ top: 0 });
+      askTree = "";
+    } catch (e) { clearTimeout(step2); busy("#askBusy", false); showErr("#askErr", errText(e, "g")); }
   });
   const enterSent = () => {
     ["#j1", "#jf", "#j2", "#jd"].forEach((s) => $(s).classList.remove("show"));
@@ -380,6 +407,9 @@
   };
   enter.sent = enterSent;
   $("#b-sentHome").addEventListener("click", () => show("home"));
+  const askReset = () => { $("#s-ask").classList.remove("done"); $("#askDone").hidden = true; };
+  $("#b-adHome").addEventListener("click", () => { askReset(); show("home"); });
+  $("#b-adAgain").addEventListener("click", () => { askReset(); enter.ask(); scroller("ask")?.scrollTo({ top: 0 }); });
 
   /* ── 答えを読む（相談する人） ── */
   $("#mineList").addEventListener("click", (e) => { const b = e.target.closest("[data-cid]"); if (!b) return; curConsult = consults.find((c) => c.id === b.dataset.cid); show("answer"); });

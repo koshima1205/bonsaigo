@@ -822,3 +822,14 @@ html,body{font-variant-numeric:lining-nums}
 #askTrees{margin-top:8px}
 #s-welcome .film img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
 #s-welcome .film::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,14,11,.82) 0,rgba(12,14,11,.6) 30%,rgba(12,14,11,.1) 55%,transparent 70%)}
+/* 11/08 すり合わせ：送ったあとは相談の画面の中で見せる */
+#s-ask.done .pad > :not(#askDone), #s-ask.done > .dock{display:none}
+.ask-done{padding-top:18px}
+.ask-done .ok-mark{width:52px;height:52px;border-radius:50%;background:var(--moss);display:grid;place-items:center;margin-bottom:14px}
+.ask-done .ok-mark svg{width:26px;height:26px;color:#fff;stroke:#fff}
+.ask-done .lead{margin:6px 0 16px;color:var(--ink-2)}
+.ask-done .ad-box{padding:14px 16px;border:1px solid var(--line);border-radius:16px;background:var(--paper);margin-bottom:18px;line-height:1.8}
+.ask-done .ad-box .lbl{display:block;font-size:12px;color:var(--ink-2);margin-bottom:6px}
+/* 下のボタン（とタブ）に入力欄やボタンが隠れないよう、下の余白をとる */
+.scr:has(> .tabs):has(> .dock) .pad{padding-bottom:240px}
+.scr:not(:has(> .tabs)):has(> .dock) .pad{padding-bottom:150px}

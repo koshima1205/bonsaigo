@@ -790,8 +790,9 @@ const routes = {
     const species = typeof b.species === "string" ? b.species.trim().slice(0, 30) : "";
     const age = Number.isFinite(Number(b.age)) && Number(b.age) > 0 ? Math.min(1000, Math.round(Number(b.age))) : null;
     const note = typeof b.note === "string" ? b.note.trim().slice(0, 1000) : "";
+    const name = typeof b.name === "string" ? b.name.trim().slice(0, 40) : "";  // 木の名前（11/08 すり合わせで足した）
     const sampleKey = ["pine", "ng"].includes(b.sample) ? b.sample : "own";
-    const tree = { id: randomUUID(), at: new Date().toISOString(), teacher_id: me.teacher_id, species, age, note, sample: sampleKey, image: images[0], status: "checking" };
+    const tree = { id: randomUUID(), at: new Date().toISOString(), teacher_id: me.teacher_id, name, species, age, note, sample: sampleKey, image: images[0], status: "checking" };
     // 記録に入れるのは確かめが終わってから（上限で止まった登録が、ほかの木を押し出さないように）
     const keep = async () => {
       if (!store.bonsaigo_trees) store.bonsaigo_trees = [];
@@ -814,7 +815,7 @@ const routes = {
       tree.status = tree.image_check.needs_person ? "image_held" : "image_failed";
       return keep();
     }
-    const brief = `Species: ${input(species || "not given")}\nAge in years: ${input(age ?? "not given")}\nThe craftsperson's words (may be empty):\n${input(note)}`;
+    const brief = `Tree name: ${input(name || "not given")}\nSpecies: ${input(species || "not given")}\nAge in years: ${input(age ?? "not given")}\nThe craftsperson's words (may be empty):\n${input(note)}`;
     tree.draft = await ask("treePosts", brief, images);
     tree.status = "drafted";
     return keep();

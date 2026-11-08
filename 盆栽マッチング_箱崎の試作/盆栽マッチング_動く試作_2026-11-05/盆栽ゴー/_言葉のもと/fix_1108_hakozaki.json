@@ -308,5 +308,85 @@
   "it": "Risposto",
   "th": "ตอบแล้ว",
   "km": "បានឆ្លើយ"
+ },
+ "a.x.treeName": {
+  "ja": "木の名前",
+  "en": "Tree name",
+  "es": "Nombre del árbol",
+  "zh": "树的名字",
+  "fr": "Nom de l'arbre",
+  "it": "Nome dell'albero",
+  "th": "ชื่อต้นไม้",
+  "km": "ឈ្មោះដើមឈើ"
+ },
+ "a.x.treeNamePh": {
+  "ja": "例：岩の真柏",
+  "en": "e.g. The juniper on the rock",
+  "es": "p. ej. El enebro sobre la roca",
+  "zh": "例：石上真柏",
+  "fr": "ex. Le genévrier sur le rocher",
+  "it": "es. Il ginepro sulla roccia",
+  "th": "เช่น จูนิเปอร์บนหิน",
+  "km": "ឧ. ជូនីភើលើថ្ម"
+ },
+ "a.x.note": {
+  "ja": "木の魅力を話す（書いても大丈夫です）",
+  "en": "Talk about what makes this tree special (you can also type)",
+  "es": "Cuenta qué hace especial a este árbol (también puedes escribir)",
+  "zh": "说说这棵树的魅力（也可以写）",
+  "fr": "Dites ce qui rend cet arbre spécial (vous pouvez aussi écrire)",
+  "it": "Racconta cosa rende speciale questo albero (puoi anche scrivere)",
+  "th": "เล่าเสน่ห์ของต้นนี้ (พิมพ์ก็ได้)",
+  "km": "និយាយពីភាពទាក់ទាញរបស់ដើមឈើនេះ (សរសេរក៏បាន)"
+ },
+ "a.x.age": {
+  "ja": "樹齢（わかれば）",
+  "en": "Age (if known)",
+  "es": "Edad (si la sabes)",
+  "zh": "树龄（如果知道）",
+  "fr": "Âge (si connu)",
+  "it": "Età (se nota)",
+  "th": "อายุ (ถ้าทราบ)",
+  "km": "អាយុ (បើដឹង)"
+ },
+ "g.tree.redpine": {
+  "ja": "赤松",
+  "en": "Red pine",
+  "es": "Pino rojo",
+  "zh": "赤松",
+  "fr": "Pin rouge",
+  "it": "Pino rosso",
+  "th": "สนแดง",
+  "km": "ស្រល់ក្រហម"
+ },
+ "g.tree.kaede": {
+  "ja": "楓",
+  "en": "Trident maple",
+  "es": "Arce tridente",
+  "zh": "三角枫",
+  "fr": "Érable trident",
+  "it": "Acero tridente",
+  "th": "เมเปิลสามแฉก",
+  "km": "ដើមមេផលបីស្លឹក"
+ },
+ "g.tree.chojubai": {
+  "ja": "長寿梅",
+  "en": "Dwarf flowering quince (Chojubai)",
+  "es": "Membrillo enano (Chojubai)",
+  "zh": "长寿梅",
+  "fr": "Cognassier nain (Chojubai)",
+  "it": "Cotogno nano (Chojubai)",
+  "th": "ควินซ์แคระ (โชจูไบ)",
+  "km": "ឈើឆូជូបៃ"
+ },
+ "g.tree.boke": {
+  "ja": "ボケ",
+  "en": "Flowering quince",
+  "es": "Membrillero japonés",
+  "zh": "贴梗海棠",
+  "fr": "Cognassier du Japon",
+  "it": "Cotogno giapponese",
+  "th": "ควินซ์ญี่ปุ่น",
+  "km": "ឈើបូកេ"
  }
 }

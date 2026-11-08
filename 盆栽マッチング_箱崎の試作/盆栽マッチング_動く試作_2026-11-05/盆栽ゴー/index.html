@@ -44,7 +44,7 @@
 
       <!-- はじまり -->
       <section class="scr on" id="s-welcome" data-light>
-        <div class="film"><video src="img/grow.mp4" autoplay muted loop playsinline poster="img/grow.jpg"></video></div>
+        <div class="film"><img src="img/welcome_kuromatsu.jpg" alt=""></div>
         <div class="veil"></div>
         <div class="wordmark"><b>BONSAIGO</b><h1 data-i18n="g.welcome.h1"></h1></div>
         <button class="lang-pill dk" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button>
@@ -312,9 +312,10 @@
             <button class="chip on" id="regSample" hidden data-s="pine"><svg><use href="#i-img"/></svg><span data-i18n="a.x.sample"></span></button>
             <button class="chip" id="regNg" hidden data-s="ng"><svg><use href="#i-x"/></svg><span data-i18n="a.x.sampleNg"></span></button>
           </div>
+          <label class="field"><span data-i18n="a.x.treeName"></span><input id="regName" type="text" maxlength="40" autocomplete="off"></label>
           <div class="row2">
             <label class="field"><span data-i18n="a.x.sp"></span><select id="regSp"></select></label>
-            <label class="field"><span data-i18n="a.x.age"></span><input id="regAge" type="number" inputmode="numeric" min="1" max="1000" value="45"></label>
+            <label class="field"><span data-i18n="a.x.age"></span><input id="regAge" type="number" inputmode="numeric" min="1" max="1000"></label>
           </div>
           <label class="field"><span data-i18n="a.x.note"></span><textarea id="regNote" rows="3" maxlength="1000"></textarea></label>
           <button class="chip" id="b-regMic" style="margin-top:8px"><svg width="16" height="16"><use href="#i-mic"/></svg><span data-i18n="a.x.voice"></span></button>

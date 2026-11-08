@@ -52,7 +52,9 @@
     return s.replace(/\[\[([^\]]+)\]\]/g, "$1");
   }
   const SPECIES = [["pine", "黒松"], ["juniper", "真柏"], ["whitepine", "五葉松"], ["maple", "もみじ"], ["azalea", "皐月"], ["ume", "梅"], ["zelkova", "けやき"], ["needle", "杜松"]];
-  const spName = (k, L) => L === "ja" ? (SPECIES.find((x) => x[0] === k) || [, k])[1] : D(L, "g.tree." + k);
+  // 木の登録で選べる樹種は12（箱崎版の一覧）。職人の得意な木などは上の8つのまま
+  const REG_SPECIES = [...SPECIES, ["redpine", "赤松"], ["kaede", "楓"], ["chojubai", "長寿梅"], ["boke", "ボケ"]];
+  const spName = (k, L) => L === "ja" ? (REG_SPECIES.find((x) => x[0] === k) || [, k])[1] : D(L, "g.tree." + k);
   const TREE_IMG = { pine: "pine", juniper: "juniper", maple: "maple", azalea: "azalea", ume: "ume", whitepine: "white-pine", zelkova: "zelkova", needle: "needle-juniper" };
 
   /* ── サーバー ── */
@@ -716,8 +718,8 @@
   /* ── 職人：木を登録 → 2段の確かめ → 送ったら、こう出る ── */
   let regPhoto = { kind: "pine", src: "img/reg.jpg" };
   function renderReg() {
-    $("#regSp").innerHTML = SPECIES.map(([k]) => `<option value="${k}">${esc(spName(k, AL))}</option>`).join("");
-    $("#regSp").value = regSp; $("#regNote").placeholder = t("a.x.notePh");
+    $("#regSp").innerHTML = REG_SPECIES.map(([k]) => `<option value="${k}">${esc(spName(k, AL))}</option>`).join("");
+    $("#regSp").value = regSp; $("#regNote").placeholder = t("a.x.notePh"); $("#regName").placeholder = t("a.x.treeNamePh");
     $("#regResult").innerHTML = ""; showErr("#rErr", "");
     $$("#regSample,#regNg").forEach((b) => b.classList.toggle("on", b.dataset.s === regPhoto.kind));
   }
@@ -740,7 +742,7 @@
     const swap = setTimeout(() => { $("#rBusyT").textContent = t("a.x.drafting"); $("#rBusyM").textContent = t("a.x.writing8"); }, 1400);
     try {
       const image = await toB64(regPhoto.src);
-      const tr = await api("POST", "/bonsaigo/trees", { images: [image], sample: regPhoto.kind, species: spName($("#regSp").value, "ja"), age: $("#regAge").value, note: $("#regNote").value });
+      const tr = await api("POST", "/bonsaigo/trees", { images: [image], sample: regPhoto.kind, name: $("#regName").value.trim(), species: spName($("#regSp").value, "ja"), age: $("#regAge").value, note: $("#regNote").value });
       clearTimeout(swap); busy("#rBusy", false); $("#scan").classList.remove("on");
       curTree = tr; curTree.src = regPhoto.src;
       const ic = tr.image_check || {}, reason = imgReason(tr);
@@ -798,7 +800,7 @@
     $("#pubState").classList.remove("done"); $("#pubStateT").textContent = t("a.pub.posting"); $("#pubLinks").hidden = true;
     setTimeout(() => { $("#pubState").classList.add("done"); $("#pubStateT").textContent = t("a.pub.posted"); $("#pubLinks").hidden = false; }, 2300);
   };
-  $("#b-again").addEventListener("click", () => { hist.length = 0; pickReg("pine", "img/reg.jpg"); $("#regNote").value = ""; show("reg", { push: false }); });
+  $("#b-again").addEventListener("click", () => { hist.length = 0; pickReg("pine", "img/reg.jpg"); $("#regNote").value = ""; $("#regName").value = ""; show("reg", { push: false }); });
 
   /* ── 料金の守り ── */
   async function loadCost() {

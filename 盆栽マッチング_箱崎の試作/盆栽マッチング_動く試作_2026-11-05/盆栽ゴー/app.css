@@ -776,5 +776,9 @@ html,body{font-variant-numeric:lining-nums}
 .merit span{display:block;margin-top:4px;font-size:12.5px;line-height:1.65;color:var(--ink)}
 
 /* 11/08：コピーはロゴの下（上の方）に */
-#s-welcome .wordmark{right:26px}
-#s-welcome .wordmark h1{margin-top:22px;font-size:30px;line-height:1.12;max-width:300px;text-shadow:0 1px 18px rgba(0,0,0,.35)}
+#s-welcome .wordmark{right:20px}
+#s-welcome .wordmark h1{margin-top:22px;font-size:29px;line-height:1.14;max-width:none;letter-spacing:-.015em;text-shadow:0 1px 18px rgba(0,0,0,.35)}
+/* 11/08：育ちきった木もコピーにかぶらないよう、動画を文字の下〜ボタンの上に収める（木の頂き≒文字の下＋16px） */
+#s-welcome .film{top:0;height:640px;border:0;border-radius:0;margin:0;background:#665136}
+#s-welcome .film video{position:absolute;left:0;top:182px;width:100%;height:458px;object-position:center top;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 48px);mask-image:linear-gradient(180deg,transparent 0,#000 48px)}
+#s-welcome .veil{background:linear-gradient(180deg,rgba(18,20,16,.55) 0%,rgba(18,20,16,0) 22%,rgba(18,20,16,0) 70%,var(--night) 78%)}

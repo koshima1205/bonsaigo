@@ -28,8 +28,6 @@ for k, by in json.load(open(os.path.join(here, "fix_1108b.json"))).items():
     for c in L8: I[c][k] = by[c]
 # 11/08 昼の kenpin：日本語だけの短い言いかえ（1文字だけの改行・ボタンの折れ・名前は BONSAIGO に統一）
 I["ja"]["a.mh.out"] = "公式 X とインスタに出た投稿"
-I["ja"]["g.welcome.h1"] = "盆栽の知恵を、<br>世界へ。<br><em>次の百年へ。</em>"
-I["zh"]["g.welcome.h1"] = "把盆栽的智慧，<br>带向世界。<br><em>传向下一个百年。</em>"
 I["ja"]["a.x.again"] = "もう1鉢登録する"
 I["ja"]["a.pub.done"] = "BONSAIGO の公式 X とインスタに出ました"
 # 英字の言語でない言葉に残った英語の添え書き「(Wiring)」などを外す（選んだ言葉だけで出す・11/08）

@@ -240,9 +240,9 @@ const input = (s) => `<user_input>\n${String(s ?? "").slice(0, 4000)}\n</user_in
 class BadRequest extends Error {}
 // ログインの失敗が続いたら、しばらく止める（15分に、同じ回線から同じメールアドレスは5回・同じ回線は合わせて20回まで。会場のWi-Fiなどで回線を分け合うため、回線は多めに）
 const LOGIN_FAILS = new Map();
-const FAIL_WINDOW = 15 * 60 * 1000, FAIL_MAX = (k) => (k.startsWith("ip:") ? 20 : k.startsWith("acct:") ? 30 : 5);
+const FAIL_WINDOW = 15 * 60 * 1000, FAIL_MAX = (k) => (k.startsWith("ip:") ? 20 : 5);
 // メールアドレスだけで数えると、他人がわざと間違えて止められてしまうので「同じ回線から、同じメールアドレス」で数える
-function loginKeys(email) { const req = requestContext.getStore()?.req, ip = req ? clientIp(req) : "?"; return [`ip:${ip}`, `mail:${ip}:${email}`, `acct:${email}`]; }
+function loginKeys(email) { const req = requestContext.getStore()?.req, ip = req ? clientIp(req) : "?"; return [`ip:${ip}`, `mail:${ip}:${email}`]; }
 function loginOk(email) { const [, k] = loginKeys(email); LOGIN_FAILS.delete(k); }
 function loginBlocked(email) { const now = Date.now(); return loginKeys(email).some((k) => { const f = LOGIN_FAILS.get(k); return f && now - f.at < FAIL_WINDOW && f.n >= FAIL_MAX(k); }); }
 function loginFailed(email) { const now = Date.now();
@@ -538,10 +538,10 @@ const routes = {
       const prev = currentUser();
       const id = prev && prev.role === "aikouka" ? prev.id : growerIdFromCookie(requestContext.getStore().req) || `u-a-${randomUUID()}`;
       user = { id, role, name, lang: lang(b.lang), teacher_id: null };
-      // この端末の印が、メールで登録しただれかのものなら、名前だけで入る人には新しい印を渡す（前の人の相談が見えないように）
-      if (!(prev && prev.role === "aikouka") && !b.email && store.growers.some((x) => x.id === id)) user.id = `u-a-${randomUUID()}`;
       // メールアドレスを入れたときだけ、ほかの端末からも入れるように覚える（入れなければ今までどおり名前だけ）
       const gEmail = String(b.email || "").trim().toLowerCase().slice(0, 120);
+      // この端末の印が、メールで登録しただれかのものなら、名前だけで入る人には新しい印を渡す（前の人の相談が見えないように）
+      if (!gEmail && store.growers.some((x) => x.id === id)) user.id = `u-a-${randomUUID()}`;
       if (gEmail) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(gEmail)) throw new BadRequest("メールアドレスを入れてください");
         if (store.growers.some((x) => x.email === gEmail)) throw new BadRequest("このメールアドレスは登録済みです");

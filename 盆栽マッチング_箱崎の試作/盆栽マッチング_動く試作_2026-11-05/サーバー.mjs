@@ -740,7 +740,8 @@ const routes = {
     const q = String(b.q || "").normalize("NFKC").toLowerCase().trim().slice(0, 200);
     if (!q) throw new BadRequest("聞きたいことを書いてください");
     const r = searchQa(q, l, currentUser());
-    const top = r.hits.slice(0, 3);
+    // 聞いた人の言葉で読める答えを先に（ほかの言葉の答えは、そのあとに）
+    const top = [...r.hits].sort((x, y) => (x.lang === l ? 0 : 1) - (y.lang === l ? 0 : 1)).slice(0, 3);
     return { found: top.length > 0, answer: top[0] ? top[0].a : "", sources: top.map((h) => ({ id: h.id, q: h.q, garden_id: h.garden_id, person_id: h.person_id, lang: h.lang, tree: h.tree })), pool: store.consultations.filter((c) => c.answer && c.answer.headline).length + BG_SAMPLE.qa.length };
   },
   "POST /api/bonsaigo/gloss": async (b) => {

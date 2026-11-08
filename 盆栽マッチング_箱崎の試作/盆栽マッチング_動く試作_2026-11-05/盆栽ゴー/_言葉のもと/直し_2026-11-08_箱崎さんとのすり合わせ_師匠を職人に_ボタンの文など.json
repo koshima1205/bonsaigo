@@ -548,5 +548,35 @@
   "it": "Parla",
   "th": "พูด",
   "km": "និយាយ"
+ },
+ "g.st.errMail": {
+  "ja": "メールアドレスの形が正しくありません",
+  "en": "That email address doesn't look right",
+  "es": "El correo no parece correcto",
+  "zh": "邮箱格式不正确",
+  "fr": "L'adresse e-mail semble incorrecte",
+  "it": "L'indirizzo e-mail non sembra corretto",
+  "th": "รูปแบบอีเมลไม่ถูกต้อง",
+  "km": "អ៊ីមែលមិនត្រឹមត្រូវ"
+ },
+ "g.st.errNoMail": {
+  "ja": "パスワードを使うときは、メールアドレスも入れてください",
+  "en": "To use a password, please add your email too",
+  "es": "Para usar contraseña, pon también tu correo",
+  "zh": "使用密码时，请同时填写邮箱",
+  "fr": "Pour utiliser un mot de passe, ajoutez aussi votre e-mail",
+  "it": "Per usare una password, inserisci anche l'e-mail",
+  "th": "หากใช้รหัสผ่าน กรุณาใส่อีเมลด้วย",
+  "km": "ពេលប្រើពាក្យសម្ងាត់ សូមបញ្ចូលអ៊ីមែលផង"
+ },
+ "a.x.doneNone": {
+  "ja": "まだ答えた相談はありません。",
+  "en": "No answered questions yet.",
+  "es": "Aún no hay consultas respondidas.",
+  "zh": "还没有已回答的咨询。",
+  "fr": "Aucune question répondue pour l'instant.",
+  "it": "Ancora nessuna domanda con risposta.",
+  "th": "ยังไม่มีคำปรึกษาที่ตอบแล้ว",
+  "km": "មិនទាន់មានសំណួរដែលបានឆ្លើយទេ។"
  }
 }

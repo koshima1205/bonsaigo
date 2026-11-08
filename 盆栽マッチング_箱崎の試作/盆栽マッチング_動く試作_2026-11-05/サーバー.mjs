@@ -240,11 +240,13 @@ const input = (s) => `<user_input>\n${String(s ?? "").slice(0, 4000)}\n</user_in
 class BadRequest extends Error {}
 // ログインの失敗が続いたら、しばらく止める（15分に、同じ回線から同じメールアドレスは5回・同じ回線は合わせて20回まで。会場のWi-Fiなどで回線を分け合うため、回線は多めに）
 const LOGIN_FAILS = new Map();
-const FAIL_WINDOW = 15 * 60 * 1000, FAIL_MAX = (k) => (k.startsWith("ip:") ? 20 : 5);
+const FAIL_WINDOW = 15 * 60 * 1000, FAIL_MAX = (k) => (k.startsWith("ip:") ? 20 : k.startsWith("acct:") ? 30 : 5);
 // メールアドレスだけで数えると、他人がわざと間違えて止められてしまうので「同じ回線から、同じメールアドレス」で数える
-function loginKeys(email) { const req = requestContext.getStore()?.req, ip = req ? clientIp(req) : "?"; return [`ip:${ip}`, `mail:${ip}:${email}`]; }
+function loginKeys(email) { const req = requestContext.getStore()?.req, ip = req ? clientIp(req) : "?"; return [`ip:${ip}`, `mail:${ip}:${email}`, `acct:${email}`]; }
+function loginOk(email) { const [, k] = loginKeys(email); LOGIN_FAILS.delete(k); }
 function loginBlocked(email) { const now = Date.now(); return loginKeys(email).some((k) => { const f = LOGIN_FAILS.get(k); return f && now - f.at < FAIL_WINDOW && f.n >= FAIL_MAX(k); }); }
-function loginFailed(email) { const now = Date.now(); for (const k of loginKeys(email)) { const f = LOGIN_FAILS.get(k); LOGIN_FAILS.set(k, f && now - f.at < FAIL_WINDOW ? { n: f.n + 1, at: f.at } : { n: 1, at: now }); } }
+function loginFailed(email) { const now = Date.now();
+  if (LOGIN_FAILS.size > 5000) for (const [k, f] of LOGIN_FAILS) if (now - f.at >= FAIL_WINDOW) LOGIN_FAILS.delete(k); for (const k of loginKeys(email)) { const f = LOGIN_FAILS.get(k); LOGIN_FAILS.set(k, f && now - f.at < FAIL_WINDOW ? { n: f.n + 1, at: f.at } : { n: 1, at: now }); } }
 
 function readImages(list) {
   if (list == null) return [];
@@ -295,7 +297,7 @@ const HISTORY_LIMIT = 3;
 function treeHistory(c) {
   if (!c.tree_id) return [];
   return store.consultations
-    .filter((x) => x.id !== c.id && x.tree_id === c.tree_id && x.answer && x.answer.voice_ja && x.at < c.at)
+    .filter((x) => x.id !== c.id && x.tree_id === c.tree_id && x.garden_id === c.garden_id && x.answer && x.answer.voice_ja && x.at < c.at)
     .slice(0, HISTORY_LIMIT)
     .map((x) => ({ at: x.at, question_ja: x.for_craftsperson.summary_ja, answer_ja: x.answer.voice_ja }));
 }
@@ -474,6 +476,7 @@ const routes = {
       if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");
       const t = allTeachers().find((x) => teacherEmail(x) === email);
       if (!t || !passOk(t, String(b.password || ""))) { loginFailed(email); throw new BadRequest("メールアドレスかパスワードが違います"); }
+      loginOk(email);
       user = { id: `u-${t.id}`, role, name: t.name_ja, lang: lang(t.lang || "ja"), teacher_id: t.id };
     } else if (role === "shokunin") {
       // 新しく職人として登録する（デモ用。名前・言語・得意な木・園名と地域だけ）
@@ -525,6 +528,7 @@ const routes = {
         const pw = String(b.password || "");
         const ok = gr && (() => { const x = Buffer.from(scryptSync(pw, gr.pass.salt, 32).toString("hex")), y = Buffer.from(gr.pass.hash); return x.length === y.length && timingSafeEqual(x, y); })();
         if (!ok) { loginFailed(email); throw new BadRequest("メールアドレスかパスワードが違います"); }
+        loginOk(email);
         user = { id: gr.id, role, name: gr.name, lang: lang(b.lang || gr.lang), teacher_id: null };
         setUserCookie(requestContext.getStore().res, requestContext.getStore().req, user);
         return { user };
@@ -534,6 +538,8 @@ const routes = {
       const prev = currentUser();
       const id = prev && prev.role === "aikouka" ? prev.id : growerIdFromCookie(requestContext.getStore().req) || `u-a-${randomUUID()}`;
       user = { id, role, name, lang: lang(b.lang), teacher_id: null };
+      // この端末の印が、メールで登録しただれかのものなら、名前だけで入る人には新しい印を渡す（前の人の相談が見えないように）
+      if (!(prev && prev.role === "aikouka") && !b.email && store.growers.some((x) => x.id === id)) user.id = `u-a-${randomUUID()}`;
       // メールアドレスを入れたときだけ、ほかの端末からも入れるように覚える（入れなければ今までどおり名前だけ）
       const gEmail = String(b.email || "").trim().toLowerCase().slice(0, 120);
       if (gEmail) {
@@ -542,8 +548,9 @@ const routes = {
         const pw = String(b.password || "");
         if (pw.length < 8 || pw.length > 200) throw new BadRequest("パスワードは8文字以上にしてください");
         const salt = randomBytes(16).toString("hex");
-        store.growers = store.growers.filter((x) => x.id !== id);
-        store.growers.push({ id, email: gEmail, pass: { salt, hash: scryptSync(pw, salt, 32).toString("hex") }, name, lang: user.lang, at: new Date().toISOString() });
+        // この端末の印が、もうだれかのアカウントなら、新しい印にする（同じ端末の別の人が、前の人の相談を引き継がないように）
+        if (store.growers.some((x) => x.id === id)) { user.id = `u-a-${randomUUID()}`; }
+        store.growers.push({ id: user.id, email: gEmail, pass: { salt, hash: scryptSync(pw, salt, 32).toString("hex") }, name, lang: user.lang, at: new Date().toISOString() });
         await save();
       }
     }
@@ -673,13 +680,10 @@ const routes = {
     }
     // どの木の相談か。前に相談した木なら同じ番号を使い、なければ新しい木にする
     const known = typeof b.tree_id === "string" && store.consultations.some((x) => x.tree_id === b.tree_id && x.asker_id === me.id);
-    const c = { id: randomUUID(), at: new Date().toISOString(), asker_id: me.id, asker_name: me.name, lang: l, question, image: images[0] || null, tree_id: known ? b.tree_id : randomUUID(), teacher_id: teacher?.id || null, garden_id: garden.id, garden_lang: gl, is_sample: isSample, offer_id: offer.id, usd: offer.usd, for_craftsperson: forCraftsperson, ai_draft: null, ai_draft_status: "making", answer: null };
+    const c = { id: randomUUID(), at: new Date().toISOString(), asker_id: me.id, asker_name: me.name, lang: l, question, image: images[0] || null, tree_id: known ? b.tree_id : randomUUID(), teacher_id: teacher?.id || null, garden_id: garden.id, garden_lang: gl, is_sample: isSample, offer_id: offer.id, usd: offer.usd, for_craftsperson: forCraftsperson, ai_draft: null, ai_draft_status: "none", answer: null };
     store.consultations.unshift(c);
     await save();
-    // 答えの案は裏で作る。相談した人は待たせない
-    // 見本モードの案は見本の質問のときだけ（ほかの質問に、合わない案を出さない）
     // 職人には答えの案を見せない方針（2026-11-08 すり合わせ）。案を作るAIも呼ばない
-    c.ai_draft_status = "none"; await save();
     return publicConsultation(c);
   },
   "GET /api/consultations": async () => {

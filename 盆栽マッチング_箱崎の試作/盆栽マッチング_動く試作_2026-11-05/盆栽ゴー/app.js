@@ -129,7 +129,7 @@
     if (e.target.closest("[data-role]")) { show("welcome"); return; }
     const g = e.target.closest("[data-go]"); if (g && !g.disabled) { go(g.dataset.go); return; }
     if (e.target.closest("[data-welcome]")) { hist.length = 0; show("welcome", { push: false }); return; }
-    if (e.target.closest("[data-back]")) { if (hist.length) back(); else show("welcome", { push: false }); return; }
+    if (e.target.closest("[data-back]")) { if (hist.length) back(); else show(ME ? (ME.role === "shokunin" ? "mhome" : "home") : "welcome", { push: false }); return; }
     const tm = e.target.closest("[data-term]"); if (tm) openGloss(tm.dataset.term);
   });
   screen.addEventListener("keydown", (e) => { const tm = e.target.closest("[data-term]"); if (tm && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openGloss(tm.dataset.term); } });
@@ -161,7 +161,7 @@
       $$("#mSns [data-k]").forEach((r) => { $("span", r).textContent = r.dataset.k === "web" ? t("a.x.snsWeb") : r.dataset.k === "x" ? "X" : "Instagram"; });
     },
     async home() {
-      $("#gHello").textContent = `${t("g.home.hi")}${ME ? (GL === "ja" || GL === "zh" ? "、" : ", ") + ME.name : ""}`;
+      $("#gHello").textContent = `${t("g.home.hi")}${ME ? (GL === "ja" ? "、" : GL === "zh" ? "，" : ", ") + ME.name : ""}`;
       $("#posts").innerHTML = [["pine", 1], ["maple", 2], ["ume", 3]].map(([img, i]) => `<article class="post"><span class="tree"><img src="img/t-${img}.webp" alt=""></span><div class="tx"><div class="eyebrow c">${esc(t(`g.post${i}.e`))}</div><h4>${esc(t(`g.post${i}.h`))}</h4><p>${esc(t(`g.post${i}.p`))}</p><div class="by"><svg><use href="#i-tree"/></svg>BONSAIGO · X · Instagram</div></div></article>`).join("");
       loadQa("", "#homeQa", 2);
       try {
@@ -225,13 +225,15 @@
     mlearn() { renderMl(); },
   };
   let inboxTab = "todo";
-  const tagOf = (c) => c.answer ? `<span class="st">✓ ${esc(t("a.tag.done"))}</span>` : (c.tree_history || []).length ? `<span class="new again">${esc(t("a.tag.again"))}</span>` : `<span class="new">${esc(t("a.tag.new"))}</span>`;
+  // 前にも相談した木：答えのついた前の相談（tree_history）か、同じ木のもっと前の相談が一覧にあるとき
+  const askedBefore = (c) => (c.tree_history || []).length > 0 || consults.some((x) => x.id !== c.id && x.tree_id && x.tree_id === c.tree_id && x.at < c.at);
+  const tagOf = (c) => c.answer ? `<span class="st">✓ ${esc(t("a.tag.done"))}</span>` : askedBefore(c) ? `<span class="new again">${esc(t("a.tag.again"))}</span>` : `<span class="new">${esc(t("a.tag.new"))}</span>`;
   function paintInbox() {
     const todo = consults.filter((c) => !c.answer), list = inboxTab === "todo" ? todo : consults.filter((c) => c.answer);
     const h = $("#inboxH");
     if (todo.length) { h.dataset.i18n = "a.inbox.cnt"; h.dataset.n = todo.length; h.textContent = t("a.inbox.cnt", { N: todo.length }); } else { h.dataset.i18n = "a.tab.answer"; h.textContent = t("a.tab.answer"); }
     $$("#inboxSeg [data-ib]").forEach((b) => b.classList.toggle("on", b.dataset.ib === inboxTab));
-    $("#inboxList").innerHTML = list.length ? list.map((c) => `<button class="inbox-card ${c.answer ? "done" : ""}" data-cid="${c.id}"><div class="row"><img src="${c.image ? "data:" + c.image.media_type + ";base64," + c.image.data : "img/ask.jpg"}" alt=""><div>${tagOf(c)}<p>${esc(forCraft(c).title || "")}</p></div></div><div class="from"><span>${esc(t("a.x.from", { L: I18N[AL].names[c.lang] || c.lang }))}</span><span>${esc(new Date(c.at).toLocaleDateString(AL === "zh" ? "zh-CN" : AL))}</span></div></button>`).join("") : `<div class="empty" style="margin-top:16px">${esc(t("a.x.inboxNone"))}</div>`;
+    $("#inboxList").innerHTML = list.length ? list.map((c) => `<button class="inbox-card ${c.answer ? "done" : ""}" data-cid="${c.id}"><div class="row"><img src="${c.image ? "data:" + c.image.media_type + ";base64," + c.image.data : "img/ask.jpg"}" alt=""><div>${tagOf(c)}<p>${esc(forCraft(c).title || "")}</p></div></div><div class="from"><span>${esc(t("a.x.from", { L: I18N[AL].names[c.lang] || c.lang }))}</span><span>${esc(new Date(c.at).toLocaleDateString(AL === "zh" ? "zh-CN" : AL))}</span></div></button>`).join("") : `<div class="empty" style="margin-top:16px">${esc(t(inboxTab === "todo" ? "a.x.inboxNone" : "a.x.doneNone"))}</div>`;
   }
   $("#inboxSeg").addEventListener("click", (e) => { const b = e.target.closest("[data-ib]"); if (!b) return; inboxTab = b.dataset.ib; paintInbox(); });
   const ROMA = { hazushi: "harigane-hazushi", kake: "harigane-kake", mekiri: "mekiri", metsumi: "metsumi", jin: "jin", nebari: "nebari", tachiagari: "tachiagari", uekae: "uekae" };
@@ -245,7 +247,7 @@
     $$("#s-gstart .gm-new").forEach((x) => (x.hidden = gMode !== "new")); $$("#s-gstart .gm-have").forEach((x) => (x.hidden = gMode !== "have"));
     const st = $("#b-gstart"); st.dataset.i18n = gMode === "new" ? "g.x.start" : "g.st.signin"; st.textContent = t(st.dataset.i18n); showErr("#gErr", "");
   });
-  const gLoginErr = (e) => e.status === 400 && /登録済み/.test(e.msg) ? t("g.st.errUsed") : e.status === 400 && /違います/.test(e.msg) ? t("g.st.errSignin") : e.status === 400 && /8文字/.test(e.msg) ? t("g.st.errPass") : errText(e, "g");
+  const gLoginErr = (e) => e.status === 400 && /登録済み/.test(e.msg) ? t("g.st.errUsed") : e.status === 400 && /違います/.test(e.msg) ? t("g.st.errSignin") : e.status === 400 && /8文字/.test(e.msg) ? t("g.st.errPass") : e.status === 400 && /メールアドレスを入れて/.test(e.msg) ? t("g.st.errMail") : errText(e, "g");
   $("#b-gstart").addEventListener("click", async () => {
     let body;
     if (gMode === "have") {
@@ -254,6 +256,7 @@
       body = { role: "aikouka", mode: "signin", email, password, lang: GL };
     } else {
       const name = $("#gName").value.trim() || "Guest", email = $("#gMail").value.trim(), password = $("#gPass").value;
+      if (!email && password) return showErr("#gErr", t("g.st.errNoMail"));
       if (email && password.length < 8) return showErr("#gErr", t("g.st.errPass"));
       body = { role: "aikouka", name, lang: GL, ...(email ? { email, password } : {}) };
     }
@@ -363,8 +366,8 @@
   // どの木の相談か。前に相談した木を選ぶと、同じ木の番号で送る（職人は前のやりとりを見て答える）
   let askTree = "";
   async function paintTrees() {
-    let mine = [];
-    try { mine = (await api("GET", "/consultations")).consultations || []; } catch {}
+    let mine = ME && ME.role === "aikouka" && consults.length ? consults : [];
+    if (!mine.length) { try { mine = consults = (await api("GET", "/consultations")).consultations || []; } catch {} }
     const trees = []; const seen = new Set();
     for (const c of mine) if (c.tree_id && !seen.has(c.tree_id)) { seen.add(c.tree_id); trees.push(c); }
     if (askTree && !seen.has(askTree)) askTree = "";
@@ -381,6 +384,7 @@
       const image = await toB64(askPhoto.src);
       const isSample = q === D(GL, "g.q");
       const c = await api("POST", "/consultations", { question: q, lang: GL, garden_id: toGarden, images: [image], is_sample: isSample, ...(askTree ? { tree_id: askTree } : {}) });
+      if (ME && ME.role === "aikouka") consults = [c, ...consults.filter((x) => x.id !== c.id)];
       busy("#askBusy", false); $("#askText").value = "";
       $("#j1t").textContent = q;
       // 園に届く中身。言葉が同じならそのまま。見本モードは、見本の質問だけ「こう届く」を見せる
@@ -409,7 +413,7 @@
   $("#b-sentHome").addEventListener("click", () => show("home"));
   const askReset = () => { $("#s-ask").classList.remove("done"); $("#askDone").hidden = true; };
   $("#b-adHome").addEventListener("click", () => { askReset(); show("home"); });
-  $("#b-adAgain").addEventListener("click", () => { askReset(); enter.ask(); scroller("ask")?.scrollTo({ top: 0 }); });
+  $("#b-adAgain").addEventListener("click", async () => { askReset(); await enter.ask(); $("#askText").value = ""; scroller("ask")?.scrollTo({ top: 0 }); });
 
   /* ── 答えを読む（相談する人） ── */
   $("#mineList").addEventListener("click", (e) => { const b = e.target.closest("[data-cid]"); if (!b) return; curConsult = consults.find((c) => c.id === b.dataset.cid); show("answer"); });
@@ -643,9 +647,9 @@
     // 言葉が同じ・訳していない相談は、原文がそのまま本文
     $("#origBtn").hidden = Boolean(fc.raw);
     if (c.answer) $("#ansText").value = c.answer.voice_ja || $("#ansText").value;
-    paintDraft(c); setMode(0);
+    setMode(0);
     clearInterval(draftPoll);
-    if (c.ai_draft_status === "making") {
+    if (false) { // 答えの案は出さない方針（2026-11-08）。案を待つ問い合わせもしない
       let n = 0;
       draftPoll = setInterval(async () => {
         if (cur !== "detail" || ++n > 20) return clearInterval(draftPoll);
@@ -685,9 +689,7 @@
     if (m === "4") { setMode(4); voiceInto($("#b-mic"), $("#ansText"), "a.ans.m4"); return; }
     if (rec) rec.stop();
     setMode(m);
-    if (m === "1" && d) { $("#ansText").value = d.text; fromDraft = true; $("#b-preview").click(); }
-    else if (m === "2" && d) { $("#ansText").value = d.text; fromDraft = true; $("#ansText").focus({ preventScroll: true }); }
-    else if (m === "3") { if (fromDraft) $("#ansText").value = ""; fromDraft = false; $("#ansText").focus({ preventScroll: true }); }
+    if (m === "3") { if (fromDraft) $("#ansText").value = ""; fromDraft = false; $("#ansText").focus({ preventScroll: true }); }
   });
 
   // 声で入れる（ブラウザの音声入力。使えないときは文字で）

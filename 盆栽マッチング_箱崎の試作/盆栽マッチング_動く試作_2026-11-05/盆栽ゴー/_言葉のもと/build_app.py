@@ -44,7 +44,7 @@ for k, v in list(I["ja"].items()):
     if isinstance(v, str): I["ja"][k] = v.replace("師匠", "職人")
 for k, v in list(I["en"].items()):
     if isinstance(v, str) and k not in KEEP: I["en"][k] = _en(v)
-for k, by in json.load(open(os.path.join(here, "fix_1108_hakozaki.json"))).items():
+for k, by in json.load(open(os.path.join(here, "直し_2026-11-08_箱崎さんとのすり合わせ_師匠を職人に_ボタンの文など.json"))).items():
     for c, v in by.items(): I[c][k] = v
 # 使っていない鍵（◯◯ Garden の置き忘れのもと）は外す
 for c in I: I[c].pop("g.m.name", None)

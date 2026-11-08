@@ -1,1 +1,0 @@
-{"id":"test5","fps":24,"res":[1280,720],"shots":[{"species":"maple","sec":0.05,"season":"spring","cam":{"a0":0,"a1":1}},{"species":"maple","sec":0.05,"season":"winter","cam":{"a0":0,"a1":1}},{"species":"pine","sec":0.05,"style":"forest","cam":{"a0":-30,"a1":-29}},{"species":"pine","sec":0.6,"anim":"candles","cam":{"a0":40,"a1":41,"el":16,"tz":0.8,"r0":0.55,"r1":0.55,"lens":50}}]}

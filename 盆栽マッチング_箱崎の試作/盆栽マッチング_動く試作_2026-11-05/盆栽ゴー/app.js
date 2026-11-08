@@ -158,7 +158,7 @@
       $$("#mSns [data-k]").forEach((r) => { $("span", r).textContent = r.dataset.k === "web" ? t("a.x.snsWeb") : r.dataset.k === "x" ? "X" : "Instagram"; });
     },
     async home() {
-      $("#gHello").textContent = `${t("g.home.hi")}${ME ? ", " + ME.name : ""}`;
+      $("#gHello").textContent = `${t("g.home.hi")}${ME ? (GL === "ja" || GL === "zh" ? "、" : ", ") + ME.name : ""}`;
       $("#posts").innerHTML = [["pine", 1], ["maple", 2], ["ume", 3]].map(([img, i]) => `<article class="post"><span class="tree"><img src="img/t-${img}.webp" alt=""></span><div class="tx"><div class="eyebrow c">${esc(t(`g.post${i}.e`))}</div><h4>${esc(t(`g.post${i}.h`))}</h4><p>${esc(t(`g.post${i}.p`))}</p><div class="by"><svg><use href="#i-tree"/></svg>BONSAIGO · X · Instagram</div></div></article>`).join("");
       loadQa("", "#homeQa", 2);
       try {
@@ -242,7 +242,7 @@
     const p = TEACHERS.find((x) => x.lang === AL && /^p\d+$/.test(x.id)) || TEACHERS.find((x) => x.id === "p1");
     if (!p) return;
     $("#lMail").value = `${p.name_en.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]+/g, ".").replace(/^\.+|\.+$/g, "")}@bonsaigo.example`;
-    $("#lPass").value = "bonsai1108";
+    $("#lPass").value = ""; $("#lPass").focus({ preventScroll: true });
   });
   // 登録：立場・その他の木・SNS
   let mRole = "master";
@@ -364,7 +364,7 @@
     const low = review.needs_person || review.ok === false;
     const head = side === "a" ? t(low ? "a.x.confLow" : "a.x.confOk") : D(L, "g.x.checkedS");
     const body = side === "a" ? "" : D(L, "g.x.checked");
-    return `<div class="verified ${low ? "low" : ""}"><span class="ok"><svg><use href="#${low ? "i-hold" : "i-check"}"/></svg></span><div><b>${esc(head)}</b>${body ? `<span>${esc(body)}</span>` : ""}${review.sample && side !== "a" ? `<div class="sample-note"><i>SAMPLE</i>${esc(D(L, side === "a" ? "c.mode.sample" : "g.x.sample"))}</div>` : ""}</div>${conf != null ? `<span class="score">${conf.toFixed(2)}</span>` : ""}</div>`;
+    return `<div class="verified ${low ? "low" : ""}"><span class="ok"><svg><use href="#${low ? "i-hold" : "i-check"}"/></svg></span><div><b>${esc(head)}</b>${body ? `<span>${esc(body)}</span>` : ""}</div></div>`;
   }
   function renderAnswer() {
     const c = curConsult; if (!c) return;
@@ -375,11 +375,13 @@
     $("#s-answer .tnote").hidden = !c.answer || Boolean(c.answer.same_lang || c.answer.untranslated);
     $("#ansImg").src = c.image ? `data:${c.image.media_type};base64,${c.image.data}` : "img/ask.jpg";
     $("#ansQ").textContent = c.question;
-    if (!c.answer) { $("#ansBody").innerHTML = `<div class="empty">${esc(t("g.x.wait"))}</div>`; $("#ansCheck").innerHTML = ""; $("#jpOrig").textContent = ""; return; }
+    if (!c.answer) { $("#ansBody").innerHTML = `<div class="empty">${esc(t("g.x.wait"))}</div>`; $("#ansCheck").innerHTML = ""; $("#jpOrig").textContent = ""; $("#jpBtn").hidden = true; return; }
     $("#ansBody").innerHTML = `<h2>${terms(c.answer.headline, "g")}</h2>${c.answer.paragraphs.map((p) => `<p>${terms(p, "g")}</p>`).join("")}`;
     $("#ansCheck").innerHTML = c.answer.same_lang || c.answer.untranslated ? `<p class="lang-note">${esc(t(c.answer.same_lang ? "g.x.sameAns" : "g.x.untr"))}</p>` : verifiedBox(c.answer.review, "g");
-    $("#jpOrig").textContent = c.answer.back_translation_ja || "";
-    $("#jpOrig").lang = "ja";
+    // 職人が話した言葉（整える前の、職人の言葉のまま）
+    $("#jpOrig").textContent = c.answer.voice_ja || c.answer.back_translation_ja || "";
+    $("#jpOrig").lang = c.answer.answer_lang || "ja";
+    $("#jpBtn").hidden = !$("#jpOrig").textContent || Boolean(c.answer.same_lang);
   }
   $("#jpBtn").addEventListener("click", () => { const b = $("#jpOrig"); b.hidden = !b.hidden; });
 
@@ -691,7 +693,7 @@
   $("#regFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (!f) return; pickReg("own", await fileUrl(f)); });
   const imgReason = (tr) => { const ic = tr.image_check || {}; if (ic.failed) return t("a.x.img.err"); if (MODE === "sample") return t(`a.x.img.${tr.sample === "pine" ? "ok" : tr.sample === "ng" ? "ng" : "unsure"}`); return (ic.reasons && ic.reasons[GL]) || (GL === "ja" ? ic.reason_ja : ic.reason_en); };
   const textProblems = (tc) => tc.codes && tc.codes.length ? tc.codes.map((c) => t("a.rule." + c)) : tc.problems_by_lang && tc.problems_by_lang[AL] ? [tc.problems_by_lang[AL]] : (AL === "ja" ? tc.problems_ja : tc.problems_en) || [];
-  const confTxt = (c) => (typeof c === "number" ? c.toFixed(2) : "–");
+  const confTxt = () => ""; // 点数は画面に出さない
   function verdict(kind, title, lines, by) {
     return `<div class="verdict v-${kind}"><div class="hd"><span class="ic"><svg><use href="#${kind === "hold" ? "i-hold" : "i-x"}"/></svg></span><b>${esc(title)}</b></div>${lines.length > 1 ? `<ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>` : `<p>${esc(lines[0] || "")}</p>`}${by ? `<div class="by"><span>${esc(by)}</span></div>` : ""}</div>`;
   }
@@ -706,7 +708,7 @@
       clearTimeout(swap); busy("#rBusy", false); $("#scan").classList.remove("on");
       curTree = tr; curTree.src = regPhoto.src;
       const ic = tr.image_check || {}, reason = imgReason(tr);
-      const by = t("a.x.conf", { P: confTxt(ic.confidence) });
+      const by = ""; // 点数は画面に出さない
       if (tr.status === "image_failed") { $("#regResult").innerHTML = verdict("ng", t("a.x.imgFail"), [reason], by) + `<button class="cta ghost" style="margin-top:12px" id="b-retake">${esc(t("a.x.retake"))}</button>`; scrollEnd("reg"); return; }
       if (tr.status === "image_held") { $("#regResult").innerHTML = verdict("hold", t("a.x.held"), [t("a.x.imgLow"), reason], by); scrollEnd("reg"); return; }
       show("posts");
@@ -723,7 +725,6 @@
     $("#pAllBody").innerHTML = LANGS.map((l) => `<div class="l" lang="${l}"><i>${l.toUpperCase()}</i><span>${esc(tr.draft.x[l])}</span></div>`).join("");
     $("#textResult").innerHTML = "";
   };
-  $("#b-tryNg").addEventListener("click", () => { $("#pX").value = t("a.x.ngText"); $("#pX").focus({ preventScroll: true }); });
   $("#b-postOk").addEventListener("click", async () => {
     const tr = curTree; if (!tr) return;
     if (!$("#pX").value.trim() || !$("#pIg").value.trim()) { $("#textResult").innerHTML = `<p class="err">${esc(t("a.x.emptyPost"))}</p>`; return; }
@@ -733,7 +734,7 @@
       busy("#pBusy", false);
       Object.assign(curTree, r);
       const tc = r.text_check || {}, probs = textProblems(tc);
-      const by = tc.by === "rules" ? "" : t("a.x.conf", { P: confTxt(tc.confidence) });
+      const by = ""; // 点数は画面に出さない
       if (r.status === "text_failed") { $("#textResult").innerHTML = verdict("ng", t("a.x.textFail"), probs || [], by); scrollEnd("posts"); return; }
       if (r.status === "text_held") { $("#textResult").innerHTML = verdict("hold", t("a.x.held"), [t("a.x.imgLow")], by); scrollEnd("posts"); return; }
       show("pub");
@@ -822,7 +823,7 @@
   /* ── 大きさ合わせ ── */
   function fit() {
     if (innerWidth <= 560) { document.documentElement.style.setProperty("--s", 1); return; }
-    const side = innerWidth > 860 ? 420 : 40;
+    const side = 40; // PCでも説明欄は出さず、スマホの枠だけ
     const s = Math.min((innerHeight - 40) / 844, 1.1, (innerWidth - side) / 390);
     document.documentElement.style.setProperty("--s", Math.max(0.5, s).toFixed(3));
   }

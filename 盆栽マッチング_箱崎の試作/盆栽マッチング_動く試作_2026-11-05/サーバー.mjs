@@ -274,12 +274,13 @@ function splitWords(v) {
 }
 function teacherById(id) { return allTeachers().find((t) => t.id === id); }
 // 職人のログイン（デモ）：見本の職人は「名.姓@bonsaigo.example」と共通の見本パスワード、登録した職人は自分のパスワード（scrypt で保存）
-const DEMO_PASSWORD = "bonsai1108";
+// 見本の職人の共通パスワードはコードに書かず、.env の BONSAI_DEMO_PASSWORD から読む。空なら見本の職人ではログインできない
+const DEMO_PASSWORD = process.env.BONSAI_DEMO_PASSWORD || "";
 const teacherEmail = (t) => t.email || (t.name_en ? `${t.name_en.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]+/g, ".").replace(/^\.+|\.+$/g, "")}@bonsaigo.example` : "");
 function passOk(t, pw) {
   const eq = (a, b) => { const x = Buffer.from(a), y = Buffer.from(b); return x.length === y.length && timingSafeEqual(x, y); };
   if (t.pass) return eq(scryptSync(pw, t.pass.salt, 32).toString("hex"), t.pass.hash);
-  return !t.email && eq(createHash("sha256").update(pw).digest("hex"), createHash("sha256").update(DEMO_PASSWORD).digest("hex"));
+  return !t.email && DEMO_PASSWORD !== "" && eq(createHash("sha256").update(pw).digest("hex"), createHash("sha256").update(DEMO_PASSWORD).digest("hex"));
 }
 
 // 同じ木の、前の相談と職人の答え（新しい順に3件まで）。AIには全部ではなく、この分だけ渡す
@@ -644,8 +645,8 @@ const routes = {
     await save();
     // 答えの案は裏で作る。相談した人は待たせない
     // 見本モードの案は見本の質問のときだけ（ほかの質問に、合わない案を出さない）
-    if ((MODE === "sample" && !isSample) || forCraftsperson.same_lang) { c.ai_draft_status = "none"; await save(); }
-    else makeDraft(c, images).then((d) => { c.ai_draft = d; c.ai_draft_status = d ? "done" : "failed"; return save(); });
+    // 職人には答えの案を見せない方針（2026-11-08 すり合わせ）。案を作るAIも呼ばない
+    c.ai_draft_status = "none"; await save();
     return publicConsultation(c);
   },
   "GET /api/consultations": async () => {

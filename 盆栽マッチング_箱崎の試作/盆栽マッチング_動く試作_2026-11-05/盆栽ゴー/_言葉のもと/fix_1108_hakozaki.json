@@ -1,0 +1,182 @@
+{
+ "g.welcome.cta": {
+  "ja": "盆栽を学びたい",
+  "en": "I want to learn bonsai",
+  "es": "Quiero aprender bonsái",
+  "zh": "我想学习盆栽",
+  "fr": "Je veux apprendre le bonsaï",
+  "it": "Voglio imparare il bonsai",
+  "th": "ฉันอยากเรียนบอนไซ",
+  "km": "ខ្ញុំចង់រៀនបុនសៃ"
+ },
+ "a.welcome.master": {
+  "ja": "盆栽の職人です",
+  "en": "I'm a bonsai craftsperson",
+  "es": "Soy artesano de bonsái",
+  "zh": "我是盆栽匠人",
+  "fr": "Je suis artisan du bonsaï",
+  "it": "Sono un artigiano del bonsai",
+  "th": "ฉันเป็นช่างบอนไซ",
+  "km": "ខ្ញុំជាជាងបុនសៃ"
+ },
+ "g.x.checkedS": {
+  "ja": "翻訳済み",
+  "en": "Translated",
+  "es": "Traducido",
+  "zh": "已翻译",
+  "fr": "Traduit",
+  "it": "Tradotto",
+  "th": "แปลแล้ว",
+  "km": "បានបកប្រែ"
+ },
+ "g.home.hi": {
+  "ja": "こんにちは",
+  "en": "Hello",
+  "es": "Hola",
+  "zh": "你好",
+  "fr": "Bonjour",
+  "it": "Ciao",
+  "th": "สวัสดี",
+  "km": "សួស្តី"
+ },
+ "g.gp.h": {
+  "ja": "園や職人を探す",
+  "en": "Find a garden or craftsperson",
+  "es": "Busca un jardín o un artesano",
+  "zh": "寻找园或匠人",
+  "fr": "Trouver un jardin ou un artisan",
+  "it": "Trova un giardino o un artigiano",
+  "th": "ค้นหาสวนหรือช่าง",
+  "km": "ស្វែងរកសួន ឬជាង"
+ },
+ "g.gp.lead": {
+  "ja": "何を知りたいですか。地域と、木の種類か困りごとを選ぶと、合う園や職人が出ます。",
+  "en": "What would you like to know? Pick a region and your tree or trouble, and gardens and craftspeople that fit appear below.",
+  "es": "¿Qué quieres saber? Elige una región y tu árbol o problema, y abajo aparecerán los jardines y artesanos adecuados.",
+  "zh": "你想了解什么？选择地区，再选择树种或烦恼，下面会出现合适的园和匠人。",
+  "fr": "Que voulez-vous savoir ? Choisissez une région, puis votre arbre ou votre souci : les jardins et artisans qui conviennent s'affichent en dessous.",
+  "it": "Cosa vuoi sapere? Scegli una regione e il tuo albero o problema: sotto compaiono i giardini e gli artigiani adatti.",
+  "th": "คุณอยากรู้อะไร? เลือกภูมิภาค แล้วเลือกชนิดต้นไม้หรือปัญหา สวนและช่างที่เหมาะจะแสดงด้านล่าง",
+  "km": "តើអ្នកចង់ដឹងអ្វី? ជ្រើសតំបន់ និងប្រភេទដើមឈើ ឬបញ្ហា នោះសួន និងជាងដែលសមនឹងបង្ហាញខាងក្រោម។"
+ },
+ "g.gp.pick": {
+  "ja": "この園の職人に相談する",
+  "en": "Ask this garden's craftspeople",
+  "es": "Consultar a los artesanos de este jardín",
+  "zh": "向这个园的匠人咨询",
+  "fr": "Consulter les artisans de ce jardin",
+  "it": "Chiedi agli artigiani di questo giardino",
+  "th": "ปรึกษาช่างของสวนนี้",
+  "km": "សួរជាងនៃសួននេះ"
+ },
+ "g.x.backTr": {
+  "ja": "職人が話した言葉",
+  "en": "The craftsperson's own words",
+  "es": "Las palabras del artesano",
+  "zh": "匠人的原话",
+  "fr": "Les mots de l'artisan",
+  "it": "Le parole dell'artigiano",
+  "th": "คำพูดของช่าง",
+  "km": "ពាក្យរបស់ជាងផ្ទាល់"
+ },
+ "g.home.askB": {
+  "ja": "相談する",
+  "en": "Ask a question",
+  "es": "Haz una consulta",
+  "zh": "提出咨询",
+  "fr": "Poser une question",
+  "it": "Fai una domanda",
+  "th": "ถามคำถาม",
+  "km": "សួរសំណួរ"
+ },
+ "g.home.askT": {
+  "ja": "写真を送れば、職人があなたの木を見て答えます",
+  "en": "Send a photo, and a craftsperson will look at your tree and answer",
+  "es": "Envía una foto y un artesano mirará tu árbol y te responderá",
+  "zh": "发送照片，匠人会看着你的树来回答",
+  "fr": "Envoyez une photo : un artisan regardera votre arbre et vous répondra",
+  "it": "Invia una foto: un artigiano guarderà il tuo albero e ti risponderà",
+  "th": "ส่งรูปมา ช่างจะดูต้นไม้ของคุณแล้วตอบ",
+  "km": "ផ្ញើរូបថត ជាងនឹងមើលដើមឈើរបស់អ្នក ហើយឆ្លើយ"
+ },
+ "g.x.answered": {
+  "ja": "答えが届いた",
+  "en": "Answer arrived",
+  "es": "Respuesta recibida",
+  "zh": "已收到回答",
+  "fr": "Réponse reçue",
+  "it": "Risposta arrivata",
+  "th": "ได้รับคำตอบแล้ว",
+  "km": "បានទទួលចម្លើយ"
+ },
+ "g.x.wait": {
+  "ja": "職人の回答待ち",
+  "en": "Waiting for the craftsperson",
+  "es": "Esperando al artesano",
+  "zh": "等待匠人回答",
+  "fr": "En attente de l'artisan",
+  "it": "In attesa dell'artigiano",
+  "th": "รอคำตอบจากช่าง",
+  "km": "កំពុងរង់ចាំជាង"
+ },
+ "g.ans.again": {
+  "ja": "もう一度、職人に相談する",
+  "en": "Ask the craftsperson again",
+  "es": "Volver a consultar al artesano",
+  "zh": "再次咨询匠人",
+  "fr": "Reposer une question à l'artisan",
+  "it": "Chiedi di nuovo all'artigiano",
+  "th": "ถามช่างอีกครั้ง",
+  "km": "សួរជាងម្តងទៀត"
+ },
+ "a.ans.m3": {
+  "ja": "入力する",
+  "en": "Type",
+  "es": "Escribir",
+  "zh": "输入",
+  "fr": "Écrire",
+  "it": "Scrivi",
+  "th": "พิมพ์",
+  "km": "វាយបញ្ចូល"
+ },
+ "a.steps.2": {
+  "ja": "話すか書いて答える。AIが読みやすく整える。方言のままで大丈夫",
+  "en": "Answer by speaking or writing. AI tidies it up so it reads well. Your own way of speaking is fine.",
+  "es": "Responde hablando o escribiendo. La IA lo ordena para que se lea bien. Puedes hablar a tu manera.",
+  "zh": "用说或写来回答，AI 会整理得更易读。用方言也没关系",
+  "fr": "Répondez à l'oral ou à l'écrit. L'IA le met en forme pour qu'il se lise bien. Parlez comme d'habitude.",
+  "it": "Rispondi parlando o scrivendo. L'IA lo sistema perché si legga bene. Va bene parlare come al solito.",
+  "th": "ตอบด้วยการพูดหรือเขียน AI จะเรียบเรียงให้อ่านง่าย พูดแบบที่ถนัดได้เลย",
+  "km": "ឆ្លើយដោយនិយាយ ឬសរសេរ។ AI រៀបចំឲ្យងាយអាន។ និយាយតាមទម្លាប់របស់អ្នកបាន។"
+ },
+ "a.x.demoAcc": {
+  "ja": "見本の職人のメールアドレスを入れる",
+  "en": "Fill in a sample craftsperson's email",
+  "es": "Rellenar el correo de un artesano de muestra",
+  "zh": "填入示例匠人的邮箱",
+  "fr": "Remplir l'e-mail d'un artisan exemple",
+  "it": "Inserisci l'e-mail di un artigiano di esempio",
+  "th": "ใส่อีเมลของช่างตัวอย่าง",
+  "km": "បញ្ចូលអ៊ីមែលរបស់ជាងគំរូ"
+ },
+ "a.reg.h": {
+  "ja": "自分の木を、<br>世界に紹介する。",
+  "en": "Introduce your tree<br>to the world.",
+  "es": "Presenta tu árbol<br>al mundo.",
+  "zh": "把你的树<br>介绍给世界。",
+  "fr": "Présentez votre arbre<br>au monde.",
+  "it": "Presenta il tuo albero<br>al mondo.",
+  "th": "แนะนำต้นไม้ของคุณ<br>สู่โลก",
+  "km": "ណែនាំដើមឈើរបស់អ្នក<br>ទៅកាន់ពិភពលោក។"
+ },
+ "a.x.ok": {
+  "ja": "OK（投稿用に登録する）",
+  "en": "OK (register for posting)",
+  "es": "OK (registrar para publicar)",
+  "zh": "确定（登记为发布内容）",
+  "fr": "OK (enregistrer pour publication)",
+  "it": "OK (registra per la pubblicazione)",
+  "th": "ตกลง (ลงทะเบียนเพื่อโพสต์)",
+  "km": "យល់ព្រម (ចុះឈ្មោះសម្រាប់ផុស)"
+ }
+}

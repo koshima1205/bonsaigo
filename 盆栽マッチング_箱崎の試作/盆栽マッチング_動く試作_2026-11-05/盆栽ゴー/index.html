@@ -52,7 +52,7 @@
           <button class="cta" data-go="gstart" data-i18n="g.welcome.cta"></button>
           <button class="cta ghost" data-go="mstart" data-i18n="a.welcome.master"></button>
           <div style="display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap">
-            <span class="mode-pill dk" data-mode></span>
+            
           </div>
         </div>
       </section>
@@ -98,7 +98,7 @@
 
       <!-- 相談する人：ホーム -->
       <section class="scr" id="s-home">
-        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
+        <div class="topbar"><div class="mark"><b>BONSAIGO</b></div><div class="r"><button class="lang-pill" data-pick="g"><svg><use href="#i-globe"/></svg><span class="lp-name">English</span></button></div></div>
         <div class="pad">
           <div class="eyebrow c" id="gHello"></div>
           <h2 class="h-en" data-i18n="g.home.h"></h2>
@@ -116,7 +116,7 @@
 
       <!-- 相談する：写真と質問 -->
       <section class="scr" id="s-ask">
-        <div class="topbar"><div class="eyebrow" data-i18n="g.ask.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><div class="eyebrow" data-i18n="g.ask.eye"></div><div class="r"></div></div>
         <div class="pad">
           <h2 class="h-en" data-i18n="g.ask.h2"></h2>
           <div class="pick-photo" id="askPhoto"><img src="img/ask.jpg" alt=""><span class="ai"><svg><use href="#i-spark"/></svg><span data-i18n="g.ask.chip"></span></span></div>
@@ -136,7 +136,7 @@
           <p class="err" id="askErr" hidden></p>
         </div>
         <div class="dock"><button class="cta" id="b-send"><svg><use href="#i-send"/></svg><span data-i18n="g.ask.send"></span></button></div>
-        <div class="busy" id="askBusy"><div class="in"><div class="leaf"><i></i><i></i></div><small>Claude · Sonnet</small><b data-i18n="g.x.sending"></b></div></div>
+        <div class="busy" id="askBusy"><div class="in"><div class="leaf"><i></i><i></i></div><b data-i18n="g.x.sending"></b></div></div>
         <nav class="tabs" data-tabs="g" data-on="ask"></nav>
       </section>
 
@@ -167,7 +167,7 @@
       <!-- 届いていく -->
       <section class="scr fade" id="s-sent" data-light>
         <div class="journey">
-          <div class="row-eye"><span class="eyebrow" data-i18n="g.sent.eye"></span><span class="mode-pill dk" data-mode></span></div>
+          <div class="row-eye"><span class="eyebrow" data-i18n="g.sent.eye"></span></div>
           <div class="bubble en" id="j1"><span class="lbl" data-i18n="g.sent.lbl"></span><span id="j1t"></span></div>
           <div class="flow" id="jf"><span class="line"></span><span data-i18n="g.sent.flow"></span><span class="line"></span></div>
           <div class="bubble jp" id="j2"><span class="lbl" id="j2l"></span><span id="j2t"></span></div>
@@ -178,13 +178,13 @@
 
       <!-- 答えが届く -->
       <section class="scr" id="s-answer">
-        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="g.ans.eye"></div><div class="r"><span class="mode-pill" data-mode></span></div></div>
+        <div class="topbar"><button class="icon-btn" data-back aria-label="Back"><svg><use href="#i-back"/></svg></button><div class="eyebrow" data-i18n="g.ans.eye"></div><div class="r"></div></div>
         <div class="pad">
           <div class="ans-head"><span class="mono"><svg><use href="#i-tree"/></svg></span><div><b id="ansWho"></b><span id="ansBy"></span></div></div>
           <div class="answer" id="ansBody"></div>
           <div id="ansCheck"></div>
           <p class="tnote" data-i18n="g.ans.tnote"></p>
-          <button class="jp-toggle" id="jpBtn" hidden><span data-i18n="g.x.backTr"></span> <span>›</span></button>
+          <button class="jp-toggle" id="jpBtn"><span data-i18n="g.x.backTr"></span> <span>›</span></button>
           <div class="jp-orig" id="jpOrig" hidden></div>
           <div class="saved"><svg><use href="#i-bookmark"/></svg><span data-i18n="g.ans.saved"></span></div>
           <div class="mini-q"><img id="ansImg" src="img/ask.jpg" alt=""><div id="ansQ"></div></div>
@@ -222,7 +222,7 @@
 
       <!-- 職人：ホーム -->
       <section class="scr k" id="s-mhome">
-        <div class="topbar"><div class="gtag" data-garden></div><div class="r"><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
+        <div class="topbar"><div class="gtag" data-garden></div><div class="r"></div></div>
         <div class="pad">
           <div class="today" id="mToday"></div>
           <div class="hello" data-i18n="a.mh.hi"></div>
@@ -268,9 +268,9 @@
             <button class="orig" id="origBtn"></button>
             <div class="orig-body" id="origBody" hidden></div>
           </div>
-          <div class="draft" id="dDraft"></div>
+          <div class="draft" id="dDraft" hidden></div>
           <div class="as-who"><span id="dAs"></span></div>
-          <div class="ans-how"><h4 data-i18n="a.ans.how"></h4><div class="modes" id="ansModes"><button data-m="1"><svg><use href="#i-spark"/></svg><span data-i18n="a.ans.m1"></span></button><button data-m="2"><svg><use href="#i-reply"/></svg><span data-i18n="a.ans.m2"></span></button><button data-m="3"><svg><use href="#i-qa"/></svg><span data-i18n="a.ans.m3"></span></button><button data-m="4" id="b-mic"><svg><use href="#i-mic"/></svg><span data-i18n="a.ans.m4"></span></button></div><p class="lang-note" id="ansModeT"></p></div>
+          <div class="ans-how"><h4 data-i18n="a.ans.how"></h4><div class="modes" id="ansModes"><button data-m="3"><svg><use href="#i-qa"/></svg><span data-i18n="a.ans.m3"></span></button><button data-m="4" id="b-mic"><svg><use href="#i-mic"/></svg><span data-i18n="a.ans.m4"></span></button></div><p class="lang-note" id="ansModeT"></p></div>
           <div class="ans-area">
             <textarea id="ansText" maxlength="3000"></textarea>
           </div>
@@ -306,8 +306,8 @@
           <div class="pick-photo" id="regPhoto"><img src="img/reg.jpg" alt=""><div class="scan" id="scan"></div></div>
           <div class="photo-btns">
             <label class="chip"><svg><use href="#i-cam"/></svg><span data-i18n="a.x.photo"></span><input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" id="regFile"></label>
-            <button class="chip on" id="regSample" data-s="pine"><svg><use href="#i-img"/></svg><span data-i18n="a.x.sample"></span></button>
-            <button class="chip" id="regNg" data-s="ng"><svg><use href="#i-x"/></svg><span data-i18n="a.x.sampleNg"></span></button>
+            <button class="chip on" id="regSample" hidden data-s="pine"><svg><use href="#i-img"/></svg><span data-i18n="a.x.sample"></span></button>
+            <button class="chip" id="regNg" hidden data-s="ng"><svg><use href="#i-x"/></svg><span data-i18n="a.x.sampleNg"></span></button>
           </div>
           <div class="row2">
             <label class="field"><span data-i18n="a.x.sp"></span><select id="regSp"></select></label>
@@ -335,7 +335,7 @@
           <div class="post-edit"><div class="hd"><b>X</b><span data-i18n="a.talk.drS"></span></div><textarea id="pX" rows="4"></textarea></div>
           <div class="post-edit"><div class="hd"><b>Instagram</b><span data-i18n="a.talk.drS"></span></div><textarea id="pIg" rows="4"></textarea></div>
           <details class="langs8" id="pAll"><summary><span data-i18n="a.x.all8"></span><span>›</span></summary><div id="pAllBody"></div></details>
-          <button class="linkish" id="b-tryNg" style="margin-top:14px" data-i18n="a.x.tryNg"></button>
+          
           <div id="textResult"></div>
         </div>
         <div class="dock"><button class="cta moss" id="b-postOk"><svg><use href="#i-check"/></svg><span data-i18n="a.x.ok"></span></button></div>
@@ -390,14 +390,7 @@
     </div></div>
   </div>
 
-  <aside class="side">
-    <h1>BONSAIGO</h1>
-    <p>海外で盆栽を育てる人と、日本の職人を、言葉の壁なしでつなぐアプリです。</p>
-    <div class="tip"><b>試し方</b>「盆栽を育てています」で入り、写真つきの相談を送る → 右上の ⇄ で「職人」に切りかえ → 回答する → もう一度右上の ⇄ で相談した人に戻ると、答えが自分の言葉で届いています。</div>
-    <div class="tip"><b>言葉</b>相談する人も答える人も、8つの言葉から自分の言葉を選べます。言葉が同じなら訳さずにそのまま、違えば意味で訳して確かめてから届きます。</div>
-    <div class="tip"><b>見本モード</b>AI の鍵がないときは、見本の答えで最後まで動きます（料金はかかりません）。訳せるのは見本の質問だけで、ほかの質問は書いた言葉のまま届きます。</div>
-    <div class="tip"><b>写真について</b>木の絵と動画はチームが 3D で作ったもの、庭の写真は大宮盆栽美術館で撮ったものです。園・職人・相談はすべて架空の見本です。</div>
-  </aside>
+  
 </div>
 
 <script src="i18n.js" charset="utf-8"></script>

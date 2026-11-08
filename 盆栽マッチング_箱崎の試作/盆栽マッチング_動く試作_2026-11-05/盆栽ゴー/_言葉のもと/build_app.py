@@ -34,6 +34,18 @@ for c in ["ja", "zh", "th", "km"]:
     for k, v in list(I[c].items()):
         if isinstance(v, str): I[c][k] = re.sub(r"\s*\((?:[A-Z][A-Za-z \-]*)\)", "", v)
 I["km"]["g.tree.ume"] = "អ៊ូមេ (ផ្លែព្រូនជប៉ុន)"
+# 11/08 夕方：箱崎さんとのすり合わせ（師匠→職人・ボタンの文・案を出さない答え方）。いちばん最後に重ねる
+KEEP = {"g.gp.master", "a.x.master"}
+def _en(v):
+    for x, y in [(r"\bA master\b", "A craftsperson"), (r"\ba master\b", "a craftsperson"), (r"\bmasters'", "craftspeople's"), (r"\bMasters\b", "Craftspeople"), (r"\bmasters\b", "craftspeople"), (r"\bMaster\b", "Craftsperson"), (r"\bmaster\b", "craftsperson"), (r"what he said", "what they said")]:
+        v = re.sub(x, y, v)
+    return v
+for k, v in list(I["ja"].items()):
+    if isinstance(v, str): I["ja"][k] = v.replace("師匠", "職人")
+for k, v in list(I["en"].items()):
+    if isinstance(v, str) and k not in KEEP: I["en"][k] = _en(v)
+for k, by in json.load(open(os.path.join(here, "fix_1108_hakozaki.json"))).items():
+    for c, v in by.items(): I[c][k] = v
 # 使っていない鍵（◯◯ Garden の置き忘れのもと）は外す
 for c in I: I[c].pop("g.m.name", None)
 os.makedirs(os.path.join(APP, "盆栽ゴー"), exist_ok=True)

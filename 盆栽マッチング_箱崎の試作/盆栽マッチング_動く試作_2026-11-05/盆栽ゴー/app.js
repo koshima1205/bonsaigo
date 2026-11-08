@@ -25,7 +25,7 @@
   const myGarden = () => gardenOf(myPerson() && myPerson().garden);
   const initial = (tc, L) => [...(nm(tc, L) || "?")][0];
   // 役割の言い方（園主／◯◯から来たお弟子さん）
-  const roleLbl = (p, L, side) => p.role === "apprentice" ? D(L, side === "a" ? "a.x.appr" : "g.gp.appr").replace("{C}", ctry(p.from, L)) : D(L, side === "a" ? "a.x.master" : "g.gp.master");
+  const roleLbl = (p, L, side) => p.role === "apprentice" ? (p.from ? D(L, side === "a" ? "a.x.appr" : "g.gp.appr").replace("{C}", ctry(p.from, L)) : D(L, side === "a" ? "a.x.appr0" : "g.gp.appr0")) : D(L, side === "a" ? "a.x.master" : "g.gp.master");
   // 相談する人の画面の {A}＝相手（答える人）の言葉
   const otherL = () => (cur === "answer" && curConsult && curConsult.answer && curConsult.answer.answer_lang) || gardenLang(gardenOf(toGarden));
 
@@ -146,11 +146,16 @@
     async mstart() {
       showErr("#mErr", "");
       await refreshTeachers();
-      // 園の名前の下に、その園の人だけを並べる（新しく登録した園が先）
-      const order = [...GARDENS.filter((g) => g.registered), ...GARDENS.filter((g) => !g.registered)];
-      $("#whoList").innerHTML = order.map((g) => { const ps = peopleOf(g); if (!ps.length) return ""; return `<div class="who-garden"><h4>${esc(gName(g, AL))}<span>${esc(regName(g.region, AL))}</span></h4><div class="who">${ps.map((tc) => `<button data-tid="${esc(tc.id)}"><span class="seal">${esc(initial(tc, AL))}</span><div><b>${esc(t("a.x.member", { E: gName(g, AL), P: nm(tc, AL) }))}</b><small>${esc(roleLbl(tc, AL, "a"))} · ${esc(t("a.x.answersIn", { L: I18N[AL].names[tc.lang] || tc.lang }))}${g.registered ? " · " + esc(t("a.x.newOne")) : ""}</small></div><span style="margin-left:auto;color:var(--ink-2)">›</span></button>`).join("")}</div></div>`; }).join("");
-      $("#mSp").innerHTML = SPECIES.map(([k]) => `<label><input type="checkbox" value="${k}" ${k === "pine" ? "checked" : ""}><span>${esc(spName(k, AL))}</span></label>`).join("");
-      $("#mRegion").innerHTML = WORLD.regions.map((r) => `<option value="${esc(r.id)}">${esc(r.name[AL] || r.name.en)}</option>`).join("");
+      showErr("#lErr", "");
+      // 職人はメールとパスワードで入る。はじめての人は園を登録する（名前・園の名前・地域・立場・得意な木・SNS）
+      const keepSp = new Set($$("#mSp input:checked").map((i) => i.value));
+      $("#mSp").innerHTML = SPECIES.map(([k]) => `<label><input type="checkbox" value="${k}" ${(keepSp.size ? keepSp.has(k) : k === "pine") ? "checked" : ""}><span>${esc(spName(k, AL))}</span></label>`).join("") + `<label><input type="checkbox" value="other" ${keepSp.has("other") ? "checked" : ""}><span>${esc(t("a.x.spOther"))}</span></label>`;
+      $("#mSpOther").placeholder = t("a.x.spOtherPh"); $("#mSpOther").hidden = !keepSp.has("other");
+      const rv = $("#mRegion").value;
+      $("#mRegion").innerHTML = `<option value="">${esc(t("a.x.regionPick"))}</option>` + WORLD.regions.map((r) => `<option value="${esc(r.id)}">${esc(r.name[AL] || r.name.en)}</option>`).join("");
+      $("#mRegion").value = rv || "";
+      if (!$("#mSns").children.length) addSns("x"), addSns("instagram"), addSns("web");
+      $$("#mSns [data-k]").forEach((r) => { $("span", r).textContent = r.dataset.k === "web" ? t("a.x.snsWeb") : r.dataset.k === "x" ? "X" : "Instagram"; });
     },
     async home() {
       $("#gHello").textContent = `${t("g.home.hi")}${ME ? ", " + ME.name : ""}`;
@@ -174,7 +179,10 @@
       if (!$("#askText").value.trim()) $("#askText").value = t("g.q");
       $("#askText").placeholder = t("g.ask.ph");
       if (!GARDENS.length) await refreshTeachers();
-      paintGardenCard();
+      const sv = $("#askSp").value || "juniper";
+      $("#askSp").innerHTML = Object.entries(WORLD.species).map(([k, n]) => `<option value="${esc(k)}">${esc(n[GL] || n.en)}</option>`).join("");
+      $("#askSp").value = sv;
+      suggestGarden();
     },
     gpick() { renderGpick(); },
     answer() { renderAnswer(); },
@@ -187,6 +195,8 @@
       // 「おはようございます　◯◯ 様」。下に、役割と園
       const mp = myPerson();
       $("#mHello").textContent = t("a.mh.name", { N: mp ? nm(mp, AL) : ME ? ME.name : "" });
+      // いちばん上に日付と曜日（答える人の言葉で）
+      try { $("#mToday").textContent = new Intl.DateTimeFormat(AL === "zh" ? "zh-CN" : AL, { year: "numeric", month: "long", day: "numeric", weekday: "long" }).format(new Date()); } catch { $("#mToday").textContent = new Date().toDateString(); }
       $("#mWho").textContent = mp ? `${roleLbl(mp, AL, "a")} · ${gName(myGarden(), AL)}` : "";
       try {
         const [c, tr] = await Promise.all([api("GET", "/consultations"), api("GET", "/bonsaigo/trees")]);
@@ -217,21 +227,52 @@
     try { const d = await api("POST", "/login", { role: "aikouka", name, lang: GL }); ME = d.user; await refreshTeachers(); show("home"); }
     catch (e) { showErr("#gErr", errText(e, "g")); }
   });
-  $("#whoList").addEventListener("click", async (e) => {
-    const b = e.target.closest("[data-tid]"); if (!b) return;
-    // 答える言葉は、その人がふだん答える言葉から始める（ホームと答える画面で変えられる）
-    const p = TEACHERS.find((x) => x.id === b.dataset.tid);
-    if (p && LANGS.includes(p.lang)) { AL = p.lang; store.set("bg-a", AL); }
-    try { const d = await api("POST", "/login", { role: "shokunin", teacher_id: b.dataset.tid, lang: AL }); ME = d.user; show("mhome"); }
-    catch (er) { showErr("#mErr", errText(er, "a")); }
+  // ログイン。答える言葉は、その人がふだん答える言葉（最初に選んだ言葉）にする
+  async function signedIn(d) { ME = d.user; if (LANGS.includes(ME.lang)) { AL = ME.lang; store.set("bg-a", AL); } await refreshTeachers(); applyLang(); show("mhome"); }
+  $("#b-login").addEventListener("click", async () => {
+    const email = $("#lMail").value.trim(), password = $("#lPass").value;
+    if (!email || !password) return showErr("#lErr", t("a.x.errLogin"));
+    showErr("#lErr", "");
+    try { await signedIn(await api("POST", "/login", { role: "shokunin", mode: "signin", email, password })); }
+    catch (e) { showErr("#lErr", e.status === 429 ? errText(e, "a") : t("a.x.errLogin")); }
   });
+  [$("#lMail"), $("#lPass")].forEach((el) => el.addEventListener("keydown", (e) => { if (e.key === "Enter") $("#b-login").click(); }));
+  // 見本の職人（架空）のアカウントを入れる。答える言葉が日本語なら霧松園の青木さん、ほかの言葉ならその言葉で答える見本の人
+  $("#b-demoAcc").addEventListener("click", () => {
+    const p = TEACHERS.find((x) => x.lang === AL && /^p\d+$/.test(x.id)) || TEACHERS.find((x) => x.id === "p1");
+    if (!p) return;
+    $("#lMail").value = `${p.name_en.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]+/g, ".").replace(/^\.+|\.+$/g, "")}@bonsaigo.example`;
+    $("#lPass").value = "bonsai1108";
+  });
+  // 登録：立場・その他の木・SNS
+  let mRole = "master";
+  $("#mRole").addEventListener("click", (e) => { const b = e.target.closest("[data-r]"); if (!b) return; mRole = b.dataset.r; $$("#mRole [data-r]").forEach((x) => x.classList.toggle("on", x === b)); });
+  $("#mSp").addEventListener("change", (e) => { if (e.target.value === "other") { $("#mSpOther").hidden = !e.target.checked; if (e.target.checked) $("#mSpOther").focus(); } });
+  function addSns(k) {
+    if ($$("#mSns [data-k]").length >= 12) return;
+    const row = document.createElement("label"); row.className = "sns-row"; row.dataset.k = k;
+    row.innerHTML = `<span>${esc(k === "web" ? t("a.x.snsWeb") : k === "x" ? "X" : "Instagram")}</span><input type="url" inputmode="url" maxlength="300" placeholder="https://">`;
+    $("#mSns").appendChild(row);
+  }
+  $("#b-snsAdd").addEventListener("click", () => addSns("web"));
   $("#b-mreg").addEventListener("click", async () => {
-    const name = $("#mName").value.trim();
-    const sp = $$("#mSp input:checked").map((i) => spName(i.value, "ja"));
+    const name = $("#mName").value.trim(), place = $("#mPlace").value.trim(), region = $("#mRegion").value;
+    const keys = $$("#mSp input:checked").map((i) => i.value).filter((k) => k !== "other");
+    const other = $("#mSpOther").hidden ? "" : $("#mSpOther").value.trim();
+    const sp = [...keys.map((k) => spName(k, "ja")), ...(other ? [other] : [])];
+    const email = $("#mMail").value.trim(), password = $("#mPass").value;
+    const sns = { x: [], instagram: [], web: [] };
+    $$("#mSns [data-k]").forEach((r) => { const v = $("input", r).value.trim(); if (v) sns[r.dataset.k].push(v); });
     if (!name) return showErr("#mErr", t("a.x.errName"));
+    if (!place) return showErr("#mErr", t("a.x.errPlace"));
+    if (!region) return showErr("#mErr", t("a.x.errRegion"));
     if (!sp.length) return showErr("#mErr", t("a.x.errSp"));
-    try { const d = await api("POST", "/login", { role: "shokunin", name, place: $("#mPlace").value.trim(), region: $("#mRegion").value, species: $$("#mSp input:checked").map((i) => i.value), specialties: sp, lang: AL }); ME = d.user; await refreshTeachers(); show("mhome"); }
-    catch (e) { showErr("#mErr", errText(e, "a")); }
+    if ([...sns.x, ...sns.instagram, ...sns.web].some((u) => !/^https:\/\/\S{3,}$/.test(u))) return showErr("#mErr", t("a.x.errUrl"));
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr("#mErr", t("a.x.errMail"));
+    if (password.length < 8) return showErr("#mErr", t("a.x.errPass"));
+    showErr("#mErr", "");
+    try { await signedIn(await api("POST", "/login", { role: "shokunin", name, place, region, role_in_garden: mRole, species: keys, specialties: sp, sns, email, password, lang: AL })); }
+    catch (e) { showErr("#mErr", /登録済み/.test(e.message || "") ? t("a.x.errMailUsed") : errText(e, "a")); }
   });
   async function refreshTeachers() { try { const d = await api("GET", "/me"); TEACHERS = d.teachers || []; GARDENS = d.gardens || []; if (!gardenOf(toGarden) && GARDENS[0]) toGarden = GARDENS[0].id; paintGtag(); } catch {} }
   // 職人の画面の左上：自分の園の名前（すべて架空の見本）
@@ -251,6 +292,23 @@
     $("#gLangNote").textContent = L === GL ? t("g.gp.same") : t("g.gp.diff", { L: I18N[GL].names[L] || L });
     applyLang();
   }
+  // 写真・木の種類・相談の中身から、合う園を提案する（自分で園を選んだら、それを優先）
+  let pickedByHand = false;
+  const TOPIC_WORDS = { wire: ["wire", "wiring", "alambre", "filo", "fil", "铝丝", "金属丝", "ลวด", "លួស", "針金"], repot: ["repot", "trasplant", "rinvas", "rempot", "换盆", "เปลี่ยนกระถาง", "ប្តូរផើង", "植え替え"], water: ["water", "riego", "acqua", "arros", "浇水", "รดน้ำ", "ស្រោចទឹក", "水やり"], pruning: ["prun", "pod", "potat", "taille", "修剪", "ตัดแต่ง", "កាត់", "剪定", "芽切り", "芽摘み"], pests: ["pest", "mite", "plaga", "parassit", "ravageur", "虫", "แมลง", "សត្វល្អិត", "ハダニ"] };
+  function suggestGarden() {
+    if (pickedByHand) { paintGardenCard(); $("#gSugg").hidden = true; return; }
+    const sp = $("#askSp").value, q = $("#askText").value.toLowerCase();
+    const topics = Object.entries(TOPIC_WORDS).filter(([, ws]) => ws.some((w) => q.includes(w))).map(([k]) => k);
+    const score = (g) => ((g.species || []).includes(sp) ? 3 : 0) + topics.filter((k) => (g.topics || []).includes(k)).length;
+    // 同点なら日本の園を先に（日本の職人に聞けるのが BONSAIGO の芯）
+    const jp = (g) => (String(g.region).startsWith("jp-") ? 0 : 1);
+    const best = GARDENS.filter((g) => peopleOf(g).length).map((g) => [score(g), g]).sort((a, b) => b[0] - a[0] || jp(a[1]) - jp(b[1]))[0];
+    if (best && best[0] > 0) toGarden = best[1].id;
+    paintGardenCard(); $("#gSugg").hidden = !(best && best[0] > 0);
+  }
+  $("#askSp").addEventListener("change", suggestGarden);
+  let suggT = null;
+  $("#askText").addEventListener("input", () => { clearTimeout(suggT); suggT = setTimeout(suggestGarden, 500); });
   // 園を選ぶ：地域 → 木か困りごと → 答えられる園（縦に並べる）
   let gpRegion = "all", gpTree = "", gpTopic = "";
   function renderGpick() {
@@ -267,7 +325,7 @@
     if (rg) { gpRegion = rg.dataset.rg; renderGpick(); }
     else if (tr) { gpTree = tr.dataset.tr; gpTopic = ""; renderGpick(); }
     else if (tp) { gpTopic = gpTopic === tp.dataset.tp ? "" : tp.dataset.tp; gpTree = ""; renderGpick(); }
-    else if (gd) { toGarden = gd.dataset.gid; store.set("bg-g", toGarden); back(); }
+    else if (gd) { toGarden = gd.dataset.gid; store.set("bg-g", toGarden); pickedByHand = true; back(); }
   });
   $("#b-send").addEventListener("click", async () => {
     const q = $("#askText").value.trim(); if (!q) return showErr("#askErr", t("g.x.errEmpty"));
@@ -418,7 +476,7 @@
     await loadNotes();
     const a = (await loadLearn()).find((x) => x.no === no); if (!a) return;
     const body = (a.body && (a.body[L] || a.body.en)) || [];
-    box.innerHTML = `<div class="artv" lang="${L}"><div class="hero"><img src="${artImg(a)}" alt=""></div><div class="eyebrow c" style="margin-top:14px">${esc(D(L, "g.l." + a.group))} · ${esc(D(L, "g.x.min").replace("{N}", a.minutes || 4))}</div><h1>${esc(pick8(a.title, L))}</h1><p class="ld">${esc(pick8(a.lead, L))}</p>${body.map((x) => (x.h ? `<h3>${esc(x.h)}</h3>` : `<p>${esc(x.p)}</p>`)).join("")}${pick8(a.voice, L) ? `<div class="voice"><b>${esc(D(L, "g.l.voiceQ"))}</b><p>${esc(pick8(a.voice, L))}</p>${side === "g" ? `<button class="cta" data-askq="${a.no}">${esc(D(L, "g.l.ask"))}</button>` : ""}</div>` : ""}${notesHtml(a.no, L, side)}${(a.sources || []).length ? `<div class="src"><b>${esc(D(L, "g.l.src"))}</b><br>${a.sources.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join("<br>")}</div>` : ""}</div>`;
+    box.innerHTML = `<div class="artv" lang="${L}"><div class="hero"><img src="${artImg(a)}" alt=""></div><div class="eyebrow c" style="margin-top:14px">${esc(D(L, "g.l." + a.group))} · ${esc(D(L, "g.x.min").replace("{N}", a.minutes || 4))}</div><h1>${esc(pick8(a.title, L))}</h1><p class="ld">${esc(pick8(a.lead, L))}</p>${body.map((x) => (x.h ? `<h3>${esc(x.h)}</h3>` : `<p>${esc(x.p)}</p>`)).join("")}${side === "g" && pick8(a.voice, L) ? `<div class="voice"><b>${esc(D(L, "g.l.voiceQ"))}</b><p>${esc(pick8(a.voice, L))}</p>${side === "g" ? `<button class="cta" data-askq="${a.no}">${esc(D(L, "g.l.ask"))}</button>` : ""}</div>` : ""}${notesHtml(a.no, L, side)}${(a.sources || []).length ? `<div class="src"><b>${esc(D(L, "g.l.src"))}</b><br>${a.sources.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join("<br>")}</div>` : ""}</div>`;
     scroller(side === "g" ? "art" : "mart").scrollTop = 0;
   }
   $("#artBody").addEventListener("click", async (e) => { const b = e.target.closest("[data-askq]"); if (!b) return; const a = (await loadLearn()).find((x) => x.no === Number(b.dataset.askq)); $("#askText").value = pick8(a.voice, GL); go("ask"); });
@@ -515,7 +573,7 @@
     // 言葉が同じ・訳していない相談は、原文がそのまま本文
     $("#origBtn").hidden = Boolean(fc.raw);
     if (c.answer) $("#ansText").value = c.answer.voice_ja || $("#ansText").value;
-    paintDraft(c);
+    paintDraft(c); setMode(0);
     clearInterval(draftPoll);
     if (c.ai_draft_status === "making") {
       let n = 0;
@@ -540,31 +598,47 @@
   }
   function paintDraft(c) {
     const s = c.ai_draft_status, d0 = draftOf(c), d = d0 && { draft_ja: d0.text, check_ja: d0.checks };
-    $("#b-useDraft").disabled = !d;
+    $$("#ansModes [data-m='1'], #ansModes [data-m='2']").forEach((b) => (b.disabled = !d));
     $("#dDraft").innerHTML = `<div class="hd"><b>${esc(t("a.dr.hd"))}</b></div>` +
       (s === "making" ? `<div class="dr-text" style="color:var(--ink-2)">${esc(t("a.x.making"))}</div>` : d ? `<div class="dr-text">${esc(d.draft_ja)}</div>${d.check_ja?.length ? `<div style="padding:0 12px 12px"><b style="font-size:12.5px;color:var(--copper)">${esc(t("a.x.checkList"))}</b><ul class="checks">${d.check_ja.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}` : `<div class="dr-text" style="color:var(--ink-2)">${esc(t("a.x.noDraft"))}</div>`);
   }
   $("#origBtn").addEventListener("click", () => { const b = $("#origBody"); b.hidden = !b.hidden; });
   let fromDraft = false;
-  $("#b-useDraft").addEventListener("click", () => { const d = curConsult && draftOf(curConsult); if (!d) return; $("#ansText").value = d.text; fromDraft = true; $("#ansText").focus(); });
+  // 答え方は4つ：Claude の案から始める（そのまま確かめへ）／案をもとに直す／自分で書く／声で話す
+  function setMode(m) {
+    $$("#ansModes [data-m]").forEach((b) => b.classList.toggle("on", b.dataset.m === String(m)));
+    $("#ansModeT").textContent = m ? t(`a.ans.m${m}T`) : "";
+  }
+  $("#ansModes").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-m]"); if (!b || b.disabled) return;
+    const m = b.dataset.m, d = curConsult && draftOf(curConsult);
+    if (m === "4") { setMode(4); voiceInto($("#b-mic"), $("#ansText"), "a.ans.m4"); return; }
+    if (rec) rec.stop();
+    setMode(m);
+    if (m === "1" && d) { $("#ansText").value = d.text; fromDraft = true; $("#b-preview").click(); }
+    else if (m === "2" && d) { $("#ansText").value = d.text; fromDraft = true; $("#ansText").focus({ preventScroll: true }); }
+    else if (m === "3") { if (fromDraft) $("#ansText").value = ""; fromDraft = false; $("#ansText").focus({ preventScroll: true }); }
+  });
 
   // 声で入れる（ブラウザの音声入力。使えないときは文字で）
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const SRL = { ja: "ja-JP", en: "en-US", es: "es-ES", zh: "zh-CN", fr: "fr-FR", it: "it-IT", th: "th-TH", km: "km-KH" };
   let rec = null;
-  function voiceInto(btn, field) {
-    if (!SR) { toast(t("a.x.voiceNo")); field.focus(); return; }
+  // side＝"g" なら相談する人の言葉で聞き取る
+  function voiceInto(btn, field, label = "a.x.voice", side = "a") {
+    const L = side === "g" ? GL : AL, stopK = side === "g" ? "g.ask.voiceStop" : "a.x.voiceStop", noK = side === "g" ? "g.ask.voiceNo" : "a.x.voiceNo";
+    if (!SR) { toast(t(noK)); field.focus(); return; }
     if (rec) { rec.stop(); return; }
-    rec = new SR(); rec.lang = SRL[AL] || "ja-JP"; rec.interimResults = true; rec.continuous = true;
-    const base = field.value ? field.value + (AL === "ja" || AL === "zh" ? "" : " ") : "";
-    btn.classList.add("mic-on"); $("span", btn).textContent = t("a.x.voiceStop");
+    rec = new SR(); rec.lang = SRL[L] || "ja-JP"; rec.interimResults = true; rec.continuous = true;
+    const base = field.value ? field.value + (L === "ja" || L === "zh" ? "" : " ") : "";
+    btn.classList.add("mic-on"); $("span", btn).textContent = t(stopK);
     rec.onresult = (e) => { field.value = base + [...e.results].map((r) => r[0].transcript).join(""); };
-    rec.onend = () => { rec = null; btn.classList.remove("mic-on"); $("span", btn).textContent = t("a.x.voice"); };
-    rec.onerror = () => toast(t("a.x.voiceNo"));
+    rec.onend = () => { rec = null; btn.classList.remove("mic-on"); $("span", btn).textContent = t(label); };
+    rec.onerror = () => toast(t(noK));
     rec.start();
   }
-  $("#b-mic").addEventListener("click", () => voiceInto($("#b-mic"), $("#ansText")));
   $("#b-regMic").addEventListener("click", () => voiceInto($("#b-regMic"), $("#regNote")));
+  $("#b-askMic").addEventListener("click", () => { $("#askText").value === t("g.q") && ($("#askText").value = ""); voiceInto($("#b-askMic"), $("#askText"), "g.ask.voice", "g"); });
 
   let pending = null;
   $("#b-preview").addEventListener("click", async () => {
@@ -684,6 +758,8 @@
     ["#pc1", "#pc2", "#sp1", "#sp2"].forEach((s) => $(s).classList.remove("done", "show"));
     setTimeout(() => $("#pc1").classList.add("done"), 350); setTimeout(() => $("#pc2").classList.add("done"), 900);
     setTimeout(() => $("#sp1").classList.add("show"), 1400); setTimeout(() => $("#sp2").classList.add("show"), 1800);
+    $("#pubState").classList.remove("done"); $("#pubStateT").textContent = t("a.pub.posting"); $("#pubLinks").hidden = true;
+    setTimeout(() => { $("#pubState").classList.add("done"); $("#pubStateT").textContent = t("a.pub.posted"); $("#pubLinks").hidden = false; }, 2300);
   };
   $("#b-again").addEventListener("click", () => { hist.length = 0; pickReg("pine", "img/reg.jpg"); $("#regNote").value = ""; show("reg", { push: false }); });
 

@@ -12,7 +12,7 @@ import path from "node:path";
 import { promises as fs, readFileSync, existsSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
-import { randomUUID, randomBytes, createHmac, createHash, timingSafeEqual } from "node:crypto";
+import { randomUUID, randomBytes, createHmac, createHash, timingSafeEqual, scryptSync } from "node:crypto";
 import { AsyncLocalStorage } from "node:async_hooks";
 import Anthropic from "@anthropic-ai/sdk";
 import { COMMON, TASKS as BASE_TASKS, glossaryForPrompt, langName } from "./AIへの指示と答えの形.mjs";
@@ -273,6 +273,14 @@ function splitWords(v) {
   return { headline: parts[0] || String(v), paragraphs: parts.length > 1 ? [parts.slice(1).join(" ")] : [] };
 }
 function teacherById(id) { return allTeachers().find((t) => t.id === id); }
+// 職人のログイン（デモ）：見本の職人は「名.姓@bonsaigo.example」と共通の見本パスワード、登録した職人は自分のパスワード（scrypt で保存）
+const DEMO_PASSWORD = "bonsai1108";
+const teacherEmail = (t) => t.email || (t.name_en ? `${t.name_en.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]+/g, ".").replace(/^\.+|\.+$/g, "")}@bonsaigo.example` : "");
+function passOk(t, pw) {
+  const eq = (a, b) => { const x = Buffer.from(a), y = Buffer.from(b); return x.length === y.length && timingSafeEqual(x, y); };
+  if (t.pass) return eq(scryptSync(pw, t.pass.salt, 32).toString("hex"), t.pass.hash);
+  return !t.email && eq(createHash("sha256").update(pw).digest("hex"), createHash("sha256").update(DEMO_PASSWORD).digest("hex"));
+}
 
 // 同じ木の、前の相談と職人の答え（新しい順に3件まで）。AIには全部ではなく、この分だけ渡す
 const HISTORY_LIMIT = 3;
@@ -444,7 +452,7 @@ const routes = {
   // 金額は画面にも通信にも出さない（11/7 の決定）。offers は読む画面のために空で返す
   "GET /api/status": async () => ({ mode: MODE, model: MODE === "sample" ? null : MODELS.main, offers: [] }),
 
-  "GET /api/teachers": async () => ({ teachers: store.teachers.map(({ offers, ...t }) => t), offers: [] }),
+  "GET /api/teachers": async () => ({ teachers: store.teachers.map(({ offers, email, pass, ...t }) => t), offers: [] }),
 
   /* ログイン（パスワードなし。合言葉の門の内側だけで使う） */
   "GET /api/me": async () => ({ user: currentUser(), teachers: [...WORLD_PEOPLE, ...store.teachers].map(teacherCard), gardens: allGardens() }),
@@ -452,28 +460,43 @@ const routes = {
     const role = b.role === "shokunin" ? "shokunin" : b.role === "aikouka" ? "aikouka" : null;
     if (!role) throw new BadRequest("職人か海外の人かを選んでください");
     let user;
-    if (role === "shokunin" && b.teacher_id) {
-      // 見本の職人（または前に登録した職人）を選んで入る
-      const t = teacherById(b.teacher_id);
-      if (!t) throw new BadRequest("職人を選んでください");
-      user = { id: `u-${t.id}`, role, name: t.name_ja, lang: lang(b.lang || t.lang || "ja"), teacher_id: t.id };
+    if (role === "shokunin" && b.mode === "signin") {
+      // 職人はメールとパスワードで入る（11/08 箱崎さんの修正案：名前を一覧から選ぶのはデモ用の作りだった）
+      const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
+      const t = allTeachers().find((x) => teacherEmail(x) === email);
+      if (!t || !passOk(t, String(b.password || ""))) throw new BadRequest("メールアドレスかパスワードが違います");
+      user = { id: `u-${t.id}`, role, name: t.name_ja, lang: lang(t.lang || "ja"), teacher_id: t.id };
     } else if (role === "shokunin") {
       // 新しく職人として登録する（デモ用。名前・言語・得意な木・園名と地域だけ）
       const name = text(b.name, 40, "お名前");
       const specialties = (Array.isArray(b.specialties) ? b.specialties : []).filter((x) => typeof x === "string" && x.trim()).map((x) => x.trim().slice(0, 20)).slice(0, 8);
       if (!specialties.length) throw new BadRequest("得意な木を1つ以上選んでください");
       const place = typeof b.place === "string" ? b.place.trim().slice(0, 60) : "";
+      if (!place) throw new BadRequest("園の名前を入れてください");
+      if (!WORLD.regions.some((r) => r.id === b.region)) throw new BadRequest("地域を選んでください");
+      const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new BadRequest("メールアドレスを入れてください");
+      if (allTeachers().some((x) => teacherEmail(x) === email)) throw new BadRequest("このメールアドレスは登録済みです");
+      const password = String(b.password || "");
+      if (password.length < 8 || password.length > 200) throw new BadRequest("パスワードは8文字以上にしてください");
+      const prole = b.role_in_garden === "apprentice" ? "apprentice" : "master";
+      // SNS とホームページ（https の URL だけ・それぞれ5つまで）
+      const urls = (v) => (Array.isArray(v) ? v : [v]).map((x) => String(x || "").trim()).filter(Boolean).slice(0, 5);
+      const sns = { x: urls(b.sns?.x), instagram: urls(b.sns?.instagram), web: urls(b.sns?.web) };
+      if ([...sns.x, ...sns.instagram, ...sns.web].some((u) => !/^https:\/\/[^\s<>"']{3,300}$/.test(u))) throw new BadRequest("URL は https:// から入れてください");
       // 紹介文（bio）と最初のひとこと（first_words）も空で作る。ないと「職人を探す」と /api/match が止まっていた（11/8 直した）
       const empty = Object.fromEntries(LANGS8.map((l) => [l, ""]));
       // 園も一緒に作る（園の名前がなければ「◯◯の園」）。地域・得意な木は、相談する人が園を探すときに使う
       const SP = ["pine", "juniper", "whitepine", "maple", "azalea", "ume", "zelkova", "needle"];
       const spKeys = (Array.isArray(b.species) ? b.species : []).filter((x) => SP.includes(x));
-      const region = WORLD.regions.some((r) => r.id === b.region) ? b.region : (WORLD.regions[0]?.id || "");
+      const region = b.region;
       const gid = `rg-${randomUUID().slice(0, 8)}`;
       const gname = place || `${name}の園`;
       if (!store.gardens) store.gardens = [];
-      store.gardens.unshift({ id: gid, region, name_ja: gname, name: Object.fromEntries(LANGS8.map((l) => [l, gname])), species: spKeys.length ? spKeys : ["pine"], topics: ["wire", "repot", "water", "pruning"], about: { ...empty }, registered: true });
-      const t = { id: `t-${randomUUID().slice(0, 8)}`, name_ja: name, name_en: name, title_ja: gname, garden: gid, role: "master", specialty_ja: specialties, can_teach_ja: [], bio_en: "", bio: { ...empty }, first_words: { ...empty }, lang: lang(b.lang || "ja"), offers: OFFERS.map((o) => o.id) };
+      store.gardens.unshift({ id: gid, region, name_ja: gname, name: Object.fromEntries(LANGS8.map((l) => [l, gname])), species: spKeys.length ? spKeys : ["pine"], topics: ["wire", "repot", "water", "pruning"], about: { ...empty }, sns, registered: true });
+      const salt = randomBytes(16).toString("hex");
+      const FROM = { es: "es", it: "it", en: "us", th: "th" };  // 日本語で答えるお弟子さんは「お弟子さん」とだけ出す
+      const t = { id: `t-${randomUUID().slice(0, 8)}`, email, pass: { salt, hash: scryptSync(password, salt, 32).toString("hex") }, from: prole === "apprentice" ? (FROM[lang(b.lang || "ja")] || null) : "jp", name_ja: name, name_en: name, title_ja: gname, garden: gid, role: prole, specialty_ja: specialties, can_teach_ja: [], bio_en: "", bio: { ...empty }, first_words: { ...empty }, lang: lang(b.lang || "ja"), offers: OFFERS.map((o) => o.id) };
       store.teachers.unshift(t);
       await save();
       user = { id: `u-${t.id}`, role, name, lang: t.lang, teacher_id: t.id };

@@ -782,3 +782,36 @@ html,body{font-variant-numeric:lining-nums}
 #s-welcome .film{top:0;height:640px;border:0;border-radius:0;margin:0;background:#665136}
 #s-welcome .film video{position:absolute;left:0;top:182px;width:100%;height:458px;object-position:center top;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 48px);mask-image:linear-gradient(180deg,transparent 0,#000 48px)}
 #s-welcome .veil{background:linear-gradient(180deg,rgba(18,20,16,.55) 0%,rgba(18,20,16,0) 22%,rgba(18,20,16,0) 70%,var(--night) 78%)}
+
+/* 11/08 昼3：修正案の3章（ログイン・登録・日付・答え方4つ・発信のあと・合う園の提案） */
+.reg-new{margin-top:22px;border-radius:18px;border:1px solid var(--line);background:var(--paper);padding:0 16px}
+.reg-new summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:15px 0;font-size:14.5px;font-weight:700}
+.reg-new summary::-webkit-details-marker{display:none}
+.reg-new[open]{padding-bottom:16px}
+.reg-new[open] summary span:last-child{transform:rotate(90deg)}
+.seg2{display:flex;gap:8px;margin-top:6px}
+.seg2 .chip{padding:8px 14px;font-size:13.5px}
+#mSpOther{margin-top:8px}
+.sns-row{display:grid;grid-template-columns:86px 1fr;align-items:center;gap:8px;margin-top:6px}
+.sns-row>span{font-size:12.5px;color:var(--ink-2)}
+.today{font:600 12.5px/1 var(--f-body);letter-spacing:.04em;color:var(--moss);margin:2px 0 10px}
+.ans-how{margin-top:16px}
+.ans-how h4{font-size:13px;color:var(--ink-2);margin:0 0 8px;font-weight:600}
+.ans-how .modes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ans-how .modes button{display:flex;align-items:center;gap:8px;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--paper);font-size:13.5px;font-weight:600;color:var(--ink);text-align:left;line-height:1.3}
+.ans-how .modes button svg{width:18px;height:18px;flex:none;color:var(--copper)}
+.ans-how .modes button.on{border-color:var(--copper);background:var(--copper-soft)}
+.ans-how .modes button.mic-on{border-color:var(--copper);background:var(--copper);color:#fff}
+.ans-how .modes button.mic-on svg{color:#fff}
+.ans-how .modes button:disabled{opacity:.4}
+.ans-how .lang-note:empty{display:none}
+.pubstate{display:flex;align-items:center;gap:10px;margin:14px 0 4px;padding:12px 14px;border-radius:14px;background:var(--copper-soft);font-size:14px}
+.pubstate .dot{width:10px;height:10px;border-radius:50%;background:var(--copper);animation:pp 1s ease-in-out infinite alternate}
+.pubstate.done{background:var(--moss-soft)}
+.pubstate.done .dot{background:var(--moss);animation:none}
+@keyframes pp{from{opacity:.3}to{opacity:1}}
+.posted-links{display:flex;gap:8px;margin:8px 0 6px;flex-wrap:wrap}
+.posted-links a{text-decoration:none;padding:8px 13px;font-size:13px}
+.posted-links a b{font-weight:800}
+.sugg{display:flex;align-items:center;gap:6px;margin:6px 0 0;color:var(--moss)}
+.sugg svg{width:13px;height:13px;flex:none}

@@ -76,14 +76,23 @@
         <div class="pad">
           <div class="eyebrow c">BONSAIGO</div>
           <h2 class="h-jp" data-i18n="a.x.who"></h2>
-          <div class="who" id="whoList"></div>
-          <div class="sec-h jp"><h3 data-i18n="a.x.new"></h3></div>
+          <label class="field"><span data-i18n="a.x.email"></span><input id="lMail" type="email" maxlength="120" autocomplete="username" inputmode="email"></label>
+          <label class="field"><span data-i18n="a.x.pass"></span><input id="lPass" type="password" maxlength="200" autocomplete="current-password"></label>
+          <p class="err" id="lErr" hidden></p>
+          <button class="cta moss" id="b-login" style="margin-top:14px" data-i18n="a.x.login"></button>
+          <button class="linkish" id="b-demoAcc" style="margin-top:12px" data-i18n="a.x.demoAcc"></button>
+          <details class="reg-new" id="regNew"><summary><span data-i18n="a.x.new"></span><span>›</span></summary>
           <label class="field"><span data-i18n="a.x.nameF"></span><input id="mName" maxlength="40" autocomplete="name"></label>
           <label class="field"><span data-i18n="a.x.placeF"></span><input id="mPlace" maxlength="60"></label>
           <label class="field"><span data-i18n="a.x.regionF"></span><select id="mRegion"></select></label>
-          <div class="field"><span data-i18n="a.x.spF"></span><div class="spl" id="mSp"></div></div>
+          <div class="field"><span data-i18n="a.x.roleF"></span><div class="seg2" id="mRole"><button class="chip on" data-r="master" data-i18n="a.x.roleM"></button><button class="chip" data-r="apprentice" data-i18n="a.x.roleA"></button></div></div>
+          <div class="field"><span data-i18n="a.x.spF"></span><div class="spl" id="mSp"></div><input id="mSpOther" maxlength="20" hidden></div>
+          <div class="field"><span data-i18n="a.x.snsF"></span><div id="mSns"></div><button class="linkish" id="b-snsAdd" data-i18n="a.x.snsAdd"></button></div>
+          <label class="field"><span data-i18n="a.x.email"></span><input id="mMail" type="email" maxlength="120" autocomplete="email" inputmode="email"></label>
+          <label class="field"><span data-i18n="a.x.passNew"></span><input id="mPass" type="password" maxlength="200" autocomplete="new-password"></label>
           <p class="err" id="mErr" hidden></p>
           <button class="cta moss" id="b-mreg" style="margin-top:16px" data-i18n="a.x.reg"></button>
+          </details>
         </div>
       </section>
 
@@ -115,10 +124,13 @@
             <label class="chip"><svg><use href="#i-cam"/></svg><span data-i18n="g.x.photoChange"></span><input type="file" accept="image/jpeg,image/png,image/webp" id="askFile"></label>
             <button class="chip" id="askSample"><svg><use href="#i-img"/></svg><span data-i18n="g.x.photoSample"></span></button>
           </div>
-          <div class="field" style="margin-top:16px"><span data-i18n="g.x.to"></span></div>
+          <label class="field" style="margin-top:16px"><span data-i18n="g.ask.spF"></span><select id="askSp"></select></label>
+          <div class="field" style="margin-top:12px"><span data-i18n="g.x.to"></span></div>
+          <p class="lang-note sugg" id="gSugg" hidden><svg><use href="#i-spark"/></svg><span data-i18n="g.ask.sugg"></span></p>
           <button class="garden-card" id="gCard" data-go="gpick"></button>
           <p class="lang-note" id="gLangNote"></p>
           <textarea class="compose" id="askText" rows="5" maxlength="3000"></textarea>
+          <button class="chip" id="b-askMic" style="margin-top:8px"><svg width="16" height="16"><use href="#i-mic"/></svg><span data-i18n="g.ask.voice"></span></button>
           <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><span data-i18n="g.ask.hint"></span></div>
           <p class="lang-note" data-i18n="g.ask.share"></p>
           <p class="err" id="askErr" hidden></p>
@@ -212,10 +224,10 @@
       <section class="scr k" id="s-mhome">
         <div class="topbar"><div class="gtag" data-garden></div><div class="r"><button class="icon-btn" data-role aria-label="Switch role"><svg><use href="#i-swap"/></svg></button></div></div>
         <div class="pad">
+          <div class="today" id="mToday"></div>
           <div class="hello" data-i18n="a.mh.hi"></div>
           <h2 class="h-jp" id="mHello"></h2>
           <div class="who-sub" id="mWho"></div>
-          <button class="lang-pill" data-pick="a" style="margin-top:12px"><svg><use href="#i-globe"/></svg><span data-i18n="a.pickLbl"></span><b class="lp-name"></b></button>
           <button class="tile" data-go="inbox"><span class="ic c"><svg><use href="#i-reply"/></svg></span><div><b data-i18n="a.mh.q"></b><span id="mQT" data-i18n="a.mh.qT0"></span></div><span class="nbox" id="mNbox" hidden><span class="n" id="mN">0</span><small data-i18n="a.mh.nLbl"></small></span></button>
           <button class="tile" data-go="reg"><span class="ic"><svg><use href="#i-cam"/></svg></span><div><b data-i18n="a.mh.reg"></b><span data-i18n="a.mh.regT"></span></div><span class="n" style="color:var(--moss)">›</span></button>
           <div class="merit"><b data-i18n="a.mh.merit"></b><span data-i18n="a.mh.meritT"></span></div>
@@ -257,13 +269,10 @@
             <div class="orig-body" id="origBody" hidden></div>
           </div>
           <div class="draft" id="dDraft"></div>
-          <div class="as-who"><span id="dAs"></span><button class="lang-pill" data-pick="a"><svg><use href="#i-globe"/></svg><span data-i18n="a.x.answerIn"></span><b class="lp-name"></b></button></div>
+          <div class="as-who"><span id="dAs"></span></div>
+          <div class="ans-how"><h4 data-i18n="a.ans.how"></h4><div class="modes" id="ansModes"><button data-m="1"><svg><use href="#i-spark"/></svg><span data-i18n="a.ans.m1"></span></button><button data-m="2"><svg><use href="#i-reply"/></svg><span data-i18n="a.ans.m2"></span></button><button data-m="3"><svg><use href="#i-qa"/></svg><span data-i18n="a.ans.m3"></span></button><button data-m="4" id="b-mic"><svg><use href="#i-mic"/></svg><span data-i18n="a.ans.m4"></span></button></div><p class="lang-note" id="ansModeT"></p></div>
           <div class="ans-area">
             <textarea id="ansText" maxlength="3000"></textarea>
-            <div class="ans-tools">
-              <button class="chip" id="b-mic"><svg width="16" height="16"><use href="#i-mic"/></svg><span data-i18n="a.x.voice"></span></button>
-              <button class="chip" id="b-useDraft"><svg width="16" height="16"><use href="#i-spark"/></svg><span data-i18n="a.x.useDraft"></span></button>
-            </div>
           </div>
           <p class="err" id="dErr" hidden></p>
         </div>
@@ -342,9 +351,11 @@
           <div class="stepper"><i class="on"></i><i class="on"></i><i class="on"></i></div>
           <div class="check" id="pc1"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c1"></b><span id="pc1T"></span></div><span class="cf" id="pc1C"></span></div>
           <div class="check" id="pc2"><span class="ok"><svg><use href="#i-check"/></svg></span><div><b data-i18n="a.pub.c2"></b><span data-i18n="a.pub.c2T"></span></div><span class="cf" id="pc2C"></span></div>
+          <div class="pubstate" id="pubState"><span class="dot"></span><b id="pubStateT"></b></div>
+          <div class="posted-links" id="pubLinks" hidden><a href="https://x.com/bonsaigo_jp" target="_blank" rel="noopener" class="chip"><b>X</b><span data-i18n="a.pub.seeX"></span></a><a href="https://www.instagram.com/bonsaigo_jp/" target="_blank" rel="noopener" class="chip"><b>IG</b><span data-i18n="a.pub.seeIg"></span></a></div>
           <div class="preview-langs" id="pubLangs"></div>
-          <div class="sns-post" id="sp1"><div class="hd"><span class="av">BG</span><div><b>BONSAIGO</b><span>@bonsaigo</span></div><span class="pf">X</span></div><div class="txt" id="pubX"></div><img id="pubImg1" src="img/reg.jpg" alt=""></div>
-          <div class="sns-post ig" id="sp2"><div class="hd"><span class="av">BG</span><div><b>bonsaigo</b><span>Instagram</span></div><span class="pf ig">IG</span></div><img id="pubImg2" src="img/reg.jpg" alt=""><div class="txt" style="padding-top:12px" id="pubIg"></div></div>
+          <div class="sns-post" id="sp1"><div class="hd"><span class="av">BG</span><div><b>BONSAIGO</b><span>@bonsaigo_jp</span></div><span class="pf">X</span></div><div class="txt" id="pubX"></div><img id="pubImg1" src="img/reg.jpg" alt=""></div>
+          <div class="sns-post ig" id="sp2"><div class="hd"><span class="av">BG</span><div><b>bonsaigo_jp</b><span>Instagram</span></div><span class="pf ig">IG</span></div><img id="pubImg2" src="img/reg.jpg" alt=""><div class="txt" style="padding-top:12px" id="pubIg"></div></div>
           <div class="never"><svg><use href="#i-hold"/></svg><span data-i18n="a.x.never"></span></div>
         </div>
         <div class="dock"><div class="answer-actions"><button class="cta ghost" id="b-again" data-i18n="a.x.again"></button><button class="cta" data-go="mhome" data-i18n="a.pub.home"></button></div></div>

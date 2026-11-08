@@ -510,24 +510,24 @@
   "km": "ឆ្លើយជា{L}"
  },
  "a.x.placeF": {
-  "en": "Garden name",
-  "ja": "園の名前",
-  "es": "Nombre del jardín",
-  "zh": "园名",
-  "fr": "Nom du jardin",
-  "it": "Nome del giardino",
-  "th": "ชื่อสวน",
-  "km": "ឈ្មោះសួន"
+  "en": "Garden name (required)",
+  "ja": "園の名前（必須）",
+  "es": "Nombre del jardín (obligatorio)",
+  "zh": "园名（必填）",
+  "fr": "Nom du jardin (obligatoire)",
+  "it": "Nome del giardino (obbligatorio)",
+  "th": "ชื่อสวน (จำเป็น)",
+  "km": "ឈ្មោះសួន (ត្រូវការ)"
  },
  "a.x.regionF": {
-  "en": "Region",
-  "ja": "地域",
-  "es": "Región",
-  "zh": "地区",
-  "fr": "Région",
-  "it": "Regione",
-  "th": "ภูมิภาค",
-  "km": "តំបន់"
+  "en": "Region (required)",
+  "ja": "地域（必須）",
+  "es": "Región (obligatoria)",
+  "zh": "地区（必填）",
+  "fr": "Région (obligatoire)",
+  "it": "Regione (obbligatoria)",
+  "th": "ภูมิภาค (จำเป็น)",
+  "km": "តំបន់ (ត្រូវការ)"
  },
  "a.x.newOne": {
   "en": "Newly registered",
@@ -1078,5 +1078,505 @@
   "it": "BONSAIGO pubblica su X e Instagram ufficiali in 8 lingue. Le tue risposte restano nelle Q&A e continuano a insegnare.",
   "th": "BONSAIGO โพสต์ลง X และ Instagram ทางการใน 8 ภาษา คำตอบของคุณอยู่ในถาม-ตอบและสอนคนต่อไปเรื่อย ๆ",
   "km": "BONSAIGO បង្ហោះលើ X និង Instagram ផ្លូវការ ជា 8 ភាសា។ ចម្លើយរបស់អ្នកនៅក្នុងសំណួរ-ចម្លើយ ហើយបន្តបង្រៀនអ្នកបន្ទាប់។"
+ },
+ "a.x.who": {
+  "en": "Sign in",
+  "ja": "ログインして入る",
+  "es": "Iniciar sesión",
+  "zh": "登录",
+  "fr": "Se connecter",
+  "it": "Accedi",
+  "th": "เข้าสู่ระบบ",
+  "km": "ចូលគណនី"
+ },
+ "a.x.email": {
+  "en": "Email",
+  "ja": "メールアドレス",
+  "es": "Correo electrónico",
+  "zh": "电子邮箱",
+  "fr": "E-mail",
+  "it": "E-mail",
+  "th": "อีเมล",
+  "km": "អ៊ីមែល"
+ },
+ "a.x.pass": {
+  "en": "Password",
+  "ja": "パスワード",
+  "es": "Contraseña",
+  "zh": "密码",
+  "fr": "Mot de passe",
+  "it": "Password",
+  "th": "รหัสผ่าน",
+  "km": "ពាក្យសម្ងាត់"
+ },
+ "a.x.passNew": {
+  "en": "Password (8+ characters)",
+  "ja": "パスワード（8文字以上）",
+  "es": "Contraseña (8 caracteres o más)",
+  "zh": "密码（8个字符以上）",
+  "fr": "Mot de passe (8 caractères min.)",
+  "it": "Password (almeno 8 caratteri)",
+  "th": "รหัสผ่าน (8 ตัวขึ้นไป)",
+  "km": "ពាក្យសម្ងាត់ (៨ តួអក្សរឡើង)"
+ },
+ "a.x.login": {
+  "en": "Sign in",
+  "ja": "ログイン",
+  "es": "Entrar",
+  "zh": "登录",
+  "fr": "Connexion",
+  "it": "Entra",
+  "th": "เข้าสู่ระบบ",
+  "km": "ចូល"
+ },
+ "a.x.demoAcc": {
+  "en": "Fill in a sample master's account",
+  "ja": "見本の職人のアカウントを入れる",
+  "es": "Usar la cuenta de un maestro de ejemplo",
+  "zh": "填入示例师傅的账号",
+  "fr": "Remplir avec un compte de maître exemple",
+  "it": "Usa l'account di un maestro di esempio",
+  "th": "ใส่บัญชีช่างตัวอย่าง",
+  "km": "បញ្ចូលគណនីជាងគំរូ"
+ },
+ "a.x.errLogin": {
+  "en": "The email or password is not right.",
+  "ja": "メールアドレスかパスワードが違います。",
+  "es": "El correo o la contraseña no son correctos.",
+  "zh": "邮箱或密码不正确。",
+  "fr": "L'e-mail ou le mot de passe est incorrect.",
+  "it": "E-mail o password non corretti.",
+  "th": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+  "km": "អ៊ីមែល ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ។"
+ },
+ "a.x.new": {
+  "en": "First time? Register your garden",
+  "ja": "はじめての方は、園を登録する",
+  "es": "¿Primera vez? Registra tu jardín",
+  "zh": "第一次使用？登记你的园子",
+  "fr": "Première fois ? Inscrivez votre jardin",
+  "it": "Prima volta? Registra il tuo giardino",
+  "th": "ครั้งแรก? ลงทะเบียนสวนของคุณ",
+  "km": "លើកដំបូង? ចុះឈ្មោះសួនរបស់អ្នក"
+ },
+ "a.x.regionPick": {
+  "en": "Choose a region",
+  "ja": "地域を選んでください",
+  "es": "Elige una región",
+  "zh": "请选择地区",
+  "fr": "Choisissez une région",
+  "it": "Scegli una regione",
+  "th": "เลือกภูมิภาค",
+  "km": "ជ្រើសតំបន់"
+ },
+ "a.x.roleF": {
+  "en": "Your role",
+  "ja": "立場",
+  "es": "Tu papel",
+  "zh": "身份",
+  "fr": "Votre rôle",
+  "it": "Il tuo ruolo",
+  "th": "บทบาท",
+  "km": "តួនាទី"
+ },
+ "a.x.roleM": {
+  "en": "Garden owner",
+  "ja": "園主",
+  "es": "Dueño del jardín",
+  "zh": "园主",
+  "fr": "Propriétaire du jardin",
+  "it": "Titolare del giardino",
+  "th": "เจ้าของสวน",
+  "km": "ម្ចាស់សួន"
+ },
+ "a.x.roleA": {
+  "en": "Apprentice",
+  "ja": "お弟子さん",
+  "es": "Aprendiz",
+  "zh": "弟子",
+  "fr": "Apprenti",
+  "it": "Apprendista",
+  "th": "ลูกศิษย์",
+  "km": "សិស្ស"
+ },
+ "a.x.appr0": {
+  "en": "Apprentice",
+  "ja": "お弟子さん",
+  "es": "Aprendiz",
+  "zh": "弟子",
+  "fr": "Apprenti",
+  "it": "Apprendista",
+  "th": "ลูกศิษย์",
+  "km": "សិស្ស"
+ },
+ "g.gp.appr0": {
+  "en": "Apprentice",
+  "ja": "お弟子さん",
+  "es": "Aprendiz",
+  "zh": "弟子",
+  "fr": "Apprenti",
+  "it": "Apprendista",
+  "th": "ลูกศิษย์",
+  "km": "សិស្ស"
+ },
+ "a.x.spOther": {
+  "en": "Other",
+  "ja": "その他",
+  "es": "Otro",
+  "zh": "其他",
+  "fr": "Autre",
+  "it": "Altro",
+  "th": "อื่น ๆ",
+  "km": "ផ្សេងទៀត"
+ },
+ "a.x.spOtherPh": {
+  "en": "Tree name",
+  "ja": "木の名前",
+  "es": "Nombre del árbol",
+  "zh": "树名",
+  "fr": "Nom de l'arbre",
+  "it": "Nome dell'albero",
+  "th": "ชื่อต้นไม้",
+  "km": "ឈ្មោះដើមឈើ"
+ },
+ "a.x.snsF": {
+  "en": "Social media and website (optional)",
+  "ja": "SNS・ホームページ（あれば）",
+  "es": "Redes sociales y web (opcional)",
+  "zh": "社交媒体和网站（可选）",
+  "fr": "Réseaux sociaux et site (facultatif)",
+  "it": "Social e sito web (facoltativo)",
+  "th": "โซเชียลและเว็บไซต์ (ถ้ามี)",
+  "km": "បណ្តាញសង្គម និងគេហទំព័រ (បើមាន)"
+ },
+ "a.x.snsWeb": {
+  "en": "Website",
+  "ja": "ホームページ",
+  "es": "Web",
+  "zh": "网站",
+  "fr": "Site web",
+  "it": "Sito web",
+  "th": "เว็บไซต์",
+  "km": "គេហទំព័រ"
+ },
+ "a.x.snsAdd": {
+  "en": "+ Add a URL",
+  "ja": "＋ URL を足す",
+  "es": "+ Añadir una URL",
+  "zh": "＋ 添加网址",
+  "fr": "+ Ajouter une URL",
+  "it": "+ Aggiungi un URL",
+  "th": "+ เพิ่ม URL",
+  "km": "+ បន្ថែម URL"
+ },
+ "a.x.errPlace": {
+  "en": "Enter your garden name.",
+  "ja": "園の名前を入れてください。",
+  "es": "Escribe el nombre del jardín.",
+  "zh": "请填写园名。",
+  "fr": "Indiquez le nom du jardin.",
+  "it": "Inserisci il nome del giardino.",
+  "th": "กรอกชื่อสวน",
+  "km": "បញ្ចូលឈ្មោះសួន។"
+ },
+ "a.x.errRegion": {
+  "en": "Choose a region.",
+  "ja": "地域を選んでください。",
+  "es": "Elige una región.",
+  "zh": "请选择地区。",
+  "fr": "Choisissez une région.",
+  "it": "Scegli una regione.",
+  "th": "เลือกภูมิภาค",
+  "km": "ជ្រើសតំបន់។"
+ },
+ "a.x.errMail": {
+  "en": "Enter your email.",
+  "ja": "メールアドレスを入れてください。",
+  "es": "Escribe tu correo.",
+  "zh": "请填写邮箱。",
+  "fr": "Indiquez votre e-mail.",
+  "it": "Inserisci la tua e-mail.",
+  "th": "กรอกอีเมล",
+  "km": "បញ្ចូលអ៊ីមែល។"
+ },
+ "a.x.errPass": {
+  "en": "Use 8 or more characters for the password.",
+  "ja": "パスワードは8文字以上にしてください。",
+  "es": "La contraseña debe tener 8 caracteres o más.",
+  "zh": "密码请至少8个字符。",
+  "fr": "Le mot de passe doit faire au moins 8 caractères.",
+  "it": "La password deve avere almeno 8 caratteri.",
+  "th": "รหัสผ่านต้องมี 8 ตัวขึ้นไป",
+  "km": "ពាក្យសម្ងាត់ត្រូវមាន ៨ តួអក្សរឡើង។"
+ },
+ "a.x.errUrl": {
+  "en": "Start each URL with https://",
+  "ja": "URL は https:// から入れてください。",
+  "es": "Empieza cada URL con https://",
+  "zh": "网址请以 https:// 开头。",
+  "fr": "Commencez chaque URL par https://",
+  "it": "Inizia ogni URL con https://",
+  "th": "URL ต้องขึ้นต้นด้วย https://",
+  "km": "URL ត្រូវចាប់ផ្តើមដោយ https://"
+ },
+ "a.x.errMailUsed": {
+  "en": "This email is already registered. Please sign in.",
+  "ja": "このメールアドレスは登録済みです。ログインしてください。",
+  "es": "Este correo ya está registrado. Inicia sesión.",
+  "zh": "该邮箱已注册，请登录。",
+  "fr": "Cet e-mail est déjà inscrit. Connectez-vous.",
+  "it": "Questa e-mail è già registrata. Accedi.",
+  "th": "อีเมลนี้ลงทะเบียนแล้ว กรุณาเข้าสู่ระบบ",
+  "km": "អ៊ីមែលនេះបានចុះឈ្មោះរួចហើយ។ សូមចូល។"
+ },
+ "a.ans.how": {
+  "en": "How would you like to answer?",
+  "ja": "答え方を選ぶ",
+  "es": "¿Cómo quieres responder?",
+  "zh": "选择回答方式",
+  "fr": "Comment voulez-vous répondre ?",
+  "it": "Come vuoi rispondere?",
+  "th": "เลือกวิธีตอบ",
+  "km": "ជ្រើសរបៀបឆ្លើយ"
+ },
+ "a.ans.m1": {
+  "en": "Start from Claude's draft",
+  "ja": "Claude の案から始める",
+  "es": "Empezar con el borrador de Claude",
+  "zh": "从 Claude 的草稿开始",
+  "fr": "Partir du brouillon de Claude",
+  "it": "Parti dalla bozza di Claude",
+  "th": "เริ่มจากร่างของ Claude",
+  "km": "ចាប់ផ្តើមពីសេចក្តីព្រាងរបស់ Claude"
+ },
+ "a.ans.m2": {
+  "en": "Edit the draft",
+  "ja": "案をもとに直す",
+  "es": "Corregir el borrador",
+  "zh": "在草稿上修改",
+  "fr": "Modifier le brouillon",
+  "it": "Modifica la bozza",
+  "th": "แก้จากร่าง",
+  "km": "កែពីសេចក្តីព្រាង"
+ },
+ "a.ans.m3": {
+  "en": "Write my own",
+  "ja": "自分で書く",
+  "es": "Escribir yo",
+  "zh": "自己写",
+  "fr": "Écrire moi-même",
+  "it": "Scrivo io",
+  "th": "เขียนเอง",
+  "km": "សរសេរខ្លួនឯង"
+ },
+ "a.ans.m4": {
+  "en": "Speak",
+  "ja": "声で話す",
+  "es": "Hablar",
+  "zh": "用语音说",
+  "fr": "Parler",
+  "it": "Parla",
+  "th": "พูด",
+  "km": "និយាយ"
+ },
+ "a.ans.m1T": {
+  "en": "The draft goes as it is. You can still check and fix it on the next screen.",
+  "ja": "案をそのまま使います。次の画面で確かめて、直すこともできます。",
+  "es": "El borrador va tal cual. Puedes revisarlo y corregirlo en la siguiente pantalla.",
+  "zh": "直接使用草稿。下一个画面还能确认和修改。",
+  "fr": "Le brouillon part tel quel. Vous pourrez le vérifier et le corriger à l'écran suivant.",
+  "it": "La bozza va così com'è. Puoi controllarla e correggerla nella schermata successiva.",
+  "th": "ใช้ร่างตามนี้ ยังตรวจและแก้ได้ในหน้าถัดไป",
+  "km": "ប្រើសេចក្តីព្រាងដដែល។ អាចពិនិត្យ និងកែនៅអេក្រង់បន្ទាប់។"
+ },
+ "a.ans.m2T": {
+  "en": "Change only what is different from how you would say it.",
+  "ja": "自分の言い方と違うところだけ、書き換えてください。",
+  "es": "Cambia solo lo que no dirías así.",
+  "zh": "只改和你说法不同的地方。",
+  "fr": "Changez seulement ce que vous diriez autrement.",
+  "it": "Cambia solo ciò che diresti in modo diverso.",
+  "th": "แก้เฉพาะจุดที่ไม่ตรงกับวิธีพูดของคุณ",
+  "km": "កែតែកន្លែងដែលខុសពីរបៀបនិយាយរបស់អ្នក។"
+ },
+ "a.ans.m3T": {
+  "en": "Write in your own words. Short is fine.",
+  "ja": "自分の言葉で書いてください。短くて大丈夫です。",
+  "es": "Escribe con tus palabras. Corto está bien.",
+  "zh": "用你自己的话写，简短也可以。",
+  "fr": "Écrivez avec vos mots. Court, c'est bien.",
+  "it": "Scrivi con parole tue. Anche breve va bene.",
+  "th": "เขียนด้วยคำของคุณ สั้น ๆ ก็ได้",
+  "km": "សរសេរដោយពាក្យរបស់អ្នក។ ខ្លីក៏បាន។"
+ },
+ "a.ans.m4T": {
+  "en": "Talk as you usually do. Your words appear in the box.",
+  "ja": "いつもの話し方で話してください。言葉が欄に入ります。",
+  "es": "Habla como siempre. Tus palabras aparecen en el cuadro.",
+  "zh": "照平常说话就好，文字会出现在框里。",
+  "fr": "Parlez comme d'habitude. Vos mots s'affichent dans la case.",
+  "it": "Parla come sempre. Le parole compaiono nel riquadro.",
+  "th": "พูดแบบที่พูดปกติ คำพูดจะขึ้นในช่อง",
+  "km": "និយាយដូចធម្មតា។ ពាក្យនឹងបង្ហាញក្នុងប្រអប់។"
+ },
+ "a.tab.reg": {
+  "en": "Share",
+  "ja": "発信する",
+  "es": "Publicar",
+  "zh": "发布",
+  "fr": "Publier",
+  "it": "Pubblica",
+  "th": "เผยแพร่",
+  "km": "ផ្សព្វផ្សាយ"
+ },
+ "a.mh.reg": {
+  "en": "Share today's tree",
+  "ja": "今日の1鉢を発信する",
+  "es": "Publica el árbol de hoy",
+  "zh": "发布今天的一盆",
+  "fr": "Publier l'arbre du jour",
+  "it": "Pubblica l'albero di oggi",
+  "th": "เผยแพร่ต้นไม้วันนี้",
+  "km": "ផ្សព្វផ្សាយដើមឈើថ្ងៃនេះ"
+ },
+ "a.reg.eye": {
+  "en": "Share · 1 of 3",
+  "ja": "発信する · 1/3",
+  "es": "Publicar · 1 de 3",
+  "zh": "发布 · 1/3",
+  "fr": "Publier · 1 sur 3",
+  "it": "Pubblica · 1 di 3",
+  "th": "เผยแพร่ · 1/3",
+  "km": "ផ្សព្វផ្សាយ · ១/៣"
+ },
+ "a.reg.h": {
+  "en": "Photograph today's tree<br>and share it",
+  "ja": "今日の1鉢を、<br>撮って発信",
+  "es": "Fotografía el árbol de hoy<br>y publícalo",
+  "zh": "拍下今天的一盆，<br>然后发布",
+  "fr": "Photographiez l'arbre du jour<br>et publiez-le",
+  "it": "Fotografa l'albero di oggi<br>e pubblicalo",
+  "th": "ถ่ายต้นไม้วันนี้<br>แล้วเผยแพร่",
+  "km": "ថតដើមឈើថ្ងៃនេះ<br>ហើយផ្សព្វផ្សាយ"
+ },
+ "a.x.again": {
+  "en": "Share another tree",
+  "ja": "もう1鉢発信する",
+  "es": "Publicar otro árbol",
+  "zh": "再发布一盆",
+  "fr": "Publier un autre arbre",
+  "it": "Pubblica un altro albero",
+  "th": "เผยแพร่อีกต้น",
+  "km": "ផ្សព្វផ្សាយដើមមួយទៀត"
+ },
+ "a.pub.posting": {
+  "en": "Posting…",
+  "ja": "投稿中…",
+  "es": "Publicando…",
+  "zh": "发布中…",
+  "fr": "Publication…",
+  "it": "Pubblicazione…",
+  "th": "กำลังโพสต์…",
+  "km": "កំពុងបង្ហោះ…"
+ },
+ "a.pub.posted": {
+  "en": "Posted",
+  "ja": "投稿しました",
+  "es": "Publicado",
+  "zh": "已发布",
+  "fr": "Publié",
+  "it": "Pubblicato",
+  "th": "โพสต์แล้ว",
+  "km": "បានបង្ហោះ"
+ },
+ "a.pub.seeX": {
+  "en": "See it on X",
+  "ja": "X で見る",
+  "es": "Ver en X",
+  "zh": "在 X 上查看",
+  "fr": "Voir sur X",
+  "it": "Vedi su X",
+  "th": "ดูบน X",
+  "km": "មើលលើ X"
+ },
+ "a.pub.seeIg": {
+  "en": "See it on Instagram",
+  "ja": "インスタで見る",
+  "es": "Ver en Instagram",
+  "zh": "在 Instagram 上查看",
+  "fr": "Voir sur Instagram",
+  "it": "Vedi su Instagram",
+  "th": "ดูบน Instagram",
+  "km": "មើលលើ Instagram"
+ },
+ "g.ask.spF": {
+  "en": "Your tree",
+  "ja": "木の種類",
+  "es": "Tu árbol",
+  "zh": "树种",
+  "fr": "Votre arbre",
+  "it": "Il tuo albero",
+  "th": "ชนิดต้นไม้",
+  "km": "ប្រភេទដើមឈើ"
+ },
+ "g.ask.sugg": {
+  "en": "Suggested from your tree and question",
+  "ja": "木の種類と相談の中身から、合う園を選びました",
+  "es": "Sugerido según tu árbol y tu pregunta",
+  "zh": "根据你的树种和问题推荐",
+  "fr": "Suggéré d'après votre arbre et votre question",
+  "it": "Suggerito in base al tuo albero e alla domanda",
+  "th": "เลือกสวนที่เหมาะจากชนิดต้นไม้และคำถามของคุณ",
+  "km": "បានជ្រើសសួនដែលសមពីប្រភេទដើមឈើ និងសំណួររបស់អ្នក"
+ },
+ "g.ask.voice": {
+  "en": "Speak",
+  "ja": "声で話す",
+  "es": "Hablar",
+  "zh": "用语音说",
+  "fr": "Parler",
+  "it": "Parla",
+  "th": "พูด",
+  "km": "និយាយ"
+ },
+ "g.ask.voiceStop": {
+  "en": "Stop",
+  "ja": "止める",
+  "es": "Parar",
+  "zh": "停止",
+  "fr": "Arrêter",
+  "it": "Ferma",
+  "th": "หยุด",
+  "km": "ឈប់"
+ },
+ "g.ask.voiceNo": {
+  "en": "Voice input does not work in this browser. Please type instead.",
+  "ja": "このブラウザでは声の入力が使えません。文字で入れてください。",
+  "es": "La voz no funciona en este navegador. Escribe, por favor.",
+  "zh": "此浏览器无法使用语音输入，请改用文字。",
+  "fr": "La saisie vocale ne marche pas dans ce navigateur. Tapez plutôt.",
+  "it": "L'input vocale non funziona in questo browser. Scrivi, per favore.",
+  "th": "เบราว์เซอร์นี้ใช้เสียงไม่ได้ กรุณาพิมพ์แทน",
+  "km": "កម្មវិធីរុករកនេះមិនអាចប្រើសំឡេងបានទេ។ សូមវាយអក្សរ។"
+ },
+ "a.talk.eye": {
+  "en": "Share · 2 of 3",
+  "ja": "発信する · 2/3",
+  "es": "Publicar · 2 de 3",
+  "zh": "发布 · 2/3",
+  "fr": "Publier · 2 sur 3",
+  "it": "Pubblica · 2 di 3",
+  "th": "เผยแพร่ · 2/3",
+  "km": "ផ្សព្វផ្សាយ · ២/៣"
+ },
+ "a.pub.eye": {
+  "en": "Share · 3 of 3",
+  "ja": "発信する · 3/3",
+  "es": "Publicar · 3 de 3",
+  "zh": "发布 · 3/3",
+  "fr": "Publier · 3 sur 3",
+  "it": "Pubblica · 3 di 3",
+  "th": "เผยแพร่ · 3/3",
+  "km": "ផ្សព្វផ្សាយ · ៣/៣"
  }
 }

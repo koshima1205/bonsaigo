@@ -478,6 +478,7 @@ const routes = {
       const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
       if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");
       await loginSlow(email);
+      if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");  // 待つあいだに上限に達していないか、もう一度
       const t = allTeachers().find((x) => teacherEmail(x) === email);
       if (!t || !passOk(t, String(b.password || ""))) { loginFailed(email); throw new BadRequest("メールアドレスかパスワードが違います"); }
       loginOk(email);
@@ -529,6 +530,7 @@ const routes = {
         const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
         if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");
         await loginSlow(email);
+        if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");  // 待つあいだに上限に達していないか、もう一度
         const gr = store.growers.find((x) => x.email === email);
         const pw = String(b.password || "");
         const ok = gr && (() => { const x = Buffer.from(scryptSync(pw, gr.pass.salt, 32).toString("hex")), y = Buffer.from(gr.pass.hash); return x.length === y.length && timingSafeEqual(x, y); })();

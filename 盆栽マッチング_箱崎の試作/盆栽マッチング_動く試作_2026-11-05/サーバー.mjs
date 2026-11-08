@@ -18,6 +18,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { COMMON, TASKS as BASE_TASKS, glossaryForPrompt, langName } from "./AIへの指示と答えの形.mjs";
 import { BONSAIGO_TASKS, LANGS8, ruleCheck } from "./盆栽ゴー_AIへの指示.mjs";
 import { createGuard, MODELS, LIMITS, LimitReached, tierOf } from "./盆栽ゴー_料金の守り.mjs";
+import { setupDemo } from "./盆栽ゴー_デモ用の見本.mjs";
 // 盆栽ゴーで足した仕事（確かめ3つ・木の投稿）。reviewAnswer は確かさつきの形に置きかえる
 const TASKS = { ...BASE_TASKS, ...BONSAIGO_TASKS };
 
@@ -118,7 +119,7 @@ async function callClaudeApi(task, text, images, model, tier) {
     // 決まった指示＋用語集（長い）は cache_control で使い回す＝2回目からは安い料金で読まれる
     response = await client.messages.create({
       model,
-      max_tokens: tier === "check" ? 1024 : 16000,
+      max_tokens: tier === "check" ? 4096 : 16000,  // 11/08 箱崎さん：確かめの答えが1024で切れていたので4096に
       system: [
         { type: "text", text: `${COMMON}\n\n${GLOSSARY_TEXT}`, cache_control: { type: "ephemeral" } },
         { type: "text", text: task.instruction },
@@ -386,7 +387,7 @@ function growerIdFromCookie(req) {
   const [g, sig] = raw.split(".");
   if (!g || !sig || !sameText(sign("g:" + g), sig)) return null;
   const id = Buffer.from(g, "base64url").toString("utf8");
-  return /^u-a-[0-9a-f-]{36}$/.test(id) ? id : null;
+  return /^u-a-[0-9a-f-]{36}$/.test(id) || id === "u-a-demo-emma" ? id : null;
 }
 const currentUser = () => requestContext.getStore()?.user || null;
 function needUser(role) {
@@ -463,6 +464,9 @@ async function makePosts({ kind, note, images, context }) {
 
 const routes = {
   // 金額は画面にも通信にも出さない（11/7 の決定）。offers は読む画面のために空で返す
+  // デモ用：見本のユーザーのメールアドレスだけ（.env にあるときだけ）。ログイン画面に最初から入れておくため（11/08 修正の控え No.1）
+  // パスワードは画面に送らない（箱崎さんの決定：撮影のときに手で打つ）
+  "GET /api/demo-accounts": async () => ({ asker: DEMO_ACCOUNTS.asker && { email: DEMO_ACCOUNTS.asker.email }, craft: DEMO_ACCOUNTS.craft && { email: DEMO_ACCOUNTS.craft.email } }),
   "GET /api/status": async () => ({ mode: MODE, model: MODE === "sample" ? null : MODELS.main, offers: [] }),
 
   "GET /api/teachers": async () => ({ teachers: store.teachers.map(({ offers, email, pass, ...t }) => t), offers: [] }),
@@ -473,7 +477,12 @@ const routes = {
     const role = b.role === "shokunin" ? "shokunin" : b.role === "aikouka" ? "aikouka" : null;
     if (!role) throw new BadRequest("職人か海外の人かを選んでください");
     let user;
-    if (role === "shokunin" && b.mode === "signin") {
+    if (role === "shokunin" && b.demo === "craft") {
+      // デモ用（11/08 修正の控え No.17）：見本の職人（架空の霧松園 青木さん）に、メールとパスワードなしで入る。合言葉の門の内側だけ
+      const t = allTeachers().find((x) => x.id === "p1");
+      if (!t) throw new BadRequest("見本の職人がいません");
+      user = { id: `u-${t.id}`, role, name: t.name_ja, lang: lang(t.lang || "ja"), teacher_id: t.id };
+    } else if (role === "shokunin" && b.mode === "signin") {
       // 職人はメールとパスワードで入る（11/08 箱崎さんの修正案：名前を一覧から選ぶのはデモ用の作りだった）
       const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
       if (loginBlocked(email)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");
@@ -490,7 +499,8 @@ const routes = {
       if (!specialties.length) throw new BadRequest("得意な木を1つ以上選んでください");
       const place = typeof b.place === "string" ? b.place.trim().slice(0, 60) : "";
       if (!place) throw new BadRequest("園の名前を入れてください");
-      if (!WORLD.regions.some((r) => r.id === b.region)) throw new BadRequest("地域を選んでください");
+      // 11/08 修正の控え No.7：職人の登録は国だけ（例：jp）。前の形（jp-omiya など）も受ける
+      if (!WORLD.regions.some((r) => r.id === b.region) && !Object.hasOwn(WORLD.countries || {}, b.region)) throw new BadRequest("国を選んでください");
       const email = String(b.email || "").trim().toLowerCase().slice(0, 120);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new BadRequest("メールアドレスを入れてください");
       if (allTeachers().some((x) => teacherEmail(x) === email)) throw new BadRequest("このメールアドレスは登録済みです");
@@ -738,10 +748,10 @@ const routes = {
         back_translation_ja: review.corrected_back_translation_ja || draft.back_translation_ja,
       };
     } else {
-      fixed = { headline: MARK_ONLY_HEADLINE[c.lang], paragraphs: [], back_translation_ja: "" };
+      fixed = { headline: MARK_ONLY_HEADLINE[c.lang] || MARK_ONLY_HEADLINE.en, paragraphs: [], back_translation_ja: "" };
     }
     const paragraphs = fixed.paragraphs.map(cleanTermMarks);
-    if (marks.length) paragraphs.push(MARK_NOTE[c.lang]);
+    if (marks.length) paragraphs.push(MARK_NOTE[c.lang] || MARK_NOTE.en);
     const made = {
       at: new Date().toISOString(), voice_ja: voice, marks, from_draft: Boolean(b.from_draft) && Boolean(voice),
       headline: cleanTermMarks(fixed.headline),
@@ -859,8 +869,7 @@ const routes = {
       tree.status = tree.image_check.needs_person ? "image_held" : "image_failed";
       return keep();
     }
-    const brief = `Tree name: ${input(name || "not given")}\nSpecies: ${input(species || "not given")}\nAge in years: ${input(age ?? "not given")}\nThe craftsperson's words (may be empty):\n${input(note)}`;
-    tree.draft = await ask("treePosts", brief, images);
+    tree.draft = await ask("treePosts", treeBrief(tree), images);
     tree.status = "drafted";
     return keep();
   },
@@ -873,6 +882,17 @@ const routes = {
     const pick = (o) => Object.fromEntries(LANGS8.map((l) => [l, String(o?.[l] ?? "").slice(0, 2000)]));
     const x = pick(b.x || tree.draft.x), instagram = pick(b.instagram || tree.draft.instagram);
     if ([...Object.values(x), ...Object.values(instagram)].some((v) => !v.trim())) throw new BadRequest("投稿の文が空です");
+    await checkTreeText(tree, x, instagram);
+    return publicTree(tree);
+  },
+};
+
+// 木の投稿のもとにする文（職人の画面からの登録と、管理する人が写真をOKにしたときに使う）
+function treeBrief(t) {
+  return `Tree name: ${input(t.name || "not given")}\nSpecies: ${input(t.species || "not given")}\nAge in years: ${input(t.age ?? "not given")}\nThe craftsperson's words (may be empty):\n${input(t.note)}`;
+}
+// 投稿の文の確かめ（決まりの確かめ → Haiku）。終わったら final と状態を置きかえて保存する
+async function checkTreeText(tree, x, instagram) {
     let check;
     const rule = ruleCheck([...Object.values(x), ...Object.values(instagram)]);
     if (!rule.ok) {
@@ -888,10 +908,71 @@ const routes = {
     tree.text_check = check;
     tree.status = check.ok ? "ready" : check.needs_person ? "text_held" : "text_failed";
     await save();
-    return publicTree(tree);
-  },
-};
+}
 
+/* ── 管理者：職人が登録した木を一覧で見て、公式の X と Instagram に出す（2026-11-08 箱崎さん） ──
+   パスワードはコードに書かず .env の BONSAI_ADMIN_PASSWORD から読む。空なら管理者は入れない */
+const ADMIN_PASSWORD = process.env.BONSAI_ADMIN_PASSWORD || "";
+const ADMIN_COOKIE = "bonsai_admin";
+function isAdmin() {
+  const req = requestContext.getStore()?.req; if (!req || !ADMIN_PASSWORD) return false;
+  const raw = readCookies(req)[ADMIN_COOKIE]; if (!raw) return false;
+  const [at, sig] = raw.split(".");
+  return Boolean(at && sig && sameText(sign("admin:" + at), sig) && Date.now() - Number(at) < 12 * 3600 * 1000);
+}
+function needAdmin() { if (!isAdmin()) throw new Unauthorized(); }
+Object.assign(routes, {
+  "POST /api/admin/login": async (b) => {
+    const { req, res } = requestContext.getStore();
+    const key = "admin";
+    if (loginBlocked(key)) throw new LimitReached("ログインの失敗が続いたので、15分ほどしてからもう一度試してください");
+    if (!ADMIN_PASSWORD || !sameText(String(b.password || ""), ADMIN_PASSWORD)) { loginFailed(key); throw new BadRequest("パスワードが違います"); }
+    loginOk(key);
+    const at = String(Date.now());
+    res.setHeader("Set-Cookie", [cookieLine(ADMIN_COOKIE, `${at}.${sign("admin:" + at)}`, 12 * 3600, req)]);
+    return { ok: true };
+  },
+  "POST /api/admin/logout": async () => { const { req, res } = requestContext.getStore(); res.setHeader("Set-Cookie", [cookieLine(ADMIN_COOKIE, "", 0, req)]); return { ok: true }; },
+  "GET /api/admin/me": async () => ({ admin: isAdmin(), ready: Boolean(ADMIN_PASSWORD) }),
+  // 写真は画面に出すので一緒に返す
+  "GET /api/admin/trees": async () => {
+    needAdmin();
+    // 確かめが通った木（ready）に加えて、AIが迷って「人の確かめ待ち」になった木も並べる（その「人」が管理者）
+    // 写真で止まった木（image_held）は、まだ投稿の文がない。管理する人が写真を見て「盆栽の写真」と決めると、文を作る（11/08 箱崎さん）
+    const trees = (store.bonsaigo_trees || []).filter((t) => t.status === "image_held" || (["ready", "text_held"].includes(t.status) && (t.final || t.draft)));
+    return { trees: trees.map(adminTree) };
+  },
+  "POST /api/admin/trees/:id/photo": async (b, id) => {
+    needAdmin();
+    const t = (store.bonsaigo_trees || []).find((x) => x.id === id && x.status === "image_held"); if (!t) throw new NotFound();
+    if (!b.ok) {
+      t.image_check = { ...(t.image_check || {}), ok: false, by_person: true };
+      t.status = "image_failed";
+      await save();
+      return { tree: null };
+    }
+    t.image_check = { ...(t.image_check || {}), ok: true, by_person: true };
+    t.draft = await ask("treePosts", treeBrief(t), t.image ? [t.image] : []);
+    t.status = "drafted";
+    const pick = (o) => Object.fromEntries(LANGS8.map((l) => [l, String(o?.[l] ?? "").slice(0, 2000)]));
+    await checkTreeText(t, pick(t.draft.x), pick(t.draft.instagram));
+    return { tree: ["ready", "text_held"].includes(t.status) ? adminTree(t) : null };
+  },
+  "POST /api/admin/trees/:id/posted": async (b, id) => {
+    needAdmin();
+    const t = (store.bonsaigo_trees || []).find((x) => x.id === id); if (!t) throw new NotFound();
+    const where = b.where === "instagram" ? "instagram" : "x";
+    t.posted = { ...(t.posted || {}), [where]: b.undo ? null : new Date().toISOString() };
+    await save();
+    return { posted: t.posted };
+  },
+});
+
+// 管理する人の画面に返す木の形（写真も一緒に返す）
+function adminTree(t) {
+  const p = teacherById(t.teacher_id), g = p ? allGardens().find((x) => x.id === p.garden) : null;
+  return { id: t.id, at: t.at, status: t.status, name: t.name || "", species: t.species, age: t.age, note: t.note, posts: t.final || t.draft || null, reason: t.status === "image_held" ? (t.image_check?.reason_ja || "") : "", posted: t.posted || {}, image: t.image ? `data:${t.image.media_type};base64,${t.image.data}` : "", who: p ? p.name_ja : "", garden: g ? g.name_ja : "" };
+}
 // 木の記録を画面に返す形（写真の中身は返さない。画面は自分の手元の写真を使う）
 function publicTree(t) { const { image, ...rest } = t; return rest; }
 
@@ -902,8 +983,8 @@ function searchQa(q, l, me) {
   const isMine = (c) => Boolean(me && (me.role === "shokunin" ? (c.garden_id ? c.garden_id === myG : c.teacher_id === me.teacher_id) : c.asker_id === me.id));
   const done = store.consultations.filter((c) => c.answer && c.answer.headline).slice(0, 60).map((c) => ({
     id: c.id, tree: null, own: isMine(c), lang: c.lang, garden_id: c.garden_id || null, person_id: c.answer.by?.id || null, answer_lang: c.answer.answer_lang || null,
-    q: { [c.lang]: c.question, ja: c.for_craftsperson?.summary_ja || "" },
-    a: { [c.lang]: [c.answer.headline, ...(c.answer.paragraphs || [])].join(" "), ja: c.answer.back_translation_ja || "" },
+    q: { ja: c.for_craftsperson?.summary_ja || "", [c.lang]: c.question },
+    a: { ja: c.answer.back_translation_ja || "", [c.lang]: [c.answer.headline, ...(c.answer.paragraphs || [])].join(" ") },
   }));
   const all = [...done, ...BG_SAMPLE.qa];
   const words = new Set();
@@ -971,13 +1052,18 @@ function findRoute(method, pathname) {
   if (m && method === "POST") return { fn: routes[`POST /api/consultations/:id/${m[2]}`], id: m[1] };
   const bm = pathname.match(/^\/api\/bonsaigo\/trees\/([0-9a-f-]{36})\/check$/);
   if (bm && method === "POST") return { fn: routes["POST /api/bonsaigo/trees/:id/check"], id: bm[1] };
+  const am = pathname.match(/^\/api\/admin\/trees\/([0-9a-f-]{36})\/(posted|photo)$/);
+  if (am && method === "POST") return { fn: routes[`POST /api/admin/trees/:id/${am[2]}`], id: am[1] };
   const tm = pathname.match(/^\/api\/trees\/([0-9a-f-]{36})\/listing$/);
   if (tm && method === "POST") return { fn: routes["POST /api/trees/:id/listing"], id: tm[1] };
   return null;
 }
 
+// デモの見本（見本のユーザー・見本の相談）を入れる。起動のたびに同じ状態に戻す（11/08 修正の控え No.1・2）
+const DEMO_ACCOUNTS = setupDemo({ store, people: WORLD_PEOPLE, here: HERE, personCard });
+await save();
 const server = http.createServer((req, res) => {
-  requestContext.run({ req, res, user: null }, () => handle(req, res));
+  requestContext.run({ req, res, user: null }, () => handle(req, res).catch((e) => { console.error("リクエストの失敗:", e?.message || e); try { if (!res.headersSent) res.writeHead(400).end(); } catch {} }));
 });
 
 async function handle(req, res) {
@@ -1036,6 +1122,7 @@ async function handle(req, res) {
 }
 
 server.listen(PORT, HOST, () => {
+  console.log(`デモの見本: 相談する人 ${DEMO_ACCOUNTS.asker ? "あり" : "なし（.env に BONSAIGO_DEMO_ASKER_EMAIL・PASSWORD）"} ／ 職人 ${DEMO_ACCOUNTS.craft ? "あり" : "なし（.env に BONSAIGO_DEMO_CRAFT_EMAIL・PASSWORD）"} ／ 見本の相談 7件`);
   const label = { "claude-api": "Claude API（使った分の料金がかかります）", "claude-code": "この端末の Claude Code", sample: "見本の答え（AIは動きません）" }[MODE];
   console.log(`BonsaiGO（盆栽マッチングの試作）: http://${HOST === "0.0.0.0" ? "localhost" : HOST}:${PORT}/index.html`);
   console.log(`AIのつなぎ方: ${label}`);

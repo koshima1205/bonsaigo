@@ -14,10 +14,13 @@ export const MODELS = {
   fallback: process.env.BONSAI_MODEL_FALLBACK || "claude-opus-5-5",
 };
 export const CONFIDENCE_LINE = 0.8;
+// 2026-11-08 15:30 箱崎さんの指示：デモの不具合直しのあいだ、1人ごと・接続元ごとの上限はなくし、全体だけ1日1000回に残す。
+// .env に上限の値が書いてあっても、この間はここの値を使う。
+// 提出のあとに元の書き方（perUser: Number(process.env.AI_USER_LIMIT || 12) など。全体200・接続元60）へ戻す
 export const LIMITS = {
-  perUser: Number(process.env.AI_USER_LIMIT || 12),
-  total: Number(process.env.AI_DAILY_LIMIT || 200),
-  perIp: Number(process.env.AI_IP_LIMIT || 60),
+  perUser: Infinity,
+  total: 1000,
+  perIp: Infinity,
 };
 const CACHE_MAX = 400;
 const LOG_MAX = 12;
@@ -94,7 +97,7 @@ export function createGuard(store, save) {
   function status(who) {
     roll();
     return {
-      models: MODELS, confidence_line: CONFIDENCE_LINE, limits: LIMITS,
+      models: MODELS, confidence_line: CONFIDENCE_LINE, limits: { ...LIMITS, perUser: Number.isFinite(LIMITS.perUser) ? LIMITS.perUser : "∞", perIp: Number.isFinite(LIMITS.perIp) ? LIMITS.perIp : "∞" },
       today: { total: u.total, me: who ? (u.by_user[who] || 0) : 0, cache_hits: u.cache_hits },
       last: store.ai_log.slice(0, 8),
     };

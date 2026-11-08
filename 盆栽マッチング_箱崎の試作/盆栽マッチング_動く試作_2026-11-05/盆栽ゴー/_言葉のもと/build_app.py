@@ -46,9 +46,19 @@ for k, v in list(I["en"].items()):
     if isinstance(v, str) and k not in KEEP: I["en"][k] = _en(v)
 for k, by in json.load(open(os.path.join(here, "直し_2026-11-08_箱崎さんとのすり合わせ_師匠を職人に_ボタンの文など.json"))).items():
     for c, v in by.items(): I[c][k] = v
+# 11/08 16時：箱崎さんの修正の控え16件から（地域→国・写真の初期の絵をやめる・投稿依頼をする・送った原文など）。さらに最後に重ねる
+for k, by in json.load(open(os.path.join(here, "直し_2026-11-08_修正の控え16件から_国だけ・写真・投稿依頼など.json"))).items():
+    for c, v in by.items(): I[c][k] = v
 # 使っていない鍵（◯◯ Garden の置き忘れのもと）は外す
 for c in I: I[c].pop("g.m.name", None)
 os.makedirs(os.path.join(APP, "盆栽ゴー"), exist_ok=True)
+# 11/08 箱崎さん：画面に出る名前は「BonsaiGO」にそろえる（BONSAIGO・盆栽ゴー などの揺れを直す。@bonsaigo_jp のようなアカウント名はそのまま）
+def _brand(v):
+    if isinstance(v, str): return v.replace("BONSAIGO", "BonsaiGO").replace("盆栽ゴー", "BonsaiGO")
+    if isinstance(v, dict): return {k: _brand(x) for k, x in v.items()}
+    if isinstance(v, list): return [_brand(x) for x in v]
+    return v
+I = _brand(I)
 open(os.path.join(APP, "盆栽ゴー", "i18n.js"), "w").write("window.I18N = " + json.dumps(I, ensure_ascii=True) + ";\n")
 
 # 用語の印：見本版 [[key:見せる言葉]] → サーバーの形 [[見せる言葉|用語集の見出し]]
@@ -90,5 +100,6 @@ concepts = [
     ["leaf", "leaves", "hoja", "feuille", "foglia", "叶", "葉", "ใบ", "ស្លឹក"],
 ]
 out = {"recorded": rec, "qa": qa, "concepts": concepts}
+out = _brand(out)
 json.dump(out, open(os.path.join(APP, "盆栽ゴー_見本の答え.json"), "w"), ensure_ascii=False, indent=1)
 print("i18n.js + 盆栽ゴー_見本の答え.json written · problems:", bad)

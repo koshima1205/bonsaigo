@@ -578,5 +578,25 @@
   "it": "Ancora nessuna domanda con risposta.",
   "th": "ยังไม่มีคำปรึกษาที่ตอบแล้ว",
   "km": "មិនទាន់មានសំណួរដែលបានឆ្លើយទេ។"
+ },
+ "g.x.logout": {
+  "ja": "ログアウト",
+  "en": "Log out",
+  "es": "Cerrar sesión",
+  "zh": "退出登录",
+  "fr": "Se déconnecter",
+  "it": "Esci",
+  "th": "ออกจากระบบ",
+  "km": "ចាកចេញ"
+ },
+ "a.x.logout": {
+  "ja": "ログアウト",
+  "en": "Log out",
+  "es": "Cerrar sesión",
+  "zh": "退出登录",
+  "fr": "Se déconnecter",
+  "it": "Esci",
+  "th": "ออกจากระบบ",
+  "km": "ចាកចេញ"
  }
 }

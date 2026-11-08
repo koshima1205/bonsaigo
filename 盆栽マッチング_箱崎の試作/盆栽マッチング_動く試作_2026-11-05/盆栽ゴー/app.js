@@ -128,6 +128,8 @@
     if (e.target.closest("[data-cost]")) { openCost(); return; }
     if (e.target.closest("[data-role]")) { show("welcome"); return; }
     const g = e.target.closest("[data-go]"); if (g && !g.disabled) { go(g.dataset.go); return; }
+    // ログアウト：相談する人・職人のどちらでも、はじめの画面へ戻る（共有の端末で次の人に前の相談が見えないように）
+    if (e.target.closest("[data-logout]")) { api("POST", "/logout", {}).catch(() => {}).finally(() => { ME = null; consults = []; hist.length = 0; show("welcome", { push: false }); }); return; }
     if (e.target.closest("[data-welcome]")) { hist.length = 0; show("welcome", { push: false }); return; }
     if (e.target.closest("[data-back]")) { if (hist.length) back(); else show(ME ? (ME.role === "shokunin" ? "mhome" : "home") : "welcome", { push: false }); return; }
     const tm = e.target.closest("[data-term]"); if (tm) openGloss(tm.dataset.term);

@@ -833,3 +833,4 @@ html,body{font-variant-numeric:lining-nums}
 /* 下のボタン（とタブ）に入力欄やボタンが隠れないよう、下の余白をとる */
 .scr:has(> .tabs):has(> .dock) .pad{padding-bottom:240px}
 .scr:not(:has(> .tabs)):has(> .dock) .pad{padding-bottom:150px}
+[data-logout]{margin-left:6px}

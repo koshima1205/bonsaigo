@@ -89,8 +89,8 @@
    "ok": false,
    "is_bonsai": false,
    "confidence": 0.97,
-   "reason_ja": "盆栽ではなく、部屋の中の写真です。盆栽が主役の写真にしてください。",
-   "reason_en": "This is a photo of a room, not a bonsai. Please use a photo where the bonsai is the subject."
+   "reason_ja": "庭の小道の写真で、盆栽が写っていません。盆栽が主役の写真にしてください。",
+   "reason_en": "This is a photo of a garden path, and no bonsai is in it. Please use a photo where the bonsai is the subject."
   },
   "checkImage_unsure": {
    "ok": true,

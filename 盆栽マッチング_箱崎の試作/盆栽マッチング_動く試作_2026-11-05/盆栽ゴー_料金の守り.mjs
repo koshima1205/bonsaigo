@@ -71,8 +71,9 @@ export function createGuard(store, save) {
   // 呼ぶ前に数える。上限なら止める（数えるのは前の答えを使わなかったときだけ）
   function count(who, ip) {
     roll();
-    if (u.total >= LIMITS.total) throw new LimitReached("本日のAIの上限（全体200回）に達しました。明日またお試しください");
-    if ((who && (u.by_user[who] || 0) >= LIMITS.perUser) || (ip && (u.by_ip[ip] || 0) >= LIMITS.perIp)) throw new LimitReached("あなたの本日のAIの上限（12回）に達しました。明日またお試しください");
+    if (u.total >= LIMITS.total) throw new LimitReached(`本日のAIの上限（全体${LIMITS.total}回）に達しました。明日またお試しください`);
+    if (who && (u.by_user[who] || 0) >= LIMITS.perUser) throw new LimitReached(`あなたの本日のAIの上限（${LIMITS.perUser}回）に達しました。明日またお試しください`);
+    if (ip && (u.by_ip[ip] || 0) >= LIMITS.perIp) throw new LimitReached(`この回線からの本日のAIの上限（${LIMITS.perIp}回）に達しました。明日またお試しください`);
     u.total += 1;
     if (who) u.by_user[who] = (u.by_user[who] || 0) + 1;
     if (ip) u.by_ip[ip] = (u.by_ip[ip] || 0) + 1;

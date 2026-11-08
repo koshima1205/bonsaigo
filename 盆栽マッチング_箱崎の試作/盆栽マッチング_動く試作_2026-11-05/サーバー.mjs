@@ -179,7 +179,8 @@ async function ask(taskName, text, images = [], recordedKey = taskName) {
   const hit = guard.fromCache(key);
   if (hit) { guard.log({ task: taskName, model: "cache", cached: true }); save(); return hit; }
   const ctx = requestContext.getStore();
-  guard.count(ctx?.user?.id || null, `ip:${clientIp(ctx?.req)}`);
+  // 見本モードは料金がかからないので数えない（デモの途中で上限に当たって止まらないように）
+  if (MODE !== "sample") guard.count(ctx?.user?.id || null, `ip:${clientIp(ctx?.req)}`);
   let result, used;
   if (MODE === "sample") {
     const rec = RECORDED[recordedKey] ?? RECORDED[taskName];
@@ -641,7 +642,8 @@ const routes = {
   "GET /api/bonsaigo/qa": async (_b, _id, url) => {
     const l = lang(url.searchParams.get("lang"));
     const q = String(url.searchParams.get("q") || "").normalize("NFKC").toLowerCase().trim().slice(0, 80);
-    return { items: searchQa(q, l, currentUser()) };
+    const r = searchQa(q, l, currentUser());
+    return { items: r.hits, also: r.also };
   },
 
   "GET /api/bonsaigo/trees": async () => { const me = needUser("shokunin"); return { trees: (store.bonsaigo_trees || []).filter((t) => t.teacher_id === me.teacher_id).slice(0, 20).map(publicTree) }; },
@@ -667,7 +669,13 @@ const routes = {
     };
     // 見本モードでは写真を見られない。自分の写真は「AIが迷った」見本にして、人の確かめに倒す
     const imgKey = MODE === "sample" ? `checkImage_${sampleKey === "pine" ? "ok" : sampleKey === "ng" ? "ng" : "unsure"}` : "checkImage";
-    tree.image_check = guard.judge(await ask("checkImage", `Species given by the craftsperson: ${input(species)}`, images, imgKey));
+    try {
+      tree.image_check = guard.judge(await ask("checkImage", `Species given by the craftsperson: ${input(species)}`, images, imgKey));
+    } catch (e) {
+      if (e instanceof LimitReached) throw e;
+      // AI が答えられなかったときは、通さずに「人が確かめる」に倒す
+      tree.image_check = { ok: false, is_bonsai: null, confidence: 0, sure: false, needs_person: true, reason_ja: "AI が写真を確かめられなかったので、人が確かめます", reason_en: "The AI could not check this photo, so a person will." };
+    }
     if (!tree.image_check.ok) {
       tree.status = tree.image_check.needs_person ? "image_held" : "image_failed";
       return keep();
@@ -738,7 +746,14 @@ function searchQa(q, l, me) {
     const show = item.q[l] ? l : item.q.en ? "en" : item.lang;
     hits.push({ id: item.id, tree: item.tree, own: Boolean(item.own), lang: show, asked_in: item.lang || null, matched_in: matched, other_lang: matched !== l, q: item.q[show], a: item.a[show] || item.a.en || "" });
   }
-  return hits.slice(0, 20);
+  // 言葉をまたいで探した印：打った言葉のほかに、どの言い方でも探したか（画面に少しだけ見せる）
+  // 文字の種類（ラテン・漢字/かな・タイ・クメール）ごとに順に1つずつ取り、言葉をまたいだことが見えるように
+  const script = (w) => /[\u0E00-\u0E7F]/.test(w) ? "th" : /[\u1780-\u17FF]/.test(w) ? "km" : /[\u3040-\u30FF\u4E00-\u9FFF]/.test(w) ? "cjk" : "lat";
+  const pool = q ? [...words].filter((w) => w !== q && !q.includes(w)) : [];
+  const byScript = {}; pool.forEach((w) => (byScript[script(w)] ||= []).push(w));
+  const also = [];
+  for (let i = 0; also.length < 6 && i < 6; i++) for (const k of ["lat", "cjk", "th", "km"]) if (byScript[k]?.[i] && also.length < 6) also.push(byScript[k][i]);
+  return { hits: hits.slice(0, 20), also };
 }
 
 class NotFound extends Error {}

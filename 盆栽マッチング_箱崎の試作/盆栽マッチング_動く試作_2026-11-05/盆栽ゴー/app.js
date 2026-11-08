@@ -163,7 +163,9 @@
       try {
         const [c, tr] = await Promise.all([api("GET", "/consultations"), api("GET", "/bonsaigo/trees")]);
         consults = c.consultations || [];
-        $("#mN").textContent = consults.filter((x) => !x.answer).length;
+        const waiting = consults.filter((x) => !x.answer).length;
+        $("#mN").textContent = waiting;
+        const qt = $('[data-i18n="a.mh.qT"]'); qt.dataset.n = waiting; qt.textContent = t("a.mh.qT", { N: waiting });
         $("#mAns").textContent = consults.filter((x) => x.answer).length;
         $("#mPosts").textContent = (tr.trees || []).filter((x) => x.status === "ready").length;
       } catch (e) { if (e.status === 401) { ME = null; show("welcome"); return; } }
@@ -206,8 +208,8 @@
 
   /* ── 相談する ── */
   let askPhoto = { src: "img/ask.jpg" };
-  $("#askFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (!f) return; setPhoto("#askPhoto", await fileUrl(f)); askPhoto = { src: $("#askPhoto img").src }; });
-  $("#askSample").addEventListener("click", () => { setPhoto("#askPhoto", "img/ask.jpg"); askPhoto = { src: "img/ask.jpg" }; });
+  $("#askFile").addEventListener("change", async (e) => { const f = e.target.files[0]; if (!f) return; const u = await fileUrl(f); setPhoto("#askPhoto", u); $("#askPhoto").classList.add("own"); askPhoto = { src: u }; });
+  $("#askSample").addEventListener("click", () => { setPhoto("#askPhoto", "img/ask.jpg"); $("#askPhoto").classList.remove("own"); askPhoto = { src: "img/ask.jpg" }; });
   function setPhoto(box, src) { const b = $(box); b.classList.add("swap"); setTimeout(() => { $("img", b).src = src; b.classList.remove("swap"); }, 220); }
   $("#toPick").addEventListener("click", (e) => { const b = e.target.closest("[data-to]"); if (!b) return; toTeacher = b.dataset.to; $$("#toPick button").forEach((x) => x.classList.toggle("on", x === b)); });
   $("#b-send").addEventListener("click", async () => {
@@ -264,7 +266,11 @@
     try {
       const d = await api("GET", `/bonsaigo/qa?lang=${GL}&q=${encodeURIComponent(q)}`);
       const items = d.items.slice(0, limit || 20);
-      if (box === "#qaList") $("#qaCount").textContent = t("g.x.qaHits", { N: items.length });
+      if (box === "#qaList") {
+        $("#qaCount").textContent = t("g.x.qaHits", { N: items.length });
+        // 言葉をまたいで探した言い方を見せる（どの言葉で打っても同じ答えに当たる、の証拠）
+        $("#qaAlso").innerHTML = q && d.also && d.also.length ? `<svg><use href="#i-globe"/></svg>${esc(t("g.x.alsoSearched"))} ${d.also.map((w) => `<span>${esc(w)}</span>`).join("")}` : "";
+      }
       $(box).innerHTML = items.length ? items.map((it) => `<div class="qa"><div class="top"><span class="tree">${it.tree ? `<img src="img/t-${TREE_IMG[it.tree] || it.tree}.webp" alt="">` : `<img src="img/ask.jpg" alt="" style="object-fit:cover;height:100%">`}</span><div><b>${esc(it.q)}</b><div class="meta">${it.tree ? `<span>${esc(t("g.tree." + it.tree))}</span>` : ""}${it.asked_in && it.asked_in !== GL ? `<span>${esc(t("g.x.askedIn", { L: I18N[GL].names[it.asked_in] || it.asked_in }))}</span>` : ""}${it.other_lang && q ? `<span class="other"><svg><use href="#i-globe"/></svg>${esc(t("g.x.qaOther"))}</span>` : ""}</div></div></div><div class="a">${terms(it.a, "g")}</div></div>`).join("") : `<div class="empty" style="margin-top:12px">${esc(t("g.x.qaNone"))}</div>`;
     } catch {}
   }
@@ -406,7 +412,7 @@
   }
   $("#b-regGo").addEventListener("click", async () => {
     showErr("#rErr", ""); $("#regResult").innerHTML = "";
-    $("#rBusyT").textContent = t("a.x.chkImg"); $("#rBusyM").textContent = "Haiku · confidence ≥ 0.8";
+    $("#rBusyT").textContent = t("a.x.chkImg"); $("#rBusyM").textContent = `Haiku · ${t("a.x.pass")}`;
     busy("#rBusy", true); $("#scan").classList.add("on");
     const swap = setTimeout(() => { $("#rBusyT").textContent = t("a.x.drafting"); $("#rBusyM").textContent = "Sonnet · 8 languages"; }, 1400);
     try {
@@ -415,7 +421,7 @@
       clearTimeout(swap); busy("#rBusy", false); $("#scan").classList.remove("on");
       curTree = tr; curTree.src = regPhoto.src;
       const ic = tr.image_check || {}, reason = AL === "ja" ? ic.reason_ja : ic.reason_en;
-      const by = `Haiku · ${t("a.x.conf", { P: confTxt(ic.confidence) })} · line 0.80`;
+      const by = `${t("a.x.byAi")} · ${t("a.x.conf", { P: confTxt(ic.confidence) })}（${t("a.x.pass")}）`;
       if (tr.status === "image_failed") { $("#regResult").innerHTML = verdict("ng", t("a.x.imgFail"), [reason], by) + `<button class="cta ghost" style="margin-top:12px" id="b-retake">${esc(t("a.x.retake"))}</button>`; scrollEnd("reg"); return; }
       if (tr.status === "image_held") { $("#regResult").innerHTML = verdict("hold", t("a.x.held"), [t("a.x.imgLow"), reason], by); scrollEnd("reg"); return; }
       show("posts");
@@ -442,7 +448,7 @@
       busy("#pBusy", false);
       Object.assign(curTree, r);
       const tc = r.text_check || {}, probs = AL === "ja" ? tc.problems_ja : tc.problems_en;
-      const by = tc.by === "rules" ? "rules (no AI · free)" : `Haiku · ${t("a.x.conf", { P: confTxt(tc.confidence) })} · line 0.80`;
+      const by = tc.by === "rules" ? t("a.x.byRules") : `${t("a.x.byAi")} · ${t("a.x.conf", { P: confTxt(tc.confidence) })}（${t("a.x.pass")}）`;
       if (r.status === "text_failed") { $("#textResult").innerHTML = verdict("ng", t("a.x.textFail"), probs || [], by); scrollEnd("posts"); return; }
       if (r.status === "text_held") { $("#textResult").innerHTML = verdict("hold", t("a.x.held"), [t("a.x.imgLow")], by); scrollEnd("posts"); return; }
       show("pub");
@@ -512,7 +518,7 @@
   $("#lveil").addEventListener("click", closeSheets);
 
   function applyLang() {
-    $$("[data-i18n]").forEach((el) => { const k = el.dataset.i18n; el.innerHTML = terms(t(k), k.startsWith("a.") ? "a" : "g", true); });
+    $$("[data-i18n]").forEach((el) => { const k = el.dataset.i18n; el.innerHTML = terms(t(k, el.dataset.n != null ? { N: el.dataset.n } : undefined), k.startsWith("a.") ? "a" : "g", true); });
     $$("[data-pick]").forEach((b) => { b.querySelector(".lp-name").textContent = I18N[b.dataset.pick === "g" ? GL : AL].self; });
     $$(".scr:not(.k)").forEach((el) => (el.lang = GL === "zh" ? "zh-CN" : GL));
     $$(".scr.k").forEach((el) => (el.lang = AL === "zh" ? "zh-CN" : AL));
